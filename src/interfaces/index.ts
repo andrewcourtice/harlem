@@ -1,18 +1,32 @@
 import type {
+    App,
     UnwrapRef,
     ComputedRef,
     DeepReadonly
 } from 'vue';
+
+import type {
+    EventEmitter
+} from '../event-emitter';
 
 export type ReadState<T> = DeepReadonly<T>;
 export type WriteState<T> = UnwrapRef<T>;
 export type Getter<T, U> = (state: ReadState<T>) => U;
 export type Mutator<T, U> = (state: WriteState<T>, payload?: U) => void;
 export type Mutation<T> = (payload?: T) => void;
-export type RegistrationEvent = 'mutation' | 'error';
+export type RegistrationEvent = 'getter' | 'mutation' | 'error';
 
 export interface EventListener {
     dispose(): void
+}
+
+export interface HarlemPlugin {
+    name: string;
+    install(app: App, eventEmitter: EventEmitter): void;
+}
+
+export interface PluginOptions {
+    plugins?: HarlemPlugin[]
 }
 
 export interface StoreRegistration<T> {
@@ -28,5 +42,5 @@ export interface StoreMethods<T> {
 
 export interface Store<T> extends StoreMethods<T> {
     state: ReadState<T>;
-    destroy(): void;
+    on(event: string, handler: Function): EventListener;
 };

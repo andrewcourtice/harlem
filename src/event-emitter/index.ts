@@ -12,7 +12,7 @@ export class EventEmitter {
         this.listeners = {};
     }
 
-    on(event: string, handler: Function): EventListener {
+    public on(event: string, handler: Function): EventListener {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -24,7 +24,7 @@ export class EventEmitter {
         };
     }
 
-    off(event: string, handler: Function): void {
+    public off(event: string, handler: Function): void {
         const listeners = this.listeners[event];
 
         if (!listeners) {
@@ -38,7 +38,7 @@ export class EventEmitter {
         }
     }
 
-    once(event: string, handler: Function): EventListener {
+    public once(event: string, handler: Function): EventListener {
         const callback = (...args: any[]) => {
             handler(...args);
             this.off(event, callback);
@@ -47,7 +47,7 @@ export class EventEmitter {
         return this.on(event, callback);
     }
 
-    emit(event: string, ...args: any[]) {
+    public emit(event: string, ...args: any[]) {
         const handlers = this.listeners[event];
 
         if (!handlers) {
