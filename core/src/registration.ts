@@ -9,7 +9,7 @@ export default class StoreRegistration<T = any> {
 
     private name: string;
 
-    public getters: Set<string>;
+    public getters: Map<string, Function>;
     public mutations: Set<string>;
     public state: () => ReadState<T>;
 
@@ -17,16 +17,16 @@ export default class StoreRegistration<T = any> {
         this.name = name;
 
         this.state = () => state;
-        this.getters = new Set();
+        this.getters = new Map();
         this.mutations = new Set();
     }
 
-    public registerGetter(name: string): void {
+    public registerGetter(name: string, accessor: Function): void {
         if (this.getters.has(name)) {
             throw new Error(`A getter named: ${name} has already been registered.`);
         }
 
-        this.getters.add(name);
+        this.getters.set(name, accessor);
     }
 
     public registerMutation(name: string): void {

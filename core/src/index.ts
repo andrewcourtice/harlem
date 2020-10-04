@@ -30,11 +30,9 @@ const stores = new Map<string, Registration>();
 
 function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, registration: Registration<T>): StoreMethods<T> {
     const getter = <U>(name: string, getter: Getter<T, U>) => {
-        registration.registerGetter(name);
-
         const output = computed(() => getter(read));
-
-        watch(output, () => registration.log('getter', name));
+        
+        registration.registerGetter(name, () => output.value);
 
         return output;
     };
@@ -124,8 +122,16 @@ export default {
                 return;
             }
 
+            const getters = [];
+            const mutations = [];
+
+            registration.getters.forEach((accessor, key) => getters.push({ key, value: accessor() }));
+            registration.mutations.forEach(key => mutations.push({ key }));
+
             return {
-                state: registration.state,
+                getters,
+                mutations,
+                state: registration.state()
             };
         };
 

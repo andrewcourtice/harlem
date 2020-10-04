@@ -39,29 +39,42 @@ export default class Devtools {
         this.options = options;
     }
 
-    public attach(app: App): void {
+    public attach(application: App): void {
         const {
             getStores,
             getSnapshot
         } = this.options;
     
         const descriptor = {
-            app,
+            app: application,
             id: 'harlem',
-            label: 'Harlem'
+            label: 'Harlsem'
         };
     
         setupDevtoolsPlugin(descriptor, api => {
-            // api.addInspector({
-            //     id: 'harlem',
-            //     label: 'Harlem',
-            //     icon: 'storage'
-            // });
+            api.addInspector({
+                id: 'harlem',
+                label: 'Harlem',
+                icon: 'storage'
+            });
+
+            api.addTimelineLayer({
+                id: 'harlem',
+                label: 'Harlem',
+                color: 3
+            });
 
             api.on.getInspectorTree((payload, context) => {
-                const stores = getStores();
+                const {
+                    app,
+                    inspectorId
+                } = payload;
 
-                console.log(stores);
+                if (app !== application || inspectorId !== 'harlem') {
+                    return;
+                }
+
+                const stores = getStores();
 
                 if (stores) {
                     payload.rootNodes = stores.map(name => ({
@@ -73,8 +86,14 @@ export default class Devtools {
 
             api.on.getInspectorState((payload, context) => {
                 const {
+                    app,
+                    inspectorId,
                     nodeId
                 } = payload;
+
+                if (app !== application || inspectorId !== 'harlem') {
+                    return;
+                }
 
                 const snapshot = getSnapshot(nodeId);
 
@@ -97,7 +116,7 @@ export default class Devtools {
                 if (snapshot.mutations) {
                     mutations = snapshot.mutations.map(({ key }) => ({
                         key,
-                        value: '',
+                        value: () => {},
                         editable: false
                     }));
                 }
@@ -116,8 +135,23 @@ export default class Devtools {
                 };
             });
 
-            // eventEmitter.on('getter', () => api.sendInspectorState('harlem'));
-            // eventEmitter.on('mutation', () => api.sendInspectorState('harlem'));
+            eventEmitter.on('mutation', (store: string, mutation: string, payload: any) => {
+                api.sendInspectorState('harlem');
+                api.addTimelineEvent({
+                    layerId: 'harlem',
+                    event: {
+                        time: Date.now(),
+                        data: {
+                            store,
+                            mutation,
+                            payload
+                        },
+                        meta: {
+                            store
+                        }
+                    }
+                });
+            });
         });
     }
 

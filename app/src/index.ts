@@ -1,5 +1,3 @@
-import './index.css';
-
 import App from './app.vue';
 import Harlem from '@harlem/core';
 
@@ -9,7 +7,7 @@ import {
 
 function start() {
     return createApp(App)
-        .use(Harlem, {})
+        .use(Harlem)
         .mount('#app');
 }
 

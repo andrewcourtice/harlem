@@ -3,33 +3,41 @@
         <h1>Hello {{ fullName }}</h1>
         <input type="text" v-model="givenName" placeholder="Given name">
         <input type="text" v-model="surname" placeholder="Surname">
-        <input type="text" v-model="state.surname" placeholder="Surname">
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import {
+    defineComponent,
     computed
 } from 'vue';
 
 import {
     state,
+    fullName,
     setGivenName,
     setSurname
 } from './stores/user';
 
-export {
-    state,
-    fullName
-} from './stores/user';
+export default defineComponent({
 
-export const givenName = computed({
-    get: () => state.givenName,
-    set: setGivenName
-});
+    setup() {
+        const givenName = computed({
+            get: () => state.givenName,
+            set: setGivenName
+        });
+        
+        const surname = computed({
+            get: () => state.surname,
+            set: setSurname
+        });
 
-export const surname = computed({
-    get: () => state.surname,
-    set: setSurname
+        return {
+            givenName,
+            surname,
+            fullName
+        }
+    }
+
 });
 </script>
