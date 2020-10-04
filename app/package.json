@@ -1,0 +1,21 @@
+{
+    "name": "@harlem/app",
+    "version": "0.5.0",
+    "description": "Simple Vue 3 State Management",
+    "repository": "https://github.com/andrewcourtice/harlem.git",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "license": "MIT",
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "vite",
+        "build": "vite build"
+      },
+    "dependencies": {
+        "@harlem/core": "0.5.0",
+        "vue": "^3.0.0"
+    },
+    "devDependencies": {
+        "@vue/compiler-sfc": "^3.0.0-rc.1",
+        "vite": "^1.0.0-rc.4"
+    }
+}

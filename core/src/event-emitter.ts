@@ -1,6 +1,6 @@
 import type {
     EventListener
-} from '../interfaces';
+} from './types';
 
 export class EventEmitter {
 

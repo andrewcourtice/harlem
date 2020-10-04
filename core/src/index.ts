@@ -1,3 +1,4 @@
+import Devtools from './devtools';
 import Registration from './registration';
 
 import eventEmitter from './event-emitter';
@@ -21,11 +22,13 @@ import type {
     Store,
     StoreMethods,
     WriteState
-} from './interfaces';
+} from './types';
+
+export * from './types';
 
 const stores = new Map<string, Registration>();
 
-function getCoreMethods<T>(storeName: string, read: ReadState<T>, write: WriteState<T>, registration: Registration<T>): StoreMethods<T> {
+function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, registration: Registration<T>): StoreMethods<T> {
     const getter = <U>(name: string, getter: Getter<T, U>) => {
         registration.registerGetter(name);
 
@@ -56,8 +59,6 @@ function getCoreMethods<T>(storeName: string, read: ReadState<T>, write: WriteSt
     };
 }
 
-export * from './plugins';
-
 export function on(event: string, handler: Function): EventListener {
     return eventEmitter.on(event, handler);
 }
@@ -75,7 +76,7 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
     const {
         getter,
         mutation
-    } = getCoreMethods(name, state, write, registration);
+    } = getCoreMethods(state, write, registration);
 
     const localOn = (event: string, handler: Function): EventListener => {
         return on(event, (storeName: string, ...args: any[]) => {
@@ -109,10 +110,31 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 
 export default {
 
-    install(app, options: PluginOptions) {
+    install(app, options: PluginOptions = {}) {
         const {
             plugins
         } = options;
+
+        const getStores = () => [...stores.keys()];
+
+        const getSnapshot = (key: string) => {
+            const registration = stores.get(key);
+
+            if (!registration) {
+                return;
+            }
+
+            return {
+                state: registration.state,
+            };
+        };
+
+        const devtools = new Devtools({
+            getStores,
+            getSnapshot
+        });
+
+        devtools.attach(app);
 
         if (plugins) {
             plugins.forEach(plugin => installPlugin(plugin, app));
@@ -120,23 +142,3 @@ export default {
     }
 
 } as Plugin;
-
-// const {
-//     getter,
-//     mutation
-// } = createStore('thing', {
-//     a: 1,
-//     b: 2,
-//     c: {
-//         something: 'Hello'
-//     }
-// });
-
-// const g = getter('thing', state => state.b);
-// const m = mutation<number>('thing', (state, payload) => {
-//     if (payload) {
-//         state.a = payload;
-//     }
-// });
-
-// m()

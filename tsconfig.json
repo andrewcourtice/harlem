@@ -11,7 +11,8 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "lib": [
-            "ESNext"
+            "ESNext",
+            "DOM"
         ]
     },
     "exclude": [

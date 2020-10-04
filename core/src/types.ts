@@ -7,7 +7,7 @@ import type {
 
 import type {
     EventEmitter
-} from '../event-emitter';
+} from './event-emitter';
 
 export type ReadState<T> = DeepReadonly<T>;
 export type WriteState<T> = UnwrapRef<T>;

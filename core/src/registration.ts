@@ -1,16 +1,17 @@
-import eventEmitter from '../event-emitter';
+import eventEmitter from './event-emitter';
 
 import type {
     ReadState,
     RegistrationEvent
-} from '../interfaces';
+} from './types';
 
 export default class StoreRegistration<T = any> {
 
     private name: string;
-    private state: () => ReadState<T>;
-    private getters: Set<string>;
-    private mutations: Set<string>;
+
+    public getters: Set<string>;
+    public mutations: Set<string>;
+    public state: () => ReadState<T>;
 
     constructor(name: string, state: ReadState<T>) {
         this.name = name;
