@@ -60,6 +60,18 @@ function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, store: Inte
     };
 }
 
+function installPlugin(plugin: HarlemPlugin, app: App): void {
+    if (!plugin || typeof plugin.install !== 'function') {
+        return;
+    }
+
+    try {
+        plugin.install(app, eventEmitter, stores);
+    } catch (error) {
+        console.warn('Failed to install Harlem plugin. Skipping')
+    }
+}
+
 export function createStore<T extends object = any>(name: string, data: T): Store<T> {
     const write = reactive(data) as WriteState<T>;
     const state = readonly(write) as ReadState<T>;
@@ -71,7 +83,7 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
         mutation
     } = getCoreMethods(state, write, store);
 
-    const localOn = (event: StoreEvent, handler: Function): EventListener => {
+    const on = (event: StoreEvent, handler: Function): EventListener => {
         return eventEmitter.on(event, (storeName: string, ...args: any[]) => {
             if (storeName === name) {
                 handler(...args);
@@ -85,20 +97,8 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
         state,
         getter,
         mutation,
-        on: localOn
+        on
     };
-}
-
-function installPlugin(plugin: HarlemPlugin, app: App): void {
-    if (!plugin || typeof plugin.install !== 'function') {
-        return;
-    }
-
-    try {
-        plugin.install(app, eventEmitter, stores);
-    } catch (error) {
-        console.warn('Failed to install Harlem plugin. Skipping')
-    }
 }
 
 export default {

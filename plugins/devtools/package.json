@@ -9,6 +9,7 @@
     "module": "dist/devtools.esm.js",
     "umd:main": "dist/devtools.umd.js",
     "unpkg": "dist/devtools.min.js",
+    "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "scripts": {
         "build": "microbundle build --raw"

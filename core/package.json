@@ -9,6 +9,7 @@
     "module": "dist/harlem.esm.js",
     "umd:main": "dist/harlem.umd.js",
     "unpkg": "dist/harlem.min.js",
+    "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "scripts": {
         "build": "microbundle build --raw"
