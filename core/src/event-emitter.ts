@@ -1,8 +1,9 @@
 import type {
+    Emittable,
     EventListener
 } from './types';
 
-export class EventEmitter {
+export class EventEmitter implements Emittable {
 
     private listeners: {
         [key: string]: Function[]
@@ -47,7 +48,7 @@ export class EventEmitter {
         return this.on(event, callback);
     }
 
-    public emit(event: string, ...args: any[]) {
+    public emit(event: string, ...args: any[]): void {
         const handlers = this.listeners[event];
 
         if (!handlers) {

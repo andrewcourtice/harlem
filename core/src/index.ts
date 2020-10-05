@@ -1,5 +1,4 @@
-import Devtools from './devtools';
-import Registration from './registration';
+import InternalStore from './store';
 
 import eventEmitter from './event-emitter';
 
@@ -8,8 +7,7 @@ import {
     App,
     Plugin,
     reactive,
-    readonly,
-    watch,
+    readonly
 } from 'vue';
 
 import type {
@@ -17,37 +15,42 @@ import type {
     Getter,
     HarlemPlugin,
     Mutator,
-    PluginOptions,
+    Options,
     ReadState,
     Store,
+    StoreEvent,
     StoreMethods,
     WriteState
 } from './types';
 
 export * from './types';
 
-const stores = new Map<string, Registration>();
+const DEFAULT_OPTIONS: Options = {
+    plugins: []
+};
 
-function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, registration: Registration<T>): StoreMethods<T> {
+const stores = new Map<string, InternalStore>();
+
+function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, store: InternalStore<T>): StoreMethods<T> {
     const getter = <U>(name: string, getter: Getter<T, U>) => {
         const output = computed(() => getter(read));
         
-        registration.registerGetter(name, () => output.value);
+        store.registerGetter(name, () => output.value);
 
         return output;
     };
     
     const mutation = <U>(name: string, mutator: Mutator<T, U>) => {
-        registration.registerMutation(name);
+        store.registerMutation(name);
 
         return (payload?: U) => {
             try {
                 mutator(write, payload);
             } catch (error) {
-                registration.log('error', name, payload);
+                store.emit('error', name, payload);
             }
     
-            registration.log('mutation', name, payload);
+            store.emit('mutation', name, payload);
         }
     };
 
@@ -57,34 +60,26 @@ function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, registratio
     };
 }
 
-export function on(event: string, handler: Function): EventListener {
-    return eventEmitter.on(event, handler);
-}
-
-export function off(event: string, handler: Function): void {
-    return eventEmitter.off(event, handler);
-}
-
 export function createStore<T extends object = any>(name: string, data: T): Store<T> {
     const write = reactive(data) as WriteState<T>;
     const state = readonly(write) as ReadState<T>;
 
-    const registration = new Registration(name, state);
+    const store = new InternalStore(name, state);
 
     const {
         getter,
         mutation
-    } = getCoreMethods(state, write, registration);
+    } = getCoreMethods(state, write, store);
 
-    const localOn = (event: string, handler: Function): EventListener => {
-        return on(event, (storeName: string, ...args: any[]) => {
+    const localOn = (event: StoreEvent, handler: Function): EventListener => {
+        return eventEmitter.on(event, (storeName: string, ...args: any[]) => {
             if (storeName === name) {
                 handler(...args);
             }
         });
     }
 
-    stores.set(name, registration);
+    stores.set(name, store);
     
     return {
         state,
@@ -95,12 +90,12 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
 }
 
 function installPlugin(plugin: HarlemPlugin, app: App): void {
-    const {
-        install
-    } = plugin;
+    if (!plugin || typeof plugin.install !== 'function') {
+        return;
+    }
 
     try {
-        install(app, eventEmitter);
+        plugin.install(app, eventEmitter, stores);
     } catch (error) {
         console.warn('Failed to install Harlem plugin. Skipping')
     }
@@ -108,39 +103,13 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 
 export default {
 
-    install(app, options: PluginOptions = {}) {
+    install(app, options: Options = DEFAULT_OPTIONS) {
         const {
             plugins
-        } = options;
-
-        const getStores = () => [...stores.keys()];
-
-        const getSnapshot = (key: string) => {
-            const registration = stores.get(key);
-
-            if (!registration) {
-                return;
-            }
-
-            const getters = [];
-            const mutations = [];
-
-            registration.getters.forEach((accessor, key) => getters.push({ key, value: accessor() }));
-            registration.mutations.forEach(key => mutations.push({ key }));
-
-            return {
-                getters,
-                mutations,
-                state: registration.state()
-            };
+        } = {
+            ...DEFAULT_OPTIONS,
+            ...options
         };
-
-        const devtools = new Devtools({
-            getStores,
-            getSnapshot
-        });
-
-        devtools.attach(app);
 
         if (plugins) {
             plugins.forEach(plugin => installPlugin(plugin, app));

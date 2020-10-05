@@ -5,34 +5,38 @@ import type {
     DeepReadonly
 } from 'vue';
 
-import type {
-    EventEmitter
-} from './event-emitter';
-
 export type ReadState<T> = DeepReadonly<T>;
 export type WriteState<T> = UnwrapRef<T>;
 export type Getter<T, U> = (state: ReadState<T>) => U;
 export type Mutator<T, U> = (state: WriteState<T>, payload?: U) => void;
 export type Mutation<T> = (payload?: T) => void;
-export type RegistrationEvent = 'getter' | 'mutation' | 'error';
+export type InternalStores = Map<string, InternalStore<any>>;
+export type StoreEvent = 'mutation' | 'error';
 
 export interface EventListener {
     dispose(): void
 }
 
+export interface Emittable {
+    on(event: string, handler: Function): EventListener;
+    off(event: string, handler: Function): void;
+    once(event: string, handler: Function): EventListener;
+    emit(event: string, ...args: any[]): void;
+}
+
 export interface HarlemPlugin {
     name: string;
-    install(app: App, eventEmitter: EventEmitter): void;
+    install(app: App, eventEmitter: Emittable, stores: InternalStores): void;
 }
 
-export interface PluginOptions {
-    plugins?: HarlemPlugin[]
+export interface Options {
+    plugins?: HarlemPlugin[];
 }
 
-export interface StoreRegistration<T> {
-    state(): ReadState<T>,
-    getters: Set<string>,
-    mutations: Set<string>
+export interface InternalStore<T = any> {
+    state(): ReadState<T>;
+    getters: Map<string, Function>;
+    mutations: Set<string>;
 }
 
 export interface StoreMethods<T> {

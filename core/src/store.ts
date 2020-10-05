@@ -2,10 +2,11 @@ import eventEmitter from './event-emitter';
 
 import type {
     ReadState,
-    RegistrationEvent
+    StoreEvent,
+    InternalStore
 } from './types';
 
-export default class StoreRegistration<T = any> {
+export default class Store<T = any> implements InternalStore<T> {
 
     private name: string;
 
@@ -37,7 +38,7 @@ export default class StoreRegistration<T = any> {
         this.mutations.add(name);
     }
 
-    public log(event: RegistrationEvent, ...args: any[]): void {
+    public emit(event: StoreEvent, ...args: any[]): void {
         eventEmitter.emit(event, this.name, ...args);
     }
 

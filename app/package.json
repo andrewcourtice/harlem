@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@harlem/core": "0.5.0",
+        "@harlem/plugin-devtools": "0.5.0",
         "core-js": "3.6.5",
         "regenerator-runtime": "^0.13.7",
         "vue": "^3.0.0"
