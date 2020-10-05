@@ -14,10 +14,10 @@
         "build": "microbundle build --raw"
     },
     "peerDependencies": {
-        "@harlem/core": "1.0.0"
+        "@harlem/core": "^1.0.1"
     },
     "devDependencies": {
-        "@harlem/core": "1.0.0",
+        "@harlem/core": "^1.0.1",
         "microbundle": "^0.12.4"
     }
 }

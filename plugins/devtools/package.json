@@ -14,12 +14,12 @@
         "build": "microbundle build --raw"
     },
     "peerDependencies": {
-        "@harlem/core": "1.0.0"
+        "@harlem/core": "^1.0.1"
     },
     "dependencies": {
         "@vue/devtools-api": "^6.0.0-beta.2"
     },
     "devDependencies": {
-        "@harlem/core": "1.0.0"
+        "@harlem/core": "^1.0.1"
     }
 }
