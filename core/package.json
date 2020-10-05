@@ -1,12 +1,15 @@
 {
     "name": "@harlem/core",
-    "version": "0.5.0",
+    "version": "1.0.1",
     "description": "Simple Vue 3 State Management",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "license": "MIT",
-    "main": "src/index.ts",
-
+    "main": "dist/harlem.js",
+    "module": "dist/harlem.esm.js",
+    "umd:main": "dist/harlem.umd.js",
+    "unpkg": "dist/harlem.min.js",
+    "source": "src/index.ts",
     "scripts": {
         "build": "microbundle build --raw"
     },
