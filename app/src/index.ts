@@ -8,15 +8,17 @@ import {
 } from 'vue';
 
 function start() {
-    const devtools = createDevtoolsPlugin({
-        label: 'State'
-    });
+    let plugins = [];
+
+    if (process.env.NODE_ENV === 'development') {
+        plugins.push(createDevtoolsPlugin({
+            label: 'State'
+        }));
+    }
 
     return createApp(App)
         .use(Harlem, {
-            plugins: [
-                devtools
-            ]
+            plugins
         })
         .mount('#app');
 }
