@@ -1,0 +1,6 @@
+{
+    "npm.packageManager": "yarn",
+    "files.exclude": {
+        "**/node_modules": true
+    }
+}
