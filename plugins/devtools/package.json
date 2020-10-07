@@ -1,6 +1,6 @@
 {
     "name": "@harlem/plugin-devtools",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Simple Vue 3 State Management",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -23,6 +23,6 @@
         "@vue/devtools-api": "^6.0.0-beta.2"
     },
     "devDependencies": {
-        "@harlem/core": "^1.0.6"
+        "@harlem/core": "^1.0.7"
     }
 }
