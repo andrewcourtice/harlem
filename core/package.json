@@ -1,6 +1,6 @@
 {
     "name": "@harlem/core",
-    "version": "1.0.1",
+    "version": "1.0.5",
     "description": "Simple Vue 3 State Management",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -12,7 +12,9 @@
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "scripts": {
-        "build": "microbundle build --raw"
+        "dev": "microbundle watch --raw",
+        "build": "microbundle build --raw",
+        "prepublish": "yarn build"
     },
     "peerDependencies": {
         "vue": "^3.0.0"
