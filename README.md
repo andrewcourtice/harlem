@@ -1,19 +1,18 @@
 # Harlem
 Simple, unopinionated, lightweight and extensible state management for Vue 3. Take a look at the demo on CodeSandbox to see it in action: [Demo](https://codesandbox.io/s/harlem-demo-lmffj)
 
-<!-- TOC -->
+<!-- TOC depthfrom:2 depthto:3 -->
 
-- [Harlem](#harlem)
-    - [Features](#features)
-        - [Simple](#simple)
-        - [Unopinionated](#unopinionated)
-        - [Immutable](#immutable)
-        - [Lightweight](#lightweight)
-        - [Extensible](#extensible)
-        - [Great DX](#great-dx)
-    - [Getting Started](#getting-started)
-    - [Devtools Integration](#devtools-integration)
-    - [Typescript Support](#typescript-support)
+- [Features](#features)
+    - [Simple](#simple)
+    - [Unopinionated](#unopinionated)
+    - [Immutable](#immutable)
+    - [Lightweight](#lightweight)
+    - [Extensible](#extensible)
+    - [Great DX](#great-dx)
+- [Getting Started](#getting-started)
+- [Devtools Integration](#devtools-integration)
+- [Typescript Support](#typescript-support)
 
 <!-- /TOC -->
 

@@ -16,9 +16,6 @@
         "core",
         "plugins/*"
     ],
-    "scripts": {
-        "build": "microbundle build --raw"
-    },
     "devDependencies": {
         "lerna": "^3.22.1",
         "microbundle": "^0.12.4",

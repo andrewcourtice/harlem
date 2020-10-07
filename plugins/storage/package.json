@@ -20,7 +20,6 @@
         "@harlem/core": "^1.0.1"
     },
     "devDependencies": {
-        "@harlem/core": "^1.0.6",
-        "microbundle": "^0.12.4"
+        "@harlem/core": "^1.0.6"
     }
 }
