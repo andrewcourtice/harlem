@@ -78,9 +78,16 @@ const {
 } = createStore('user', STATE);
 
 export const state = store.state;
+
 export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
-export const setFirstName = mutation('set-first-name', (state, payload) => state.firstName = payload || '');
-export const setLastName = mutation('set-last-name', (state, payload) => state.lastName = payload || '');
+
+export const setFirstName = mutation('set-first-name', (state, payload) => {
+    state.firstName = payload || '';
+});
+
+export const setLastName = mutation('set-last-name', (state, payload) => {
+    state.lastName = payload || '';
+});
 ```
 
 4. Use your store in your app:
@@ -94,39 +101,39 @@ export const setLastName = mutation('set-last-name', (state, payload) => state.l
 </template>
 
 <script lang="ts">
-    import {
-        defineComponent,
-        computed
-    } from 'vue';
+import {
+    defineComponent,
+    computed
+} from 'vue';
 
-    import {
-        state,
-        fullName,
-        setFirstName,
-        setLastName
-    } from './stores/user';
+import {
+    state,
+    fullName,
+    setFirstName,
+    setLastName
+} from './stores/user';
 
-    export default defineComponent({
+export default defineComponent({
 
-        setup() {
-            const firstName = computed({
-                get: () => state.firstName,
-                set: setFirstName
-            });
-            
-            const lastName = computed({
-                get: () => state.lastName,
-                set: setLastName
-            });
+    setup() {
+        const firstName = computed({
+            get: () => state.firstName,
+            set: setFirstName
+        });
+        
+        const lastName = computed({
+            get: () => state.lastName,
+            set: setLastName
+        });
 
-            return {
-                firstName,
-                lastName,
-                fullName
-            };
-        }
+        return {
+            firstName,
+            lastName,
+            fullName
+        };
+    }
 
-    });
+});
 </script>
 ```
 
