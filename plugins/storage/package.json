@@ -10,8 +10,10 @@
     "umd:main": "dist/harlem-storage.umd.js",
     "unpkg": "dist/harlem-storage.min.js",
     "source": "src/index.ts",
+    "private": true,
     "scripts": {
-        "build": "microbundle build --raw"
+        "build": "microbundle build --raw",
+        "prepublish": "yarn build"
     },
     "peerDependencies": {
         "@harlem/core": "^1.0.1"

@@ -12,7 +12,8 @@
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "scripts": {
-        "build": "microbundle build --raw"
+        "build": "microbundle build --raw",
+        "prepublish": "yarn build"
     },
     "peerDependencies": {
         "vue": "^3.0.0"
