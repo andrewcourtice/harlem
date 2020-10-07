@@ -38,9 +38,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores, options:
             return;
         }
 
-        const storeNames = [...stores.keys()];
-
-        payload.rootNodes = storeNames.map(name => ({
+        payload.rootNodes = Array.from(stores.keys()).map(name => ({
             id: name,
             label: name
         }));
@@ -50,18 +48,20 @@ function getInspectorTreeHook(application: App, stores: InternalStores, options:
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
     const state = store.state();
 
-    const getters: StateBase[] = [...store.getters].map(([key, accessor]) => ({
-        key,
-        value: accessor(),
-        editable: false,
-        objectType: 'computed'
-    }));
+    const getters: StateBase[] = Array.from(store.getters)
+        .map(([key, accessor]) => ({
+            key,
+            value: accessor(),
+            editable: false,
+            objectType: 'computed'
+        }));
 
-    const mutations: StateBase[] = [...store.mutations].map(key => ({
-        key,
-        value: () => {},
-        editable: false
-    }));
+    const mutations: StateBase[] = Array.from(store.mutations)
+        .map(key => ({
+            key,
+            value: () => {},
+            editable: false
+        }));
 
     return {
         state: [
