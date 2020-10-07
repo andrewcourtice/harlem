@@ -12,6 +12,7 @@
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "scripts": {
+        "dev": "microbundle watch --raw",
         "build": "microbundle build --raw",
         "prepublish": "yarn build"
     },
