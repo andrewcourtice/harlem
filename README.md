@@ -1,4 +1,7 @@
 # Harlem
+
+![npm](https://img.shields.io/npm/v/@harlem/core)
+
 Simple, unopinionated, lightweight and extensible state management for Vue 3. Take a look at the demo on CodeSandbox to see it in action: [Demo](https://codesandbox.io/s/harlem-demo-lmffj)
 
 <!-- TOC depthfrom:2 depthto:3 -->
