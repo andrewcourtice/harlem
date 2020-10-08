@@ -131,14 +131,14 @@ export default function createDevtoolsPlugin(options: Options = DEFAULT_OPTIONS)
 
         name: 'devtools',
         
-        install(application: App, eventEmitter: Emittable, stores: InternalStores) {
-            const inspectorTreeHook = getInspectorTreeHook(application, stores);
-            const inspectorStateHook = getInspectorStateHook(application, stores);
+        install(app, eventEmitter, stores) {
+            const inspectorTreeHook = getInspectorTreeHook(app, stores);
+            const inspectorStateHook = getInspectorStateHook(app, stores);
             
             const descriptor = {
+                app,
                 label,
                 id: DEVTOOLS_ID,
-                app: application
             };
             
             setupDevtoolsPlugin(descriptor, api => {
