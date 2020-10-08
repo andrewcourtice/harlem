@@ -9,4 +9,5 @@ export type StateHookHandler = HookHandler<HookPayloads[Hooks.GET_INSPECTOR_STAT
 
 export interface Options {
     label: string;
+    color: number;
 }
