@@ -1,5 +1,7 @@
 import type {
-    HarlemPlugin
+    EventPayload,
+    HarlemPlugin,
+    MutationEventData
 } from '@harlem/core';
 
 import type {
@@ -9,7 +11,8 @@ import type {
 
 const OPTIONS: Options = {
     type: 'local',
-    prefix: 'harlem'
+    prefix: 'harlem',
+    sync: true
 };
 
 const STORAGE: StorageMap = {
@@ -20,7 +23,8 @@ const STORAGE: StorageMap = {
 export default function(options: Options = OPTIONS): HarlemPlugin {
     const {
         type,
-        prefix
+        prefix,
+        sync
     } = {
         ...OPTIONS,
         ...options
@@ -33,7 +37,11 @@ export default function(options: Options = OPTIONS): HarlemPlugin {
         name: 'storage',
 
         install(app, eventEmitter, stores) {
-            const storageHook = (storeName: string) => {
+            const storageHook = ({ sender, store: storeName }: EventPayload<MutationEventData>) => {
+                if (sender === 'storage') {
+                    return;
+                }
+                
                 const store = stores.get(storeName);
         
                 if (!store) {
@@ -47,6 +55,19 @@ export default function(options: Options = OPTIONS): HarlemPlugin {
             };
 
             eventEmitter.on('mutation', storageHook);
+
+            if (!sync) {
+                return;
+            }
+
+            window.addEventListener('storage' event => {
+                if (event.storageArea !== storage) {
+                    return;
+                }
+
+                const keys = Array.from(stores.keys())
+                    .map()
+            });
         }
 
     };

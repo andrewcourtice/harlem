@@ -16,10 +16,11 @@ import type {
 } from './types';
 
 import type {
-    Emittable,
+    EventPayload,
     HarlemPlugin,
     InternalStore,
-    InternalStores
+    InternalStores,
+    MutationEventData
 } from '@harlem/core';
 
 const DEVTOOLS_ID = 'harlem';
@@ -48,7 +49,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    const state = store.state();
+    const state = store.state;
 
     const getters: StateBase[] = Array.from(store.getters)
         .map(([key, accessor]) => ({
@@ -99,7 +100,12 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
 }
 
 function getMutationHook(api: DevtoolsPluginApi): Function {
-    return (store: string, mutation: string, payload: any) => {
+    return ({ store, data }: EventPayload<MutationEventData>) => {
+        const {
+            mutation,
+            payload
+        } = data;
+
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,
@@ -108,7 +114,7 @@ function getMutationHook(api: DevtoolsPluginApi): Function {
                 data: {
                     store,
                     mutation,
-                    payload
+                    payload,
                 },
                 meta: {
                     store
