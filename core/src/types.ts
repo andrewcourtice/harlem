@@ -46,5 +46,7 @@ export interface StoreMethods<T> {
 
 export interface Store<T> extends StoreMethods<T> {
     state: ReadState<T>;
-    on(event: string, handler: Function): EventListener;
+    on(event: StoreEvent, handler: Function): EventListener;
+    once(event: StoreEvent, handler: Function): EventListener;
+    destroy(): void;
 };
