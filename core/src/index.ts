@@ -24,7 +24,7 @@ import type {
 
 export * from './types';
 
-const DEFAULT_OPTIONS: Options = {
+const OPTIONS: Options = {
     plugins: []
 };
 
@@ -48,7 +48,7 @@ function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, store: Inte
             } catch (error) {
                 store.emit('error', name, payload);
             }
-    
+            
             store.emit('mutation', name, payload);
         }
     };
@@ -123,11 +123,11 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
 
 export default {
 
-    install(app, options: Options = DEFAULT_OPTIONS) {
+    install(app, options: Options = OPTIONS) {
         const {
             plugins
         } = {
-            ...DEFAULT_OPTIONS,
+            ...OPTIONS,
             ...options
         };
 

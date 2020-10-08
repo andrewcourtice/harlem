@@ -24,7 +24,7 @@ import type {
 
 const DEVTOOLS_ID = 'harlem';
 
-const DEFAULT_OPTIONS: Options = {
+const OPTIONS: Options = {
     label: 'Harlem',
     color: 0x40c48d
 };
@@ -118,12 +118,12 @@ function getMutationHook(api: DevtoolsPluginApi): Function {
     };
 }
 
-export default function createDevtoolsPlugin(options: Options = DEFAULT_OPTIONS): HarlemPlugin {
+export default function createDevtoolsPlugin(options: Options = OPTIONS): HarlemPlugin {
     const {
         label,
         color
     } = {
-        ...DEFAULT_OPTIONS,
+        ...OPTIONS,
         ...options
     };
 
