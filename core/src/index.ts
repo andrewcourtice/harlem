@@ -11,7 +11,6 @@ import {
 } from 'vue';
 
 import type {
-    EventListener,
     Getter,
     HarlemPlugin,
     Mutator,
@@ -25,7 +24,7 @@ import type {
 
 export * from './types';
 
-const DEFAULT_OPTIONS: Options = {
+const OPTIONS: Options = {
     plugins: []
 };
 
@@ -49,7 +48,7 @@ function getCoreMethods<T>(read: ReadState<T>, write: WriteState<T>, store: Inte
             } catch (error) {
                 store.emit('error', name, payload);
             }
-    
+            
             store.emit('mutation', name, payload);
         }
     };
@@ -65,14 +64,31 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
         return;
     }
 
+    const {
+        name,
+        install
+    } = plugin;
+
     try {
-        plugin.install(app, eventEmitter, stores);
+        install(app, eventEmitter, stores);
     } catch (error) {
-        console.warn('Failed to install Harlem plugin. Skipping')
+        console.warn(`Failed to install Harlem plugin: ${name}. Skipping.`);
     }
 }
 
+function getLocalHandler(name: string, handler: Function): Function {
+    return (storeName: string, ...args: any[]) => {
+        if (storeName === name) {
+            handler(...args);
+        }
+    };
+}
+
 export function createStore<T extends object = any>(name: string, data: T): Store<T> {
+    if (stores.has(name)) {
+        throw new Error(`A store named ${name} has already been registered`);
+    }
+
     const write = reactive(data) as WriteState<T>;
     const state = readonly(write) as ReadState<T>;
 
@@ -83,13 +99,15 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
         mutation
     } = getCoreMethods(state, write, store);
 
-    const on = (event: StoreEvent, handler: Function): EventListener => {
-        return eventEmitter.on(event, (storeName: string, ...args: any[]) => {
-            if (storeName === name) {
-                handler(...args);
-            }
-        });
-    }
+    const on = (event: StoreEvent, handler: Function) => {
+        return eventEmitter.on(event, getLocalHandler(name, handler));
+    };
+
+    const once = (event: StoreEvent, handler: Function) => {
+        return eventEmitter.once(event, getLocalHandler(name, handler));
+    };
+
+    const destroy = () => stores.delete(name);
 
     stores.set(name, store);
     
@@ -97,17 +115,19 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
         state,
         getter,
         mutation,
-        on
+        on,
+        once,
+        destroy
     };
 }
 
 export default {
 
-    install(app, options: Options = DEFAULT_OPTIONS) {
+    install(app, options: Options = OPTIONS) {
         const {
             plugins
         } = {
-            ...DEFAULT_OPTIONS,
+            ...OPTIONS,
             ...options
         };
 

@@ -17,18 +17,20 @@ import type {
 
 import type {
     Emittable,
+    HarlemPlugin,
     InternalStore,
     InternalStores
 } from '@harlem/core';
 
 const DEVTOOLS_ID = 'harlem';
 
-const DEFAULT_OPTIONS: Options = {
-    label: 'Harlem'
+const OPTIONS: Options = {
+    label: 'Harlem',
+    color: 0x40c48d
 };
 
-function getInspectorTreeHook(application: App, stores: InternalStores, options: Options): TreeHookHandler {
-    return (payload, context) => {
+function getInspectorTreeHook(application: App, stores: InternalStores): TreeHookHandler {
+    return payload => {
         const {
             app,
             inspectorId
@@ -76,8 +78,8 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
     };
 }
 
-function getInspectorStateHook(application: App, stores: InternalStores, options: Options): StateHookHandler {
-    return (payload, context) => {
+function getInspectorStateHook(application: App, stores: InternalStores): StateHookHandler {
+    return payload => {
         const {
             app,
             inspectorId,
@@ -116,21 +118,27 @@ function getMutationHook(api: DevtoolsPluginApi): Function {
     };
 }
 
-export default function createDevtoolsPlugin(options: Options = DEFAULT_OPTIONS) {
+export default function createDevtoolsPlugin(options: Options = OPTIONS): HarlemPlugin {
     const {
-        label
-    } = options;
+        label,
+        color
+    } = {
+        ...OPTIONS,
+        ...options
+    };
 
     return {
+
+        name: 'devtools',
         
-        install(application: App, eventEmitter: Emittable, stores: InternalStores) {
-            const inspectorTreeHook = getInspectorTreeHook(application, stores, options);
-            const inspectorStateHook = getInspectorStateHook(application, stores, options);
+        install(app, eventEmitter, stores) {
+            const inspectorTreeHook = getInspectorTreeHook(app, stores);
+            const inspectorStateHook = getInspectorStateHook(app, stores);
             
             const descriptor = {
+                app,
                 label,
                 id: DEVTOOLS_ID,
-                app: application
             };
             
             setupDevtoolsPlugin(descriptor, api => {
@@ -139,18 +147,19 @@ export default function createDevtoolsPlugin(options: Options = DEFAULT_OPTIONS)
                 api.addInspector({
                     label,
                     id: DEVTOOLS_ID,
-                    icon: 'storage'
+                    icon: 'storage',
+                    treeFilterPlaceholder: 'Search stores'
                 });
     
                 api.addTimelineLayer({
                     label,
-                    id: DEVTOOLS_ID,
-                    color: 3
+                    color,
+                    id: DEVTOOLS_ID
                 });
     
                 api.on.getInspectorTree(inspectorTreeHook);
                 api.on.getInspectorState(inspectorStateHook);
-    
+                
                 eventEmitter.on('mutation', mutationHook);
             });
         }

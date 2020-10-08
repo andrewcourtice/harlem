@@ -41,10 +41,12 @@ export interface InternalStore<T = any> {
 
 export interface StoreMethods<T> {
     getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U>;
-    mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U>;
+    mutation<U = any>(name: string, mutator: Mutator<T, U>): Mutation<U>;
 }
 
 export interface Store<T> extends StoreMethods<T> {
     state: ReadState<T>;
-    on(event: string, handler: Function): EventListener;
+    on(event: StoreEvent, handler: Function): EventListener;
+    once(event: StoreEvent, handler: Function): EventListener;
+    destroy(): void;
 };
