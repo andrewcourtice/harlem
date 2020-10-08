@@ -9,8 +9,8 @@
     "module": "dist/harlem-storage.esm.js",
     "umd:main": "dist/harlem-storage.umd.js",
     "unpkg": "dist/harlem-storage.min.js",
+    "types": "dist/index.d.ts",
     "source": "src/index.ts",
-    "private": true,
     "scripts": {
         "dev": "microbundle watch --raw",
         "build": "microbundle build --raw",
