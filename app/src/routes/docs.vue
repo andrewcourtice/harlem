@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import docs from '../../../README.md';
+//import docs from '../../../README.md';
 
 import {
     defineComponent
@@ -17,7 +17,7 @@ export default defineComponent({
 
     setup() {
         return {
-            docs
+            docs: ''
         };
     }
     
