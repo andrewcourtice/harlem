@@ -5500,6 +5500,11 @@ findup-sync@^3.0.0:
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
 
+flex-layout-attribute@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/flex-layout-attribute/-/flex-layout-attribute-1.0.3.tgz#99113eb1d3e6443c724158d5869549c69bacccf1"
+  integrity sha1-mRE+sdPmRDxyQVjVhpVJxpuszPE=
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
