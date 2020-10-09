@@ -38,14 +38,15 @@ export interface MutationEventData {
 
 export interface StoreBase<T> {
     getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U>;
-    mutation<U = any>(name: string, mutator: Mutator<T, U>): Mutation<U>;
+    mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U>;
 }
 
 export interface InternalStore<T = any> extends StoreBase<T> {
     readonly state: ReadState<T>;
     getters: Map<string, Function>;
     mutations: Set<string>;
-    emit(event: StoreEvent, data: any): void;
+    emit(event: StoreEvent, sender: string, data: any): void;
+    exec(name: string, sender: string, mutator: Mutator<T, undefined>): void;
 }
 
 export interface Store<T> extends StoreBase<T> {

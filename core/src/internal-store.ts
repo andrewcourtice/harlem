@@ -29,6 +29,10 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
     };
 }
 
+function raiseDuplicationError(type: string, name: string): void {
+    throw new Error(`A ${type} named ${name} has already been registered on this store.`);
+}
+
 export default class Store<T extends object = any> implements InternalStore<T> {
 
     private name: string;
@@ -51,45 +55,10 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         return this.read;
     }
 
-    public getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U> {
-        if (this.getters.has(name)) {
-            throw new Error(`A getter named: ${name} has already been registered.`);
-        }
-
-        const output = computed(() => getter(this.state));
-
-        this.getters.set(name, () => output.value);
-        
-        return output;
-    };
-
-    public mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U> {
-        if (this.mutations.has(name)) {
-            throw new Error(`A mutation named: ${name} has already been registered.`);
-        }
-    
-        this.mutations.add(name);
-
-        return (payload?: U) => {
-            const eventData: MutationEventData = {
-                payload,
-                mutation: name
-            };
-
-            try {
-                mutator(this.write, payload);
-            } catch (error) {
-                this.emit('error', eventData);
-            }
-            
-            this.emit('mutation', eventData);
-        };
-    }
-
-    public emit(event: StoreEvent, data: any): void {
+    public emit(event: StoreEvent, sender: string, data: any): void {
         const payload: EventPayload = {
             data,
-            sender: 'core',
+            sender,
             store: this.name
         };
 
@@ -102,6 +71,47 @@ export default class Store<T extends object = any> implements InternalStore<T> {
     
     public once(event: string, handler: EventHandler): EventListener {
         return eventEmitter.once(event, localiseHandler(this.name, handler));
+    }
+
+    public getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U> {
+        if (this.getters.has(name)) {
+            raiseDuplicationError('getter', name);
+        }
+
+        const output = computed(() => getter(this.state));
+
+        this.getters.set(name, () => output.value);
+        
+        return output;
+    };
+
+    private mutate<U>(name: string, sender: string, mutator: Mutator<T, U>, payload?: U): void {
+        const eventData: MutationEventData = {
+            payload,
+            mutation: name
+        };
+
+        try {
+            mutator(this.write, payload);
+        } catch (error) {
+            this.emit('error', sender, eventData);
+        }
+
+        this.emit('mutation', sender, eventData);
+    }
+
+    public mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U> {
+        if (this.mutations.has(name)) {
+            raiseDuplicationError('mutation', name);
+        }
+        
+        this.mutations.add(name);
+        
+        return (payload?: U) => this.mutate(name, 'core', mutator, payload);
+    }
+    
+    public exec(name: string, sender: string, mutator: Mutator<T, undefined>): void {
+        this.mutate(name, sender, mutator);
     }
 
 }
