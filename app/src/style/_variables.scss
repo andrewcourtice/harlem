@@ -1,0 +1,48 @@
+$spacings: (
+    xx-small: 0.25rem,
+    x-small: 0.5rem,
+    small: 1rem,
+    medium: 1.5rem,
+    large: 2rem,
+    x-large: 3rem,
+    xx-large: 4rem
+);
+
+$colour__primary: #5D9BE5;
+$colour__primary--light: lighten(#5D9BE5, 20%);
+$colour__primary--dark: darken(#5D9BE5, 20%);
+
+:root {
+    --font__size: 14px;
+    --font__size--small: 0.875em;
+    --font__size--x-small: 0.75em;
+    --font__size--large: 1.25em;
+    --font__size--x-large: 1.5em;
+
+    --font__weight: 400;
+    --font__weight--medium: 500;
+    --font__weight--heavy: 700;
+
+    --font__family: 'DM Sans', sans-serif;
+
+    --font__colour: #353539;
+    --font__colour--meta: #9999AA;
+    
+    --transition__timing: 250ms;
+    --transition__easing--default: cubic-bezier(0.165, 0.84, 0.44, 1); // quartic-out
+    
+    --colour__primary: #5D9BE5;
+    --colour__primary--light: #{ lighten(#5D9BE5, 20%) };
+    --colour__primary--dark: #{ darken(#5D9BE5, 20%) };
+    
+    --background__colour: #FFFFFF;
+    --background__colour--hover: #EEEEEE;
+    
+    --border__colour: #EDEDED;
+    --border__radius: 5px;
+    --border__radius--large: 1rem;
+        
+    @each $name, $value in $spacings {
+        --spacing__#{ $name }: #{ $value };
+    }
+}

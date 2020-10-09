@@ -12,10 +12,7 @@ export type Mutator<T, U> = (state: WriteState<T>, payload?: U) => void;
 export type Mutation<T> = (payload?: T) => void;
 export type InternalStores = Map<string, InternalStore<any>>;
 export type StoreEvent = 'mutation' | 'error';
-
-export interface EventListener {
-    dispose(): void
-}
+export type EventHandler = (payload: EventPayload) => void;
 
 export interface Emittable {
     on(event: string, handler: Function): EventListener;
@@ -23,6 +20,41 @@ export interface Emittable {
     once(event: string, handler: Function): EventListener;
     emit(event: string, ...args: any[]): void;
 }
+
+export interface EventListener {
+    dispose(): void
+}
+
+export interface EventPayload<T = any> {
+    sender: string;
+    store: string;
+    data: T
+};
+
+export interface MutationEventData {
+    mutation: string;
+    payload: any
+};
+
+export interface StoreBase<T> {
+    getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U>;
+    mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U>;
+}
+
+export interface InternalStore<T = any> extends StoreBase<T> {
+    readonly state: ReadState<T>;
+    getters: Map<string, Function>;
+    mutations: Set<string>;
+    emit(event: StoreEvent, sender: string, data: any): void;
+    exec(name: string, sender: string, mutator: Mutator<T, undefined>): void;
+}
+
+export interface Store<T> extends StoreBase<T> {
+    state: ReadState<T>;
+    on(event: StoreEvent, handler: EventHandler): EventListener;
+    once(event: StoreEvent, handler: EventHandler): EventListener;
+    destroy(): void;
+};
 
 export interface HarlemPlugin {
     name: string;
@@ -32,21 +64,3 @@ export interface HarlemPlugin {
 export interface Options {
     plugins?: HarlemPlugin[];
 }
-
-export interface InternalStore<T = any> {
-    state(): ReadState<T>;
-    getters: Map<string, Function>;
-    mutations: Set<string>;
-}
-
-export interface StoreMethods<T> {
-    getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U>;
-    mutation<U = any>(name: string, mutator: Mutator<T, U>): Mutation<U>;
-}
-
-export interface Store<T> extends StoreMethods<T> {
-    state: ReadState<T>;
-    on(event: StoreEvent, handler: Function): EventListener;
-    once(event: StoreEvent, handler: Function): EventListener;
-    destroy(): void;
-};

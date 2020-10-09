@@ -3,6 +3,8 @@
         <h1>Hello {{ fullName }}</h1>
         <input type="text" v-model="givenName" placeholder="Given name">
         <input type="text" v-model="surname" placeholder="Surname">
+        <input type="text" v-model="mainState.surname" placeholder="Surname">
+        <div>{{ settingsState }}</div>
     </div>
 </template>
 
@@ -13,26 +15,32 @@ import {
 } from 'vue';
 
 import {
-    state,
+    state as settingsState
+} from './stores/settings';
+
+import {
+    state as mainState,
     fullName,
     setGivenName,
     setSurname
-} from './stores/user';
+} from './stores/main';
 
 export default defineComponent({
 
     setup() {
         const givenName = computed({
-            get: () => state.givenName,
+            get: () => mainState.givenName,
             set: setGivenName
         });
         
         const surname = computed({
-            get: () => state.surname,
+            get: () => mainState.surname,
             set: setSurname
         });
 
         return {
+            mainState,
+            settingsState,
             givenName,
             surname,
             fullName

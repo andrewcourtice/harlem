@@ -16,12 +16,14 @@ import type {
 } from './types';
 
 import type {
-    Emittable,
+    EventPayload,
     HarlemPlugin,
     InternalStore,
-    InternalStores
+    InternalStores,
+    MutationEventData
 } from '@harlem/core';
 
+const NAME = 'devtools';
 const DEVTOOLS_ID = 'harlem';
 
 const OPTIONS: Options = {
@@ -48,7 +50,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    const state = store.state();
+    const state = store.state;
 
     const getters: StateBase[] = Array.from(store.getters)
         .map(([key, accessor]) => ({
@@ -99,7 +101,12 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
 }
 
 function getMutationHook(api: DevtoolsPluginApi): Function {
-    return (store: string, mutation: string, payload: any) => {
+    return ({ store, data }: EventPayload<MutationEventData>) => {
+        const {
+            mutation,
+            payload
+        } = data;
+
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,
@@ -108,7 +115,7 @@ function getMutationHook(api: DevtoolsPluginApi): Function {
                 data: {
                     store,
                     mutation,
-                    payload
+                    payload,
                 },
                 meta: {
                     store
@@ -118,7 +125,7 @@ function getMutationHook(api: DevtoolsPluginApi): Function {
     };
 }
 
-export default function createDevtoolsPlugin(options: Options = OPTIONS): HarlemPlugin {
+export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
         label,
         color
@@ -129,7 +136,7 @@ export default function createDevtoolsPlugin(options: Options = OPTIONS): Harlem
 
     return {
 
-        name: 'devtools',
+        name: NAME,
         
         install(app, eventEmitter, stores) {
             const inspectorTreeHook = getInspectorTreeHook(app, stores);

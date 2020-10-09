@@ -1,5 +1,7 @@
 import type {
-    HarlemPlugin
+    EventPayload,
+    HarlemPlugin,
+    MutationEventData
 } from '@harlem/core';
 
 import type {
@@ -7,9 +9,14 @@ import type {
     StorageMap
 } from './types';
 
+export * from './types';
+
+const NAME = 'storage';
+
 const OPTIONS: Options = {
     type: 'local',
-    prefix: 'harlem'
+    prefix: 'harlem',
+    sync: true
 };
 
 const STORAGE: StorageMap = {
@@ -17,10 +24,11 @@ const STORAGE: StorageMap = {
     session: sessionStorage
 };
 
-export default function(options: Options = OPTIONS): HarlemPlugin {
+export default function(stores: string | string[], options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
         type,
-        prefix
+        prefix,
+        sync
     } = {
         ...OPTIONS,
         ...options
@@ -28,25 +36,66 @@ export default function(options: Options = OPTIONS): HarlemPlugin {
 
     const storage = STORAGE[type] || STORAGE.local;
 
+    const getKey = (name: string) => {
+        return prefix ? `${prefix}:${name}` : name;
+    };
+
+    const canStore = (name: string): boolean => {
+        return stores === '*' || ([] as string[]).concat(stores).includes(name);
+    };
+
     return {
 
-        name: 'storage',
+        name: NAME,
 
-        install(app, eventEmitter, stores) {
-            const storageHook = (storeName: string) => {
-                const store = stores.get(storeName);
+        install(app, eventEmitter, internalStores) {
+            const mutationHook = ({ sender, store: storeName }: EventPayload<MutationEventData>) => {
+                if (sender === NAME || !canStore(storeName)) {
+                    return;
+                }
+                
+                const store = internalStores.get(storeName);
         
                 if (!store) {
                     return;
                 }
         
-                const state = store.state();
-                const key = prefix ? `${prefix}:${storeName}` : storeName;
+                const key = getKey(storeName);
+                const state = store.state;
         
                 storage.setItem(key, JSON.stringify(state));
             };
 
-            eventEmitter.on('mutation', storageHook);
+            eventEmitter.on('mutation', mutationHook);
+
+            if (!sync) {
+                return;
+            }
+
+            window.addEventListener('storage', event => {
+                if (event.storageArea !== storage) {
+                    return;
+                }
+                
+                const value = event.newValue;
+                const entry = Array.from(internalStores)
+                    .find(([key, value]) => {
+                        return canStore(key) && event.key === getKey(key)
+                    });
+                    
+                if (!entry || !value) {
+                    return;
+                }
+
+                const [
+                    name,
+                    store
+                ] = entry;
+
+                store.exec('$storageSync', NAME, state => {
+                    Object.assign(state, JSON.parse(value));
+                });
+            });
         }
 
     };

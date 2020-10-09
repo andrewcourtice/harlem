@@ -1,3 +1,4 @@
+import STORES from '../../constants/stores';
 import STATE from './state';
 
 import {
@@ -8,4 +9,4 @@ export const {
     state,
     getter,
     mutation
-} = createStore('user', STATE);
+} = createStore(STORES.main, STATE);
