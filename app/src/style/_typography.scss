@@ -1,0 +1,17 @@
+pre {
+    margin: 0
+}
+
+code {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    padding: var(--spacing__small);
+    background-color: #EEEEEE;
+    border-radius: var(--border__radius);
+    overflow-x: auto;
+}
+
+.text--centre {
+    text-align: center;
+}

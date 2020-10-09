@@ -1,13 +1,14 @@
 import path from 'path';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import RemarkHTML from 'remark-html';
 
 import {
     CleanWebpackPlugin
 } from 'clean-webpack-plugin';
 
-import { 
-    VueLoaderPlugin 
+import {
+    VueLoaderPlugin
 } from 'vue-loader';
 
 export default {
@@ -59,6 +60,28 @@ export default {
             {
                 test: /\.html$/,
                 loader: 'html-loader'
+            },
+            {
+                test: /\.txt$/,
+                loader: 'raw-loader'
+            },
+            {
+                test: /\.md$/,
+                use: [
+                    {
+                        loader: 'html-loader',
+                    },
+                    {
+                        loader: 'remark-loader',
+                        options: {
+                            remarkOptions: {
+                                plugins: [
+                                    RemarkHTML
+                                ],
+                            },
+                        },
+                    },
+                ],
             }
         ]
     },
@@ -66,7 +89,7 @@ export default {
     plugins: [
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
-    
+
         new HtmlWebpackPlugin({
             title: 'Harlem',
             template: './src/index.ejs'
