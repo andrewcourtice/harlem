@@ -8,12 +8,12 @@ $spacings: (
     xx-large: 4rem
 );
 
-$colour__primary: #5D9BE5;
-$colour__primary--light: lighten(#5D9BE5, 20%);
-$colour__primary--dark: darken(#5D9BE5, 20%);
+$colour__primary: #40C48D;
+$colour__primary--light: lighten(#40C48D, 20%);
+$colour__primary--dark: darken(#40C48D, 20%);
 
 :root {
-    --font__size: 14px;
+    --font__size: 16px;
     --font__size--small: 0.875em;
     --font__size--x-small: 0.75em;
     --font__size--large: 1.25em;
@@ -23,17 +23,19 @@ $colour__primary--dark: darken(#5D9BE5, 20%);
     --font__weight--medium: 500;
     --font__weight--heavy: 700;
 
-    --font__family: 'DM Sans', sans-serif;
+    --font__family: 'Work Sans', sans-serif;
+    --font__family--title: 'Pacifico', cursive;
 
     --font__colour: #353539;
     --font__colour--meta: #9999AA;
+    --font__colour--compliment: #FFFFFF;
     
     --transition__timing: 250ms;
-    --transition__easing--default: cubic-bezier(0.165, 0.84, 0.44, 1); // quartic-out
+    --transition__easing: cubic-bezier(0.165, 0.84, 0.44, 1); // quartic-out
     
-    --colour__primary: #5D9BE5;
-    --colour__primary--light: #{ lighten(#5D9BE5, 20%) };
-    --colour__primary--dark: #{ darken(#5D9BE5, 20%) };
+    --colour__primary: #{ $colour__primary };
+    --colour__primary--light: #{ $colour__primary--light };
+    --colour__primary--dark: #{ $colour__primary--dark };
     
     --background__colour: #FFFFFF;
     --background__colour--hover: #EEEEEE;

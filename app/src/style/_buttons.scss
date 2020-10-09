@@ -1,0 +1,28 @@
+button,
+.button {
+    display: inline-block;
+    padding: var(--spacing__small) var(--spacing__large);
+    font: inherit;
+    font-weight: var(--font__weight--heavy);
+    text-decoration: none;
+    border: none;
+    border-radius: var(--border__radius);
+    background-color: #EEEEEE;
+    cursor: pointer;
+    transition: background var(--transition__timing) var(--transition__easing);
+
+    &:hover,
+    &:focus {
+        background-color: darken(#EEEEEE, 20%);
+    }
+}
+
+.button--primary {
+    color: var(--font__colour--compliment);
+    background-color: var(--colour__primary);
+
+    &:hover,
+    &:focus {
+        background-color: var(--colour__primary--dark);
+    }
+}

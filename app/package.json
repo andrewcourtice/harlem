@@ -20,7 +20,8 @@
         "core-js": "3.6.5",
         "flex-layout-attribute": "^1.0.3",
         "regenerator-runtime": "^0.13.7",
-        "vue": "^3.0.0"
+        "vue": "^3.0.0",
+        "vue-router": "^4.0.0-beta.13"
     },
     "devDependencies": {
         "@babel/core": "^7.11.6",
@@ -42,6 +43,9 @@
         "node-sass": "^4.14.1",
         "optimize-css-assets-webpack-plugin": "^5.0.4",
         "postcss-loader": "^3.0.0",
+        "raw-loader": "^4.0.1",
+        "remark-html": "^13.0.1",
+        "remark-loader": "^1.0.0",
         "sass-loader": "^8.0.2",
         "style-loader": "^1.2.1",
         "terser-webpack-plugin": "^2.3.5",

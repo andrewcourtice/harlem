@@ -1,0 +1,6 @@
+import App from './app.vue';
+import Harlem from '@harlem/core';
+
+createApp(App)
+    .use(Harlem)
+    .mount('#app');

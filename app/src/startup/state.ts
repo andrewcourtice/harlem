@@ -1,7 +1,6 @@
 import STORES from '../constants/stores';
 
-import Harlem from '@harlem/core';
-
+import harlem from '@harlem/core';
 import createDevtoolsPlugin from '@harlem/plugin-devtools';
 import createStoragePlugin from '@harlem/plugin-storage';
 
@@ -9,7 +8,7 @@ import type {
     App
 } from 'vue';
 
-export default function initialiseState(app: App) {
+export default function initialiseState(app: App): App {
     
     // Only synchronise the settings store with storage
     const plugins = [
@@ -24,5 +23,5 @@ export default function initialiseState(app: App) {
         }));
     }
 
-    return app.use(Harlem, { plugins });
+    return app.use(harlem, { plugins });
 }
