@@ -1,6 +1,6 @@
 {
     "name": "@harlem/core",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "Simple Vue 3 State Management",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
