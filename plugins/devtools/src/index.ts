@@ -23,6 +23,7 @@ import type {
     MutationEventData
 } from '@harlem/core';
 
+const NAME = 'devtools';
 const DEVTOOLS_ID = 'harlem';
 
 const OPTIONS: Options = {
@@ -124,7 +125,7 @@ function getMutationHook(api: DevtoolsPluginApi): Function {
     };
 }
 
-export default function createDevtoolsPlugin(options: Options = OPTIONS): HarlemPlugin {
+export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
         label,
         color
@@ -135,7 +136,7 @@ export default function createDevtoolsPlugin(options: Options = OPTIONS): Harlem
 
     return {
 
-        name: 'devtools',
+        name: NAME,
         
         install(app, eventEmitter, stores) {
             const inspectorTreeHook = getInspectorTreeHook(app, stores);
