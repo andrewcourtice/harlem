@@ -3,6 +3,7 @@
         <h1>Hello {{ fullName }}</h1>
         <input type="text" v-model="givenName" placeholder="Given name">
         <input type="text" v-model="surname" placeholder="Surname">
+        <input type="text" v-model="state.surname" placeholder="Surname">
     </div>
 </template>
 
@@ -33,6 +34,7 @@ export default defineComponent({
         });
 
         return {
+            state,
             givenName,
             surname,
             fullName
