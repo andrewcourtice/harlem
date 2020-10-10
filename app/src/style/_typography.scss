@@ -12,6 +12,16 @@ code {
     overflow-x: auto;
 }
 
+a {
+    text-decoration: none;
+    color: var(--colour__primary);
+
+    &:hover,
+    &:active {
+        color: var(--colour__primary--dark);
+    }
+}
+
 .text--centre {
     text-align: center;
 }

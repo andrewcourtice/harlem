@@ -1,4 +1,4 @@
 export default {
-    main: 'main',
-    settings: 'settings'
+    main: 'Main',
+    settings: 'Settings'
 } as const;

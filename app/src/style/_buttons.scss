@@ -13,6 +13,7 @@ button,
 
     &:hover,
     &:focus {
+        color: var(--font__colour);
         background-color: darken(#EEEEEE, 20%);
     }
 }
@@ -20,9 +21,10 @@ button,
 .button--primary {
     color: var(--font__colour--compliment);
     background-color: var(--colour__primary);
-
+    
     &:hover,
     &:focus {
+        color: var(--font__colour--compliment);
         background-color: var(--colour__primary--dark);
     }
 }
