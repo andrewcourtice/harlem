@@ -25,11 +25,16 @@ import type {
 
 const NAME = 'devtools';
 const DEVTOOLS_ID = 'harlem';
+const ALL_STORES_ID = '$all';
 
 const OPTIONS: Options = {
     label: 'Harlem',
     color: 0x40c48d
 };
+
+function stringComparitor(valueA: string, valueB: string): number {
+    return valueA.localeCompare(valueB);
+}
 
 function getInspectorTreeHook(application: App, stores: InternalStores): TreeHookHandler {
     return payload => {
@@ -42,25 +47,43 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
             return;
         }
 
-        payload.rootNodes = Array.from(stores.keys()).map(name => ({
-            id: name,
-            label: name
-        }));
+        const children = Array.from(stores.keys())
+            .sort(stringComparitor)
+            .map(name => ({
+                id: name,
+                label: name
+            }));
+
+        payload.rootNodes = [
+            {
+                children,
+                id: ALL_STORES_ID,
+                label: 'Stores',
+            }
+        ];
     }
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    const state = store.state;
+    const state = [
+        {
+            key: store.name,
+            value: store.state,
+            editable: false
+        }
+    ];
 
     const getters: StateBase[] = Array.from(store.getters)
+        .sort(([a], [b]) => stringComparitor(a, b))
         .map(([key, accessor]) => ({
             key,
             value: accessor(),
             editable: false,
             objectType: 'computed'
-        }));
-
+        }))
+        
     const mutations: StateBase[] = Array.from(store.mutations)
+        .sort(([a], [b]) => stringComparitor(a, b))
         .map(key => ({
             key,
             value: () => {},
@@ -68,16 +91,30 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
         }));
 
     return {
-        state: [
-            {
-                key: 'root',
-                value: state,
-                editable: false
-            }
-        ],
+        state,
         getters,
         mutations,
     };
+}
+
+function getStoreSnapshots(stores: (InternalStore | undefined)[]): CustomInspectorState {
+    return stores.reduce((output, store) => {
+        if (!store) {
+            return output;
+        }
+
+        const snapshot = getStoreSnapshot(store);
+
+        return {
+            state: [...output.state, ...snapshot.state],
+            getters: [...output.getters, ...snapshot.getters],
+            mutations: [...output.mutations, ...snapshot.mutations],
+        };
+    }, {
+        state: [],
+        getters: [],
+        mutations: []
+    } as CustomInspectorState);
 }
 
 function getInspectorStateHook(application: App, stores: InternalStores): StateHookHandler {
@@ -92,11 +129,13 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
             return;
         }
 
-        const store = stores.get(nodeId);
+        let internalStores = [stores.get(nodeId)];
 
-        if (store) {
-            payload.state = getStoreSnapshot(store);
+        if (nodeId === ALL_STORES_ID) {
+            internalStores = Array.from(stores.values());
         }
+
+        payload.state = getStoreSnapshots(internalStores);
     }
 }
 

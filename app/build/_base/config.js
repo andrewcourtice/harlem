@@ -1,7 +1,8 @@
-import path from 'path';
-
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import RemarkHTML from 'remark-html';
+
+import path from 'path';
+import webpack from 'webpack';
 
 import {
     CleanWebpackPlugin
@@ -87,6 +88,12 @@ export default {
     },
 
     plugins: [
+
+        new webpack.EnvironmentPlugin({
+            '__VUE_OPTIONS_API__': false, 
+            '__VUE_PROD_DEVTOOLS__': true 
+        }),
+
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
 

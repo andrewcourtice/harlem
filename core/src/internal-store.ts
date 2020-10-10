@@ -35,18 +35,18 @@ function raiseDuplicationError(type: string, name: string): void {
 
 export default class Store<T extends object = any> implements InternalStore<T> {
 
-    private name: string;
     private read: ReadState<T>;
     private write: WriteState<T>;
 
+    public name: string;
     public getters: Map<string, Function>;
     public mutations: Set<string>;
 
     constructor(name: string, state: T) {
-        this.name = name;
         this.write = reactive(state) as WriteState<T>;
         this.read = readonly(this.write) as ReadState<T>;
-
+        
+        this.name = name;
         this.getters = new Map();
         this.mutations = new Set();
     }

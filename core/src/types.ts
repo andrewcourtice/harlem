@@ -43,6 +43,7 @@ export interface StoreBase<T> {
 
 export interface InternalStore<T = any> extends StoreBase<T> {
     readonly state: ReadState<T>;
+    name: string;
     getters: Map<string, Function>;
     mutations: Set<string>;
     emit(event: StoreEvent, sender: string, data: any): void;

@@ -2,5 +2,6 @@
     "npm.packageManager": "yarn",
     "files.exclude": {
         "**/node_modules": true
-    }
+    },
+    "vetur.experimental.templateInterpolationService": true
 }
