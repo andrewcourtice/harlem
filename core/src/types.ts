@@ -15,10 +15,10 @@ export type StoreEvent = 'mutation' | 'error';
 export type EventHandler = (payload: EventPayload) => void;
 
 export interface Emittable {
-    on(event: string, handler: Function): EventListener;
-    off(event: string, handler: Function): void;
-    once(event: string, handler: Function): EventListener;
-    emit(event: string, ...args: any[]): void;
+    on(event: string, handler: EventHandler): EventListener;
+    once(event: string, handler: EventHandler): EventListener;
+    off(event: string, handler: EventHandler): void;
+    emit(event: string, payload: EventPayload): void;
 }
 
 export interface EventListener {

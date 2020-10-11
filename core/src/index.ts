@@ -38,14 +38,6 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
     }
 }
 
-function getLocalHandler(name: string, handler: Function): Function {
-    return (storeName: string, ...args: any[]) => {
-        if (storeName === name) {
-            handler(...args);
-        }
-    };
-}
-
 export function createStore<T extends object = any>(name: string, data: T): Store<T> {
     if (stores.has(name)) {
         throw new Error(`A store named ${name} has already been registered`);
