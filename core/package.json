@@ -1,6 +1,6 @@
 {
     "name": "@harlem/core",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
