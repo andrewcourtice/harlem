@@ -34,7 +34,7 @@ export default merge(base, {
             automaticNameDelimiter: '-',
             cacheGroups: {
                 vendor: {
-                    test: (module) => module.context && module.context.includes('node_modules') && !module.context.includes('@harlem'),
+                    test: (module) => module.context && module.context.includes('node_modules'),
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true

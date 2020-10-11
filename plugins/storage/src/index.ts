@@ -66,7 +66,7 @@ export default function(stores: string | string[], options: Partial<Options> = O
                 storage.setItem(key, JSON.stringify(state));
             };
 
-            eventEmitter.on('mutation', mutationHook);
+            eventEmitter.on('mutation:after', mutationHook);
 
             if (!sync) {
                 return;

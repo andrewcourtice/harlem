@@ -139,25 +139,16 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
     }
 }
 
-function getMutationHook(api: DevtoolsPluginApi): EventHandler<MutationEventData> {
-    return ({ store, data }) => {
-        const {
-            mutation,
-            payload
-        } = data;
-
+function getMutationHook(api: DevtoolsPluginApi): EventHandler {
+    return payload => {
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,
             event: {
                 time: Date.now(),
-                data: {
-                    store,
-                    mutation,
-                    payload,
-                },
+                data: payload,
                 meta: {
-                    store
+                    store: payload.store
                 }
             }
         });
@@ -206,7 +197,7 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                 api.on.getInspectorTree(inspectorTreeHook);
                 api.on.getInspectorState(inspectorStateHook);
                 
-                eventEmitter.on('mutation', mutationHook);
+                eventEmitter.on('mutation:after', mutationHook);
             });
         }
 

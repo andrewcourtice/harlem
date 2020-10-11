@@ -1,0 +1,44 @@
+{
+    "name": "@harlem/plugin-transaction",
+    "version": "1.0.11",
+    "license": "MIT",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "The official transaction plugin for Harlem",
+    "homepage": "https://harlemjs.com",
+    "main": "dist/harlem-transaction.js",
+    "module": "dist/harlem-transaction.esm.js",
+    "umd:main": "dist/harlem-transaction.umd.js",
+    "unpkg": "dist/harlem-transaction.min.js",
+    "types": "dist/index.d.ts",
+    "source": "src/index.ts",
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "plugin",
+        "transaction"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "plugins/transaction"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
+    "scripts": {
+        "dev": "microbundle watch --raw",
+        "build": "microbundle build --raw",
+        "prepublish": "yarn build"
+    },
+    "peerDependencies": {
+        "@harlem/core": "^1.0.10"
+    },
+    "dependencies": {
+        "lodash": "^4.17.20"
+    },
+    "devDependencies": {
+        "@harlem/core": "^1.0.11",
+        "@types/lodash": "^4.14.162"
+    }
+}

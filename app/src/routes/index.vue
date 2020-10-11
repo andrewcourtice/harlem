@@ -2,8 +2,11 @@
     <div class="route index-route">
         <header class="index-route__header" layout="row center-center">
             <div class="text--centre">
-                <h1 class="index-route__title">Harlem</h1>
-                <div class="index-route__subtitle">Simple, unopinionated, lightweight and extensible state management for Vue 3</div>
+                <img class="index-route__logo" :src="logo" alt="Harlem">
+                <div class="margin__vertical--xx-large">
+                    <h1 class="index-route__title">Harlem</h1>
+                    <div class="index-route__subtitle">Simple, unopinionated, lightweight and extensible state management for Vue 3</div>
+                </div>
                 <div class="index-route__actions">
                     <a class="button button--primary" href="#getting-started">Get started</a>
                     <router-link class="button button--primary" :to="demoRoute">View a demo</router-link>
@@ -49,6 +52,8 @@
 import registerPluginSample from '../samples/register-plugin.txt';
 import createStoreSample from '../samples/create-store.txt';
 
+import logo from '../assets/images/logo-192.svg';
+
 import {
     defineComponent
 } from 'vue';
@@ -67,6 +72,7 @@ export default defineComponent({
         return {
             demoRoute,
             docsRoute,
+            logo,
             registerPluginSample,
             createStoreSample
         };
@@ -88,6 +94,11 @@ export default defineComponent({
         height: 100vh;
     }
 
+    .index-route__logo {
+        display: inline-block;
+        width: 192px;
+    }
+
     .index-route__title {
         margin: 0;
         font-family: var(--font__family--title);
@@ -96,7 +107,7 @@ export default defineComponent({
     }
 
     .index-route__subtitle {
-        margin: var(--spacing__large) 0;
+        margin-top: var(--spacing__large);
         color: var(--font__colour--meta);
     }
 
