@@ -176,7 +176,9 @@ function start() {
 start();
 ```
 
-See the devtools plugin docs for more information on the options available. 
+See the [devtools plugin docs](plugins/devtools) for more information on the options available. 
+
+![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
 
 *At the time of writing this you will need to use the Beta version of the Vue devtools.*
 
