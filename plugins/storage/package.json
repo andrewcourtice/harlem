@@ -1,16 +1,31 @@
 {
     "name": "@harlem/plugin-storage",
     "version": "1.0.10",
-    "description": "Simple Vue 3 State Management",
-    "repository": "https://github.com/andrewcourtice/harlem.git",
-    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "license": "MIT",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "Simple Vue 3 State Management",
+    "homepage": "https://harlemjs.com",
     "main": "dist/harlem-storage.js",
     "module": "dist/harlem-storage.esm.js",
     "umd:main": "dist/harlem-storage.umd.js",
     "unpkg": "dist/harlem-storage.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "plugin",
+        "storage"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "plugins/storage"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
     "scripts": {
         "dev": "microbundle watch --raw",
         "build": "microbundle build --raw",
