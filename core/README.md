@@ -201,7 +201,7 @@ Event Listener
 
 ##### Example
 ```typescript
-const listener = on('mutation', (mutationName, payload) => {
+const listener = on('mutation:after', (mutationName, payload) => {
     console.log(mutationName, payload);
 });
 

@@ -91,13 +91,16 @@ export default class Store<T extends object = any> implements InternalStore<T> {
             mutation: name
         };
 
+        this.emit('mutation:before', sender, eventData);
+
         try {
             mutator(this.write, payload);
         } catch (error) {
-            this.emit('error', sender, eventData);
+            this.emit('mutation:error', sender, eventData);
+            throw error;
         }
 
-        this.emit('mutation', sender, eventData);
+        this.emit('mutation:after', sender, eventData);
     }
 
     public mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U> {
