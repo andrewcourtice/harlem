@@ -15,8 +15,8 @@ At it's heart, Harlem uses a plugin system to extend functionality and create po
 ## Official plugins
 Here is a list of officially support Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
 
-- [Devtools](/devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
-- [Storage](/storage) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
+- [Devtools](devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
+- [Storage](storage) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
 
 If you require functionality to suit a specific use-case you can write your own plugin. See [Writing your own plugin](#writing-your-own-plugin) below.
 
