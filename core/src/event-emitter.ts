@@ -1,7 +1,8 @@
-import { EventHandler, EventPayload } from '../dist';
 import type {
     Emittable,
-    EventListener
+    EventHandler,
+    EventListener,
+    EventPayload
 } from './types';
 
 export class EventEmitter implements Emittable {
