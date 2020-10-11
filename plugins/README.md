@@ -17,6 +17,7 @@ Here is a list of officially support Harlem plugins. These plugins are not desig
 
 - [Devtools](devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
 - [Storage](storage) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
+- [Transaction](transaction) (`@harlem/plugin-transaction`) - The transaction plugin provides an API for defining transactions that run multiple mutations. A transaction can safely rollback mutations in the event of an error.
 
 If you require functionality to suit a specific use-case you can write your own plugin. See [Writing your own plugin](#writing-your-own-plugin) below.
 

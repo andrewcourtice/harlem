@@ -1,3 +1,9 @@
+<p align="center">
+    <a href="https://harlemjs.com">
+        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/app/src/assets/images/logo-192.svg" alt="Harlem"/>
+    </a>
+</p>
+
 # Harlem Transaction Plugin
 
 ![npm](https://img.shields.io/npm/v/@harlem/plugin-transaction)

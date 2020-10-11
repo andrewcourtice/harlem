@@ -22,6 +22,7 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. Ta
 - [Getting started](#getting-started)
 - [Devtools integration](#devtools-integration)
 - [Typescript support](#typescript-support)
+- [Plugins](#plugins)
 - [FAQ](#faq)
     - [What about actions?](#what-about-actions)
     - [Can I share state between stores?](#can-i-share-state-between-stores)
@@ -44,7 +45,7 @@ All state provided from a Harlem store is immutable by default. The only write a
 Harlem weighs in at less than 1KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. Harlem is also designed to be tree-shakable - unused stores, getters, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking).
 
 ### Extensible
-Harlem uses a plugin architecture so you can extend it any way you want. Even the devtools integration is just a plugin.
+Harlem uses a plugin architecture so you can extend it any way you want. Some of the official plugins include Vue devtools integration, local/session storage sync, and transactions for rolling back multiple mutations when write errors occur.
 
 ### Great DX
 Harlem has a great developer experience. It's built using typescript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
@@ -188,6 +189,7 @@ See the [devtools plugin docs](plugins/devtools) for more information on the opt
 
 *At the time of writing this you will need to use the Beta version of the Vue devtools.*
 
+
 ## Typescript support
 Harlem fully supports Typescript - just decorate your mutation with the payload type and Harlem will take care of the rest:
 
@@ -222,6 +224,11 @@ const {
 ```
 
 In most cases this will be unnecessary but it can be useful for defining nullable fields or fields that don't exist at the time of store creation.
+
+
+## Plugins
+
+Harlem is completely extensible through plugins. Feel free to choose from some of the official plugins or write your own. See the [plugins documentation](plugins) from more information on the official set of plugins or how to author your own plugin.
 
 
 ## FAQ
