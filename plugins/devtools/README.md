@@ -1,4 +1,4 @@
-# Devtools Plugin
+# Harlem Devtools Plugin
 
 ![npm](https://img.shields.io/npm/v/@harlem/plugin-devtools)
 
