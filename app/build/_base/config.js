@@ -1,5 +1,7 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import RemarkHTML from 'remark-html';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 
 import path from 'path';
 import webpack from 'webpack';
@@ -100,6 +102,15 @@ export default {
         new HtmlWebpackPlugin({
             title: 'Harlem',
             template: './src/index.ejs'
-        })
+        }),
+
+        new FaviconsWebpackPlugin({
+            logo: './src/assets/images/logo-192.svg',
+        }),
+
+        new CopyWebpackPlugin([
+            './src/static'
+        ])
+
     ]
 };
