@@ -16,7 +16,7 @@ import type {
 } from './types';
 
 import type {
-    EventPayload,
+    EventHandler,
     HarlemPlugin,
     InternalStore,
     InternalStores,
@@ -139,8 +139,8 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
     }
 }
 
-function getMutationHook(api: DevtoolsPluginApi): Function {
-    return ({ store, data }: EventPayload<MutationEventData>) => {
+function getMutationHook(api: DevtoolsPluginApi): EventHandler<MutationEventData> {
+    return ({ store, data }) => {
         const {
             mutation,
             payload
