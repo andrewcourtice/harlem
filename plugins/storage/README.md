@@ -1,5 +1,7 @@
 # Harlem Storage Plugin
 
+![npm](https://img.shields.io/npm/v/@harlem/plugin-storage)
+
 This is the official Harlem storage plugin for adding local/session storage synchronisation to your stores. This plugin will write the specified stores to local/session storage upon mutation.
 
 <!-- TOC -->
