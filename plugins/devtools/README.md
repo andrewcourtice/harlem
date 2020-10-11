@@ -1,5 +1,7 @@
 # Devtools Plugin
 
+![npm](https://img.shields.io/npm/v/@harlem/plugin-devtools)
+
 This is the official Harlem devtools plugin for adding Vue devtools integration to Harlem.
 
 **Note:** The Vue 3 compatible devtools are currently in beta and subject to change. Please ensure you have the beta version of the Vue devtools installed in your browser and disable the stable Vue devtools to prevent conflict.
