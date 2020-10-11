@@ -3,7 +3,7 @@
     "version": "1.0.11",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
-    "description": "Simple Vue 3 State Management",
+    "description": "The official storage plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-storage.js",
     "module": "dist/harlem-storage.esm.js",
