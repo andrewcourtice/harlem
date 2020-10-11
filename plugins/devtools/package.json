@@ -1,16 +1,31 @@
 {
     "name": "@harlem/plugin-devtools",
     "version": "1.0.10",
-    "description": "Simple Vue 3 State Management",
-    "repository": "https://github.com/andrewcourtice/harlem.git",
-    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "license": "MIT",
-    "main": "dist/devtools.js",
-    "module": "dist/devtools.esm.js",
-    "umd:main": "dist/devtools.umd.js",
-    "unpkg": "dist/devtools.min.js",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "The official Vue devtools plugin for Harlem",
+    "homepage": "https://harlemjs.com",
+    "main": "dist/harlem-devtools.js",
+    "module": "dist/harlem-devtools.esm.js",
+    "umd:main": "dist/harlem-devtools.umd.js",
+    "unpkg": "dist/harlem-devtools.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "plugin",
+        "devtools"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "plugins/devtools"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
     "scripts": {
         "dev": "microbundle watch --raw",
         "build": "microbundle build --raw",

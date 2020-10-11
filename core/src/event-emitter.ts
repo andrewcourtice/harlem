@@ -1,3 +1,4 @@
+import { EventHandler, EventPayload } from '../dist';
 import type {
     Emittable,
     EventListener
@@ -5,15 +6,13 @@ import type {
 
 export class EventEmitter implements Emittable {
 
-    private listeners: {
-        [key: string]: Function[]
-    };
+    private listeners: Record<string, EventHandler[]>;
 
     constructor() {
         this.listeners = {};
     }
 
-    public on(event: string, handler: Function): EventListener {
+    public on(event: string, handler: EventHandler): EventListener {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -25,7 +24,7 @@ export class EventEmitter implements Emittable {
         };
     }
 
-    public off(event: string, handler: Function): void {
+    public off(event: string, handler: EventHandler): void {
         const listeners = this.listeners[event];
 
         if (!listeners) {
@@ -39,23 +38,23 @@ export class EventEmitter implements Emittable {
         }
     }
 
-    public once(event: string, handler: Function): EventListener {
-        const callback = (...args: any[]) => {
-            handler(...args);
+    public once(event: string, handler: EventHandler): EventListener {
+        const callback = (payload: EventPayload) => {
+            handler(payload);
             this.off(event, callback);
         };
 
         return this.on(event, callback);
     }
 
-    public emit(event: string, ...args: any[]): void {
+    public emit(event: string, payload: EventPayload): void {
         const handlers = this.listeners[event];
 
         if (!handlers) {
             return;
         }
 
-        handlers.forEach(handler => handler(...args));
+        handlers.forEach(handler => handler(payload));
     }
 
 }
