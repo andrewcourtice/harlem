@@ -1,4 +1,6 @@
-# @harlem/core
+# Harlem
+
+![npm](https://img.shields.io/npm/v/@harlem/core)
 
 This is the core Harlem package. For a general overview of Harlem see [here](https://github.com/andrewcourtice/harlem).
 
