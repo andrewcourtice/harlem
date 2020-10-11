@@ -1,4 +1,4 @@
-# Storage Plugin
+# Harlem Storage Plugin
 
 This is the official Harlem storage plugin for adding local/session storage synchronisation to your stores. This plugin will write the specified stores to local/session storage upon mutation.
 
