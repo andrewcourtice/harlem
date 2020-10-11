@@ -1,6 +1,6 @@
 # Harlem Transaction Plugin
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-devtools)
+![npm](https://img.shields.io/npm/v/@harlem/plugin-transaction)
 
 This is the official Harlem plugin for adding transactions to your stores. This plugin works similar to a SQL Database transaction in that if an error occurs during the transaction, all mutations that have taken place will be rolled-back.
 
