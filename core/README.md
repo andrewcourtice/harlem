@@ -2,17 +2,17 @@
 
 This is the core Harlem package. For a general overview of Harlem see [here](https://github.com/andrewcourtice/harlem).
 
-<!-- TOC depthfrom:2 -->
+<!-- TOC depthfrom:2 depthto:3 -->
 
-- [Getting Started](#getting-started)
-- [API Reference](#api-reference)
+- [Getting started](#getting-started)
+- [API reference](#api-reference)
     - [Plugin Options](#plugin-options)
-    - [Core Methods](#core-methods)
-    - [Store Methods](#store-methods)
+    - [Core methods](#core-methods)
+    - [Store methods](#store-methods)
 
 <!-- /TOC -->
 
-## Getting Started
+## Getting started
 
 1. Install `@harlem/core`:
 ```
@@ -110,7 +110,7 @@ export default defineComponent({
 </script>
 ```
 
-## API Reference
+## API reference
 
 ### Plugin Options
 The Harlem Vue plugin is the default export of `@harlem/core`.
@@ -122,7 +122,7 @@ The Harlem Vue plugin is the default export of `@harlem/core`.
 }
 ```
 
-### Core Methods
+### Core methods
 
 #### createStore(name, state)
 
@@ -144,7 +144,7 @@ const store = createStore('store', {
 ```
 
 
-### Store Methods
+### Store methods
 
 #### getter(name, producer)
 

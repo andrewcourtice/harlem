@@ -13,9 +13,9 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. Ta
     - [Lightweight](#lightweight)
     - [Extensible](#extensible)
     - [Great DX](#great-dx)
-- [Getting Started](#getting-started)
-- [Devtools Integration](#devtools-integration)
-- [Typescript Support](#typescript-support)
+- [Getting started](#getting-started)
+- [Devtools integration](#devtools-integration)
+- [Typescript support](#typescript-support)
 - [FAQ](#faq)
     - [What about actions?](#what-about-actions)
     - [Can I share state between stores?](#can-i-share-state-between-stores)
@@ -44,7 +44,7 @@ Harlem uses a plugin architecture so you can extend it any way you want. Even th
 Harlem has a great developer experience. It's built using typescript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
 
 
-## Getting Started
+## Getting started
 Getting started is simple:
 
 1. Install `@harlem/core` and any plugins you wish to include (I recommend installing `@harlem/plugin-devtools` during development):
@@ -143,7 +143,7 @@ export default defineComponent({
 </script>
 ```
 
-## Devtools Integration
+## Devtools integration
 
 Enabling devtools support is, you guessed it, simple. Just import `@harlem/plugin-devtools` and register it with your Harlem plugin:
 
@@ -180,7 +180,7 @@ See the devtools plugin docs for more information on the options available.
 
 *At the time of writing this you will need to use the Beta version of the Vue devtools.*
 
-## Typescript Support
+## Typescript support
 Harlem fully supports Typescript - just decorate your mutation with the payload type and Harlem will take care of the rest:
 
 ```typescript
