@@ -21,12 +21,13 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. Ta
     - [Great DX](#great-dx)
 - [Getting started](#getting-started)
 - [Devtools integration](#devtools-integration)
-- [Typescript support](#typescript-support)
+- [TypeScript support](#typescript-support)
 - [Plugins](#plugins)
 - [FAQ](#faq)
     - [What about actions?](#what-about-actions)
     - [Can I share state between stores?](#can-i-share-state-between-stores)
     - [Does Harlem have a file structure convention for stores?](#does-harlem-have-a-file-structure-convention-for-stores)
+- [Credits](#credits)
 
 <!-- /TOC -->
 
@@ -42,13 +43,15 @@ Harlem doesn't impose any standards or conventions on your codebase. Because of 
 All state provided from a Harlem store is immutable by default. The only write access to state is through mutations. This ensures all updates to your store are tracable, thereby reducing the amount of bugs produced by code unpredictably mutating state.
 
 ### Lightweight
-Harlem weighs in at less than 1KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. Harlem is also designed to be tree-shakable - unused stores, getters, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking).
+Harlem weighs in at less than 1KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. Harlem is also designed to be tree-shakable - unused stores, getters, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking). 
+
+It's also worth noting that Harlem has **zero** dependencies (apart from Vue obviously).
 
 ### Extensible
 Harlem uses a plugin architecture so you can extend it any way you want. Some of the official plugins include Vue devtools integration, local/session storage sync, and transactions for rolling back multiple mutations when write errors occur.
 
 ### Great DX
-Harlem has a great developer experience. It's built using typescript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
+Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
 
 
 ## Getting started
@@ -190,7 +193,7 @@ See the [devtools plugin docs](plugins/devtools) for more information on the opt
 *At the time of writing this you will need to use the Beta version of the Vue devtools.*
 
 
-## Typescript support
+## TypeScript support
 Harlem fully supports Typescript - just decorate your mutation with the payload type and Harlem will take care of the rest:
 
 ```typescript
@@ -376,3 +379,7 @@ export { default as getter2 } from './getters/getter-2';
 export { default as mutation1 } from './mutations/mutation-1';
 export { default as mutation2 } from './mutations/mutation-2';
 ```
+
+## Credits
+
+- Logo design by [Ethan Roxburgh](https://github.com/ethanroxburgh)

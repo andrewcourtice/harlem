@@ -20,6 +20,7 @@
         "@harlem/plugin-transaction": "^1.0.12",
         "core-js": "3.6.5",
         "flex-layout-attribute": "^1.0.3",
+        "highlight.js": "^10.2.1",
         "regenerator-runtime": "^0.13.7",
         "vue": "^3.0.0",
         "vue-router": "^4.0.0-beta.13"

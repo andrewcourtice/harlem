@@ -2,16 +2,6 @@ pre {
     margin: 0
 }
 
-code {
-    display: inline-block;
-    width: auto;
-    max-width: 100%;
-    padding: var(--spacing__small);
-    background-color: #EEEEEE;
-    border-radius: var(--border__radius);
-    overflow-x: auto;
-}
-
 a {
     text-decoration: none;
     color: var(--colour__primary);
@@ -24,4 +14,9 @@ a {
 
 .text--centre {
     text-align: center;
+}
+
+.text--no-wrap {
+    overflow: hidden;
+    white-space: nowrap;
 }

@@ -31,11 +31,11 @@
                 <div class="basic-demo-route__stores">
                     <div class="basic-demo-route__store">
                         <h3>Main Store</h3>
-                        <code-block>{{ mainStateOutput }}</code-block>
+                        <code-block language="json" :value="mainStateOutput"></code-block>
                     </div>
                     <div class="basic-demo-route__store">
                         <h3>Settings Store</h3>
-                        <code-block>{{ settingsState }}</code-block>
+                        <code-block language="json" :value="settingsState"></code-block>
                     </div>
                 </div>
                 <div class="margin__top--large">

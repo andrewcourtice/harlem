@@ -20,9 +20,9 @@
                     <div class="index-route__instruction-step">1.</div>
                     <div class="index-route__instruction-detail">
                         <div>Install the Harlem core package</div>
-                        <code-block class="margin__top--x-small">yarn add @harlem/core</code-block>
+                        <code-block class="margin__top--x-small" language="bash" value="yarn add @harlem/core"></code-block>
                         <div class="margin__top--small">Or if you're using npm</div>
-                        <code-block class="margin__top--x-small">npm install @harlem/core --save</code-block>
+                        <code-block class="margin__top--x-small" language="bash" value="npm install @harlem/core --save"></code-block>
                     </div>
 
                     <div class="index-route__instruction-step">2.</div>
