@@ -49,18 +49,18 @@ export default function(stores: string | string[], options: Partial<Options> = O
         name: NAME,
 
         install(app, eventEmitter, internalStores) {
-            const mutationHook = ({ sender, store: storeName }: EventPayload<MutationEventData>) => {
-                if (sender === NAME || !canStore(storeName)) {
+            const mutationHook = (payload?: EventPayload<MutationEventData>) => {
+                if (!payload || payload.sender === NAME || !canStore(payload.store)) {
                     return;
                 }
                 
-                const store = internalStores.get(storeName);
+                const store = internalStores.get(payload.store);
         
                 if (!store) {
                     return;
                 }
         
-                const key = getKey(storeName);
+                const key = getKey(payload.store);
                 const state = store.state;
         
                 storage.setItem(key, JSON.stringify(state));

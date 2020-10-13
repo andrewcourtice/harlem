@@ -40,7 +40,7 @@ export class EventEmitter implements Emittable {
     }
 
     public once(event: string, handler: EventHandler): EventListener {
-        const callback = (payload: EventPayload) => {
+        const callback = (payload?: EventPayload) => {
             handler(payload);
             this.off(event, callback);
         };
@@ -48,7 +48,7 @@ export class EventEmitter implements Emittable {
         return this.on(event, callback);
     }
 
-    public emit(event: string, payload: EventPayload): void {
+    public emit(event: string, payload?: EventPayload): void {
         const handlers = this.listeners[event];
 
         if (!handlers) {

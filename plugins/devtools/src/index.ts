@@ -141,6 +141,10 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
 
 function getMutationHook(api: DevtoolsPluginApi): EventHandler {
     return payload => {
+        if (!payload) {
+            return;
+        }
+        
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,

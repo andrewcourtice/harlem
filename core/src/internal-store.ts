@@ -22,8 +22,8 @@ import type {
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
-    return (payload: EventPayload) => {
-        if (payload.store === name) {
+    return payload => {
+        if (payload && payload.store === name) {
             handler(payload);
         }
     };

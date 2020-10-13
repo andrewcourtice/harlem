@@ -37,7 +37,7 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
         }
 
         const listener = _eventEmitter.on('mutation:before', payload => {
-            if (rollbacks.has(payload.store)) {
+            if (!payload || rollbacks.has(payload.store)) {
                 return;
             }
 
@@ -60,7 +60,7 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
             rollbacks.forEach(rollback => rollback());
             _eventEmitter.emit('transaction:error', eventPayload);
 
-            //throw error;
+            throw error;
         } finally {
             listener.dispose();
         }
