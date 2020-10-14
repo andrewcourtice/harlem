@@ -42,14 +42,10 @@ export default function(): HarlemPlugin {
             _eventEmitter = eventEmitter;
             _stores = stores;
 
-            console.log('installed');
-
             eventEmitter.on('store:created', payload => {
                 if (!payload) {
                     return;
                 }
-
-                console.log(payload);
 
                 snapshots.set(payload.store, clone(payload.data));
             });
