@@ -13,12 +13,6 @@ export type Mutation<T> = (payload?: T) => void;
 export type InternalStores = Map<string, InternalStore<any>>;
 export type EventHandler<T = any> = (payload?: EventPayload<T>) => void;
 
-export type StoreEvent = 'store:created'
-    | 'store:destroyed'
-    | 'mutation:before'
-    | 'mutation:after'
-    | 'mutation:error';
-
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener;
@@ -51,14 +45,14 @@ export interface InternalStore<T = any> extends StoreBase<T> {
     name: string;
     getters: Map<string, Function>;
     mutations: Set<string>;
-    emit(event: StoreEvent, sender: string, data: any): void;
+    emit(event: string, sender: string, data: any): void;
     exec(name: string, sender: string, mutator: Mutator<T, undefined>): void;
 }
 
 export interface Store<T> extends StoreBase<T> {
     state: ReadState<T>;
-    on(event: StoreEvent, handler: EventHandler): EventListener;
-    once(event: StoreEvent, handler: EventHandler): EventListener;
+    on(event: string, handler: EventHandler): EventListener;
+    once(event: string, handler: EventHandler): EventListener;
     destroy(): void;
 };
 

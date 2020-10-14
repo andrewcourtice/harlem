@@ -3,6 +3,12 @@ import InternalStore from './internal-store';
 import eventEmitter from './event-emitter';
 
 import {
+    EVENTS,
+    OPTIONS,
+    SENDER
+} from './constants';
+
+import {
     lockObject
 } from './utilities';
 
@@ -20,14 +26,23 @@ import type {
 
 export * from './types';
 
-const SENDER = 'core';
-const OPTIONS: Options = {
-    plugins: []
-};
-
 const stores: InternalStores = new Map();
 
 let installed = false;
+
+function emitCreated(store: InternalStore, state: any): void {
+    /*
+    This is necessary because the stores may be 
+    created before the plugin has been installed.
+    */
+   const created = () => store.emit(EVENTS.store.created, SENDER, state);
+
+   if (installed) {
+       return created();
+   }
+
+   eventEmitter.once(EVENTS.core.installed, created);
+}
 
 function installPlugin(plugin: HarlemPlugin, app: App): void {
     if (!plugin || typeof plugin.install !== 'function') {
@@ -39,7 +54,11 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
         install
     } = plugin;
 
-    const lockedStores = lockObject(stores, ['set', 'delete', 'clear']);
+    const lockedStores = lockObject(stores, [
+        'set',
+        'delete',
+        'clear'
+    ]);
 
     try {
         install(app, eventEmitter, lockedStores);
@@ -56,18 +75,13 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
     const store = new InternalStore(name, data);
     
     const destroy = () => {
-        store.emit('store:destroyed', SENDER, data);
+        store.emit(EVENTS.store.destroyed, SENDER, data);
         stores.delete(name);
     };
-
-    const emitCreated = () => store.emit('store:created', SENDER, data);
-
-    (installed
-        ? emitCreated
-        : () => eventEmitter.once('core:installed', emitCreated)
-    )();
     
     stores.set(name, store);
+
+    emitCreated(store, data);
 
     return {
         destroy,
@@ -94,7 +108,7 @@ export default {
         }
 
         installed = true;
-        eventEmitter.emit('core:installed');
+        eventEmitter.emit(EVENTS.core.installed);
     }
 
 } as Plugin;
