@@ -4,6 +4,7 @@
     "useWorkspaces": true,
     "packages": [
         "core",
+        "packages/*",
         "plugins/*"
     ]
 }

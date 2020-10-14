@@ -1,4 +1,12 @@
-import cloneDeep from 'lodash/cloneDeep';
+import {
+    EVENTS,
+    SENDER
+} from './constants';
+
+import {
+    clone,
+    overwrite
+} from '@harlem/utilities';
 
 import type {
     Emittable,
@@ -29,7 +37,7 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
 
         const eventPayload: EventPayload<TransactionEventData> = {
             store: '$all',
-            sender: 'transaction',
+            sender: SENDER,
             data: {
                 payload,
                 transaction: name
@@ -44,28 +52,28 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
             const store = _stores.get(payload.store);
             
             if (store) {
-                const snapshot = cloneDeep(store.state);
+                const snapshot = clone(store.state);
 
                 rollbacks.set(store.name, () => {
-                    store.exec('$transactionRollback', 'transaction', state => Object.assign(state, snapshot));
+                    store.exec('$transactionRollback', SENDER, state => overwrite(state, snapshot));
                 });
             }
         });
 
-        _eventEmitter.emit('transaction:before', eventPayload);
+        _eventEmitter.emit(EVENTS.transaction.before, eventPayload);
         
         try {
             transactor(payload);
         } catch (error) {
             rollbacks.forEach(rollback => rollback());
-            _eventEmitter.emit('transaction:error', eventPayload);
+            _eventEmitter.emit(EVENTS.transaction.error, eventPayload);
 
             throw error;
         } finally {
             listener.dispose();
         }
         
-        _eventEmitter.emit('transaction:after', eventPayload);
+        _eventEmitter.emit(EVENTS.transaction.after, eventPayload);
     }
 }
 

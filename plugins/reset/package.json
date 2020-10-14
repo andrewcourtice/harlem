@@ -1,14 +1,14 @@
 {
-    "name": "@harlem/plugin-transaction",
+    "name": "@harlem/plugin-reset",
     "version": "1.0.12",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
-    "description": "The official transaction plugin for Harlem",
+    "description": "The official reset plugin for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-transaction.js",
-    "module": "dist/harlem-transaction.esm.js",
-    "umd:main": "dist/harlem-transaction.umd.js",
-    "unpkg": "dist/harlem-transaction.min.js",
+    "main": "dist/harlem-reset.js",
+    "module": "dist/harlem-reset.esm.js",
+    "umd:main": "dist/harlem-reset.umd.js",
+    "unpkg": "dist/harlem-reset.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "keywords": [
@@ -16,12 +16,12 @@
         "state",
         "harlem",
         "plugin",
-        "transaction"
+        "reset"
     ],
     "repository": {
         "type": "git",
         "url": "https://github.com/andrewcourtice/harlem.git",
-        "directory": "plugins/transaction"
+        "directory": "plugins/reset"
     },
     "bugs": {
         "url": "https://github.com/andrewcourtice/harlem/issues"

@@ -1,3 +1,9 @@
+import {
+    OPTIONS,
+    SENDER,
+    STORAGE
+} from './constants';
+
 import type {
     EventPayload,
     HarlemPlugin,
@@ -5,24 +11,10 @@ import type {
 } from '@harlem/core';
 
 import type {
-    Options,
-    StorageMap
+    Options
 } from './types';
 
 export * from './types';
-
-const NAME = 'storage';
-
-const OPTIONS: Options = {
-    type: 'local',
-    prefix: 'harlem',
-    sync: true
-};
-
-const STORAGE: StorageMap = {
-    local: localStorage,
-    session: sessionStorage
-};
 
 export default function(stores: string | string[], options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
@@ -46,11 +38,11 @@ export default function(stores: string | string[], options: Partial<Options> = O
 
     return {
 
-        name: NAME,
+        name: 'storage',
 
         install(app, eventEmitter, internalStores) {
             const mutationHook = (payload?: EventPayload<MutationEventData>) => {
-                if (!payload || payload.sender === NAME || !canStore(payload.store)) {
+                if (!payload || payload.sender === SENDER || !canStore(payload.store)) {
                     return;
                 }
                 
@@ -92,7 +84,7 @@ export default function(stores: string | string[], options: Partial<Options> = O
                     store
                 ] = entry;
 
-                store.exec('$storageSync', NAME, state => {
+                store.exec('$storageSync', SENDER, state => {
                     Object.assign(state, JSON.parse(value));
                 });
             });

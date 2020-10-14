@@ -1,12 +1,18 @@
 import {
-    CustomInspectorState,
+    ALL_STORES_ID,
+    DEVTOOLS_ID,
+    OPTIONS
+} from './constants';
+
+import {
     setupDevtoolsPlugin
 } from '@vue/devtools-api';
 
 import type {
     App,
-    StateBase,
-    DevtoolsPluginApi
+    CustomInspectorState,
+    DevtoolsPluginApi,
+    StateBase
 } from '@vue/devtools-api';
 
 import type {
@@ -19,18 +25,8 @@ import type {
     EventHandler,
     HarlemPlugin,
     InternalStore,
-    InternalStores,
-    MutationEventData
+    InternalStores
 } from '@harlem/core';
-
-const NAME = 'devtools';
-const DEVTOOLS_ID = 'harlem';
-const ALL_STORES_ID = '$all';
-
-const OPTIONS: Options = {
-    label: 'Harlem',
-    color: 0x40c48d
-};
 
 function stringComparitor(valueA: string, valueB: string): number {
     return valueA.localeCompare(valueB);
@@ -170,7 +166,7 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
 
     return {
 
-        name: NAME,
+        name: 'devtools',
         
         install(app, eventEmitter, stores) {
             const inspectorTreeHook = getInspectorTreeHook(app, stores);
