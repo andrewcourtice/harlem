@@ -30,11 +30,5 @@
         "dev": "microbundle watch --raw",
         "build": "microbundle build --raw",
         "prepublish": "yarn build"
-    },
-    "dependencies": {
-        "lodash": "^4.17.20"
-    },
-    "devDependencies": {
-        "@types/lodash": "^4.14.162"
     }
 }
