@@ -2,6 +2,7 @@ import STORES from '../constants/stores';
 
 import harlem from '@harlem/core';
 import createDevtoolsPlugin from '@harlem/plugin-devtools';
+import createResetPlugin from '@harlem/plugin-reset';
 import createStoragePlugin from '@harlem/plugin-storage';
 import createTransactionPlugin from '@harlem/plugin-transaction';
 
@@ -13,6 +14,7 @@ export default function initialiseState(app: App): App {
     
     // Only synchronise the settings store with storage
     const plugins = [
+        createResetPlugin(),
         createStoragePlugin(STORES.settings),
         createTransactionPlugin()
     ];

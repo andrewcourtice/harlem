@@ -38,6 +38,9 @@
                         <code-block language="json" :value="settingsState"></code-block>
                     </div>
                 </div>
+                <div class="margin__top--small">
+                    <button class="button button--primary" @click="reset">Reset State</button>
+                </div>
                 <div class="margin__top--large">
                     <div>
                         <h3>Tips</h3>
@@ -65,7 +68,8 @@ import {
     fullName,
     setGivenName,
     setSurname,
-    setDateOfBirth
+    setDateOfBirth,
+    reset
 } from '../../stores/main';
 
 import {
@@ -130,7 +134,8 @@ export default defineComponent({
            givenName,
            surname,
            dateOfBirth,
-           revealSensitiveInfo
+           revealSensitiveInfo,
+           reset
        };
    }
 
