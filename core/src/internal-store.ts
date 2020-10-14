@@ -1,6 +1,11 @@
 import eventEmitter from './event-emitter';
 
 import {
+    EVENTS,
+    SENDER
+} from './constants';
+
+import {
     reactive,
     readonly,
     computed,
@@ -17,13 +22,12 @@ import type {
     MutationEventData,
     Mutator,
     ReadState,
-    StoreEvent,
     WriteState
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
-    return (payload: EventPayload) => {
-        if (payload.store === name) {
+    return payload => {
+        if (payload && payload.store === name) {
             handler(payload);
         }
     };
@@ -55,7 +59,7 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         return this.read;
     }
 
-    public emit(event: StoreEvent, sender: string, data: any): void {
+    public emit(event: string, sender: string, data: any): void {
         const payload: EventPayload = {
             data,
             sender,
@@ -91,16 +95,16 @@ export default class Store<T extends object = any> implements InternalStore<T> {
             mutation: name
         };
 
-        this.emit('mutation:before', sender, eventData);
+        this.emit(EVENTS.mutation.before, sender, eventData);
 
         try {
             mutator(this.write, payload);
         } catch (error) {
-            this.emit('mutation:error', sender, eventData);
+            this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
         }
 
-        this.emit('mutation:after', sender, eventData);
+        this.emit(EVENTS.mutation.after, sender, eventData);
     }
 
     public mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U> {
@@ -110,7 +114,7 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         
         this.mutations.add(name);
         
-        return (payload?: U) => this.mutate(name, 'core', mutator, payload);
+        return (payload?: U) => this.mutate(name, SENDER, mutator, payload);
     }
     
     public exec(name: string, sender: string, mutator: Mutator<T, undefined>): void {

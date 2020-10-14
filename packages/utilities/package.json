@@ -1,14 +1,14 @@
 {
-    "name": "@harlem/plugin-transaction",
+    "name": "@harlem/utilities",
     "version": "1.0.12",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
-    "description": "The official transaction plugin for Harlem",
+    "description": "Harlem utilities package",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-transaction.js",
-    "module": "dist/harlem-transaction.esm.js",
-    "umd:main": "dist/harlem-transaction.umd.js",
-    "unpkg": "dist/harlem-transaction.min.js",
+    "main": "dist/harlem-utilities.js",
+    "module": "dist/harlem-utilities.esm.js",
+    "umd:main": "dist/harlem-utilities.umd.js",
+    "unpkg": "dist/harlem-utilities.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "keywords": [
@@ -21,7 +21,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/andrewcourtice/harlem.git",
-        "directory": "plugins/transaction"
+        "directory": "packages/utilities"
     },
     "bugs": {
         "url": "https://github.com/andrewcourtice/harlem/issues"
@@ -30,14 +30,5 @@
         "dev": "microbundle watch --raw",
         "build": "microbundle build --raw",
         "prepublish": "yarn build"
-    },
-    "peerDependencies": {
-        "@harlem/core": "^1.0.10"
-    },
-    "dependencies": {
-        "@harlem/utilities": "^1.0.12"
-    },
-    "devDependencies": {
-        "@harlem/core": "^1.0.12"
     }
 }

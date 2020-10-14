@@ -11,14 +11,13 @@ export type Getter<T, U> = (state: ReadState<T>) => U;
 export type Mutator<T, U> = (state: WriteState<T>, payload?: U) => void;
 export type Mutation<T> = (payload?: T) => void;
 export type InternalStores = Map<string, InternalStore<any>>;
-export type StoreEvent = 'mutation:before' | 'mutation:after' | 'mutation:error';
-export type EventHandler<T = any> = (payload: EventPayload<T>) => void;
+export type EventHandler<T = any> = (payload?: EventPayload<T>) => void;
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener;
     off(event: string, handler: EventHandler): void;
-    emit(event: string, payload: EventPayload): void;
+    emit(event: string, payload?: EventPayload): void;
 }
 
 export interface EventListener {
@@ -46,14 +45,14 @@ export interface InternalStore<T = any> extends StoreBase<T> {
     name: string;
     getters: Map<string, Function>;
     mutations: Set<string>;
-    emit(event: StoreEvent, sender: string, data: any): void;
+    emit(event: string, sender: string, data: any): void;
     exec(name: string, sender: string, mutator: Mutator<T, undefined>): void;
 }
 
 export interface Store<T> extends StoreBase<T> {
     state: ReadState<T>;
-    on(event: StoreEvent, handler: EventHandler): EventListener;
-    once(event: StoreEvent, handler: EventHandler): EventListener;
+    on(event: string, handler: EventHandler): EventListener;
+    once(event: string, handler: EventHandler): EventListener;
     destroy(): void;
 };
 
