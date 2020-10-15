@@ -18,15 +18,15 @@ This is the official Harlem plugin for taking state snapshots and applying them 
 
 ## Getting started
 
-Before installing the reset plugin make sure you have installed `@harlem/core`.
+Before installing the snapshot plugin make sure you have installed `@harlem/core`.
 
-1. Install `@harlem/plugin-reset`:
+1. Install `@harlem/plugin-snapshot`:
 ```
-npm install @harlem/plugin-reset
+npm install @harlem/plugin-snapshot
 ```
 Or if you're using Yarn:
 ```
-yarn add @harlem/plugin-reset
+yarn add @harlem/plugin-snapshot
 ```
 
 2. Create an instance of the plugin and register it with Harlem:
@@ -34,24 +34,32 @@ yarn add @harlem/plugin-reset
 import App from './app.vue';
 
 import harlem from '@harlem/core';
-import createResetPlugin from '@harlem/plugin-reset';
+import createSnapshotPlugin from '@harlem/plugin-snapshot';
 
 createApp(App)
     .use(harlem, {
         plugins: [
-            createResetPlugin()
+            createSnapshotPlugin()
         ]
     })
     .mount('#app');
 ```
 
-3. Call the reset method with the name of the store you wish to reset:
+3. Call the snapshot method with the name of the store you wish to snapshot:
 ```typescript
 import {
-    reset
-} from '@harlem/plugin-reset';
+    snapshot
+} from '@harlem/plugin-snapshot';
 
 export default function() {
-    reset('my-store');
+    const snap = snapshot('my-store');
 }
+```
+
+4. Apply the snapshot:
+```typescript
+const snap = snapshot('my-store');
+
+snap.apply(); // Apply the snapshot over the top of current state
+snap.apply(true) // Replace state with the current snapshot
 ```
