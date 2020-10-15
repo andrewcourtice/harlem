@@ -24,12 +24,12 @@ import type {
 
 export * from './types';
 
-let _eventEmitter: Emittable;
-let _stores: InternalStores;
+let eventEmitter: Emittable;
+let stores: InternalStores;
 
 export function transaction<T>(name: string, transactor: Transactor<T>): Transaction<T> {
     return payload => {
-        if (!_eventEmitter || !_stores) {
+        if (!eventEmitter || !stores) {
             throw new Error('Please ensure the transaction plugin is registered before creating a transaction');
         }
 
@@ -44,12 +44,12 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
             }
         }
 
-        const listener = _eventEmitter.on('mutation:before', payload => {
+        const listener = eventEmitter.on('mutation:before', payload => {
             if (!payload || rollbacks.has(payload.store)) {
                 return;
             }
 
-            const store = _stores.get(payload.store);
+            const store = stores.get(payload.store);
             
             if (store) {
                 const snapshot = clone(store.state);
@@ -60,20 +60,20 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
             }
         });
 
-        _eventEmitter.emit(EVENTS.transaction.before, eventPayload);
+        eventEmitter.emit(EVENTS.transaction.before, eventPayload);
         
         try {
             transactor(payload);
         } catch (error) {
             rollbacks.forEach(rollback => rollback());
-            _eventEmitter.emit(EVENTS.transaction.error, eventPayload);
+            eventEmitter.emit(EVENTS.transaction.error, eventPayload);
 
             throw error;
         } finally {
             listener.dispose();
         }
         
-        _eventEmitter.emit(EVENTS.transaction.after, eventPayload);
+        eventEmitter.emit(EVENTS.transaction.after, eventPayload);
     }
 }
 
@@ -82,9 +82,9 @@ export default function(): HarlemPlugin {
     return {
         name: 'transaction',
 
-        install(app, eventEmitter, stores) {
-            _eventEmitter = eventEmitter;
-            _stores = stores;
+        install(app, _eventEmitter, _stores) {
+            eventEmitter = _eventEmitter;
+            stores = _stores;
         }
     };
 
