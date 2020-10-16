@@ -15,16 +15,16 @@ import type {
 
 const snapshots = new Map<string, any>();
 
-let _eventEmitter: Emittable;
-let _stores: InternalStores;
+let eventEmitter: Emittable;
+let stores: InternalStores;
 
 export function reset(name: string): void {
-    if (!_eventEmitter || !_stores) {
+    if (!eventEmitter || !stores) {
         throw new Error('Please ensure the reset plugin is registered before resetting a store');
     }
 
     const snapshot = snapshots.get(name);
-    const store = _stores.get(name);
+    const store = stores.get(name);
 
     if (!(store && snapshot)) {
         throw new Error('Failed to reset store. Store does not exists or has an invalid snapshot.');
@@ -38,9 +38,9 @@ export default function(): HarlemPlugin {
     return {
         name: 'reset',
 
-        install(app, eventEmitter, stores) {
-            _eventEmitter = eventEmitter;
-            _stores = stores;
+        install(app, _eventEmitter, _stores) {
+            eventEmitter = _eventEmitter;
+            stores = _stores;
 
             eventEmitter.on('store:created', payload => {
                 if (!payload) {

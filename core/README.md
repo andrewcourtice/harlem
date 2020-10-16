@@ -17,6 +17,7 @@ This is the core Harlem package. For a general overview of Harlem see [here](htt
     - [Plugin Options](#plugin-options)
     - [Core methods](#core-methods)
     - [Store methods](#store-methods)
+    - [Events](#events)
 
 <!-- /TOC -->
 
@@ -213,4 +214,23 @@ const listener = on('mutation:after', (mutationName, payload) => {
 
 // Dispose when finished
 listener.dispose();
+```
+
+
+### Events
+
+- **core:installed**: The Harlem plugin has been installed
+- **store:created**: A new store has been created
+- **store:destroyed**: A store has been destroyed
+- **mutation:before**: Before a mutation is about the occur
+- **mutation:after**: After a mutation has occurred
+- **mutation:error**: An error occurred during a mutation
+
+All events have the same payload structure:
+```typescript
+{
+    store, // The name of the store this event applies to
+    sender, // The source of the event (eg. core, devtools-plugin etc.)
+    data // Any data relevant to the event (eg. for a mutation the data will contain the name of the mutation and the payload)
+}
 ```
