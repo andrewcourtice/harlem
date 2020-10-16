@@ -53,6 +53,7 @@ Harlem uses a plugin architecture so you can extend it any way you want. Some of
 ### Great DX
 Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
 
+**Disclaimer**: *Harlem is currently experimental and subject to change as the Vue 3 ecosystem continues to stabilise. It is not recommended to use Harlem in critical client-facing production software at this stage. Once Harlem is considered stable for production applications the version will be bumped from patch increments to a minor increment (eg. will move from version 1.0.x to version 1.x.0) which may introduce breaking changes.*
 
 ## Getting started
 Getting started is simple:
