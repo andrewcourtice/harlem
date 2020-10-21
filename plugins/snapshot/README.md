@@ -53,6 +53,8 @@ import {
 
 export default function() {
     const snap = snapshot('my-store');
+
+    // ...
 }
 ```
 

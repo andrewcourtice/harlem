@@ -95,4 +95,4 @@ function getState() {
 
 export default getState();
 ```
-2. Be careful when using this plugin with service workers. If a service worker update includes changes to your state structure you will need to resolve those structure changes manually. This can be quite error-prone especially if you have multiple versions of your service worker running at once.
+2. Be careful when using this plugin with multiple sessions as multiple sessions may case race conditions that will make your mutations unpredictable and difficult to debug.

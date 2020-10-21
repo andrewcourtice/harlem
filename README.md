@@ -98,11 +98,11 @@ export const state = store.state;
 
 export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
 
-export const setFirstName = mutation('set-first-name', (state, payload) => {
+export const setFirstName = mutation('setFirstName', (state, payload) => {
     state.firstName = payload || '';
 });
 
-export const setLastName = mutation('set-last-name', (state, payload) => {
+export const setLastName = mutation('setLastName', (state, payload) => {
     state.lastName = payload || '';
 });
 ```
@@ -198,7 +198,7 @@ See the [devtools plugin docs](plugins/devtools) for more information on the opt
 Harlem fully supports Typescript - just decorate your mutation with the payload type and Harlem will take care of the rest:
 
 ```typescript
-export const setFirstName = mutation<string>('set-first-name', (state, payload) => {
+export const setFirstName = mutation<string>('setFirstName', (state, payload) => {
     state.firstName = payload || ''
 });
 ```
@@ -246,7 +246,7 @@ Some of the official plugins include:
 ## FAQ
 
 ### What about actions?
-Harlem doesn't provide a mechanism for actions - this is by design. Actions are commonly asynchronous methods that contain business logic which group a single mutation or set of mutations together. Harlem leaves your action design up to you. Here is an example of an action using Harlem:
+Harlem doesn't provide a mechanism for actions - this is by design. Actions are commonly asynchronous methods that contain business logic which group a single mutation or set of mutations together. Harlem leaves your action design up to you. Here is a simple example of an action using Harlem:
 
 ``` typescript
 import {
@@ -281,7 +281,7 @@ import {
     getter
 } from './store';
 
-export const myNumberGetter = getter('my-number', state => state.myNumber +  otherState.otherNumber);
+export const myNumberGetter = getter('myNumber', state => state.myNumber +  otherState.otherNumber);
 ```
 
 This also works for importing getters from other stores. Just remember that to access the value of a getter you will need to use the `.value` property of the getter. For example, if I had a getter name `myGetter` and I wanted to use it in another getter I would have to use `myGetter.value` to access it's raw value. 

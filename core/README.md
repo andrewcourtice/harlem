@@ -63,11 +63,11 @@ export const state = store.state;
 
 export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
 
-export const setFirstName = mutation('set-first-name', (state, payload) => {
+export const setFirstName = mutation('setFirstName', (state, payload) => {
     state.firstName = payload || '';
 });
 
-export const setLastName = mutation('set-last-name', (state, payload) => {
+export const setLastName = mutation('setLastName', (state, payload) => {
     state.lastName = payload || '';
 });
 ```
