@@ -1,0 +1,14 @@
+{
+    "name": "Harlem",
+    "mode": "modules",
+    "out": "docs",
+    "readme": "none",
+    "excludePrivate": true,
+    "excludeNotExported": true,
+    "exclude": [
+        "app/**/*",
+        "**/dist/**",
+        "**/node_modules/**",
+        "**/*.spec.ts"
+    ]
+}
