@@ -21,7 +21,7 @@
 
 •  **mutation**: string
 
-*Defined in [core/src/types.ts:34](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L34)*
+*Defined in [core/src/types.ts:34](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L34)*
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 •  **payload**: any
 
-*Defined in [core/src/types.ts:35](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L35)*
+*Defined in [core/src/types.ts:35](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L35)*

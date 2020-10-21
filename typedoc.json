@@ -2,8 +2,9 @@
     "name": "Harlem",
     "mode": "modules",
     "out": "docs",
-    "excludePrivate": true,
     "readme": "none",
+    "excludePrivate": true,
+    "excludeNotExported": true,
     "exclude": [
         "app/**/*",
         "**/dist/**",

@@ -21,7 +21,7 @@
 
 •  **payload**: any
 
-*Defined in [plugins/transaction/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/transaction/src/types.ts#L7)*
+*Defined in [plugins/transaction/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/transaction/src/types.ts#L7)*
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 •  **transaction**: string
 
-*Defined in [plugins/transaction/src/types.ts:6](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/transaction/src/types.ts#L6)*
+*Defined in [plugins/transaction/src/types.ts:6](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/transaction/src/types.ts#L6)*

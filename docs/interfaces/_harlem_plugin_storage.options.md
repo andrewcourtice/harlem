@@ -22,7 +22,7 @@
 
 •  **prefix**: string
 
-*Defined in [plugins/storage/src/types.ts:6](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/types.ts#L6)*
+*Defined in [plugins/storage/src/types.ts:6](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/types.ts#L6)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 •  **sync**: boolean
 
-*Defined in [plugins/storage/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/types.ts#L7)*
+*Defined in [plugins/storage/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/types.ts#L7)*
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 •  **type**: [StorageType](../modules/_harlem_plugin_storage.md#storagetype)
 
-*Defined in [plugins/storage/src/types.ts:5](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/types.ts#L5)*
+*Defined in [plugins/storage/src/types.ts:5](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/types.ts#L5)*

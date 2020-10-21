@@ -25,10 +25,6 @@
 
 * [SENDER](_harlem_plugin_storage.md#sender)
 
-### Functions
-
-* [default](_harlem_plugin_storage.md#default)
-
 ### Object literals
 
 * [OPTIONS](_harlem_plugin_storage.md#options)
@@ -58,7 +54,7 @@ Re-exports: [StorageType](_harlem_plugin_storage.md#storagetype)
 
 Ƭ  **StorageMap**: Record\<[StorageType](_harlem_plugin_storage.md#storagetype), Storage>
 
-*Defined in [plugins/storage/src/types.ts:2](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/types.ts#L2)*
+*Defined in [plugins/storage/src/types.ts:2](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/types.ts#L2)*
 
 ___
 
@@ -66,7 +62,7 @@ ___
 
 Ƭ  **StorageType**: \"local\" \| \"session\"
 
-*Defined in [plugins/storage/src/types.ts:1](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/types.ts#L1)*
+*Defined in [plugins/storage/src/types.ts:1](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/types.ts#L1)*
 
 ## Variables
 
@@ -74,24 +70,7 @@ ___
 
 • `Const` **SENDER**: \"storage\" = "storage"
 
-*Defined in [plugins/storage/src/constants.ts:6](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/constants.ts#L6)*
-
-## Functions
-
-### default
-
-▸ **default**(`stores`: string \| string[], `options?`: Partial\<[Options](../interfaces/_harlem_plugin_storage.options.md)>): HarlemPlugin
-
-*Defined in [plugins/storage/src/index.ts:17](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/index.ts#L17)*
-
-#### Parameters:
-
-Name | Type | Default value |
------- | ------ | ------ |
-`stores` | string \| string[] | - |
-`options` | Partial\<[Options](../interfaces/_harlem_plugin_storage.options.md)> | OPTIONS |
-
-**Returns:** HarlemPlugin
+*Defined in [plugins/storage/src/constants.ts:6](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/constants.ts#L6)*
 
 ## Object literals
 
@@ -99,7 +78,7 @@ Name | Type | Default value |
 
 ▪ `Const` **OPTIONS**: object
 
-*Defined in [plugins/storage/src/constants.ts:8](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/constants.ts#L8)*
+*Defined in [plugins/storage/src/constants.ts:8](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/constants.ts#L8)*
 
 #### Properties:
 
@@ -115,7 +94,7 @@ ___
 
 ▪ `Const` **STORAGE**: object
 
-*Defined in [plugins/storage/src/constants.ts:14](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/storage/src/constants.ts#L14)*
+*Defined in [plugins/storage/src/constants.ts:14](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/storage/src/constants.ts#L14)*
 
 #### Properties:
 

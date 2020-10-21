@@ -21,7 +21,7 @@
 
 •  **color**: number
 
-*Defined in [plugins/devtools/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/devtools/src/types.ts#L12)*
+*Defined in [plugins/devtools/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/devtools/src/types.ts#L12)*
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 •  **label**: string
 
-*Defined in [plugins/devtools/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/97733b5/plugins/devtools/src/types.ts#L11)*
+*Defined in [plugins/devtools/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/24564e7/plugins/devtools/src/types.ts#L11)*

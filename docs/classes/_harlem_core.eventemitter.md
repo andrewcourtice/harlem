@@ -31,7 +31,7 @@
 
 \+ **new EventEmitter**(): [EventEmitter](_harlem_core.eventemitter.md)
 
-*Defined in [core/src/event-emitter.ts:10](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/event-emitter.ts#L10)*
+*Defined in [core/src/event-emitter.ts:10](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/event-emitter.ts#L10)*
 
 **Returns:** [EventEmitter](_harlem_core.eventemitter.md)
 
@@ -43,7 +43,7 @@
 
 *Implementation of [Emittable](../interfaces/_harlem_core.emittable.md)*
 
-*Defined in [core/src/event-emitter.ts:51](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/event-emitter.ts#L51)*
+*Defined in [core/src/event-emitter.ts:51](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/event-emitter.ts#L51)*
 
 #### Parameters:
 
@@ -62,7 +62,7 @@ ___
 
 *Implementation of [Emittable](../interfaces/_harlem_core.emittable.md)*
 
-*Defined in [core/src/event-emitter.ts:28](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/event-emitter.ts#L28)*
+*Defined in [core/src/event-emitter.ts:28](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/event-emitter.ts#L28)*
 
 #### Parameters:
 
@@ -81,7 +81,7 @@ ___
 
 *Implementation of [Emittable](../interfaces/_harlem_core.emittable.md)*
 
-*Defined in [core/src/event-emitter.ts:16](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/event-emitter.ts#L16)*
+*Defined in [core/src/event-emitter.ts:16](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/event-emitter.ts#L16)*
 
 #### Parameters:
 
@@ -100,7 +100,7 @@ ___
 
 *Implementation of [Emittable](../interfaces/_harlem_core.emittable.md)*
 
-*Defined in [core/src/event-emitter.ts:42](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/event-emitter.ts#L42)*
+*Defined in [core/src/event-emitter.ts:42](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/event-emitter.ts#L42)*
 
 #### Parameters:
 

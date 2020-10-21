@@ -20,4 +20,4 @@
 
 • `Optional` **plugins**: [HarlemPlugin](_harlem_core.harlemplugin.md)[]
 
-*Defined in [core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L65)*
+*Defined in [core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L65)*

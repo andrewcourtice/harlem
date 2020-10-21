@@ -36,7 +36,7 @@ Name |
 
 •  **state**: [ReadState](../modules/_harlem_core.md#readstate)\<T>
 
-*Defined in [core/src/types.ts:53](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L53)*
+*Defined in [core/src/types.ts:53](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L53)*
 
 ## Methods
 
@@ -44,7 +44,7 @@ Name |
 
 ▸ **destroy**(): void
 
-*Defined in [core/src/types.ts:56](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L56)*
+*Defined in [core/src/types.ts:56](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L56)*
 
 **Returns:** void
 
@@ -56,7 +56,7 @@ ___
 
 *Inherited from [StoreBase](_harlem_core.storebase.md).[getter](_harlem_core.storebase.md#getter)*
 
-*Defined in [core/src/types.ts:39](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L39)*
+*Defined in [core/src/types.ts:39](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L39)*
 
 #### Type parameters:
 
@@ -81,7 +81,7 @@ ___
 
 *Inherited from [StoreBase](_harlem_core.storebase.md).[mutation](_harlem_core.storebase.md#mutation)*
 
-*Defined in [core/src/types.ts:40](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L40)*
+*Defined in [core/src/types.ts:40](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L40)*
 
 #### Type parameters:
 
@@ -104,7 +104,7 @@ ___
 
 ▸ **on**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): [EventListener](_harlem_core.eventlistener.md)
 
-*Defined in [core/src/types.ts:54](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L54)*
+*Defined in [core/src/types.ts:54](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L54)*
 
 #### Parameters:
 
@@ -121,7 +121,7 @@ ___
 
 ▸ **once**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): [EventListener](_harlem_core.eventlistener.md)
 
-*Defined in [core/src/types.ts:55](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L55)*
+*Defined in [core/src/types.ts:55](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L55)*
 
 #### Parameters:
 

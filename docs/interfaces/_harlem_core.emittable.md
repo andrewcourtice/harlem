@@ -27,7 +27,7 @@
 
 ▸ **emit**(`event`: string, `payload?`: [EventPayload](_harlem_core.eventpayload.md)): void
 
-*Defined in [core/src/types.ts:20](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L20)*
+*Defined in [core/src/types.ts:20](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L20)*
 
 #### Parameters:
 
@@ -44,7 +44,7 @@ ___
 
 ▸ **off**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): void
 
-*Defined in [core/src/types.ts:19](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L19)*
+*Defined in [core/src/types.ts:19](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L19)*
 
 #### Parameters:
 
@@ -61,7 +61,7 @@ ___
 
 ▸ **on**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): [EventListener](_harlem_core.eventlistener.md)
 
-*Defined in [core/src/types.ts:17](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L17)*
+*Defined in [core/src/types.ts:17](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L17)*
 
 #### Parameters:
 
@@ -78,7 +78,7 @@ ___
 
 ▸ **once**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): [EventListener](_harlem_core.eventlistener.md)
 
-*Defined in [core/src/types.ts:18](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L18)*
+*Defined in [core/src/types.ts:18](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L18)*
 
 #### Parameters:
 

@@ -55,18 +55,11 @@
 ### Variables
 
 * [SENDER](_harlem_core.md#sender)
-* [installed](_harlem_core.md#installed)
-* [stores](_harlem_core.md#stores)
 
 ### Functions
 
 * [createStore](_harlem_core.md#createstore)
-* [emitCreated](_harlem_core.md#emitcreated)
-* [getStore](_harlem_core.md#getstore)
-* [installPlugin](_harlem_core.md#installplugin)
-* [localiseHandler](_harlem_core.md#localisehandler)
 * [lockObject](_harlem_core.md#lockobject)
-* [raiseDuplicationError](_harlem_core.md#raiseduplicationerror)
 
 ### Object literals
 
@@ -175,7 +168,7 @@ Re-exports: [WriteState](_harlem_core.md#writestate)
 
 Ƭ  **EventHandler**\<T>: (payload?: [EventPayload](../interfaces/_harlem_core.eventpayload.md)\<T>) => void
 
-*Defined in [core/src/types.ts:14](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L14)*
+*Defined in [core/src/types.ts:14](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L14)*
 
 #### Type parameters:
 
@@ -189,7 +182,7 @@ ___
 
 Ƭ  **Getter**\<T, U>: (state: [ReadState](_harlem_core.md#readstate)\<T>) => U
 
-*Defined in [core/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L10)*
+*Defined in [core/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L10)*
 
 #### Type parameters:
 
@@ -204,7 +197,7 @@ ___
 
 Ƭ  **InternalStores**: Map\<string, [InternalStore](../interfaces/_harlem_core.internalstore.md)\<any>>
 
-*Defined in [core/src/types.ts:13](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L13)*
+*Defined in [core/src/types.ts:13](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L13)*
 
 ___
 
@@ -212,7 +205,7 @@ ___
 
 Ƭ  **Mutation**\<T>: (payload?: T) => void
 
-*Defined in [core/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L12)*
+*Defined in [core/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L12)*
 
 #### Type parameters:
 
@@ -226,7 +219,7 @@ ___
 
 Ƭ  **Mutator**\<T, U>: (state: [WriteState](_harlem_core.md#writestate)\<T>, payload?: U) => void
 
-*Defined in [core/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L11)*
+*Defined in [core/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L11)*
 
 #### Type parameters:
 
@@ -241,7 +234,7 @@ ___
 
 Ƭ  **ReadState**\<T>: DeepReadonly\<T>
 
-*Defined in [core/src/types.ts:8](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L8)*
+*Defined in [core/src/types.ts:8](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L8)*
 
 #### Type parameters:
 
@@ -255,7 +248,7 @@ ___
 
 Ƭ  **WriteState**\<T>: UnwrapRef\<T>
 
-*Defined in [core/src/types.ts:9](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L9)*
+*Defined in [core/src/types.ts:9](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L9)*
 
 #### Type parameters:
 
@@ -269,23 +262,7 @@ Name |
 
 • `Const` **SENDER**: \"core\" = "core"
 
-*Defined in [core/src/constants.ts:5](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/constants.ts#L5)*
-
-___
-
-### installed
-
-• `Let` **installed**: boolean = false
-
-*Defined in [core/src/index.ts:31](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/index.ts#L31)*
-
-___
-
-### stores
-
-• `Const` **stores**: [InternalStores](_harlem_core.md#internalstores) = new Map()
-
-*Defined in [core/src/index.ts:29](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/index.ts#L29)*
+*Defined in [core/src/constants.ts:5](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/constants.ts#L5)*
 
 ## Functions
 
@@ -293,7 +270,7 @@ ___
 
 ▸ **createStore**\<T>(`name`: string, `data`: T): [Store](../interfaces/_harlem_core.store-1.md)\<T>
 
-*Defined in [core/src/index.ts:70](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/index.ts#L70)*
+*Defined in [core/src/index.ts:70](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/index.ts#L70)*
 
 #### Type parameters:
 
@@ -312,81 +289,11 @@ Name | Type |
 
 ___
 
-### emitCreated
-
-▸ **emitCreated**(`store`: [InternalStore](../interfaces/_harlem_core.internalstore.md), `state`: any): void
-
-*Defined in [core/src/index.ts:33](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/index.ts#L33)*
-
-#### Parameters:
-
-Name | Type |
------- | ------ |
-`store` | [InternalStore](../interfaces/_harlem_core.internalstore.md) |
-`state` | any |
-
-**Returns:** void
-
-___
-
-### getStore
-
-▸ **getStore**(): object
-
-*Defined in [core/test/index.test.ts:5](https://github.com/andrewcourtice/harlem/blob/97733b5/core/test/index.test.ts#L5)*
-
-**Returns:** object
-
-Name | Type |
------- | ------ |
-`fullName` | ComputedRef\<string> |
-`getter` | [getter](../interfaces/_harlem_core.storebase.md#getter) |
-`mutation` | [mutation](../interfaces/_harlem_core.storebase.md#mutation) |
-`setFirstName` | [Mutation](_harlem_core.md#mutation)\<string> |
-`setLastName` | [Mutation](_harlem_core.md#mutation)\<string> |
-`state` | {} |
-
-___
-
-### installPlugin
-
-▸ **installPlugin**(`plugin`: [HarlemPlugin](../interfaces/_harlem_core.harlemplugin.md), `app`: App): void
-
-*Defined in [core/src/index.ts:47](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/index.ts#L47)*
-
-#### Parameters:
-
-Name | Type |
------- | ------ |
-`plugin` | [HarlemPlugin](../interfaces/_harlem_core.harlemplugin.md) |
-`app` | App |
-
-**Returns:** void
-
-___
-
-### localiseHandler
-
-▸ **localiseHandler**(`name`: string, `handler`: [EventHandler](_harlem_core.md#eventhandler)): [EventHandler](_harlem_core.md#eventhandler)
-
-*Defined in [core/src/internal-store.ts:28](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L28)*
-
-#### Parameters:
-
-Name | Type |
------- | ------ |
-`name` | string |
-`handler` | [EventHandler](_harlem_core.md#eventhandler) |
-
-**Returns:** [EventHandler](_harlem_core.md#eventhandler)
-
-___
-
 ### lockObject
 
 ▸ **lockObject**\<T>(`input`: T, `exclusions`: keyof T[]): T
 
-*Defined in [core/src/utilities.ts:1](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/utilities.ts#L1)*
+*Defined in [core/src/utilities.ts:1](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/utilities.ts#L1)*
 
 #### Type parameters:
 
@@ -403,30 +310,13 @@ Name | Type |
 
 **Returns:** T
 
-___
-
-### raiseDuplicationError
-
-▸ **raiseDuplicationError**(`type`: string, `name`: string): void
-
-*Defined in [core/src/internal-store.ts:36](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L36)*
-
-#### Parameters:
-
-Name | Type |
------- | ------ |
-`type` | string |
-`name` | string |
-
-**Returns:** void
-
 ## Object literals
 
 ### EVENTS
 
 ▪ `Const` **EVENTS**: object
 
-*Defined in [core/src/constants.ts:11](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/constants.ts#L11)*
+*Defined in [core/src/constants.ts:11](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/constants.ts#L11)*
 
 #### Properties:
 
@@ -442,7 +332,7 @@ ___
 
 ▪ `Const` **OPTIONS**: object
 
-*Defined in [core/src/constants.ts:7](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/constants.ts#L7)*
+*Defined in [core/src/constants.ts:7](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/constants.ts#L7)*
 
 #### Properties:
 

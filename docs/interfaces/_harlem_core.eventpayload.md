@@ -28,7 +28,7 @@ Name | Default |
 
 •  **data**: T
 
-*Defined in [core/src/types.ts:30](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L30)*
+*Defined in [core/src/types.ts:30](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L30)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 •  **sender**: string
 
-*Defined in [core/src/types.ts:28](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L28)*
+*Defined in [core/src/types.ts:28](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L28)*
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 •  **store**: string
 
-*Defined in [core/src/types.ts:29](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L29)*
+*Defined in [core/src/types.ts:29](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L29)*

@@ -42,7 +42,7 @@ Name | Default |
 
 •  **getters**: Map\<string, Function>
 
-*Defined in [core/src/types.ts:46](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L46)*
+*Defined in [core/src/types.ts:46](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L46)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 •  **mutations**: Set\<string>
 
-*Defined in [core/src/types.ts:47](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L47)*
+*Defined in [core/src/types.ts:47](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L47)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 •  **name**: string
 
-*Defined in [core/src/types.ts:45](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L45)*
+*Defined in [core/src/types.ts:45](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L45)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • `Readonly` **state**: [ReadState](../modules/_harlem_core.md#readstate)\<T>
 
-*Defined in [core/src/types.ts:44](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L44)*
+*Defined in [core/src/types.ts:44](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L44)*
 
 ## Methods
 
@@ -74,7 +74,7 @@ ___
 
 ▸ **emit**(`event`: string, `sender`: string, `data`: any): void
 
-*Defined in [core/src/types.ts:48](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L48)*
+*Defined in [core/src/types.ts:48](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L48)*
 
 #### Parameters:
 
@@ -92,7 +92,7 @@ ___
 
 ▸ **exec**(`name`: string, `sender`: string, `mutator`: [Mutator](../modules/_harlem_core.md#mutator)\<T, undefined>): void
 
-*Defined in [core/src/types.ts:49](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L49)*
+*Defined in [core/src/types.ts:49](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L49)*
 
 #### Parameters:
 
@@ -112,7 +112,7 @@ ___
 
 *Inherited from [StoreBase](_harlem_core.storebase.md).[getter](_harlem_core.storebase.md#getter)*
 
-*Defined in [core/src/types.ts:39](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L39)*
+*Defined in [core/src/types.ts:39](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L39)*
 
 #### Type parameters:
 
@@ -137,7 +137,7 @@ ___
 
 *Inherited from [StoreBase](_harlem_core.storebase.md).[mutation](_harlem_core.storebase.md#mutation)*
 
-*Defined in [core/src/types.ts:40](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L40)*
+*Defined in [core/src/types.ts:40](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L40)*
 
 #### Type parameters:
 

@@ -49,7 +49,7 @@ Name | Type | Default |
 
 \+ **new Store**(`name`: string, `state`: T): [Store](_harlem_core.store.md)
 
-*Defined in [core/src/internal-store.ts:47](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L47)*
+*Defined in [core/src/internal-store.ts:47](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L47)*
 
 #### Parameters:
 
@@ -68,7 +68,7 @@ Name | Type |
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md).[getters](../interfaces/_harlem_core.internalstore.md#getters)*
 
-*Defined in [core/src/internal-store.ts:46](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L46)*
+*Defined in [core/src/internal-store.ts:46](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L46)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md).[mutations](../interfaces/_harlem_core.internalstore.md#mutations)*
 
-*Defined in [core/src/internal-store.ts:47](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L47)*
+*Defined in [core/src/internal-store.ts:47](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L47)*
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md).[name](../interfaces/_harlem_core.internalstore.md#name)*
 
-*Defined in [core/src/internal-store.ts:45](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L45)*
+*Defined in [core/src/internal-store.ts:45](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L45)*
 
 ## Accessors
 
@@ -96,7 +96,7 @@ ___
 
 • get **state**(): [ReadState](../modules/_harlem_core.md#readstate)\<T>
 
-*Defined in [core/src/internal-store.ts:58](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L58)*
+*Defined in [core/src/internal-store.ts:58](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L58)*
 
 **Returns:** [ReadState](../modules/_harlem_core.md#readstate)\<T>
 
@@ -108,7 +108,7 @@ ___
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md)*
 
-*Defined in [core/src/internal-store.ts:62](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L62)*
+*Defined in [core/src/internal-store.ts:62](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L62)*
 
 #### Parameters:
 
@@ -128,7 +128,7 @@ ___
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md)*
 
-*Defined in [core/src/internal-store.ts:120](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L120)*
+*Defined in [core/src/internal-store.ts:120](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L120)*
 
 #### Parameters:
 
@@ -148,7 +148,7 @@ ___
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md)*
 
-*Defined in [core/src/internal-store.ts:80](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L80)*
+*Defined in [core/src/internal-store.ts:80](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L80)*
 
 #### Type parameters:
 
@@ -173,7 +173,7 @@ ___
 
 *Implementation of [InternalStore](../interfaces/_harlem_core.internalstore.md)*
 
-*Defined in [core/src/internal-store.ts:110](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L110)*
+*Defined in [core/src/internal-store.ts:110](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L110)*
 
 #### Type parameters:
 
@@ -196,7 +196,7 @@ ___
 
 ▸ **on**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): [EventListener](../interfaces/_harlem_core.eventlistener.md)
 
-*Defined in [core/src/internal-store.ts:72](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L72)*
+*Defined in [core/src/internal-store.ts:72](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L72)*
 
 #### Parameters:
 
@@ -213,7 +213,7 @@ ___
 
 ▸ **once**(`event`: string, `handler`: [EventHandler](../modules/_harlem_core.md#eventhandler)): [EventListener](../interfaces/_harlem_core.eventlistener.md)
 
-*Defined in [core/src/internal-store.ts:76](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/internal-store.ts#L76)*
+*Defined in [core/src/internal-store.ts:76](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/internal-store.ts#L76)*
 
 #### Parameters:
 

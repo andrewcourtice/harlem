@@ -24,7 +24,7 @@
 
 •  **name**: string
 
-*Defined in [core/src/types.ts:60](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L60)*
+*Defined in [core/src/types.ts:60](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L60)*
 
 ## Methods
 
@@ -32,7 +32,7 @@
 
 ▸ **install**(`app`: App, `eventEmitter`: [Emittable](_harlem_core.emittable.md), `stores`: [InternalStores](../modules/_harlem_core.md#internalstores)): void
 
-*Defined in [core/src/types.ts:61](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L61)*
+*Defined in [core/src/types.ts:61](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L61)*
 
 #### Parameters:
 

@@ -20,6 +20,6 @@
 
 ▸ **dispose**(): void
 
-*Defined in [core/src/types.ts:24](https://github.com/andrewcourtice/harlem/blob/97733b5/core/src/types.ts#L24)*
+*Defined in [core/src/types.ts:24](https://github.com/andrewcourtice/harlem/blob/24564e7/core/src/types.ts#L24)*
 
 **Returns:** void
