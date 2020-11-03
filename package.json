@@ -19,8 +19,7 @@
     ],
     "scripts": {
         "test": "yarn jest",
-        "build": "yarn workspaces run build",
-        "prepublish": "yarn test"
+        "build": "yarn workspaces run build"
     },
     "devDependencies": {
         "@types/jest": "^26.0.14",
