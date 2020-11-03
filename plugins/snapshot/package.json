@@ -35,7 +35,7 @@
         "@harlem/core": "^1.0.10"
     },
     "dependencies": {
-        "@harlem/utilities": "^1.0.14"
+        "@harlem/utilities": "^1.0.15"
     },
     "devDependencies": {
         "@harlem/core": "^1.0.15"
