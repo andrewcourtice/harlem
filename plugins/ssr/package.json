@@ -1,0 +1,43 @@
+{
+    "name": "@harlem/plugin-ssr",
+    "version": "1.0.14",
+    "license": "MIT",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "The official server-side rendering plugin for Harlem",
+    "homepage": "https://harlemjs.com",
+    "main": "dist/harlem-ssr.js",
+    "module": "dist/harlem-ssr.esm.js",
+    "umd:main": "dist/harlem-ssr.umd.js",
+    "unpkg": "dist/harlem-ssr.min.js",
+    "types": "dist/index.d.ts",
+    "source": "src/index.ts",
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "plugin",
+        "ssr"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "plugins/ssr"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
+    "scripts": {
+        "dev": "microbundle watch --raw",
+        "build": "microbundle build --raw",
+        "prepublish": "yarn build"
+    },
+    "peerDependencies": {
+        "@harlem/core": "^1.0.10"
+    },
+    "dependencies": {
+        "@harlem/utilities": "^1.0.14"
+    },
+    "devDependencies": {
+        "@harlem/core": "^1.0.14"
+    }
+}
