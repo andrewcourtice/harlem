@@ -16,7 +16,7 @@ import type {
 
 export * from './types';
 
-export default function(stores: string | string[], options: Partial<Options> = OPTIONS): HarlemPlugin {
+export default function createStoragePlugin(stores: string | string[], options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
         type,
         prefix,

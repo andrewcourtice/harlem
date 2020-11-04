@@ -54,7 +54,7 @@ export function snapshot(name: string): Snapshot {
     };
 }
 
-export default function(): HarlemPlugin {
+export default function createSnapshotPlugin(): HarlemPlugin {
 
     return {
         name: 'snapshot',

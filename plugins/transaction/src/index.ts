@@ -77,7 +77,7 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
     }
 }
 
-export default function(): HarlemPlugin {
+export default function createTransactionPlugin(): HarlemPlugin {
 
     return {
         name: 'transaction',

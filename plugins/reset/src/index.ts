@@ -33,7 +33,7 @@ export function reset(name: string): void {
     store.exec('$reset', SENDER, state => overwrite(state, clone(snapshot)));
 }
 
-export default function(): HarlemPlugin {
+export default function createResetPlugin(): HarlemPlugin {
 
     return {
         name: 'reset',
