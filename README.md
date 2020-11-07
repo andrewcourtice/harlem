@@ -21,8 +21,9 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. Ta
     - [Great DX](#great-dx)
 - [Getting started](#getting-started)
 - [Devtools integration](#devtools-integration)
-- [TypeScript support](#typescript-support)
+- [Server-Side Rendering](#server-side-rendering)
 - [Plugins](#plugins)
+- [TypeScript support](#typescript-support)
 - [FAQ](#faq)
     - [What about actions?](#what-about-actions)
     - [Can I share state between stores?](#can-i-share-state-between-stores)
@@ -194,6 +195,25 @@ See the [devtools plugin docs](plugins/devtools) for more information on the opt
 *At the time of writing this you will need to use the Beta version of the Vue devtools.*
 
 
+## Server-Side Rendering
+
+Harlem supports using stores in an SSR application via the SSR plugin (`@harlem/plugin-ssr`). Refer to the SSR plugin documentation for more information and how to get started. The SSR plugin docs are available [here](plugins/ssr).
+
+
+## Plugins
+
+Harlem is completely extensible through plugins. Feel free to choose from some of the official plugins or write your own. See the [plugins documentation](plugins) from more information on the official set of plugins or how to author your own plugin.
+
+Some of the official plugins include:
+
+- [Devtools](plugins/devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
+- [Reset](plugins/reset) (`@harlem/plugin-reset`) - The reset plugin provides an API to reset stores to their initial state.
+- [Snapshot](plugins/snapshot) (`@harlem/plugin-snapshot`) - The snapshot plugin provides an API to snapshot a store's state at a given point and apply it when convenient.
+- [SSR](plugins/ssr) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
+- [Storage](plugins/storage) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
+- [Transactions](plugins/transaction) (`@harlem/plugin-transaction`) - The transaction plugin provides an API for defining transactions that run multiple mutations. A transaction can safely rollback mutations in the event of an error.
+
+
 ## TypeScript support
 Harlem fully supports Typescript - just decorate your mutation with the payload type and Harlem will take care of the rest:
 
@@ -228,20 +248,6 @@ const {
 ```
 
 In most cases this will be unnecessary but it can be useful for defining nullable fields or fields that don't exist at the time of store creation.
-
-
-## Plugins
-
-Harlem is completely extensible through plugins. Feel free to choose from some of the official plugins or write your own. See the [plugins documentation](plugins) from more information on the official set of plugins or how to author your own plugin.
-
-Some of the official plugins include:
-
-- [Devtools](plugins/devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
-- [Reset](plugins/reset) (`@harlem/plugin-reset`) - The reset plugin provides an API to reset stores to their initial state.
-- [Snapshot](plugins/snapshot) (`@harlem/plugin-snapshot`) - The snapshot plugin provides an API to snapshot a store's state at a given point and apply it when convenient.
-- [SSR](plugins/ssr) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
-- [Storage](plugins/storage) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
-- [Transactions](plugins/transaction) (`@harlem/plugin-transaction`) - The transaction plugin provides an API for defining transactions that run multiple mutations. A transaction can safely rollback mutations in the event of an error.
 
 
 ## FAQ

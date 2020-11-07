@@ -13,6 +13,7 @@ This is the official plugin for using Harlem in a Vue SSR application.
 <!-- TOC depthfrom:2 -->
 
 - [Getting started](#getting-started)
+- [Warning](#warning)
 
 <!-- /TOC -->
 
@@ -78,3 +79,7 @@ createApp(App)
         ]
     });
 ```
+
+## Warning
+
+Types that are not support by JSON serialisation will not be transferred from server to client. See the MDN documentation on JSON serialisation for more information: [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
