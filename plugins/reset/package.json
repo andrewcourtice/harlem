@@ -8,9 +8,14 @@
     "main": "dist/harlem-reset.js",
     "module": "dist/harlem-reset.esm.js",
     "umd:main": "dist/harlem-reset.umd.js",
-    "unpkg": "dist/harlem-reset.min.js",
+    "unpkg": "dist/harlem-reset.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
+    "exports": {
+        "require": "./dist/harlem-reset.js",
+        "import": "./dist/harlem-reset.esm.js",
+        "default": "./dist/harlem-reset.esm.js"
+    },
     "keywords": [
         "vue",
         "state",

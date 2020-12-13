@@ -8,9 +8,14 @@
     "main": "dist/harlem-transaction.js",
     "module": "dist/harlem-transaction.esm.js",
     "umd:main": "dist/harlem-transaction.umd.js",
-    "unpkg": "dist/harlem-transaction.min.js",
+    "unpkg": "dist/harlem-transaction.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
+    "exports": {
+        "require": "./dist/harlem-transaction.js",
+        "import": "./dist/harlem-transaction.esm.js",
+        "default": "./dist/harlem-transaction.esm.js"
+    },
     "keywords": [
         "vue",
         "state",

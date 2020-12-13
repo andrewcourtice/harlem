@@ -8,9 +8,14 @@
     "main": "dist/harlem-snapshot.js",
     "module": "dist/harlem-snapshot.esm.js",
     "umd:main": "dist/harlem-snapshot.umd.js",
-    "unpkg": "dist/harlem-snapshot.min.js",
+    "unpkg": "dist/harlem-snapshot.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
+    "exports": {
+        "require": "./dist/harlem-snapshot.js",
+        "import": "./dist/harlem-snapshot.esm.js",
+        "default": "./dist/harlem-snapshot.esm.js"
+    },
     "keywords": [
         "vue",
         "state",

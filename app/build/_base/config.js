@@ -91,9 +91,9 @@ export default {
 
     plugins: [
 
-        new webpack.EnvironmentPlugin({
-            '__FEATURE_OPTIONS_API__': false, 
-            '__FEATURE_PROD_DEVTOOLS__': true 
+        new webpack.DefinePlugin({
+            '__VUE_OPTIONS_API__': false, 
+            '__VUE_PROD_DEVTOOLS__': true 
         }),
 
         new CleanWebpackPlugin(),

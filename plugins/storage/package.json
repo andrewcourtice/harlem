@@ -8,9 +8,14 @@
     "main": "dist/harlem-storage.js",
     "module": "dist/harlem-storage.esm.js",
     "umd:main": "dist/harlem-storage.umd.js",
-    "unpkg": "dist/harlem-storage.min.js",
+    "unpkg": "dist/harlem-storage.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
+    "exports": {
+        "require": "./dist/harlem-storage.js",
+        "import": "./dist/harlem-storage.esm.js",
+        "default": "./dist/harlem-storage.esm.js"
+    },
     "keywords": [
         "vue",
         "state",
