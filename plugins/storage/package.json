@@ -1,5 +1,6 @@
 {
     "name": "@harlem/plugin-storage",
+    "amdName": "harlemStorage",
     "version": "1.0.17",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -8,13 +9,16 @@
     "main": "dist/harlem-storage.js",
     "module": "dist/harlem-storage.esm.js",
     "umd:main": "dist/harlem-storage.umd.js",
-    "unpkg": "dist/harlem-storage.js",
+    "unpkg": "dist/harlem-storage.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
-        "require": "./dist/harlem-storage.js",
-        "import": "./dist/harlem-storage.esm.js",
-        "default": "./dist/harlem-storage.esm.js"
+        ".": {
+            "require": "./dist/harlem-storage.js",
+            "umd": "./dist/harlem-storage.umd.js",
+            "browser": "./dist/harlem-storage.esm.js",
+            "import": "./dist/harlem-storage.esm.js"
+        }
     },
     "keywords": [
         "vue",
@@ -33,7 +37,9 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "microbundle build --raw",
+        "build": "yarn build:core && yarn build:min",
+        "build:core": "microbundle build --raw",
+        "build:min": "microbundle build --raw -f iife src/index.ts -o dist/harlem-storage.min.js",
         "prepublish": "yarn build"
     },
     "peerDependencies": {

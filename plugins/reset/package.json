@@ -1,5 +1,6 @@
 {
     "name": "@harlem/plugin-reset",
+    "amdName": "harlemReset",
     "version": "1.0.17",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -8,13 +9,16 @@
     "main": "dist/harlem-reset.js",
     "module": "dist/harlem-reset.esm.js",
     "umd:main": "dist/harlem-reset.umd.js",
-    "unpkg": "dist/harlem-reset.js",
+    "unpkg": "dist/harlem-reset.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
-        "require": "./dist/harlem-reset.js",
-        "import": "./dist/harlem-reset.esm.js",
-        "default": "./dist/harlem-reset.esm.js"
+        ".": {
+            "require": "./dist/harlem-reset.js",
+            "umd": "./dist/harlem-reset.umd.js",
+            "browser": "./dist/harlem-reset.esm.js",
+            "import": "./dist/harlem-reset.esm.js"
+        }
     },
     "keywords": [
         "vue",
@@ -33,7 +37,9 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "microbundle build --raw",
+        "build": "yarn build:core && yarn build:min",
+        "build:core": "microbundle build --raw",
+        "build:min": "microbundle build --raw -f iife src/index.ts -o dist/harlem-reset.min.js",
         "prepublish": "yarn build"
     },
     "peerDependencies": {
@@ -43,6 +49,7 @@
         "@harlem/utilities": "^1.0.17"
     },
     "devDependencies": {
+        "@harlem/build": "^1.0.17",
         "@harlem/core": "^1.0.17"
     }
 }

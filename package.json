@@ -5,11 +5,6 @@
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "license": "MIT",
-    "main": "dist/harlem.js",
-    "module": "dist/harlem.esm.js",
-    "umd:main": "dist/harlem.umd.js",
-    "unpkg": "dist/harlem.min.js",
-    "source": "src/index.ts",
     "private": true,
     "workspaces": [
         "app",

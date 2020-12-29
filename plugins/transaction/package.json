@@ -1,5 +1,6 @@
 {
     "name": "@harlem/plugin-transaction",
+    "amdName": "harlemTransaction",
     "version": "1.0.17",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -8,13 +9,16 @@
     "main": "dist/harlem-transaction.js",
     "module": "dist/harlem-transaction.esm.js",
     "umd:main": "dist/harlem-transaction.umd.js",
-    "unpkg": "dist/harlem-transaction.js",
+    "unpkg": "dist/harlem-transaction.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
-        "require": "./dist/harlem-transaction.js",
-        "import": "./dist/harlem-transaction.esm.js",
-        "default": "./dist/harlem-transaction.esm.js"
+        ".": {
+            "require": "./dist/harlem-transaction.js",
+            "umd": "./dist/harlem-transaction.umd.js",
+            "browser": "./dist/harlem-transaction.esm.js",
+            "import": "./dist/harlem-transaction.esm.js"
+        }
     },
     "keywords": [
         "vue",
@@ -33,7 +37,9 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "microbundle build --raw",
+        "build": "yarn build:core && yarn build:min",
+        "build:core": "microbundle build --raw",
+        "build:min": "microbundle build --raw --globals utilities=harlemUtilities -f iife src/index.ts -o dist/harlem-transaction.min.js",
         "prepublish": "yarn build"
     },
     "peerDependencies": {

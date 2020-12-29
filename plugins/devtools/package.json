@@ -1,5 +1,6 @@
 {
     "name": "@harlem/plugin-devtools",
+    "amdName": "harlemDevtools",
     "version": "1.0.17",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -8,13 +9,16 @@
     "main": "dist/harlem-devtools.js",
     "module": "dist/harlem-devtools.esm.js",
     "umd:main": "dist/harlem-devtools.umd.js",
-    "unpkg": "dist/harlem-devtools.js",
+    "unpkg": "dist/harlem-devtools.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
-        "require": "./dist/harlem-devtools.js",
-        "import": "./dist/harlem-devtools.esm.js",
-        "default": "./dist/harlem-devtools.esm.js"
+        ".": {
+            "require": "./dist/harlem-devtools.js",
+            "umd": "./dist/harlem-devtools.umd.js",
+            "browser": "./dist/harlem-devtools.esm.js",
+            "import": "./dist/harlem-devtools.esm.js"
+        }
     },
     "keywords": [
         "vue",
@@ -33,7 +37,9 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "microbundle build --raw",
+        "build": "yarn build:core && yarn build:min",
+        "build:core": "microbundle build --raw",
+        "build:min": "microbundle build --raw -f iife src/index.ts -o dist/harlem-devtools.min.js",
         "prepublish": "yarn build"
     },
     "peerDependencies": {
@@ -43,6 +49,7 @@
         "@vue/devtools-api": "^6.0.0-beta.2"
     },
     "devDependencies": {
+        "@harlem/build": "^1.0.17",
         "@harlem/core": "^1.0.17"
     }
 }

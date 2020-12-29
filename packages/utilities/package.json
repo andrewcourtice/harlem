@@ -1,5 +1,6 @@
 {
     "name": "@harlem/utilities",
+    "amdName": "harlemUtilities",
     "version": "1.0.17",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -8,13 +9,16 @@
     "main": "dist/harlem-utilities.js",
     "module": "dist/harlem-utilities.esm.js",
     "umd:main": "dist/harlem-utilities.umd.js",
-    "unpkg": "dist/harlem-utilities.js",
+    "unpkg": "dist/harlem-utilities.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
-        "require": "./dist/harlem-utilities.js",
-        "import": "./dist/harlem-utilities.esm.js",
-        "default": "./dist/harlem-utilities.esm.js"
+        ".": {
+            "require": "./dist/harlem-utilities.js",
+            "umd": "./dist/harlem-utilities.umd.js",
+            "browser": "./dist/harlem-utilities.esm.js",
+            "import": "./dist/harlem-utilities.esm.js"
+        }
     },
     "keywords": [
         "vue",
@@ -33,7 +37,9 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "microbundle build --raw",
+        "build": "yarn build:core && yarn build:min",
+        "build:core": "microbundle build --raw",
+        "build:min": "microbundle build --raw -f iife src/index.ts -o dist/harlem-utilities.min.js",
         "prepublish": "yarn build"
     }
 }
