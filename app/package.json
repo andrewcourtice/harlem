@@ -23,8 +23,8 @@
         "flex-layout-attribute": "^1.0.3",
         "highlight.js": "^10.2.1",
         "regenerator-runtime": "^0.13.7",
-        "vue": "^3.0.0",
-        "vue-router": "^4.0.0-beta.13"
+        "vue": "^3.0.4",
+        "vue-router": "^4.0.2"
     },
     "devDependencies": {
         "@babel/core": "^7.11.6",
@@ -33,7 +33,7 @@
         "@babel/preset-env": "^7.11.5",
         "@babel/preset-typescript": "^7.10.4",
         "@babel/register": "^7.11.5",
-        "@vue/compiler-sfc": "3.0.0",
+        "@vue/compiler-sfc": "3.0.4",
         "autoprefixer": "^9.8.6",
         "babel-loader": "^8.1.0",
         "babel-plugin-const-enum": "^1.0.1",
@@ -55,7 +55,7 @@
         "style-loader": "^1.2.1",
         "terser-webpack-plugin": "^2.3.5",
         "url-loader": "^4.1.0",
-        "vue-loader": "16.0.0-beta.7",
+        "vue-loader": "16.1.2",
         "vue-style-loader": "^4.1.2",
         "webpack": "^4.44.1",
         "webpack-bundle-analyzer": "^3.8.0",

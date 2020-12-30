@@ -37,7 +37,7 @@
         "prepublish": "yarn build"
     },
     "peerDependencies": {
-        "@harlem/core": "^1.0.10"
+        "@harlem/core": "^1.0.17"
     },
     "devDependencies": {
         "@harlem/core": "^1.0.17"
