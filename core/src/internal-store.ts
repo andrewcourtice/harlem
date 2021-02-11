@@ -89,7 +89,7 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         return output;
     };
 
-    private mutate<U>(name: string, sender: string, mutator: Mutator<T, U>, payload?: U): void {
+    private mutate<U>(name: string, sender: string, mutator: Mutator<T, U>, payload: U): void {
         const eventData: MutationEventData = {
             payload,
             mutation: name
@@ -114,11 +114,11 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         
         this.mutations.add(name);
         
-        return (payload?: U) => this.mutate(name, SENDER, mutator, payload);
+        return ((payload: U) => this.mutate(name, SENDER, mutator, payload)) as Mutation<U>;
     }
     
     public exec(name: string, sender: string, mutator: Mutator<T, undefined>): void {
-        this.mutate(name, sender, mutator);
+        this.mutate(name, sender, mutator, undefined);
     }
 
 }

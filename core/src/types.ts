@@ -8,8 +8,8 @@ import type {
 export type ReadState<T> = DeepReadonly<T>;
 export type WriteState<T> = UnwrapRef<T>;
 export type Getter<T, U> = (state: ReadState<T>) => U;
-export type Mutator<T, U> = (state: WriteState<T>, payload?: U) => void;
-export type Mutation<T> = (payload?: T) => void;
+export type Mutator<T, U> = (state: WriteState<T>, payload: U) => void;
+export type Mutation<T> = undefined extends T ? (payload?: T) => void : (payload: T) => void;
 export type InternalStores = Map<string, InternalStore<any>>;
 export type EventHandler<T = any> = (payload?: EventPayload<T>) => void;
 
