@@ -35,9 +35,9 @@
         "prepublish": "yarn build"
     },
     "peerDependencies": {
-        "vue": "^3.0.4"
+        "vue": "^3.0.0"
     },
     "devDependencies": {
-        "vue": "^3.0.4"
+        "vue": "^3.0.0"
     }
 }
