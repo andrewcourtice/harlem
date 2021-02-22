@@ -39,7 +39,7 @@ export function snapshot(name: string): Snapshot {
     const store = getStore(name);
     const snap = clone(store.state);
 
-    const apply = (replace: boolean) => store.exec('$applySnapshot', SENDER, state => {
+    const apply = (replace: boolean) => store.write('plugin:snapshot:apply', SENDER, state => {
         const copy = clone(snap);
 
         if (replace) {

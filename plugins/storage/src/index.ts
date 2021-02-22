@@ -84,7 +84,7 @@ export default function createStoragePlugin(stores: string | string[], options: 
                     store
                 ] = entry;
 
-                store.exec('$storageSync', SENDER, state => {
+                store.write('plugin:storage:sync', SENDER, state => {
                     Object.assign(state, JSON.parse(value));
                 });
             });

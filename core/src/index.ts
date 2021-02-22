@@ -1,4 +1,4 @@
-import InternalStore from './internal-store';
+import InternalStore from './store';
 
 import eventEmitter from './event-emitter';
 

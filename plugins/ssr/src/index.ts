@@ -77,7 +77,7 @@ export function createClientSSRPlugin(): HarlemPlugin {
     
             eventEmitter.on('store:created', payload => onStoreEvent(stores, payload, store => {
                 if (store.name in data) {
-                    store.exec('$ssrInit', SENDER, state => overwrite(state, data[store.name]));
+                    store.write('plugin:ssr:init', SENDER, state => overwrite(state, data[store.name]));
                 }
             }));
         }

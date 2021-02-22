@@ -22,14 +22,14 @@
         "build": "yarn workspaces run build"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.14",
-        "jest": "^26.5.2",
+        "@types/jest": "^26.0.20",
+        "jest": "^26.6.3",
         "lerna": "^3.22.1",
-        "microbundle": "^0.12.4",
-        "ts-jest": "^26.4.1",
+        "microbundle": "^0.13.0",
+        "ts-jest": "^26.5.1",
         "typedoc": "^0.19.2",
         "typedoc-plugin-lerna-packages": "^0.3.1",
         "typedoc-plugin-markdown": "^3.0.11",
-        "typescript": "^4.0.3"
+        "typescript": "^4.1.5"
     }
 }

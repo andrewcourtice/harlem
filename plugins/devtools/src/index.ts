@@ -83,9 +83,9 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
         
     const mutations: StateBase[] = Array.from(store.mutations)
         .sort(([a], [b]) => stringComparitor(a, b))
-        .map(key => ({
+        .map(([key, mutator]) => ({
             key,
-            value: () => {},
+            value: mutator,
             editable: false
         }));
 
@@ -164,7 +164,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
             return;
         }
 
-        store.exec('$devtools', SENDER, _state => set(_state, path, state.value));  
+        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));  
     }
 }
 
