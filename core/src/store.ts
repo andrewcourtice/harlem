@@ -37,26 +37,26 @@ function raiseDuplicationError(type: string, name: string): void {
     throw new Error(`A ${type} named ${name} has already been registered on this store.`);
 }
 
-export default class Store<T extends object = any> implements InternalStore<T> {
+export default class Store<TState extends object = any> implements InternalStore<TState> {
 
-    private read: ReadState<T>;
-    private write: WriteState<T>;
+    private readState: ReadState<TState>;
+    private writeState: WriteState<TState>;
 
     public name: string;
     public getters: Map<string, Function>;
-    public mutations: Set<string>;
+    public mutations: Map<string, Mutation<any>>;
 
-    constructor(name: string, state: T) {
-        this.write = reactive(state) as WriteState<T>;
-        this.read = readonly(this.write) as ReadState<T>;
+    constructor(name: string, state: TState) {
+        this.writeState = reactive(state) as WriteState<TState>;
+        this.readState = readonly(this.writeState) as ReadState<TState>;
         
         this.name = name;
         this.getters = new Map();
-        this.mutations = new Set();
+        this.mutations = new Map();
     }
 
-    public get state(): ReadState<T> {
-        return this.read;
+    public get state(): ReadState<TState> {
+        return this.readState;
     }
 
     public emit(event: string, sender: string, data: any): void {
@@ -77,7 +77,7 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         return eventEmitter.once(event, localiseHandler(this.name, handler));
     }
 
-    public getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U> {
+    public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
         if (this.getters.has(name)) {
             raiseDuplicationError('getter', name);
         }
@@ -89,36 +89,57 @@ export default class Store<T extends object = any> implements InternalStore<T> {
         return output;
     };
 
-    private mutate<U>(name: string, sender: string, mutator: Mutator<T, U>, payload: U): void {
-        const eventData: MutationEventData = {
+    private mutate<TPayload, TResult = void>(name: string, sender: string, mutator: Mutator<TState, TPayload, TResult>, payload: TPayload): TResult {
+        const eventData: MutationEventData<TPayload, TResult> = {
             payload,
             mutation: name
         };
 
+        let result: TResult;
+
         this.emit(EVENTS.mutation.before, sender, eventData);
 
         try {
-            mutator(this.write, payload);
+            result = mutator(this.writeState, payload);
         } catch (error) {
             this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
         }
 
-        this.emit(EVENTS.mutation.after, sender, eventData);
+        this.emit(EVENTS.mutation.after, sender, {
+            ...eventData,
+            result
+        });
+
+        return result;
     }
 
-    public mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U> {
+    public mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult> {
         if (this.mutations.has(name)) {
             raiseDuplicationError('mutation', name);
         }
+
+        const mutation = ((payload: TPayload) => {
+            return this.mutate(name, SENDER, mutator, payload);
+        }) as Mutation<TPayload, TResult>;
         
-        this.mutations.add(name);
+        this.mutations.set(name, mutation);
         
-        return ((payload: U) => this.mutate(name, SENDER, mutator, payload)) as Mutation<U>;
+        return mutation;
+    }
+
+    public exec<TResult = void>(name: string, payload?: any): TResult {
+        const mutation = this.mutations.get(name) as Mutation<any, TResult>;
+
+        if (!mutation) {
+            throw new Error(`No mutation found for ${name}`);
+        }
+
+        return mutation(payload);
     }
     
-    public exec(name: string, sender: string, mutator: Mutator<T, undefined>): void {
-        this.mutate(name, sender, mutator, undefined);
+    public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult {
+        return this.mutate(name, sender, mutator, undefined);
     }
 
 }

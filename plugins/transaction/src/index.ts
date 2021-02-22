@@ -55,7 +55,7 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
                 const snapshot = clone(store.state);
 
                 rollbacks.set(store.name, () => {
-                    store.exec('$transactionRollback', SENDER, state => overwrite(state, snapshot));
+                    store.write('plugin:transaction:rollback', SENDER, state => overwrite(state, snapshot));
                 });
             }
         });

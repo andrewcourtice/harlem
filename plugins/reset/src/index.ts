@@ -30,7 +30,7 @@ export function reset(name: string): void {
         throw new Error('Failed to reset store. Store does not exists or has an invalid snapshot.');
     }
 
-    store.exec('$reset', SENDER, state => overwrite(state, clone(snapshot)));
+    store.write('plugin:reset:reset', SENDER, state => overwrite(state, clone(snapshot)));
 }
 
 export default function createResetPlugin(): HarlemPlugin {
