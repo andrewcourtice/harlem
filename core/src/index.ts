@@ -24,6 +24,10 @@ import type {
     Store
 } from './types';
 
+export {
+    EVENTS
+} from './constants';
+
 export * from './types';
 
 const stores: InternalStores = new Map();

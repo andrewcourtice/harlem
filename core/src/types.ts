@@ -1,12 +1,11 @@
 import type {
     App,
-    UnwrapRef,
     ComputedRef,
     DeepReadonly
 } from 'vue';
 
 export type ReadState<TState> = DeepReadonly<TState>;
-export type WriteState<TState> = UnwrapRef<TState>;
+export type WriteState<TState> = TState;
 export type Getter<TState, TResult> = (state: ReadState<TState>) => TResult;
 export type Mutator<TState, TPayload, TResult = void> = (state: WriteState<TState>, payload: TPayload) => TResult;
 export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
