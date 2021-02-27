@@ -73,7 +73,7 @@ typings/
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
-.temp
+.temp/
 .cache
 
 # Next.js build output
@@ -92,7 +92,7 @@ public
 
 # vuepress build output
 .vuepress/dist
-.vuepress/.temp
+.vuepress/.temp/
 
 # Serverless directories
 .serverless/

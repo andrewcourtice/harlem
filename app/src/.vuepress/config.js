@@ -7,7 +7,7 @@ module.exports = {
     title: 'Harlem',
     description: 'Simple, unopinionated, lightweight and extensible state management for Vue 3',
     themeConfig: {
-        logo: '/images/logo-192.svg',
+        logo: '/assets/images/logo-192.svg',
         repo: 'andrewcourtice/harlem',
         displayAllHeaders: true,
         navbar: [

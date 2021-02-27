@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /images/logo-192.svg
+heroImage: /assets/images/images/logo-192.svg
 heroText: Harlem
 tagline: Simple, unopinionated, lightweight and extensible state management for Vue 3
 actions:
