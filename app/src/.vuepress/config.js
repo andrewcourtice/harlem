@@ -3,7 +3,7 @@
  */
 module.exports = {
     port: 3030,
-    dest: './dist',
+    dest: './public',
     title: 'Harlem',
     description: 'Simple, unopinionated, lightweight and extensible state management for Vue 3',
     themeConfig: {
