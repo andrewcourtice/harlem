@@ -50,7 +50,3 @@ createApp(App)
 - **color** (number?): A Hexadecimal number indicating the color to be used on the timeline for Harlem events. The default is `0x40c48d`.
 
 *(?) indicates an optional field*
-
-
-## Known issues
-There is currently an issue where the devtools may not show your stores the first time they are opened. Simply hit the refresh button in the top right of the devtools to force it to show your stores/state.
