@@ -6,10 +6,15 @@ module.exports = {
     dest: './public',
     title: 'Harlem',
     description: 'Simple, unopinionated, lightweight and extensible state management for Vue 3',
+    head: [
+        ['link', {
+            rel: 'icon',
+            href: '/assets/images/favicon.png'
+        }]
+    ],
     themeConfig: {
         logo: '/assets/images/logo-192.svg',
         repo: 'andrewcourtice/harlem',
-        displayAllHeaders: true,
         navbar: [
             {
                 text: 'Guide',
@@ -31,7 +36,11 @@ module.exports = {
                     text: 'Guide',
                     children: [
                         '/guide/README.md',
-                        '/guide/getting-started.md'
+                        '/guide/getting-started.md',
+                        '/guide/core-concepts.md',
+                        '/guide/devtools-integration.md',
+                        '/guide/server-side-rendering.md',
+                        '/guide/FAQ.md',
                     ]
                 }
             ],
@@ -41,7 +50,12 @@ module.exports = {
                     text: 'Plugins',
                     children: [
                         '/plugins/README.md',
-                        '/plugins/devtools.md'
+                        '/plugins/devtools.md',
+                        '/plugins/reset.md',
+                        '/plugins/snapshot.md',
+                        '/plugins/server-side-rendering.md',
+                        '/plugins/storage.md',
+                        '/plugins/transaction.md',
                     ]
                 }
             ]

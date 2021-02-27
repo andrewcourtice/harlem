@@ -1,4 +1,4 @@
-# Devtools Plugin
+# Devtools
 
 ![npm](https://img.shields.io/npm/v/@harlem/plugin-devtools)
 
@@ -8,11 +8,11 @@ This is the official Harlem devtools plugin for adding Vue devtools integration 
 
 ![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
 
-## Getting started
+## Installation
 
 Before installing the devtools plugin make sure you installed `@harlem/core`.
 
-1. Install `@harlem/plugin-devtools`:
+Install `@harlem/plugin-devtools`:
 ```
 npm install @harlem/plugin-devtools
 ```
@@ -21,7 +21,9 @@ Or if you're using Yarn:
 yarn add @harlem/plugin-devtools
 ```
 
-2. Create an instance of the plugin and register it with Harlem:
+## Usage
+
+Create an instance of the plugin and register it with Harlem:
 ```typescript
 import App from './app.vue';
 
@@ -42,7 +44,7 @@ createApp(App)
 3. Open your Vue devtools to see your stores.
 
 
-## Options
+### Options
 
 - **label** (string?): The name that will appear in the Vue devtools pane. The default is 'Harlem'.
 - **color** (number?): A Hexadecimal number indicating the color to be used on the timeline for Harlem events. The default is `0x40c48d`.

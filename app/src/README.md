@@ -1,11 +1,14 @@
 ---
 home: true
-heroImage: /assets/images/images/logo-192.svg
+heroImage: /assets/images/logo-192.svg
 heroText: Harlem
 tagline: Simple, unopinionated, lightweight and extensible state management for Vue 3
 actions:
 - text: Get Started →
   link: /guide/getting-started.html
+- text: View Demo
+  link: https://codesandbox.io/s/harlem-demo-lmffj
+  type: Secondary
 features:
 - title: Simple
   details: Harlem has a simple functional API for creating, reading and mutating state. At it's heart, Harlem just uses Vue reactive objects and computeds which means if you know how to use Vue, you'll know how to use Harlem.
@@ -21,5 +24,3 @@ features:
   details: Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
 footer: MIT Licensed | Copyright © 2020-present Andrew Courtice
 ---
-
-# Hello
