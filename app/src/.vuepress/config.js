@@ -40,6 +40,7 @@ module.exports = {
                         '/guide/core-concepts.md',
                         '/guide/devtools-integration.md',
                         '/guide/server-side-rendering.md',
+                        '/guide/typescript-support.md',
                         '/guide/FAQ.md',
                     ]
                 }
