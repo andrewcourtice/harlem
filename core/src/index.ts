@@ -71,6 +71,9 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
     }
 }
 
+export const on = eventEmitter.on.bind(eventEmitter);
+export const once = eventEmitter.once.bind(eventEmitter);
+
 export function createStore<T extends object = any>(name: string, data: T): Store<T> {
     if (stores.has(name)) {
         throw new Error(`A store named ${name} has already been registered`);
