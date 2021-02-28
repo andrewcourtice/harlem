@@ -6,6 +6,7 @@ import {
 } from './constants';
 
 import {
+    PluginDescriptor,
     setupDevtoolsPlugin
 } from '@vue/devtools-api';
 
@@ -219,7 +220,8 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                 app,
                 label,
                 id: DEVTOOLS_ID,
-            };
+                logo: 'https://harlemjs.com/assets/images/favicon.png'
+            } as PluginDescriptor;
             
             setupDevtoolsPlugin(descriptor, api => {
                 const afterMutationHook = getMutationHook(api);
