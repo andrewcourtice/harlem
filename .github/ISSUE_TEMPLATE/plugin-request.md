@@ -2,7 +2,7 @@
 name: Plugin request
 about: Suggest a new official plugin for Harlem
 title: ''
-labels: ''
+labels: enhancement, plugin
 assignees: ''
 
 ---
