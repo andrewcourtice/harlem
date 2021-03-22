@@ -36,24 +36,28 @@ function getComplexTypes(): Record<string, any> {
     };
 }
 
-describe('Clone', () => {
+describe('Utilities', () => {
+
+    describe('Clone', () => {
+        
+        test('Should deep clone an object with simple types', () => {
+            const source = getSimpleTypes();
+            const copy = clone(source);
+            
+            for (const key in source) {
+                expect(copy[key]).toBe(source[key]);
+            }
+        });
     
-    test('Should deep clone an object with simple types', () => {
-        const source = getSimpleTypes();
-        const copy = clone(source);
-        
-        for (const key in source) {
-            expect(copy[key]).toBe(source[key]);
-        }
+        test('Should deep clone an object with complex types', () => {
+            const source = getComplexTypes();
+            const copy = clone(source);
+            
+            for (const key in source) {
+                expect(copy[key]).not.toBe(source[key]);
+            }
+        });
+    
     });
-
-    test('Should deep clone an object with complex types', () => {
-        const source = getComplexTypes();
-        const copy = clone(source);
-        
-        for (const key in source) {
-            expect(copy[key]).not.toBe(source[key]);
-        }
-    });
-
+    
 });

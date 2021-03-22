@@ -41,7 +41,7 @@ function getStore() {
     };
 }
 
-describe('Harlem', () => {
+describe('Harlem Core', () => {
 
     const {
         state,
