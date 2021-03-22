@@ -10,7 +10,8 @@ import {
 import type {
     Emittable,
     HarlemPlugin,
-    InternalStores
+    InternalStores,
+    WriteState
 } from '@harlem/core';
 
 const snapshots = new Map<string, any>();
@@ -18,7 +19,7 @@ const snapshots = new Map<string, any>();
 let eventEmitter: Emittable;
 let stores: InternalStores;
 
-export function reset(name: string): void {
+export function reset<TState extends object = any, TBranch extends object = TState>(name: string, branchCallback?: (state: WriteState<TState>) => TBranch): void {
     if (!eventEmitter || !stores) {
         throw new Error('Please ensure the reset plugin is registered before resetting a store');
     }
@@ -30,7 +31,14 @@ export function reset(name: string): void {
         throw new Error('Failed to reset store. Store does not exists or has an invalid snapshot.');
     }
 
-    store.write('plugin:reset:reset', SENDER, state => overwrite(state, clone(snapshot)));
+    store.write('plugin:reset:reset', SENDER, state => {
+        const branchProducer = branchCallback || (state => state);
+        const snapshotClone = clone(snapshot);
+        const stateBranch = branchProducer(state);
+        const snapshotBranch = branchProducer(snapshotClone);
+
+        overwrite(stateBranch, snapshotBranch);
+    });
 }
 
 export default function createResetPlugin(): HarlemPlugin {
