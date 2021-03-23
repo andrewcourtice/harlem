@@ -1,7 +1,7 @@
 {
     "name": "Harlem",
     "mode": "modules",
-    "out": "docs",
+    "out": "app/src/api-docs",
     "readme": "none",
     "excludePrivate": true,
     "excludeNotExported": true,

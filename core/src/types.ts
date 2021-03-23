@@ -1,17 +1,16 @@
 import type {
     App,
-    UnwrapRef,
     ComputedRef,
     DeepReadonly
 } from 'vue';
 
-export type ReadState<T> = DeepReadonly<T>;
-export type WriteState<T> = UnwrapRef<T>;
-export type Getter<T, U> = (state: ReadState<T>) => U;
-export type Mutator<T, U> = (state: WriteState<T>, payload?: U) => void;
-export type Mutation<T> = (payload?: T) => void;
+export type ReadState<TState> = DeepReadonly<TState>;
+export type WriteState<TState> = TState;
+export type Getter<TState, TResult> = (state: ReadState<TState>) => TResult;
+export type Mutator<TState, TPayload, TResult = void> = (state: WriteState<TState>, payload: TPayload) => TResult;
+export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
 export type InternalStores = Map<string, InternalStore<any>>;
-export type EventHandler<T = any> = (payload?: EventPayload<T>) => void;
+export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -24,33 +23,35 @@ export interface EventListener {
     dispose(): void
 }
 
-export interface EventPayload<T = any> {
+export interface EventPayload<TData = any> {
     sender: string;
     store: string;
-    data: T
+    data: TData;
 };
 
-export interface MutationEventData {
+export interface MutationEventData<TPayload = any, TResult = any> {
     mutation: string;
-    payload: any
+    payload: TPayload;
+    result?: TResult;
 };
 
-export interface StoreBase<T> {
-    getter<U>(name: string, getter: Getter<T, U>): ComputedRef<U>;
-    mutation<U>(name: string, mutator: Mutator<T, U>): Mutation<U>;
+export interface StoreBase<TState> {
+    getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult>;
+    mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult>;
 }
 
-export interface InternalStore<T = any> extends StoreBase<T> {
-    readonly state: ReadState<T>;
+export interface InternalStore<TState = any> extends StoreBase<TState> {
+    readonly state: ReadState<TState>;
     name: string;
     getters: Map<string, Function>;
-    mutations: Set<string>;
+    mutations: Map<string, Mutator<TState, any, any>>;
     emit(event: string, sender: string, data: any): void;
-    exec(name: string, sender: string, mutator: Mutator<T, undefined>): void;
+    exec<TResult = void>(name: string, payload?: any): TResult;
+    write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult;
 }
 
-export interface Store<T> extends StoreBase<T> {
-    state: ReadState<T>;
+export interface Store<TState> extends StoreBase<TState> {
+    state: ReadState<TState>;
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener;
     destroy(): void;

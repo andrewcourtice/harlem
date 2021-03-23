@@ -1,4 +1,4 @@
-import InternalStore from './internal-store';
+import InternalStore from './store';
 
 import eventEmitter from './event-emitter';
 
@@ -23,6 +23,10 @@ import type {
     Options,
     Store
 } from './types';
+
+export {
+    EVENTS
+} from './constants';
 
 export * from './types';
 
@@ -66,6 +70,9 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
         console.warn(`Failed to install Harlem plugin: ${name}. Skipping.`);
     }
 }
+
+export const on = eventEmitter.on.bind(eventEmitter);
+export const once = eventEmitter.once.bind(eventEmitter);
 
 export function createStore<T extends object = any>(name: string, data: T): Store<T> {
     if (stores.has(name)) {

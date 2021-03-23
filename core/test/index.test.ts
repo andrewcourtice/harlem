@@ -8,18 +8,26 @@ function getStore() {
         getter,
         mutation
     } = createStore('main', {
+        id: 0,
         firstName: 'John',
         lastName: 'Smith'
     });
 
     const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
     
+    const setId = mutation<undefined, number>('set-id', state => {
+        const id = Math.round(Math.random() * 100000);
+
+        state.id = id;
+        return id;
+    });
+
     const setFirstName = mutation<string>('set-firstname', (state, payload) => {
-        state.firstName = payload || '';
+        state.firstName = payload;
     });
 
     const setLastName = mutation<string>('set-lastname', (state, payload) => {
-        state.lastName = payload || '';
+        state.lastName = payload;
     });
 
     return {
@@ -27,18 +35,20 @@ function getStore() {
         getter,
         mutation,
         fullName,
+        setId,
         setFirstName,
         setLastName
     };
 }
 
-describe('Harlem', () => {
+describe('Harlem Core', () => {
 
     const {
         state,
         getter,
         mutation,
         fullName,
+        setId,
         setFirstName,
         setLastName
     } = getStore();
@@ -91,6 +101,13 @@ describe('Harlem', () => {
     
             expect(state.firstName).toBe('Jane');
             expect(state.lastName).toBe('Doe');
+        });
+
+        test('Should return a result from a mutation', () => {
+            const id = setId();
+
+            expect(id).toBeDefined();
+            expect(typeof id).toBe('number');
         });
 
     });

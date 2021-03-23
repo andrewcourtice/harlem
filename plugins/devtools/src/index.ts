@@ -1,10 +1,12 @@
 import {
     ALL_STORES_ID,
     DEVTOOLS_ID,
-    OPTIONS
+    OPTIONS,
+    SENDER
 } from './constants';
 
 import {
+    PluginDescriptor,
     setupDevtoolsPlugin
 } from '@vue/devtools-api';
 
@@ -16,9 +18,11 @@ import type {
 } from '@vue/devtools-api';
 
 import type {
+    LogType,
     Options,
     StateHookHandler,
-    TreeHookHandler
+    TreeHookHandler,
+    EditHookHandler
 } from './types';
 
 import type {
@@ -61,11 +65,11 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    const state = [
+    const state: StateBase[] = [
         {
             key: store.name,
             value: store.state,
-            editable: false
+            editable: true
         }
     ];
 
@@ -80,9 +84,9 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
         
     const mutations: StateBase[] = Array.from(store.mutations)
         .sort(([a], [b]) => stringComparitor(a, b))
-        .map(key => ({
+        .map(([key, mutator]) => ({
             key,
-            value: () => {},
+            value: mutator,
             editable: false
         }));
 
@@ -135,20 +139,59 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
     }
 }
 
-function getMutationHook(api: DevtoolsPluginApi): EventHandler {
+function getInspectorEditHook(application: App, stores: InternalStores): EditHookHandler {
+    return payload => {
+        const {
+            app,
+            inspectorId,
+            nodeId,
+            path,
+            state,
+            set
+        } = payload;
+
+        if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
+            return;
+        }
+
+        const root = path.shift();
+        const storeId = nodeId === ALL_STORES_ID
+            ? root || nodeId
+            : nodeId
+
+        const store = stores.get(storeId);
+
+        if (!store) {
+            return;
+        }
+
+        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));  
+    }
+}
+
+function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandler {
     return payload => {
         if (!payload) {
             return;
         }
+
+        const {
+            sender,
+            store
+        } = payload;
         
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,
             event: {
+                logType,
+                title: 'Mutation',
+                subtitle: store,
                 time: Date.now(),
                 data: payload,
+                groupId: sender,
                 meta: {
-                    store: payload.store
+                    store: store
                 }
             }
         });
@@ -171,16 +214,19 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
         install(app, eventEmitter, stores) {
             const inspectorTreeHook = getInspectorTreeHook(app, stores);
             const inspectorStateHook = getInspectorStateHook(app, stores);
+            const inspectorEditHook = getInspectorEditHook(app, stores);
             
             const descriptor = {
                 app,
                 label,
                 id: DEVTOOLS_ID,
-            };
+                logo: 'https://harlemjs.com/assets/images/favicon.png'
+            } as PluginDescriptor;
             
             setupDevtoolsPlugin(descriptor, api => {
-                const mutationHook = getMutationHook(api);
-
+                const afterMutationHook = getMutationHook(api);
+                const errorMutationHook = getMutationHook(api, 'error');
+                
                 api.addInspector({
                     label,
                     id: DEVTOOLS_ID,
@@ -196,8 +242,10 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
     
                 api.on.getInspectorTree(inspectorTreeHook);
                 api.on.getInspectorState(inspectorStateHook);
-                
-                eventEmitter.on('mutation:after', mutationHook);
+                api.on.editInspectorState(inspectorEditHook);
+
+                eventEmitter.on('mutation:after', afterMutationHook);
+                eventEmitter.on('mutation:error', errorMutationHook);
             });
         }
 
