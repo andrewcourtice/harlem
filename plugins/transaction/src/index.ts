@@ -27,7 +27,7 @@ export * from './types';
 let eventEmitter: Emittable;
 let stores: InternalStores;
 
-export function transaction<T>(name: string, transactor: Transactor<T>): Transaction<T> {
+export function transaction<TPayload>(name: string, transactor: Transactor<TPayload>): Transaction<TPayload> {
     return payload => {
         if (!eventEmitter || !stores) {
             throw new Error('Please ensure the transaction plugin is registered before creating a transaction');
@@ -63,7 +63,7 @@ export function transaction<T>(name: string, transactor: Transactor<T>): Transac
         eventEmitter.emit(EVENTS.transaction.before, eventPayload);
         
         try {
-            transactor(payload);
+            transactor(payload!);
         } catch (error) {
             rollbacks.forEach(rollback => rollback());
             eventEmitter.emit(EVENTS.transaction.error, eventPayload);
