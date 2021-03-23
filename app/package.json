@@ -1,6 +1,6 @@
 {
     "name": "@harlem/app",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -12,11 +12,11 @@
         "build": "vuepress build src"
     },
     "dependencies": {
-        "@harlem/core": "^1.1.1",
-        "@harlem/plugin-devtools": "^1.1.1",
-        "@harlem/plugin-reset": "^1.1.1",
-        "@harlem/plugin-storage": "^1.1.1",
-        "@harlem/plugin-transaction": "^1.1.1",
+        "@harlem/core": "^1.1.2",
+        "@harlem/plugin-devtools": "^1.1.2",
+        "@harlem/plugin-reset": "^1.1.2",
+        "@harlem/plugin-storage": "^1.1.2",
+        "@harlem/plugin-transaction": "^1.1.2",
         "vuepress": "^2.0.0-alpha.26"
     },
     "devDependencies": {
