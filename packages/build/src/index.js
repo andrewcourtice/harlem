@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const childproc = require('child_process');
 const esbuild = require('esbuild');
 
@@ -8,7 +9,7 @@ const CONFIG = require('./constants/config');
 
 function getConfig(format, cwd, options, minify) {
     const input = path.resolve(cwd, './src/index.ts');
-    const output = path.resolve(cwd, './dist-es');
+    const output = path.resolve(cwd, './dist');
 
     const {
         fileName,
@@ -33,39 +34,45 @@ function getConfig(format, cwd, options, minify) {
 }
 
 async function build(cwd, options) {
-    const service = await esbuild.startService();
-    const output = path.resolve(cwd, './dist-es');
+    const output = path.resolve(cwd, './dist');
 
     console.log('Build Started');
-
+    
     try {
+        // Delete the output directory
+        fs.rmSync(output, {
+            recursive: true,
+            force: true
+        });
+
         const tasks = FORMATS.flatMap(format => {
             const standardConfig = getConfig(format, cwd, options, false);
             const minifiedConfig = getConfig(format, cwd, options, true);
     
             return [
-                service.build(standardConfig),
-                service.build(minifiedConfig)
+                esbuild.build(standardConfig),
+                esbuild.build(minifiedConfig)
             ];
         });
     
         await Promise.all(tasks);
     } catch (error) {
         process.exit(1);
-    } finally {
-        service.stop();
     }
     
     console.log('Build Complete');
     console.log('Type Generation Started');
     
-    await new Promise((resolve, reject) => {
-        childproc.exec(`tsc --emitDeclarationOnly --outDir ${output}`, {
-            cwd
-        }, error => {
-            (error ? reject : resolve)();
-        })
-    });
+    try {
+        await new Promise((resolve, reject) => {
+            childproc.exec(`tsc --emitDeclarationOnly --outDir ${output}`, {
+                cwd
+            }, error => error ? reject(error) : resolve())
+        });
+    } catch (error) {
+        console.error(error);
+        process.exit(1);
+    }
 
     console.log('Type Generation Complete');
 }

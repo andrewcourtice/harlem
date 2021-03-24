@@ -6,18 +6,16 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official snapshot plugin for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-snapshot.js",
-    "module": "dist/harlem-snapshot.esm.js",
-    "umd:main": "dist/harlem-snapshot.umd.js",
+    "main": "dist/harlem-snapshot.cjs.js",
+    "module": "dist/harlem-snapshot.mjs",
     "unpkg": "dist/harlem-snapshot.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
         ".": {
-            "require": "./dist/harlem-snapshot.js",
-            "umd": "./dist/harlem-snapshot.umd.js",
-            "browser": "./dist/harlem-snapshot.esm.js",
-            "import": "./dist/harlem-snapshot.esm.js"
+            "require": "./dist/harlem-snapshot.cjs.js",
+            "browser": "./dist/harlem-snapshot.mjs",
+            "import": "./dist/harlem-snapshot.mjs"
         }
     },
     "keywords": [
@@ -37,9 +35,7 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "yarn build:core && yarn build:min",
-        "build:core": "microbundle build --raw",
-        "build:min": "microbundle build --raw -f iife src/index.ts -o dist/harlem-snapshot.min.js",
+        "build": "node build.js",
         "prepublish": "yarn build"
     },
     "peerDependencies": {

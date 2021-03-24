@@ -8,7 +8,7 @@ module.exports = {
         '@harlem'
     ],
     target: [
-        'esnext'
+        'es2020'
     ],
     define: {
         'process.env.NODE_ENV': '"production"'
