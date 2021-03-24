@@ -6,7 +6,7 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official Vue devtools plugin for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-devtools..js",
+    "main": "dist/harlem-devtools.cjs.js",
     "module": "dist/harlem-devtools.mjs",
     "umd:main": "dist/harlem-devtools.umd.js",
     "unpkg": "dist/harlem-devtools.min.js",
