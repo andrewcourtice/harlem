@@ -7,15 +7,15 @@
     "description": "The official storage plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-storage.cjs.js",
-    "module": "dist/harlem-storage.mjs",
+    "module": "dist/harlem-storage.esm.js",
     "unpkg": "dist/harlem-storage.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
         ".": {
             "require": "./dist/harlem-storage.cjs.js",
-            "browser": "./dist/harlem-storage.mjs",
-            "import": "./dist/harlem-storage.mjs"
+            "browser": "./dist/harlem-storage.esm.js",
+            "import": "./dist/harlem-storage.esm.js"
         }
     },
     "keywords": [

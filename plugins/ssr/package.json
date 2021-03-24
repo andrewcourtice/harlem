@@ -7,15 +7,15 @@
     "description": "The official server-side rendering plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-ssr.cjs.js",
-    "module": "dist/harlem-ssr.mjs",
+    "module": "dist/harlem-ssr.esm.js",
     "unpkg": "dist/harlem-ssr.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
         ".": {
             "require": "./dist/harlem-ssr.cjs.js",
-            "browser": "./dist/harlem-ssr.mjs",
-            "import": "./dist/harlem-ssr.mjs"
+            "browser": "./dist/harlem-ssr.esm.js",
+            "import": "./dist/harlem-ssr.esm.js"
         }
     },
     "keywords": [

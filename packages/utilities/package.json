@@ -7,15 +7,15 @@
     "description": "Harlem utilities package",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-utilities.cjs.js",
-    "module": "dist/harlem-utilities.mjs",
+    "module": "dist/harlem-utilities.esm.js",
     "unpkg": "dist/harlem-utilities.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
         ".": {
             "require": "./dist/harlem-utilities.cjs.js",
-            "browser": "./dist/harlem-utilities.mjs",
-            "import": "./dist/harlem-utilities.mjs"
+            "browser": "./dist/harlem-utilities.esm.js",
+            "import": "./dist/harlem-utilities.esm.js"
         }
     },
     "keywords": [

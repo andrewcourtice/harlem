@@ -7,15 +7,15 @@
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem.cjs.js",
-    "module": "dist/harlem.mjs",
+    "module": "dist/harlem.esm.js",
     "unpkg": "dist/harlem.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
         ".": {
             "require": "./dist/harlem.cjs.js",
-            "browser": "./dist/harlem.mjs",
-            "import": "./dist/harlem.mjs"
+            "browser": "./dist/harlem.esm.js",
+            "import": "./dist/harlem.esm.js"
         }
     },
     "keywords": [

@@ -1,5 +1,5 @@
 module.exports = {
-    esm: 'mjs',
+    esm: 'esm.js',
     cjs: 'cjs.js',
     iife: 'js'
 };

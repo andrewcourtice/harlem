@@ -7,15 +7,15 @@
     "description": "The official transaction plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-transaction.cjs.js",
-    "module": "dist/harlem-transaction.mjs",
+    "module": "dist/harlem-transaction.esm.js",
     "unpkg": "dist/harlem-transaction.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
         ".": {
             "require": "./dist/harlem-transaction.cjs.js",
-            "browser": "./dist/harlem-transaction.mjs",
-            "import": "./dist/harlem-transaction.mjs"
+            "browser": "./dist/harlem-transaction.esm.js",
+            "import": "./dist/harlem-transaction.esm.js"
         }
     },
     "keywords": [
