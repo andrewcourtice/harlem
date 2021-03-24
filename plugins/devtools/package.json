@@ -1,7 +1,7 @@
 {
     "name": "@harlem/plugin-devtools",
     "amdName": "harlemDevtools",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official Vue devtools plugin for Harlem",
@@ -47,7 +47,7 @@
         "@vue/devtools-api": "^6.0.0-beta.7"
     },
     "devDependencies": {
-        "@harlem/build": "^1.2.0",
-        "@harlem/core": "^1.2.0"
+        "@harlem/build": "^1.2.1",
+        "@harlem/core": "^1.2.1"
     }
 }

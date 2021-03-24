@@ -1,7 +1,7 @@
 {
     "name": "@harlem/plugin-transaction",
     "amdName": "harlemTransaction",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official transaction plugin for Harlem",
@@ -42,9 +42,9 @@
         "@harlem/core": "^1.1.2"
     },
     "dependencies": {
-        "@harlem/utilities": "^1.2.0"
+        "@harlem/utilities": "^1.2.1"
     },
     "devDependencies": {
-        "@harlem/core": "^1.2.0"
+        "@harlem/core": "^1.2.1"
     }
 }
