@@ -8,7 +8,7 @@
 
 ![npm](https://img.shields.io/npm/v/@harlem/core)
 
-Simple, unopinionated, lightweight and extensible state management for Vue 3. Take a look at the [demo](https://harlemjs.com/demo/basic) to see it in action or play around with it in [CodeSandbox](https://codesandbox.io/s/harlem-demo-lmffj).
+Simple, unopinionated, lightweight and extensible state management for Vue 3. Head over to harlemjs.com to get started or take a look at the [demo](https://codesandbox.io/s/harlem-demo-lmffj) to see it in action.
 
 <!-- TOC depthfrom:2 depthto:3 -->
 

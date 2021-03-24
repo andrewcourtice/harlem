@@ -1,20 +1,22 @@
 {
     "name": "@harlem/plugin-snapshot",
+    "amdName": "harlemSnapshot",
     "version": "1.1.3",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official snapshot plugin for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-snapshot.js",
-    "module": "dist/harlem-snapshot.esm.js",
-    "umd:main": "dist/harlem-snapshot.umd.js",
-    "unpkg": "dist/harlem-snapshot.js",
+    "main": "dist/harlem-snapshot.cjs.js",
+    "module": "dist/harlem-snapshot.mjs",
+    "unpkg": "dist/harlem-snapshot.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "exports": {
-        "require": "./dist/harlem-snapshot.js",
-        "import": "./dist/harlem-snapshot.esm.js",
-        "default": "./dist/harlem-snapshot.esm.js"
+        ".": {
+            "require": "./dist/harlem-snapshot.cjs.js",
+            "browser": "./dist/harlem-snapshot.mjs",
+            "import": "./dist/harlem-snapshot.mjs"
+        }
     },
     "keywords": [
         "vue",
@@ -33,7 +35,7 @@
     },
     "scripts": {
         "dev": "microbundle watch --raw",
-        "build": "microbundle build --raw",
+        "build": "node build.js",
         "prepublish": "yarn build"
     },
     "peerDependencies": {

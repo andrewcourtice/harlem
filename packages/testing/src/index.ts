@@ -1,6 +1,4 @@
-const {
-    default: Harlem
-} = require('@harlem/core');
+import Harlem from '@harlem/core';
 
 import type {
     HarlemPlugin

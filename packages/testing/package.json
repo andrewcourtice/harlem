@@ -6,6 +6,9 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Harlem testing package",
     "main": "src/index.ts",
+    "scripts": {
+        "build": "echo \"No Build Required\""
+    },
     "dependencies": {
         "@harlem/core": "^1.1.3"
     },

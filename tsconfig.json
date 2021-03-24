@@ -8,6 +8,7 @@
         "isolatedModules": true,
         "removeComments": true,
         "skipLibCheck": true,
+        "declaration": true,
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "lib": [
