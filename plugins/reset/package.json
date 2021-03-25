@@ -7,17 +7,10 @@
     "description": "The official reset plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-reset.cjs.js",
-    "module": "dist/harlem-reset.esm.js",
+    "module": "dist/harlem-reset.bundler.esm.js",
     "unpkg": "dist/harlem-reset.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
-    "exports": {
-        ".": {
-            "require": "./dist/harlem-reset.cjs.js",
-            "browser": "./dist/harlem-reset.esm.js",
-            "import": "./dist/harlem-reset.esm.js"
-        }
-    },
     "keywords": [
         "vue",
         "state",

@@ -7,17 +7,10 @@
     "description": "The official transaction plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-transaction.cjs.js",
-    "module": "dist/harlem-transaction.esm.js",
+    "module": "dist/harlem-transaction.bundler.esm.js",
     "unpkg": "dist/harlem-transaction.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
-    "exports": {
-        ".": {
-            "require": "./dist/harlem-transaction.cjs.js",
-            "browser": "./dist/harlem-transaction.esm.js",
-            "import": "./dist/harlem-transaction.esm.js"
-        }
-    },
     "keywords": [
         "vue",
         "state",

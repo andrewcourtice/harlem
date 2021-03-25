@@ -12,6 +12,10 @@ import {
     ComputedRef
 } from 'vue';
 
+import {
+    raiseDuplicationError
+} from './utilities';
+
 import type {
     EventHandler,
     EventListener,
@@ -31,10 +35,6 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
             handler(payload);
         }
     };
-}
-
-function raiseDuplicationError(type: string, name: string): void {
-    throw new Error(`A ${type} named ${name} has already been registered on this store.`);
 }
 
 export default class Store<TState extends object = any> implements InternalStore<TState> {

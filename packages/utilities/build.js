@@ -3,10 +3,8 @@ const build = require('@harlem/build');
 
 (async () => {
     const cwd = path.resolve('.');
-    console.log(cwd);
 
-    return build(cwd, {
-        fileName: 'harlem-utilities',
+    return build(cwd, 'harlem-utilities', {
         globalName: 'harlemUtilities'
     });
 })();

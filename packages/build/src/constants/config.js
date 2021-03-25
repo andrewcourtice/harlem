@@ -1,7 +1,10 @@
+/**
+ * @type { import('esbuild').BuildOptions }
+ */
 module.exports = {
     bundle: true,
     sourcemap: true,
-    minify: true,
+    minify: false,
     external: [
         'vue',
         '@vue',
@@ -11,6 +14,6 @@ module.exports = {
         'es2020'
     ],
     define: {
-        'process.env.NODE_ENV': '"production"'
+        //'process.env.NODE_ENV': '"production"'
     },
 };
