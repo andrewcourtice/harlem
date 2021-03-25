@@ -14,8 +14,11 @@
         "lib": [
             "ESNext",
             "DOM"
-        ]
+        ],
     },
+    "include": [
+        "global.d.ts"
+    ],
     "exclude": [
         "node_modules"
     ]

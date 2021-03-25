@@ -1,39 +1,69 @@
 const path = require('path');
 const fs = require('fs');
 const childproc = require('child_process');
+const merge = require('lodash/merge');
 const esbuild = require('esbuild');
 
 const FORMATS = require('./constants/formats');
 const EXTENSIONS = require('./constants/extensions');
 const CONFIG = require('./constants/config');
 
-function getConfig(format, cwd, options, minify) {
+/**
+ * @param format { String } - the output format
+ * @param cwd { String } - the current working directory
+ * @param filename { String } - the output file name
+ * @param options { import('esbuild').BuildOptions } - esbuild options
+ */
+function getConfig(format, cwd, fileName, options) {
     const input = path.resolve(cwd, './src/index.ts');
     const output = path.resolve(cwd, './dist');
-
-    const {
-        fileName,
-        globalName
-    } = options;
+    const extension = EXTENSIONS[format] || 'js';
 
     const entryPoints = [
         input
     ];
 
-    const extension = EXTENSIONS[format] || 'js';
-    const outfile = path.join(output, `/${fileName}${minify ? '.min' : ''}.${extension}`);
+    const configs = [
+        {
+            format,
+            entryPoints,
+            outfile: path.join(output, `/${fileName}.${extension}`),
+            define: {
+                __DEV__: false
+            }
+        },
+        {
+            format,
+            entryPoints,
+            minify: true,
+            outfile: path.join(output, `/${fileName}.min.${extension}`),
+            define: {
+                __DEV__: false
+            }
+        }
+    ];
 
-    return {
-        ...CONFIG,
-        minify,
-        format,
-        entryPoints,
-        globalName,
-        outfile
-    };
+    if (format !== 'iife') {
+        configs.push({
+            format,
+            entryPoints,
+            platform: 'node',
+            outfile: path.join(output, `/${fileName}.bundler.${extension}`),
+            inject: [
+                path.resolve(__dirname, './injections/dev.js')
+            ]
+        });
+    }
+    
+    return configs.map(config => merge({}, CONFIG, config, options));
 }
 
-async function build(cwd, options) {
+/**
+ * @param cwd { String } - the current working directory
+ * @param filename { String } - the output file name
+ * @param options { import('esbuild').BuildOptions } - esbuild options
+ */
+async function build(cwd, filename, options) {
     const output = path.resolve(cwd, './dist');
 
     console.log('Build Started');
@@ -46,13 +76,9 @@ async function build(cwd, options) {
         });
 
         const tasks = FORMATS.flatMap(format => {
-            const standardConfig = getConfig(format, cwd, options, false);
-            const minifiedConfig = getConfig(format, cwd, options, true);
+            const configs = getConfig(format, cwd, filename, options)
     
-            return [
-                esbuild.build(standardConfig),
-                esbuild.build(minifiedConfig)
-            ];
+            return configs.map(config => esbuild.build(config));
         });
     
         await Promise.all(tasks);

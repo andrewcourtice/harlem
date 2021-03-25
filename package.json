@@ -14,7 +14,7 @@
     ],
     "scripts": {
         "test": "yarn jest",
-        "build": "yarn workspaces run build",
+        "build": "yarn lerna run build",
         "release": "yarn lerna publish --force-publish"
     },
     "devDependencies": {

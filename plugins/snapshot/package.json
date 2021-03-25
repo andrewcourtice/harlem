@@ -7,17 +7,10 @@
     "description": "The official snapshot plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-snapshot.cjs.js",
-    "module": "dist/harlem-snapshot.esm.js",
+    "module": "dist/harlem-snapshot.bundler.esm.js",
     "unpkg": "dist/harlem-snapshot.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
-    "exports": {
-        ".": {
-            "require": "./dist/harlem-snapshot.cjs.js",
-            "browser": "./dist/harlem-snapshot.esm.js",
-            "import": "./dist/harlem-snapshot.esm.js"
-        }
-    },
     "keywords": [
         "vue",
         "state",

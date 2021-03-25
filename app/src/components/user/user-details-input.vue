@@ -16,6 +16,9 @@
             <label for="">Date of Birth</label>
             <input type="date" v-model="dateOfBirth">
         </div>
+        <div>
+            <button @click="reset()">Reset</button>
+        </div>
     </div>
 </template>
 
@@ -27,6 +30,7 @@ import {
 
 import {
     state,
+    reset,
     setUserDetails
 } from '../../stores/user';
 
@@ -57,7 +61,8 @@ export default defineComponent({
             firstName,
             lastName,
             email,
-            dateOfBirth
+            dateOfBirth,
+            reset
         };
     }
 

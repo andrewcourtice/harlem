@@ -7,19 +7,11 @@
     "description": "The official Vue devtools plugin for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "dist/harlem-devtools.cjs.js",
-    "module": "dist/harlem-devtools.esm.js",
+    "module": "dist/harlem-devtools.bundler.esm.js",
     "umd:main": "dist/harlem-devtools.umd.js",
     "unpkg": "dist/harlem-devtools.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
-    "exports": {
-        ".": {
-            "require": "./dist/harlem-devtools.js",
-            "umd": "./dist/harlem-devtools.umd.js",
-            "browser": "./dist/harlem-devtools.esm.js",
-            "import": "./dist/harlem-devtools.esm.js"
-        }
-    },
     "keywords": [
         "vue",
         "state",
