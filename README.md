@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/app/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
+        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
     </a>
 </p>
 
