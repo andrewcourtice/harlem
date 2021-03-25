@@ -1,7 +1,7 @@
 {
     "name": "@harlem/plugin-ssr",
     "amdName": "harlemSSR",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official server-side rendering plugin for Harlem",
@@ -35,9 +35,9 @@
         "@harlem/core": "^1.1.2"
     },
     "dependencies": {
-        "@harlem/utilities": "^1.2.2"
+        "@harlem/utilities": "^1.2.3"
     },
     "devDependencies": {
-        "@harlem/core": "^1.2.2"
+        "@harlem/core": "^1.2.3"
     }
 }
