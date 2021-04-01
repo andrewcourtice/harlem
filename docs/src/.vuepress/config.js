@@ -3,7 +3,7 @@
  */
 module.exports = {
     port: 3030,
-    bundler: '@vuepress/vite',
+    //bundler: '@vuepress/vite',
     dest: './public',
     title: 'Harlem',
     description: 'Simple, unopinionated, lightweight and extensible state management for Vue 3',
