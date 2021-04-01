@@ -55,6 +55,9 @@ export interface Store<TState> extends StoreBase<TState> {
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener;
     destroy(): void;
+    onBeforeMutation<TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>): EventListener;
+    onAfterMutation<TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>): EventListener;
+    onMutationError<TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>): EventListener;
 };
 
 export interface HarlemPlugin {

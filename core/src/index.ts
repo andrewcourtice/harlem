@@ -19,8 +19,10 @@ import type {
 } from 'vue';
 
 import type {
+    EventHandler,
     HarlemPlugin,
     InternalStores,
+    MutationEventData,
     Options,
     Store
 } from './types';
@@ -83,18 +85,28 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
     }
 
     const store = new InternalStore(name, data);
-    
+
     const destroy = () => {
         store.emit(EVENTS.store.destroyed, SENDER, data);
         stores.delete(name);
     };
+
+    const getMutationHook = (eventName: string) => {
+        return <TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>) => store.on(eventName, callback);
+    };
+
+    const onBeforeMutation = getMutationHook(EVENTS.mutation.before);
+    const onAfterMutation = getMutationHook(EVENTS.mutation.after);
+    const onMutationError = getMutationHook(EVENTS.mutation.error);
     
     stores.set(name, store);
-
     emitCreated(store, data);
 
     return {
         destroy,
+        onBeforeMutation,
+        onAfterMutation,
+        onMutationError,
         state: store.state,
         getter: store.getter.bind(store),
         mutation: store.mutation.bind(store),
