@@ -9,6 +9,7 @@
     "workspaces": [
         "app",
         "core",
+        "docs",
         "packages/*",
         "plugins/*"
     ],

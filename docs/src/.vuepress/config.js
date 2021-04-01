@@ -1,8 +1,9 @@
 /**
- * @type {import("vuepress").AppConfig}
+ * @type {import('vuepress').AppConfig}
  */
 module.exports = {
     port: 3030,
+    bundler: '@vuepress/vite',
     dest: './public',
     title: 'Harlem',
     description: 'Simple, unopinionated, lightweight and extensible state management for Vue 3',
@@ -26,7 +27,7 @@ module.exports = {
             },
             {
                 text: 'API Reference',
-                link: '/api-docs/'
+                link: '/api-reference/'
             }
         ],
         sidebar: {
@@ -57,6 +58,17 @@ module.exports = {
                         '/plugins/server-side-rendering.md',
                         '/plugins/storage.md',
                         '/plugins/transaction.md',
+                    ]
+                }
+            ],
+            '/api-reference/': [
+                {
+                    isGroup: true,
+                    text: 'API Reference',
+                    children: [
+                        '/api-reference/README.md',
+                        '/api-reference/store.md',
+                        '/api-reference/types.md',
                     ]
                 }
             ]
