@@ -17,7 +17,7 @@ features:
 - title: Immutable
   details: All state provided from a Harlem store is immutable by default. The only write access to state is through mutations. This ensures all updates to your store are tracable, thereby reducing the amount of bugs produced by code unpredictably mutating state.
 - title: Lightweight
-  details: Harlem weighs in at around 1KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. Harlem is also designed to be tree-shakable - unused stores, getters, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking). It's also worth noting that Harlem has **zero** dependencies (apart from Vue obviously).
+  details: Harlem weighs in at around 1KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. Harlem is also designed to be tree-shakable - unused stores, getters, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking). It's also worth noting that Harlem has zero dependencies (apart from Vue obviously).
 - title: Extensible
   details: Harlem uses a plugin architecture so you can extend it any way you want. Some of the official plugins include Vue devtools integration, local/session storage sync, and transactions for rolling back multiple mutations when write errors occur.
 - title: Great DX

@@ -45,3 +45,7 @@ const {
     on
 } = createStore('user', STATE);
 ```
+
+### See Also
+
+[Create Store](/api-reference/#createStore) API Reference
