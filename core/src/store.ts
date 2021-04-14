@@ -13,7 +13,7 @@ import {
 } from 'vue';
 
 import {
-    raiseDuplicationError
+    raiseOverwriteError
 } from './utilities';
 
 import type {
@@ -22,6 +22,7 @@ import type {
     EventPayload,
     Getter,
     InternalStore,
+    InternalStoreOptions,
     Mutation,
     MutationEventData,
     Mutator,
@@ -39,6 +40,7 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
 
 export default class Store<TState extends object = any> implements InternalStore<TState> {
 
+    private options: InternalStoreOptions;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
 
@@ -46,13 +48,22 @@ export default class Store<TState extends object = any> implements InternalStore
     public getters: Map<string, Function>;
     public mutations: Map<string, Mutation<any>>;
 
-    constructor(name: string, state: TState) {
+    constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {
+        this.options = {
+            allowOverwrite: true,
+            ...options
+        };
+
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
         
         this.name = name;
         this.getters = new Map();
         this.mutations = new Map();
+    }
+
+    public get allowsOverwrite(): boolean {
+        return this.options.allowOverwrite;
     }
 
     public get state(): ReadState<TState> {
@@ -78,8 +89,8 @@ export default class Store<TState extends object = any> implements InternalStore
     }
 
     public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
-        if (this.getters.has(name)) {
-            raiseDuplicationError('getter', name);
+        if (!this.allowsOverwrite && this.getters.has(name)) {
+            raiseOverwriteError('getter', name);
         }
 
         const output = computed(() => getter(this.state));
@@ -115,8 +126,8 @@ export default class Store<TState extends object = any> implements InternalStore
     }
 
     public mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult> {
-        if (this.mutations.has(name)) {
-            raiseDuplicationError('mutation', name);
+        if (!this.allowsOverwrite && this.mutations.has(name)) {
+            raiseOverwriteError('mutation', name);
         }
 
         const mutation = ((payload: TPayload) => {

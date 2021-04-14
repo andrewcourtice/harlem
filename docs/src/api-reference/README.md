@@ -10,6 +10,7 @@ The `createStore` function is used for creating new instances of stores that hav
 ### Arguments
 - **name** `string` - The name of the store
 - **state** `object` - The initial state of the store
+- **options** [StoreOptions](./types.html#storeoptions) - Options associated with this store
 
 ### Return Value
 A [Store](store.html) object.
@@ -20,6 +21,8 @@ A [Store](store.html) object.
 const store = createStore('my-store', {
     firstName: 'John',
     lastName: 'Smith'
+}, {
+    allowOverwrite: true
 });
 ```
 

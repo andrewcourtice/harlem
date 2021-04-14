@@ -73,5 +73,11 @@ module.exports = {
                 }
             ]
         }
-    }
+    },
+    plugins: [
+        ['@vuepress/plugin-docsearch', {
+            apiKey: '08de2c25d5edc44bfcccacce8f8a9a78',
+            indexName: 'harlemjs'
+        }]
+    ]
 };

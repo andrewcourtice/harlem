@@ -1,6 +1,8 @@
-function getType(input: any): string {
-    return Object.prototype.toString.call(input).slice(8, -1);
-}
+import getType from './get-type';
+
+import type {
+    RuntimeType
+} from './types';
 
 function cloneIdentity(input: any): any {
     return input;
@@ -50,6 +52,8 @@ function cloneMap(input: Map<any, any>): Map<any, any> {
 
 const CLONE_MAP = {
     default: () => null,
+    null: () => null,
+    undefined: () => null,
     boolean: cloneBasic,
     number: cloneBasic,
     string: cloneBasic,
@@ -62,14 +66,14 @@ const CLONE_MAP = {
     object: cloneObject,
     map: cloneMap,
     set: cloneSet
-} as Record<string, ((value: any) => any)>;
+} as Record<RuntimeType | 'default', ((value: any) => any)>;
 
 export default function clone(value: any) {
     if (typeof value !== 'object' || value === null) {
         return value;
     }
 
-    const type = getType(value).toLowerCase();
+    const type = getType(value);
     const cloner = CLONE_MAP[type] || CLONE_MAP.default;
 
     return cloner(value);

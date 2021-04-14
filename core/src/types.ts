@@ -41,6 +41,7 @@ export interface StoreBase<TState> {
 }
 
 export interface InternalStore<TState = any> extends StoreBase<TState> {
+    readonly allowsOverwrite: boolean;
     readonly state: ReadState<TState>;
     name: string;
     getters: Map<string, Function>;
@@ -48,6 +49,14 @@ export interface InternalStore<TState = any> extends StoreBase<TState> {
     emit(event: string, sender: string, data: any): void;
     exec<TResult = void>(name: string, payload?: any): TResult;
     write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult;
+}
+
+export interface InternalStoreOptions {
+    allowOverwrite: boolean;
+}
+
+export interface StoreOptions extends InternalStoreOptions {
+    // extensions: (() => Record<string, any>)[]
 }
 
 export interface Store<TState> extends StoreBase<TState> {
@@ -65,6 +74,6 @@ export interface HarlemPlugin {
     install(app: App, eventEmitter: Emittable, stores: InternalStores): void;
 }
 
-export interface Options {
+export interface PluginOptions {
     plugins?: HarlemPlugin[];
 }

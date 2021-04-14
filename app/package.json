@@ -19,11 +19,11 @@
         "@harlem/plugin-storage": "^1.2.3",
         "@harlem/plugin-transaction": "^1.2.3",
         "flex-layout-attribute": "^1.0.3",
-        "vue": "^3.0.7"
+        "vue": "^3.0.11"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^1.1.5",
-        "@vue/compiler-sfc": "^3.0.7",
-        "vite": "^2.1.2"
+        "@vitejs/plugin-vue": "^1.2.1",
+        "@vue/compiler-sfc": "^3.0.11",
+        "vite": "^2.1.5"
     }
 }

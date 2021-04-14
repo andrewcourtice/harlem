@@ -11,6 +11,8 @@ function getStore() {
         id: 0,
         firstName: 'John',
         lastName: 'Smith'
+    }, {
+        allowOverwrite: false
     });
 
     const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
