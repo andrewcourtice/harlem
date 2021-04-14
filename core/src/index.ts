@@ -39,7 +39,7 @@ let installed = false;
 
 function emitCreated(store: InternalStore, state: any): void {
     /*
-    This is necessary because the stores may be 
+    This is necessary because the stores may be
     created before the plugin has been installed.
     */
    const created = () => store.emit(EVENTS.store.created, SENDER, state);
@@ -79,8 +79,8 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
-export function createStore<T extends object = any>(name: string, data: T): Store<T> {
-    if (stores.has(name)) {
+export function createStore<T extends object = any>(name: string, data: T, { allowOverwrite = false }: { allowOverwrite?: boolean } = {}): Store<T> {
+    if (stores.has(name) && !allowOverwrite) {
         raiseDuplicationError('store', name);
     }
 
@@ -98,7 +98,7 @@ export function createStore<T extends object = any>(name: string, data: T): Stor
     const onBeforeMutation = getMutationHook(EVENTS.mutation.before);
     const onAfterMutation = getMutationHook(EVENTS.mutation.after);
     const onMutationError = getMutationHook(EVENTS.mutation.error);
-    
+
     stores.set(name, store);
     emitCreated(store, data);
 
