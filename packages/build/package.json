@@ -19,7 +19,7 @@
         "build": "echo \"No Build Required\""
     },
     "devDependencies": {
-        "esbuild": "^0.9.6",
+        "esbuild": "^0.11.10",
         "lodash": "^4.17.21"
     }
 }
