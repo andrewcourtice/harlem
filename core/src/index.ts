@@ -4,13 +4,12 @@ import eventEmitter from './event-emitter';
 
 import {
     EVENTS,
-    OPTIONS,
     SENDER
 } from './constants';
 
 import {
     lockObject,
-    raiseDuplicationError
+    raiseOverwriteError
 } from './utilities';
 
 import type {
@@ -23,8 +22,9 @@ import type {
     HarlemPlugin,
     InternalStores,
     MutationEventData,
-    Options,
-    Store
+    PluginOptions,
+    Store,
+    StoreOptions,
 } from './types';
 
 export {
@@ -36,6 +36,14 @@ export * from './types';
 const stores: InternalStores = new Map();
 
 let installed = false;
+
+function validateStoreCreation(name: string): void {
+    const store = stores.get(name);
+
+    if (store && !store.allowsOverwrite) {
+        raiseOverwriteError('store', name);
+    }
+}
 
 function emitCreated(store: InternalStore, state: any): void {
     /*
@@ -74,17 +82,22 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
     }
 }
 
-
-
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
-export function createStore<T extends object = any>(name: string, data: T, { allowOverwrite = false }: { allowOverwrite?: boolean } = {}): Store<T> {
-    if (stores.has(name) && !allowOverwrite) {
-        raiseDuplicationError('store', name);
-    }
+export function createStore<T extends object = any>(name: string, data: T, options?: Partial<StoreOptions>): Store<T> {
+    const {
+        allowOverwrite
+    } = {
+        allowOverwrite: true,
+        ...options
+    };
 
-    const store = new InternalStore(name, data);
+    validateStoreCreation(name);
+
+    const store = new InternalStore(name, data, {
+        allowOverwrite
+    });
 
     const destroy = () => {
         store.emit(EVENTS.store.destroyed, SENDER, data);
@@ -117,11 +130,11 @@ export function createStore<T extends object = any>(name: string, data: T, { all
 
 export default {
 
-    install(app, options: Options = OPTIONS) {
+    install(app, options?: PluginOptions) {
         const {
             plugins
         } = {
-            ...OPTIONS,
+            plugins: [],
             ...options
         };
 

@@ -16,10 +16,6 @@ export function lockObject<T extends object>(input: T, exclusions: (keyof T)[]):
     });
 }
 
-export function raiseDuplicationError(type: string, name: string): void {
-    if (!__DEV__) {
-        throw new Error(`A ${type} named ${name} has already been registered on this store`);
-    }
-
-    console.warn(`A ${type} named ${name} has already been registered on this store and will now be overwritten. This will throw an error in production.`);
+export function raiseOverwriteError(type: string, name: string): void {
+    throw new Error(`A ${type} named ${name} has already been registered on this store`);
 }
