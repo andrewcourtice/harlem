@@ -1,7 +1,7 @@
 {
     "name": "@harlem/plugin-reset",
     "amdName": "harlemReset",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official reset plugin for Harlem",
@@ -35,11 +35,11 @@
         "@harlem/core": "^1.1.2"
     },
     "dependencies": {
-        "@harlem/utilities": "^1.2.3"
+        "@harlem/utilities": "^1.2.4"
     },
     "devDependencies": {
-        "@harlem/build": "^1.2.3",
-        "@harlem/core": "^1.2.3",
-        "@harlem/testing": "^1.2.3"
+        "@harlem/build": "^1.2.4",
+        "@harlem/core": "^1.2.4",
+        "@harlem/testing": "^1.2.4"
     }
 }
