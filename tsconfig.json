@@ -14,12 +14,7 @@
         "lib": [
             "ESNext",
             "DOM"
-        ],
-        "baseUrl": ".",
-        "paths": {
-            "@harlem/core": ["core/src"],
-            "@harlem/utilities": ["packages/utilities/src"],
-        }
+        ]
     },
     "include": [
         "global.d.ts"
