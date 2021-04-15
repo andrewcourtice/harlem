@@ -1,7 +1,7 @@
 {
     "name": "@harlem/plugin-storage",
     "amdName": "harlemStorage",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official storage plugin for Harlem",
@@ -35,6 +35,6 @@
         "@harlem/core": "^1.1.2"
     },
     "devDependencies": {
-        "@harlem/core": "^1.2.4"
+        "@harlem/core": "^1.2.5"
     }
 }
