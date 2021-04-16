@@ -1,12 +1,15 @@
 import {
-    createStore
+    createStore,
+    MutationHookHandler
 } from '../src/index';
 
 function getStore() {
     const {
         state,
         getter,
-        mutation
+        mutation,
+        onBeforeMutation,
+        onAfterMutation
     } = createStore('main', {
         id: 0,
         firstName: 'John',
@@ -39,7 +42,9 @@ function getStore() {
         fullName,
         setId,
         setFirstName,
-        setLastName
+        setLastName,
+        onBeforeMutation,
+        onAfterMutation
     };
 }
 
@@ -52,7 +57,9 @@ describe('Harlem Core', () => {
         fullName,
         setId,
         setFirstName,
-        setLastName
+        setLastName,
+        onBeforeMutation,
+        onAfterMutation
     } = getStore();
 
     describe('Store', () => {
@@ -113,5 +120,39 @@ describe('Harlem Core', () => {
         });
 
     });
+
+    describe('Triggers', () => {
+
+        test('Should trigger on onBeforeMutation', () => {
+            const handler = jest.fn(({ result }) => {
+                expect(result).toBeUndefined();
+            }) as MutationHookHandler<any, any>;
+
+            const {
+                dispose
+            } = onBeforeMutation('set-id', handler);
+
+            setId();
+
+            expect(handler).toHaveBeenCalled();
+            dispose();
+        });
+
+        test('Should trigger on onAfterMutation', () => {
+            const handler = jest.fn(({ result }) => {
+                expect(result).not.toBeUndefined();
+            }) as MutationHookHandler<any, any>;
+
+            const {
+                dispose
+            } = onAfterMutation('set-id', handler);
+
+            setId();
+
+            expect(handler).toHaveBeenCalled();
+            dispose();
+        });
+
+    })
 
 });

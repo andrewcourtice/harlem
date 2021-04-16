@@ -11,6 +11,7 @@ export type Mutator<TState, TPayload, TResult = void> = (state: WriteState<TStat
 export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
 export type InternalStores = Map<string, InternalStore<any>>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
+export type MutationHookHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -64,9 +65,9 @@ export interface Store<TState> extends StoreBase<TState> {
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener;
     destroy(): void;
-    onBeforeMutation<TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>): EventListener;
-    onAfterMutation<TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>): EventListener;
-    onMutationError<TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>): EventListener;
+    onBeforeMutation<TPayload = any, TResult = any>(mutationName: string, handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onAfterMutation<TPayload = any, TResult = any>(mutationName: string, handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onMutationError<TPayload = any, TResult = any>(mutationName: string, handler: MutationHookHandler<TPayload, TResult>): EventListener;
 };
 
 export interface HarlemPlugin {

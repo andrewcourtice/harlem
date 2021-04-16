@@ -18,10 +18,11 @@ import type {
 } from 'vue';
 
 import type {
-    EventHandler,
+    EventPayload,
     HarlemPlugin,
     InternalStores,
     MutationEventData,
+    MutationHookHandler,
     PluginOptions,
     Store,
     StoreOptions,
@@ -105,7 +106,13 @@ export function createStore<T extends object = any>(name: string, data: T, optio
     };
 
     const getMutationHook = (eventName: string) => {
-        return <TPayload = any, TResult = any>(callback: EventHandler<MutationEventData<TPayload, TResult>>) => store.on(eventName, callback);
+        return <TPayload = any, TResult = any>(mutationName: string, handler: MutationHookHandler<TPayload, TResult>) => {
+            return store.on(eventName, (event?: EventPayload<MutationEventData<TPayload, TResult>>) => {
+                if (event && event.data.mutation === mutationName) {
+                    handler(event.data);
+                }
+            })
+        };
     };
 
     const onBeforeMutation = getMutationHook(EVENTS.mutation.before);
