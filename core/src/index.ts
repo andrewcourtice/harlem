@@ -106,9 +106,9 @@ export function createStore<T extends object = any>(name: string, data: T, optio
     };
 
     const getMutationHook = (eventName: string) => {
-        return <TPayload = any, TResult = any>(mutationName: string, handler: MutationHookHandler<TPayload, TResult>) => {
+        return <TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>) => {
             return store.on(eventName, (event?: EventPayload<MutationEventData<TPayload, TResult>>) => {
-                if (event && event.data.mutation === mutationName) {
+                if (event && ([] as string[]).concat(mutationName).includes(event.data.mutation)) {
                     handler(event.data);
                 }
             })
