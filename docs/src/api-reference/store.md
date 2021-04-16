@@ -86,16 +86,16 @@ The store `once` function is exactly the same as the [global once function](/api
 This is convenience method for subscribing to before mutation events on the current store. This is the same as writing:
 
 ```javascript
-on('mutation:before', event => {});
+on('mutation:before', event => event.data);
 ```
 
 ### Arguments
-- **callback** `function` - A callback with a payload as it's only argument
+- **mutationName** `string | string[]` - The name of the mutation(s) to trigger the handler on
+- **handler** `function` - A callback with mutation data as it's only argument
     - arguments
-        - **event** [EventPayload](./types.html#eventpayload) - An optional payload provided when the event is published
-            - **data** [MutationEventData](./types.html#mutationeventdata)
+        - **data** [MutationEventData](./types.html#mutationeventdata) - A mutation data object containing the mutation name, payload and result
     - returns: `void`
-    - example: `payload => console.log(payload)`
+    - example: `data => console.log(data)`
 
 ### Return Value
 An [EventListener](./types.html#eventlistener).
@@ -103,28 +103,20 @@ An [EventListener](./types.html#eventlistener).
 ### Example
 
 ```javascript
-onBeforeMutation(event => {
-    if (event.data.mutation === 'set-name') {
-        console.log('set-name');
+// Single mutation
+onBeforeMutation('set-name', ({ mutation, payload, result }) => {});
+
+// Multiple mutations
+onBeforeMutation(['set-id', 'set-name'], ({ mutation, payload, result }) => {
+    if (mutation === 'set-id') {
+
     }
 });
 ```
 
 ## onAfterMutation
-This is convenience method for subscribing to after mutation events on the current store. This is the same as writing:
-
-```javascript
-on('mutation:after', event => {});
-```
-
-`onAfterMutation` has exactly the same signature as [onBeforeMutation](#onbeforemutation).
+This is convenience method for subscribing to after mutation events on the current store. `onAfterMutation` has exactly the same signature as [onBeforeMutation](#onbeforemutation).
 
 
 ## onMutationError
-This is convenience method for subscribing to failed mutation events on the current store. This is the same as writing:
-
-```javascript
-on('mutation:error', event => {});
-```
-
-`onMutationError` has exactly the same signature as [onBeforeMutation](#onbeforemutation).
+This is convenience method for subscribing to failed mutation events on the current store. `onMutationError` has exactly the same signature as [onBeforeMutation](#onbeforemutation).
