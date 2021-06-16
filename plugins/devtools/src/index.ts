@@ -6,6 +6,10 @@ import {
 } from './constants';
 
 import {
+    EVENTS
+} from '@harlem/core';
+
+import {
     PluginDescriptor,
     setupDevtoolsPlugin
 } from '@vue/devtools-api';
@@ -220,7 +224,9 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                 app,
                 label,
                 id: DEVTOOLS_ID,
-                logo: 'https://harlemjs.com/assets/images/favicon.png'
+                logo: 'https://harlemjs.com/assets/images/favicon.png',
+                homepage: 'https://harlemjs.com',
+                packageName: '@harlem/plugin-devtools'
             } as PluginDescriptor;
             
             setupDevtoolsPlugin(descriptor, api => {
@@ -230,22 +236,23 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                 api.addInspector({
                     label,
                     id: DEVTOOLS_ID,
-                    icon: 'storage',
+                    icon: 'source',
                     treeFilterPlaceholder: 'Search stores'
                 });
     
                 api.addTimelineLayer({
                     label,
                     color,
-                    id: DEVTOOLS_ID
+                    id: DEVTOOLS_ID,
+                    skipScreenshots: true
                 });
     
                 api.on.getInspectorTree(inspectorTreeHook);
                 api.on.getInspectorState(inspectorStateHook);
                 api.on.editInspectorState(inspectorEditHook);
 
-                eventEmitter.on('mutation:after', afterMutationHook);
-                eventEmitter.on('mutation:error', errorMutationHook);
+                eventEmitter.on(EVENTS.mutation.after, afterMutationHook);
+                eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
             });
         }
 
