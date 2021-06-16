@@ -4,6 +4,8 @@ import type {
     DeepReadonly
 } from 'vue';
 
+type UnionToIntersection<U> = (U extends any ? (arg: U) => any : never) extends ((arg: infer I) => void) ? I : never;
+
 export type ReadState<TState> = DeepReadonly<TState>;
 export type WriteState<TState> = TState;
 export type Getter<TState, TResult> = (state: ReadState<TState>) => TResult;
@@ -11,7 +13,9 @@ export type Mutator<TState, TPayload, TResult = void> = (state: WriteState<TStat
 export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
 export type InternalStores = Map<string, InternalStore<any>>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
-export type MutationHookHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void
+export type MutationHookHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void;
+export type Extension = (store: InternalStore) => Record<string, any>;
+export type ExtendedStore<TExtensions extends Extension[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -56,8 +60,8 @@ export interface InternalStoreOptions {
     allowOverwrite: boolean;
 }
 
-export interface StoreOptions extends InternalStoreOptions {
-    // extensions: (() => Record<string, any>)[]
+export interface StoreOptions<TExtensions extends Extension[]> extends InternalStoreOptions {
+    extensions?: TExtensions;
 }
 
 export interface Store<TState> extends StoreBase<TState> {

@@ -5,6 +5,7 @@
     "packages": [
         "core",
         "packages/*",
+        "extensions/*",
         "plugins/*"
     ]
 }

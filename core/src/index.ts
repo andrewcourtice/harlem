@@ -19,6 +19,8 @@ import type {
 
 import type {
     EventPayload,
+    ExtendedStore,
+    Extension,
     HarlemPlugin,
     InternalStores,
     MutationEventData,
@@ -60,6 +62,23 @@ function emitCreated(store: InternalStore, state: any): void {
    eventEmitter.once(EVENTS.core.installed, created);
 }
 
+function getExtendedStore<TExtensions extends Extension[]>(store: InternalStore, extensions: TExtensions): ReturnType<Extension> {
+    return extensions.reduce((output, extension) => {
+        let result = {};
+
+        try {
+            result = extension(store) || {};
+        } catch {
+            result = {};
+        }
+
+        return {
+            ...output,
+            ...result
+        };
+    }, {});
+}
+
 function installPlugin(plugin: HarlemPlugin, app: App): void {
     if (!plugin || typeof plugin.install !== 'function') {
         return;
@@ -86,22 +105,24 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
-export function createStore<T extends object = any>(name: string, data: T, options?: Partial<StoreOptions>): Store<T> {
+export function createStore<TState extends object, TExtensions extends Extension[]>(name: string, state: TState, options?: Partial<StoreOptions<TExtensions>>): Store<TState> & ExtendedStore<TExtensions> {
     const {
-        allowOverwrite
+        allowOverwrite,
+        extensions
     } = {
         allowOverwrite: true,
+        extensions: [store => ({})] as TExtensions,
         ...options
     };
 
     validateStoreCreation(name);
 
-    const store = new InternalStore(name, data, {
+    const store = new InternalStore(name, state, {
         allowOverwrite
     });
 
     const destroy = () => {
-        store.emit(EVENTS.store.destroyed, SENDER, data);
+        store.emit(EVENTS.store.destroyed, SENDER, state);
         stores.delete(name);
     };
 
@@ -119,8 +140,10 @@ export function createStore<T extends object = any>(name: string, data: T, optio
     const onAfterMutation = getMutationHook(EVENTS.mutation.after);
     const onMutationError = getMutationHook(EVENTS.mutation.error);
 
+    const extendedStore = getExtendedStore(store, extensions);
+
     stores.set(name, store);
-    emitCreated(store, data);
+    emitCreated(store, state);
 
     return {
         destroy,
@@ -132,7 +155,8 @@ export function createStore<T extends object = any>(name: string, data: T, optio
         mutation: store.mutation.bind(store),
         on: store.on.bind(store),
         once: store.once.bind(store),
-    };
+        ...extendedStore
+    } as any;
 }
 
 export default {
