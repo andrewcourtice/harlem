@@ -62,7 +62,7 @@ function emitCreated(store: InternalStore, state: any): void {
    eventEmitter.once(EVENTS.core.installed, created);
 }
 
-function getExtendedStore<TExtensions extends Extension[]>(store: InternalStore, extensions: TExtensions): ReturnType<Extension> {
+function getExtendedStore<TState, TExtensions extends Extension<TState>[]>(store: InternalStore, extensions: TExtensions): ReturnType<Extension<TState>> {
     return extensions.reduce((output, extension) => {
         let result = {};
 
@@ -105,7 +105,7 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
-export function createStore<TState extends object, TExtensions extends Extension[]>(name: string, state: TState, options?: Partial<StoreOptions<TExtensions>>): Store<TState> & ExtendedStore<TExtensions> {
+export function createStore<TState extends object, TExtensions extends Extension<TState>[]>(name: string, state: TState, options?: Partial<StoreOptions<TState, TExtensions>>): Store<TState> & ExtendedStore<TExtensions> {
     const {
         allowOverwrite,
         extensions
@@ -140,7 +140,7 @@ export function createStore<TState extends object, TExtensions extends Extension
     const onAfterMutation = getMutationHook(EVENTS.mutation.after);
     const onMutationError = getMutationHook(EVENTS.mutation.error);
 
-    const extendedStore = getExtendedStore(store, extensions);
+    const extendedStore = getExtendedStore<TState, TExtensions>(store, extensions);
 
     stores.set(name, store);
     emitCreated(store, state);

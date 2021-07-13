@@ -1,8 +1,4 @@
 import {
-    computed
-} from 'vue';
-
-import {
     Extension,
     InternalStore,
     createStore,
@@ -19,7 +15,9 @@ import type {
     RemoveActionInstancePayload
 } from './types';
 
-export default ((store: InternalStore<ActionStoreState>) => {
+export * from './types';
+
+export default function actionsExtension<TState>(store: InternalStore<TState>) {
 
     store.write('$add-actions', '$actions-extension', state => {
         state.$actions = {};
@@ -52,8 +50,8 @@ export default ((store: InternalStore<ActionStoreState>) => {
         state.$actions[actionName].delete(instanceId);
     });
      
-    function action<TPayload, TResult = void>(name: string, body: ActionBody<TPayload, TResult>): Action<TPayload, TResult> {
-        const mutate = (mutator: Mutator<ActionStoreState, undefined, void>) => store.write(name, '$actions-extension', mutator);
+    function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>): Action<TPayload, TResult> {
+        const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, '$actions-extension', mutator);
         
         const _action = async (payload: TPayload) => {
             const id = Symbol(name);
@@ -67,7 +65,7 @@ export default ((store: InternalStore<ActionStoreState>) => {
             let result: TResult;
 
             try {
-                result = await body(payload);
+                result = await body(payload, mutate);
             } finally {
                 removeActionInstance({
                     actionName: name,
@@ -107,4 +105,4 @@ export default ((store: InternalStore<ActionStoreState>) => {
         useAction
     };
 
-});
+};

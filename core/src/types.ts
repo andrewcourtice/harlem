@@ -14,8 +14,8 @@ export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (p
 export type InternalStores = Map<string, InternalStore<any>>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
 export type MutationHookHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void;
-export type Extension = (store: InternalStore) => Record<string, any>;
-export type ExtendedStore<TExtensions extends Extension[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
+export type Extension<TState> = (store: InternalStore<TState>) => Record<string, any>;
+export type ExtendedStore<TExtensions extends Extension<any>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -60,7 +60,7 @@ export interface InternalStoreOptions {
     allowOverwrite: boolean;
 }
 
-export interface StoreOptions<TExtensions extends Extension[]> extends InternalStoreOptions {
+export interface StoreOptions<TState, TExtensions extends Extension<TState>[]> extends InternalStoreOptions {
     extensions?: TExtensions;
 }
 
