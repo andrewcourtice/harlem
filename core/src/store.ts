@@ -41,6 +41,7 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
 export default class Store<TState extends object = any> implements InternalStore<TState> {
 
     private options: InternalStoreOptions;
+    private stack: Set<string>;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
 
@@ -48,12 +49,14 @@ export default class Store<TState extends object = any> implements InternalStore
     public getters: Map<string, Function>;
     public mutations: Map<string, Mutation<any>>;
 
+
     constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {
         this.options = {
             allowOverwrite: true,
             ...options
         };
 
+        this.stack = new Set();
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
         
@@ -101,6 +104,10 @@ export default class Store<TState extends object = any> implements InternalStore
     };
 
     private mutate<TPayload, TResult = void>(name: string, sender: string, mutator: Mutator<TState, TPayload, TResult>, payload: TPayload): TResult {
+        if (this.stack.has(name)) {
+            throw new Error('Circular mutation reference detected. Avoid calling mutations inside other mutations to prevent circular references.');
+        }
+
         const eventData: MutationEventData<TPayload, TResult> = {
             payload,
             mutation: name
@@ -108,6 +115,7 @@ export default class Store<TState extends object = any> implements InternalStore
 
         let result: TResult;
 
+        this.stack.add(name);
         this.emit(EVENTS.mutation.before, sender, eventData);
 
         try {
@@ -115,6 +123,8 @@ export default class Store<TState extends object = any> implements InternalStore
         } catch (error) {
             this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
+        } finally {
+            this.stack.delete(name);
         }
 
         this.emit(EVENTS.mutation.after, sender, {
