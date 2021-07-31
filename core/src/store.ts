@@ -49,7 +49,6 @@ export default class Store<TState extends object = any> implements InternalStore
     public getters: Map<string, Function>;
     public mutations: Map<string, Mutation<any>>;
 
-
     constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {
         this.options = {
             allowOverwrite: true,
