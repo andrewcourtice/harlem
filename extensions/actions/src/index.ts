@@ -1,7 +1,5 @@
 import {
-    Extension,
     InternalStore,
-    createStore,
     Mutator
 } from '@harlem/core';
 
@@ -11,19 +9,20 @@ import type {
     ActionPredicate,
     ActionStoreState,
     AddActionInstancePayload,
-    ComposedAction,
     RemoveActionInstancePayload
 } from './types';
 
 export * from './types';
 
 export default function actionsExtension<TState>(store: InternalStore<TState>) {
+    
+    const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
-    store.write('$add-actions', '$actions-extension', state => {
+    _store.write('$add-actions', '$actions-extension', state => {
         state.$actions = {};
     });
 
-    const addActionInstance = store.mutation<AddActionInstancePayload>('$add-action-instance', (state, payload) => {
+    const addActionInstance = _store.mutation<AddActionInstancePayload>('$add-action-instance', (state, payload) => {
         const {
             actionName,
             instanceId,
@@ -31,13 +30,13 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
         } = payload;
 
         if (!state.$actions[actionName]) {
-            state.$actions[actionName] = new Map<symbol, any>();
+            state.$actions[actionName] = new Map<symbol, unknown>();
         }
 
         state.$actions[actionName].set(instanceId, instancePayload);
     });
 
-    const removeActionInstance = store.mutation<RemoveActionInstancePayload>('$remove-action-instance', (state, payload) => {
+    const removeActionInstance = _store.mutation<RemoveActionInstancePayload>('$remove-action-instance', (state, payload) => {
         const {
             actionName,
             instanceId,
@@ -51,9 +50,9 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
     });
      
     function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>): Action<TPayload, TResult> {
-        const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, '$actions-extension', mutator);
+        const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, '$actions-extension', mutator);
         
-        const _action = async (payload: TPayload) => {
+        return (async (payload: TPayload) => {
             const id = Symbol(name);
     
             addActionInstance({
@@ -74,35 +73,20 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
             }
 
             return result;
-        };
-
-        _action.name = name;
-
-        return _action as Action<TPayload, TResult>;
+        }) as Action<TPayload, TResult>;
     }
 
-    function isActionRunnng<TPayload = any>(name: string, instancePredicate?: ActionPredicate<TPayload>) {
-        const predicate = instancePredicate || (() => true);
-        const instances = store.state.$actions[name];
+    function isActionRunning<TPayload = unknown>(name: string, predicate: ActionPredicate<TPayload> = () => true) {
+        const instances = _store.state.$actions[name];
 
         return !!instances && Array
             .from(instances.values())
-            .some(payload => predicate(payload));
-    }
-
-    function useAction<TPayload, TResult>(action: Action<TPayload, TResult>): ComposedAction<TPayload, TResult> {
-        const isRunning = (predicate?: ActionPredicate<TPayload>) => isActionRunnng(action.name, predicate);
-
-        return [
-            action,
-            isRunning
-        ];
+            .some(payload => predicate(payload as TPayload));
     }
 
     return {
         action,
-        isActionRunnng,
-        useAction
+        isActionRunning
     };
 
 };

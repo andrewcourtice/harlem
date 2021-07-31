@@ -2,29 +2,47 @@ import {
     createStore
 } from '@harlem/core';
 
-import actionsExtension from '../src/index';
+import actionsExtension from '../src';
 
 describe('Actions Extension', () => {
 
-    test('Performs a root reset', () => {
+    test('Runs an action', async () => {
         const {
-            action
+            state,
+            action,
+            isActionRunning
         } = createStore('test', {
             givenName: 'John',
-            surname: 'Smith'
+            surname: 'Smith',
+            age: 28
         }, {
             extensions: [
                 actionsExtension
             ]
         });
 
-        const loadUserInfo = action('load-user-info', async (id, mutate) => {
+        const actionName = 'load-user-info';
+
+        const loadUserInfo = action(actionName, async (name: string, mutate) => {
             return new Promise(resolve => setTimeout(() => {
                 mutate(state => {
-                    state.
+                    state.givenName = name;
+                    state.age = 26;
                 });
+
+                resolve(true);
             }, 300));
         });
+
+        const promise = loadUserInfo('Jane');
+
+        expect(isActionRunning(actionName)).toBe(true);
+        
+        await promise;
+        
+        expect(state.givenName).toBe('Jane');
+        expect(state.age).toBe(26);
+        expect(isActionRunning(actionName)).toBe(false);
     });
 
 });
