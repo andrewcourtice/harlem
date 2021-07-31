@@ -35,6 +35,14 @@ function getStore() {
         state.lastName = payload;
     });
 
+    const circularParent = mutation('circular-parent', state => {
+        circularChild();
+    });
+
+    const circularChild = mutation('circular-child', state => {
+        circularParent();
+    });
+
     return {
         state,
         getter,
@@ -43,6 +51,8 @@ function getStore() {
         setId,
         setFirstName,
         setLastName,
+        circularParent,
+        circularChild,
         onBeforeMutation,
         onAfterMutation
     };
@@ -58,6 +68,7 @@ describe('Harlem Core', () => {
         setId,
         setFirstName,
         setLastName,
+        circularParent,
         onBeforeMutation,
         onAfterMutation
     } = getStore();
@@ -117,6 +128,10 @@ describe('Harlem Core', () => {
 
             expect(id).toBeDefined();
             expect(typeof id).toBe('number');
+        });
+
+        test('Should detect a circular reference', () => {
+            expect(() => circularParent()).toThrow();
         });
 
     });
