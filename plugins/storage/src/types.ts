@@ -5,4 +5,4 @@ export interface Options {
     type: StorageType;
     prefix: string;
     sync: boolean;
-};
+}

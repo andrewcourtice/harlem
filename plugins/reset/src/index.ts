@@ -1,17 +1,17 @@
 import {
-    SENDER
+    SENDER,
 } from './constants';
 
 import {
     clone,
-    overwrite
+    overwrite,
 } from '@harlem/utilities';
 
 import type {
     Emittable,
     HarlemPlugin,
     InternalStores,
-    WriteState
+    WriteState,
 } from '@harlem/core';
 
 const snapshots = new Map<string, any>();
@@ -57,7 +57,7 @@ export default function createResetPlugin(): HarlemPlugin {
 
                 snapshots.set(payload.store, clone(payload.data));
             });
-        }
+        },
     };
 
 }

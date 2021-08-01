@@ -1,22 +1,22 @@
 import {
-    SENDER
+    SENDER,
 } from './constants';
 
 import {
     clone,
-    overwrite
+    overwrite,
 } from '@harlem/utilities';
 
 import type {
     Emittable,
     HarlemPlugin,
     InternalStore,
-    InternalStores
+    InternalStores,
 } from '@harlem/core';
 
 import type {
-    Snapshot
-} from './types'; 
+    Snapshot,
+} from './types';
 
 let eventEmitter: Emittable;
 let stores: InternalStores;
@@ -50,7 +50,7 @@ export function snapshot(name: string): Snapshot {
     });
 
     return {
-        apply
+        apply,
     };
 }
 
@@ -62,7 +62,7 @@ export default function createSnapshotPlugin(): HarlemPlugin {
         install(app, _eventEmitter, _stores) {
             eventEmitter = _eventEmitter;
             stores = _stores;
-        }
+        },
     };
 
 }

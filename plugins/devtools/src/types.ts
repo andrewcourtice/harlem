@@ -1,7 +1,7 @@
 import type {
     HookHandler,
     HookPayloads,
-    Hooks
+    Hooks,
 } from '@vue/devtools-api';
 
 export type TreeHookHandler = HookHandler<HookPayloads[Hooks.GET_INSPECTOR_TREE], any>;

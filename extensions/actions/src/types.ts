@@ -1,10 +1,10 @@
 import type {
-    Mutator
+    Mutator,
 } from '@harlem/core';
 
 import type {
     Task,
-    TaskAbortCallback
+    TaskAbortCallback,
 } from '@harlem/utilities';
 
 export type ActionBody<TState, TPayload = undefined, TResult = void> = (payload: TPayload, mutator: (mutate: Mutator<TState, undefined, void>) => void, controller: AbortController, onAbort: (callback: TaskAbortCallback) => void) => Promise<TResult>;

@@ -1,14 +1,14 @@
 import {
-    Task
+    Task,
 } from '@harlem/utilities';
 
 import {
-    watchEffect
+    watchEffect,
 } from 'vue';
 
 import {
     InternalStore,
-    Mutator
+    Mutator,
 } from '@harlem/core';
 
 import type {
@@ -18,13 +18,13 @@ import type {
     ActionPredicate,
     ActionStoreState,
     AddActionInstancePayload,
-    RemoveActionInstancePayload
+    RemoveActionInstancePayload,
 } from './types';
 
 export * from './types';
 
 export default function actionsExtension<TState>(store: InternalStore<TState>) {
-    
+
     const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
     _store.write('$add-actions', '$actions-extension', state => {
@@ -34,7 +34,7 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
     const registerAction = _store.mutation('$register-action', (state, name: string) => {
         state.$actions[name] = {
             runCount: 0,
-            instances: new Map<symbol, unknown>()
+            instances: new Map<symbol, unknown>(),
         };
     });
 
@@ -45,7 +45,7 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
         const {
             actionName,
             instanceId,
-            instancePayload
+            instancePayload,
         } = payload;
 
         if (!state.$actions[actionName]) {
@@ -67,19 +67,19 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
 
         state.$actions[actionName].instances.delete(instanceId);
     });
-     
+
     function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
         registerAction(name);
 
         const tasks = new Set<Task<TResult>>();
 
         const {
-            parallel
+            parallel,
         } = {
             parallel: false,
             ...options,
         };
-        
+
         const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, '$actions-extension', mutator);
 
         return ((payload: TPayload, controller?: AbortController) => {
@@ -95,15 +95,15 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
 
                 const complete = () => (tasks.delete(task), removeInstance({
                     actionName: name,
-                    instanceId: id 
+                    instanceId: id,
                 }));
-        
+
                 onAbort(() => (complete(), reject()));
                 addInstance({
                     actionName: name,
                     instanceId: id,
-                    instancePayload: payload
-                })
+                    instancePayload: payload,
+                });
 
                 try {
                     const result = await body(payload, mutate, controller, onAbort);
@@ -116,7 +116,7 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
                     }
                 } finally {
                     complete();
-                }    
+                }
             }, controller);
 
             tasks.add(task);
@@ -131,7 +131,7 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
 
     function isActionRunning<TPayload = unknown>(name: string, predicate?: ActionPredicate<TPayload>) {
         const {
-            instances
+            instances,
         } = _store.state.$actions[name];
 
         const payloads = Array.from(instances.values());
@@ -159,12 +159,12 @@ export default function actionsExtension<TState>(store: InternalStore<TState>) {
                 resolve();
             });
         }, controller);
-    };
+    }
 
     return {
         action,
         hasActionRun,
         isActionRunning,
-        whenActionIdle
+        whenActionIdle,
     };
-};
+}

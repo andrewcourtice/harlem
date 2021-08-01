@@ -2,23 +2,23 @@ import {
     ALL_STORES_ID,
     DEVTOOLS_ID,
     OPTIONS,
-    SENDER
+    SENDER,
 } from './constants';
 
 import {
-    EVENTS
+    EVENTS,
 } from '@harlem/core';
 
 import {
     PluginDescriptor,
-    setupDevtoolsPlugin
+    setupDevtoolsPlugin,
 } from '@vue/devtools-api';
 
 import type {
     App,
     CustomInspectorState,
     DevtoolsPluginApi,
-    StateBase
+    StateBase,
 } from '@vue/devtools-api';
 
 import type {
@@ -26,14 +26,14 @@ import type {
     Options,
     StateHookHandler,
     TreeHookHandler,
-    EditHookHandler
+    EditHookHandler,
 } from './types';
 
 import type {
     EventHandler,
     HarlemPlugin,
     InternalStore,
-    InternalStores
+    InternalStores,
 } from '@harlem/core';
 
 function stringComparitor(valueA: string, valueB: string): number {
@@ -44,7 +44,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
     return payload => {
         const {
             app,
-            inspectorId
+            inspectorId,
         } = payload;
 
         if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
@@ -55,7 +55,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
             .sort(stringComparitor)
             .map(name => ({
                 id: name,
-                label: name
+                label: name,
             }));
 
         payload.rootNodes = [
@@ -63,9 +63,9 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
                 children,
                 id: ALL_STORES_ID,
                 label: 'Stores',
-            }
+            },
         ];
-    }
+    };
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
@@ -73,8 +73,8 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
         {
             key: store.name,
             value: store.state,
-            editable: true
-        }
+            editable: true,
+        },
     ];
 
     const getters: StateBase[] = Array.from(store.getters)
@@ -83,15 +83,15 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
             key,
             value: accessor(),
             editable: false,
-            objectType: 'computed'
-        }))
-        
+            objectType: 'computed',
+        }));
+
     const mutations: StateBase[] = Array.from(store.mutations)
         .sort(([a], [b]) => stringComparitor(a, b))
         .map(([key, mutator]) => ({
             key,
             value: mutator,
-            editable: false
+            editable: false,
         }));
 
     return {
@@ -117,7 +117,7 @@ function getStoreSnapshots(stores: (InternalStore | undefined)[]): CustomInspect
     }, {
         state: [],
         getters: [],
-        mutations: []
+        mutations: [],
     } as CustomInspectorState);
 }
 
@@ -126,7 +126,7 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
         const {
             app,
             inspectorId,
-            nodeId
+            nodeId,
         } = payload;
 
         if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
@@ -140,7 +140,7 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
         }
 
         payload.state = getStoreSnapshots(internalStores);
-    }
+    };
 }
 
 function getInspectorEditHook(application: App, stores: InternalStores): EditHookHandler {
@@ -151,7 +151,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
             nodeId,
             path,
             state,
-            set
+            set,
         } = payload;
 
         if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
@@ -161,7 +161,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
         const root = path.shift();
         const storeId = nodeId === ALL_STORES_ID
             ? root || nodeId
-            : nodeId
+            : nodeId;
 
         const store = stores.get(storeId);
 
@@ -169,8 +169,8 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
             return;
         }
 
-        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));  
-    }
+        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));
+    };
 }
 
 function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandler {
@@ -181,9 +181,9 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
 
         const {
             sender,
-            store
+            store,
         } = payload;
-        
+
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,
@@ -195,9 +195,9 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
                 data: payload,
                 groupId: sender,
                 meta: {
-                    store: store
-                }
-            }
+                    store: store,
+                },
+            },
         });
     };
 }
@@ -205,48 +205,48 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
 export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
         label,
-        color
+        color,
     } = {
         ...OPTIONS,
-        ...options
+        ...options,
     };
 
     return {
 
         name: 'devtools',
-        
+
         install(app, eventEmitter, stores) {
             const inspectorTreeHook = getInspectorTreeHook(app, stores);
             const inspectorStateHook = getInspectorStateHook(app, stores);
             const inspectorEditHook = getInspectorEditHook(app, stores);
-            
+
             const descriptor = {
                 app,
                 label,
                 id: DEVTOOLS_ID,
                 logo: 'https://harlemjs.com/assets/images/favicon.png',
                 homepage: 'https://harlemjs.com',
-                packageName: '@harlem/plugin-devtools'
+                packageName: '@harlem/plugin-devtools',
             } as PluginDescriptor;
-            
+
             setupDevtoolsPlugin(descriptor, api => {
                 const afterMutationHook = getMutationHook(api);
                 const errorMutationHook = getMutationHook(api, 'error');
-                
+
                 api.addInspector({
                     label,
                     id: DEVTOOLS_ID,
                     icon: 'source',
-                    treeFilterPlaceholder: 'Search stores'
+                    treeFilterPlaceholder: 'Search stores',
                 });
-    
+
                 api.addTimelineLayer({
                     label,
                     color,
                     id: DEVTOOLS_ID,
-                    skipScreenshots: true
+                    skipScreenshots: true,
                 });
-    
+
                 api.on.getInspectorTree(inspectorTreeHook);
                 api.on.getInspectorState(inspectorStateHook);
                 api.on.editInspectorState(inspectorEditHook);
@@ -254,7 +254,7 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                 eventEmitter.on(EVENTS.mutation.after, afterMutationHook);
                 eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
             });
-        }
+        },
 
     };
 }

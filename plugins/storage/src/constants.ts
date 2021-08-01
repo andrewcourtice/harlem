@@ -1,6 +1,6 @@
 import type {
     Options,
-    StorageMap
+    StorageMap,
 } from './types';
 
 export const SENDER = 'storage';
@@ -8,10 +8,10 @@ export const SENDER = 'storage';
 export const OPTIONS: Options = {
     type: 'local',
     prefix: 'harlem',
-    sync: true
+    sync: true,
 };
 
 export const STORAGE: StorageMap = {
     local: localStorage,
-    session: sessionStorage
+    session: sessionStorage,
 };

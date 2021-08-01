@@ -5,4 +5,4 @@ export type TransactionRollback = () => void;
 export interface TransactionEventData {
     transaction: string;
     payload: any;
-};
+}

@@ -1,17 +1,17 @@
 import {
     OPTIONS,
     SENDER,
-    STORAGE
+    STORAGE,
 } from './constants';
 
 import type {
     EventPayload,
     HarlemPlugin,
-    MutationEventData
+    MutationEventData,
 } from '@harlem/core';
 
 import type {
-    Options
+    Options,
 } from './types';
 
 export * from './types';
@@ -20,10 +20,10 @@ export default function createStoragePlugin(stores: string | string[], options: 
     const {
         type,
         prefix,
-        sync
+        sync,
     } = {
         ...OPTIONS,
-        ...options
+        ...options,
     };
 
     const storage = STORAGE[type] || STORAGE.local;
@@ -45,16 +45,16 @@ export default function createStoragePlugin(stores: string | string[], options: 
                 if (!payload || payload.sender === SENDER || !canStore(payload.store)) {
                     return;
                 }
-                
+
                 const store = internalStores.get(payload.store);
-        
+
                 if (!store) {
                     return;
                 }
-        
+
                 const key = getKey(payload.store);
                 const state = store.state;
-        
+
                 storage.setItem(key, JSON.stringify(state));
             };
 
@@ -68,28 +68,28 @@ export default function createStoragePlugin(stores: string | string[], options: 
                 if (event.storageArea !== storage) {
                     return;
                 }
-                
+
                 const value = event.newValue;
                 const entry = Array.from(internalStores)
                     .find(([key, value]) => {
-                        return canStore(key) && event.key === getKey(key)
+                        return canStore(key) && event.key === getKey(key);
                     });
-                    
+
                 if (!entry || !value) {
                     return;
                 }
 
                 const [
                     name,
-                    store
+                    store,
                 ] = entry;
 
                 store.write('plugin:storage:sync', SENDER, state => {
                     Object.assign(state, JSON.parse(value));
                 });
             });
-        }
+        },
 
     };
 
-};
+}

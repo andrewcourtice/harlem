@@ -1,5 +1,5 @@
 import {
-    createStore
+    createStore,
 } from '@harlem/core';
 
 export interface UserDetails {
@@ -20,8 +20,8 @@ const STATE = {
     details: {
         firstName: '',
         lastName: '',
-        age: 0
-    }
+        age: 0,
+    },
 } as State;
 
 const {

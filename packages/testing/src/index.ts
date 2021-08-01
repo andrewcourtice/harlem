@@ -1,7 +1,7 @@
 import Harlem from '@harlem/core';
 
 import type {
-    HarlemPlugin
+    HarlemPlugin,
 } from '@harlem/core';
 
 const app = {
@@ -9,7 +9,7 @@ const app = {
         if (plugin && plugin.install){
             plugin.install(app, options);
         }
-    }
+    },
 };
 
 export * as store from './store';

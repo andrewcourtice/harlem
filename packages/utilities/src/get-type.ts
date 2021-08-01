@@ -1,5 +1,5 @@
 import type {
-    RuntimeType
+    RuntimeType,
 } from './types';
 
 export default function getType(input: any): RuntimeType {

@@ -1,7 +1,7 @@
 import getType from './get-type';
 
 import type {
-    RuntimeType
+    RuntimeType,
 } from './types';
 
 function cloneIdentity(input: any): any {
@@ -12,7 +12,7 @@ function cloneBasic(input: any): any {
     return new input.constructor(input);
 }
 
-function cloneSymbol(input: Symbol): Symbol {
+function cloneSymbol(input: symbol): symbol {
     return Object(Symbol.prototype.valueOf.call(input));
 }
 
@@ -65,7 +65,7 @@ const CLONE_MAP = {
     array: cloneArray,
     object: cloneObject,
     map: cloneMap,
-    set: cloneSet
+    set: cloneSet,
 } as Record<RuntimeType | 'default', ((value: any) => any)>;
 
 export default function clone(value: any) {
