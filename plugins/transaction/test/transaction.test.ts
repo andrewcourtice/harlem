@@ -1,16 +1,16 @@
 import {
     store,
-    bootstrap
+    bootstrap,
 } from '@harlem/testing';
 
 import createTransactionPlugin, {
-    transaction
+    transaction,
 } from '../src/index';
 
 describe('Transaction Plugin', () => {
 
     beforeAll(() => bootstrap([
-        createTransactionPlugin()
+        createTransactionPlugin(),
     ]));
 
     beforeEach(() => store.reset());
@@ -22,9 +22,9 @@ describe('Transaction Plugin', () => {
             store.setUserDetails({
                 firstName: 'John',
                 lastName: 'Smith',
-                age: 35
+                age: 35,
             });
-            
+
             throw new Error();
         });
 

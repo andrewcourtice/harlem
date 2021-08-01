@@ -1,16 +1,16 @@
 import {
     store,
-    bootstrap
+    bootstrap,
 } from '@harlem/testing';
 
 import createResetPlugin, {
-    reset
+    reset,
 } from '../src/index';
 
 describe('Reset Plugin', () => {
 
     beforeAll(() => bootstrap([
-        createResetPlugin()
+        createResetPlugin(),
     ]));
 
     beforeEach(() => store.reset());
@@ -19,13 +19,13 @@ describe('Reset Plugin', () => {
         store.setUserID(5);
         store.setUserDetails({
             firstName: 'John',
-            lastName: 'Smith'
+            lastName: 'Smith',
         });
 
         expect(store.state.id).toBe(5);
         expect(store.state.details.firstName).toBe('John');
         expect(store.state.details.lastName).toBe('Smith');
-        
+
         reset(store.name);
         expect(store.state.id).toBe(0);
         expect(store.state.details.firstName).toBe('');
@@ -37,14 +37,14 @@ describe('Reset Plugin', () => {
         store.setUserDetails({
             firstName: 'John',
             lastName: 'Smith',
-            age: 35
+            age: 35,
         });
 
         expect(store.state.id).toBe(7);
         expect(store.state.details.firstName).toBe('John');
         expect(store.state.details.lastName).toBe('Smith');
         expect(store.state.details.age).toBe(35);
-        
+
         reset(store.name, (state: store.State) => state.details);
         expect(store.state.id).toBe(7);
         expect(store.state.details.firstName).toBe('');

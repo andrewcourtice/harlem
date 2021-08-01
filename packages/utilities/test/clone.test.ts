@@ -1,17 +1,17 @@
 import clone from '../src/clone';
 
-function getSimpleTypes(): Record<string, any> {
+function getSimpleTypes(): Record<string, unknown> {
     return {
         num: 1,
         und: undefined,
         func1: () => console.log('test'),
         func2: function (a: number, b: number) {
             return a + b;
-        }
+        },
     };
 }
 
-function getComplexTypes(): Record<string, any> {
+function getComplexTypes(): Record<string, unknown> {
     const map = new Map();
     const set = new Set();
 
@@ -21,7 +21,7 @@ function getComplexTypes(): Record<string, any> {
 
     return {
         obj: {
-            a: 'test'
+            a: 'test',
         },
         arr: [1, 2, 3],
         map,
@@ -39,25 +39,25 @@ function getComplexTypes(): Record<string, any> {
 describe('Utilities', () => {
 
     describe('Clone', () => {
-        
+
         test('Should deep clone an object with simple types', () => {
             const source = getSimpleTypes();
             const copy = clone(source);
-            
+
             for (const key in source) {
                 expect(copy[key]).toBe(source[key]);
             }
         });
-    
+
         test('Should deep clone an object with complex types', () => {
             const source = getComplexTypes();
             const copy = clone(source);
-            
+
             for (const key in source) {
                 expect(copy[key]).not.toBe(source[key]);
             }
         });
-    
+
     });
-    
+
 });

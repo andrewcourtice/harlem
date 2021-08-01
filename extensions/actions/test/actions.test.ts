@@ -1,9 +1,9 @@
 import {
-    createStore
+    createStore,
 } from '@harlem/core';
 
 import {
-    Task
+    Task,
 } from '@harlem/utilities';
 
 import actionsExtension from '../src';
@@ -17,7 +17,7 @@ interface UserInfo {
 const STATE = {
     firstName: 'John',
     lastname: 'Smith',
-    age: 28
+    age: 28,
 } as UserInfo;
 
 function fetchUserInfo(controller: AbortController, timeout: number = 300): Task<UserInfo> {
@@ -25,7 +25,7 @@ function fetchUserInfo(controller: AbortController, timeout: number = 300): Task
         const handle = setTimeout(() => resolve({
             firstName: 'Jane',
             lastname: 'Doe',
-            age: 32
+            age: 32,
         }), timeout);
 
         onAbort(() => (clearTimeout(handle), reject('Aborted!')));
@@ -37,11 +37,11 @@ describe('Actions Extension', () => {
     test('Runs an action', async () => {
         const {
             state,
-            action
+            action,
         } = createStore('basic-action', { ...STATE }, {
             extensions: [
-                actionsExtension
-            ]
+                actionsExtension,
+            ],
         });
 
         const actionName = 'load-user-info';
@@ -53,7 +53,7 @@ describe('Actions Extension', () => {
         });
 
         await loadUserInfo();
-        
+
         expect(state.firstName).toBe('Jane');
         expect(state.lastname).toBe('Doe');
         expect(state.age).toBe(32);
@@ -64,11 +64,11 @@ describe('Actions Extension', () => {
             state,
             action,
             hasActionRun,
-            isActionRunning
+            isActionRunning,
         } = createStore('test', { ...STATE }, {
             extensions: [
-                actionsExtension
-            ]
+                actionsExtension,
+            ],
         });
 
         const actionName = 'load-user-info';
@@ -77,17 +77,17 @@ describe('Actions Extension', () => {
             const userDetails = await fetchUserInfo(controller);
 
             mutate(state => Object.assign(state, userDetails));
-        });        
-        
+        });
+
         expect(hasActionRun(actionName)).toBe(false);
         expect(isActionRunning(actionName)).toBe(false);
-        
+
         const promise = loadUserInfo();
-        
+
         expect(isActionRunning(actionName)).toBe(true);
-        
+
         await promise;
-        
+
         expect(state.firstName).toBe('Jane');
         expect(state.lastname).toBe('Doe');
         expect(state.age).toBe(32);
@@ -98,11 +98,11 @@ describe('Actions Extension', () => {
         const {
             state,
             action,
-            hasActionRun
+            hasActionRun,
         } = createStore('cancel-action', { ...STATE }, {
             extensions: [
-                actionsExtension
-            ]
+                actionsExtension,
+            ],
         });
 
         const actionName = 'load-user-info';
@@ -134,13 +134,13 @@ describe('Actions Extension', () => {
             action,
         } = createStore('cancel-action', { ...STATE }, {
             extensions: [
-                actionsExtension
-            ]
+                actionsExtension,
+            ],
         });
 
         const singleAction = action('cation', async () => {});
         const concurrentAction = action('cation', async () => {}, {
-            parallel: true
+            parallel: true,
         });
 
         let hasSingleFailed = false;
@@ -148,7 +148,7 @@ describe('Actions Extension', () => {
         try {
             await Promise.all([
                 singleAction(),
-                singleAction()
+                singleAction(),
             ]);
         } catch {
             hasSingleFailed = true;
@@ -159,7 +159,7 @@ describe('Actions Extension', () => {
         try {
             await Promise.all([
                 concurrentAction(),
-                concurrentAction()
+                concurrentAction(),
             ]);
         } catch {
             hasConcurrentFailed = true;
