@@ -34,6 +34,7 @@
     },
     "peerDependencies": {
         "@harlem/core": "^1.1.2",
+        "@harlem/utilities": "^1.1.2",
         "vue": "^3.0.0"
     },
     "devDependencies": {
