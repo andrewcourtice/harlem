@@ -608,6 +608,25 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@harlem/plugin-reset@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@harlem/plugin-reset/-/plugin-reset-1.3.2.tgz#bd3c69d2ce4f8784983f852e81a4c30dcaf37f03"
+  integrity sha512-c2KRKMOR4Yx+FmFAJpo/1xqGvrwCmx2Z7+30bIqvlQFtdb6xx7SIzMpAtwLJVmtdZkWvZwp3m/x5ngGSOm+1dA==
+  dependencies:
+    "@harlem/utilities" "^1.3.2"
+
+"@harlem/plugin-storage@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@harlem/plugin-storage/-/plugin-storage-1.3.2.tgz#701964c249372adaba38b57188a97eb33d0126a6"
+  integrity sha512-8xcKdO49JuxkWjYd73rJizLpzwroUxEemJDVeTbMhDTvGeJcbw4cGd8M1C2amXS49dPWB69WM9dhNjqSFuSwkw==
+
+"@harlem/plugin-transaction@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@harlem/plugin-transaction/-/plugin-transaction-1.3.2.tgz#726f1d15c715be99a251372552b60a2bbe9f9013"
+  integrity sha512-2aubawMNRF07EdajAuEcttM1HSsRkrz4QaxJ64H3fYpHe1/vXsUDwFpNHpsQqXKNoYDEBfHx+H1WFWglwxmsAg==
+  dependencies:
+    "@harlem/utilities" "^1.3.2"
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"

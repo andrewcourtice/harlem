@@ -12,8 +12,15 @@ const app = {
     },
 };
 
-export * as store from './store';
+export {
+    getStore,
+    jsonClone,
+} from './store';
 
 export function bootstrap(plugins?: HarlemPlugin[]): void {
     app.use(Harlem, { plugins });
+}
+
+export function sleep(timeout: number = 0) {
+    return new Promise(resolve => setTimeout(resolve, timeout));
 }

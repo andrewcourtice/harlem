@@ -17,6 +17,7 @@ import {
 } from './utilities';
 
 import type {
+    BaseState,
     EventHandler,
     EventListener,
     EventPayload,
@@ -38,7 +39,7 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
     };
 }
 
-export default class Store<TState extends object = any> implements InternalStore<TState> {
+export default class Store<TState extends BaseState = any> implements InternalStore<TState> {
 
     private options: InternalStoreOptions;
     private stack: Set<string>;
@@ -46,7 +47,7 @@ export default class Store<TState extends object = any> implements InternalStore
     private writeState: WriteState<TState>;
 
     public name: string;
-    public getters: Map<string, Function>;
+    public getters: Map<string, () => unknown>;
     public mutations: Map<string, Mutation<any>>;
 
     constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {

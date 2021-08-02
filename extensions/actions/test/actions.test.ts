@@ -1,30 +1,25 @@
 import {
-    createStore,
-} from '@harlem/core';
-
-import {
     Task,
 } from '@harlem/utilities';
+
+import {
+    getStore,
+    bootstrap,
+} from '@harlem/testing';
 
 import actionsExtension from '../src';
 
 interface UserInfo {
     firstName: string;
-    lastname: string;
+    lastName: string;
     age: number;
 }
-
-const STATE = {
-    firstName: 'John',
-    lastname: 'Smith',
-    age: 28,
-} as UserInfo;
 
 function fetchUserInfo(controller: AbortController, timeout: number = 300): Task<UserInfo> {
     return new Task((resolve, reject, controller, onAbort) => {
         const handle = setTimeout(() => resolve({
             firstName: 'Jane',
-            lastname: 'Doe',
+            lastName: 'Doe',
             age: 32,
         }), timeout);
 
@@ -34,84 +29,86 @@ function fetchUserInfo(controller: AbortController, timeout: number = 300): Task
 
 describe('Actions Extension', () => {
 
-    test('Runs an action', async () => {
-        const {
-            state,
-            action,
-        } = createStore('basic-action', { ...STATE }, {
+    const getInstance = () => {
+        const instance = getStore({
             extensions: [
-                actionsExtension,
+                actionsExtension(),
             ],
         });
 
-        const actionName = 'load-user-info';
-
-        const loadUserInfo = action(actionName, async (_, mutate, controller) => {
+        const loadUserInfoName = 'load-user-info';
+        const loadUserInfo = instance.store.action(loadUserInfoName, async (_, mutate, controller) => {
             const userDetails = await fetchUserInfo(controller);
 
-            mutate(state => Object.assign(state, userDetails));
+            mutate(state => Object.assign(state.details, userDetails));
         });
+
+        return {
+            ...instance,
+            loadUserInfoName,
+            loadUserInfo,
+        };
+    };
+
+    let instance = getInstance();
+
+    beforeAll(() => bootstrap());
+    beforeEach(() => instance = getInstance());
+    afterEach(() => instance.store.destroy());
+
+    test('Runs an action', async () => {
+        const {
+            loadUserInfo,
+        } = instance;
+
+        const {
+            state,
+        } = instance.store;
 
         await loadUserInfo();
 
-        expect(state.firstName).toBe('Jane');
-        expect(state.lastname).toBe('Doe');
-        expect(state.age).toBe(32);
+        expect(state.details.firstName).toBe('Jane');
+        expect(state.details.lastName).toBe('Doe');
+        expect(state.details.age).toBe(32);
     });
 
     test('Handles run count', async () => {
         const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
             state,
-            action,
             hasActionRun,
             isActionRunning,
-        } = createStore('test', { ...STATE }, {
-            extensions: [
-                actionsExtension,
-            ],
-        });
+        } = instance.store;
 
-        const actionName = 'load-user-info';
-
-        const loadUserInfo = action(actionName, async (_, mutate, controller) => {
-            const userDetails = await fetchUserInfo(controller);
-
-            mutate(state => Object.assign(state, userDetails));
-        });
-
-        expect(hasActionRun(actionName)).toBe(false);
-        expect(isActionRunning(actionName)).toBe(false);
+        expect(hasActionRun(loadUserInfoName)).toBe(false);
+        expect(isActionRunning(loadUserInfoName)).toBe(false);
 
         const promise = loadUserInfo();
 
-        expect(isActionRunning(actionName)).toBe(true);
+        expect(isActionRunning(loadUserInfoName)).toBe(true);
 
         await promise;
 
-        expect(state.firstName).toBe('Jane');
-        expect(state.lastname).toBe('Doe');
-        expect(state.age).toBe(32);
-        expect(hasActionRun(actionName)).toBe(true);
+        expect(state.details.firstName).toBe('Jane');
+        expect(state.details.lastName).toBe('Doe');
+        expect(state.details.age).toBe(32);
+        expect(hasActionRun(loadUserInfoName)).toBe(true);
     });
 
     test('Handles cancellation', async () => {
         const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
             state,
-            action,
             hasActionRun,
-        } = createStore('cancel-action', { ...STATE }, {
-            extensions: [
-                actionsExtension,
-            ],
-        });
-
-        const actionName = 'load-user-info';
-
-        const loadUserInfo = action(actionName, async (_, mutate, controller) => {
-            const userDetails = await fetchUserInfo(controller);
-
-            mutate(state => Object.assign(state, userDetails));
-        });
+        } = instance.store;
 
         const task = loadUserInfo();
 
@@ -120,23 +117,19 @@ describe('Actions Extension', () => {
         try {
             await task;
         } catch {
-
+            // do nothing
         } finally {
-            expect(state.firstName).toBe('John');
-            expect(state.lastname).toBe('Smith');
-            expect(state.age).toBe(28);
-            expect(hasActionRun(actionName)).toBe(false);
+            expect(state.details.firstName).toBe('');
+            expect(state.details.lastName).toBe('');
+            expect(state.details.age).toBe(0);
+            expect(hasActionRun(loadUserInfoName)).toBe(false);
         }
     });
 
     test('Handles concurrency', async () => {
         const {
             action,
-        } = createStore('cancel-action', { ...STATE }, {
-            extensions: [
-                actionsExtension,
-            ],
-        });
+        } = instance.store;
 
         const singleAction = action('cation', async () => {});
         const concurrentAction = action('cation', async () => {}, {

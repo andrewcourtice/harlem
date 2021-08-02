@@ -1,23 +1,33 @@
 import {
-    store,
+    getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import createResetPlugin, {
-    reset,
-} from '../src/index';
+import resetExtension from '../src';
 
 describe('Reset Plugin', () => {
 
-    beforeAll(() => bootstrap([
-        createResetPlugin(),
-    ]));
+    const getInstance = () => getStore({
+        extensions: [
+            resetExtension(),
+        ],
+    });
 
-    beforeEach(() => store.reset());
+    let instance = getInstance();
+
+    beforeAll(() => bootstrap());
+    beforeEach(() => instance = getInstance());
+    afterEach(() => instance.store.destroy());
 
     test('Performs a root reset', () => {
-        store.setUserID(5);
-        store.setUserDetails({
+        const {
+            store,
+            setUserID,
+            setUserDetails,
+        } = instance;
+
+        setUserID(5);
+        setUserDetails({
             firstName: 'John',
             lastName: 'Smith',
         });
@@ -26,15 +36,22 @@ describe('Reset Plugin', () => {
         expect(store.state.details.firstName).toBe('John');
         expect(store.state.details.lastName).toBe('Smith');
 
-        reset(store.name);
+        store.reset();
+
         expect(store.state.id).toBe(0);
         expect(store.state.details.firstName).toBe('');
         expect(store.state.details.lastName).toBe('');
     });
 
     test('Performs a partial reset', () => {
-        store.setUserID(7);
-        store.setUserDetails({
+        const {
+            store,
+            setUserID,
+            setUserDetails,
+        } = instance;
+
+        setUserID(7);
+        setUserDetails({
             firstName: 'John',
             lastName: 'Smith',
             age: 35,
@@ -45,7 +62,8 @@ describe('Reset Plugin', () => {
         expect(store.state.details.lastName).toBe('Smith');
         expect(store.state.details.age).toBe(35);
 
-        reset(store.name, (state: store.State) => state.details);
+        store.reset(state => state.details);
+
         expect(store.state.id).toBe(7);
         expect(store.state.details.firstName).toBe('');
         expect(store.state.details.lastName).toBe('');
