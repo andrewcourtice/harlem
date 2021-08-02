@@ -1,14 +1,15 @@
 import getType from './get-type';
 
 import type {
+    Constructable,
     RuntimeType,
 } from './types';
 
-function cloneIdentity(input: any): any {
+function cloneIdentity(input: unknown): unknown {
     return input;
 }
 
-function cloneBasic(input: any): any {
+function cloneBasic(input: Constructable): unknown {
     return new input.constructor(input);
 }
 
@@ -16,8 +17,8 @@ function cloneSymbol(input: symbol): symbol {
     return Object(Symbol.prototype.valueOf.call(input));
 }
 
-function cloneObject(input: Record<PropertyKey, any>): Record<PropertyKey, any> {
-    const output: Record<PropertyKey, any> = {};
+function cloneObject(input: Record<PropertyKey, unknown>): Record<PropertyKey, unknown> {
+    const output: Record<PropertyKey, unknown> = {};
 
     for (const key in input) {
         output[key] = clone(input[key]);
@@ -26,11 +27,11 @@ function cloneObject(input: Record<PropertyKey, any>): Record<PropertyKey, any> 
     return output;
 }
 
-function cloneArray(input: any[]): any[] {
+function cloneArray(input: unknown[]): unknown[] {
     return input.map(clone);
 }
 
-function cloneSet(input: Set<any>): Set<any> {
+function cloneSet(input: Set<unknown>): Set<unknown> {
     const output = new Set();
 
     input.forEach(value => {
@@ -40,7 +41,7 @@ function cloneSet(input: Set<any>): Set<any> {
     return output;
 }
 
-function cloneMap(input: Map<any, any>): Map<any, any> {
+function cloneMap(input: Map<unknown, unknown>): Map<unknown, unknown> {
     const output = new Map();
 
     input.forEach((value, key) => {
@@ -66,9 +67,9 @@ const CLONE_MAP = {
     object: cloneObject,
     map: cloneMap,
     set: cloneSet,
-} as Record<RuntimeType | 'default', ((value: any) => any)>;
+} as Record<RuntimeType | 'default', ((value: unknown) => unknown)>;
 
-export default function clone(value: any) {
+export default function clone<TValue = unknown>(value: TValue): TValue {
     if (typeof value !== 'object' || value === null) {
         return value;
     }
@@ -76,5 +77,5 @@ export default function clone(value: any) {
     const type = getType(value);
     const cloner = CLONE_MAP[type] || CLONE_MAP.default;
 
-    return cloner(value);
+    return cloner(value) as TValue;
 }

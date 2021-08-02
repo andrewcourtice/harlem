@@ -1,6 +1,6 @@
 import {
     createStore,
-    MutationHookHandler
+    MutationHookHandler,
 } from '../src/index';
 
 function getStore() {
@@ -9,17 +9,17 @@ function getStore() {
         getter,
         mutation,
         onBeforeMutation,
-        onAfterMutation
+        onAfterMutation,
     } = createStore('main', {
         id: 0,
         firstName: 'John',
-        lastName: 'Smith'
+        lastName: 'Smith',
     }, {
-        allowOverwrite: false
+        allowOverwrite: false,
     });
 
     const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
-    
+
     const setId = mutation<undefined, number>('set-id', state => {
         const id = Math.round(Math.random() * 100000);
 
@@ -54,7 +54,7 @@ function getStore() {
         circularParent,
         circularChild,
         onBeforeMutation,
-        onAfterMutation
+        onAfterMutation,
     };
 }
 
@@ -70,7 +70,7 @@ describe('Harlem Core', () => {
         setLastName,
         circularParent,
         onBeforeMutation,
-        onAfterMutation
+        onAfterMutation,
     } = getStore();
 
     describe('Store', () => {
@@ -79,9 +79,9 @@ describe('Harlem Core', () => {
             const duplicates = [
                 () => createStore('main', {}),
                 () => getter('fullname', () => {}),
-                () => mutation('set-firstname', () => {})
+                () => mutation('set-firstname', () => {}),
             ];
-    
+
             duplicates.forEach(invokee => {
                 expect(() => invokee()).toThrow();
             });
@@ -90,16 +90,16 @@ describe('Harlem Core', () => {
     });
 
     describe('State', () => {
-        
+
         test('Should be populated', () => {
             expect(state).toHaveProperty('firstName');
             expect(state).toHaveProperty('lastName');
         });
-    
+
         test('Should be readonly', () => {
             // @ts-expect-error
             state.firstName = 'Billy';
-    
+
             expect(state.firstName).toBe('John');
         });
 
@@ -118,7 +118,7 @@ describe('Harlem Core', () => {
         test('Should correctly mutate state', () => {
             setFirstName('Jane');
             setLastName('Doe');
-    
+
             expect(state.firstName).toBe('Jane');
             expect(state.lastName).toBe('Doe');
         });
@@ -144,7 +144,7 @@ describe('Harlem Core', () => {
             }) as MutationHookHandler<any, any>;
 
             const {
-                dispose
+                dispose,
             } = onBeforeMutation('set-id', handler);
 
             setId();
@@ -159,7 +159,7 @@ describe('Harlem Core', () => {
             }) as MutationHookHandler<any, any>;
 
             const {
-                dispose
+                dispose,
             } = onAfterMutation('set-id', handler);
 
             setId();
@@ -168,6 +168,6 @@ describe('Harlem Core', () => {
             dispose();
         });
 
-    })
+    });
 
 });

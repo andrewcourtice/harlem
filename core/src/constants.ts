@@ -2,15 +2,15 @@ export const SENDER = 'core';
 
 export const EVENTS = {
     core: {
-        installed: 'core:installed'
+        installed: 'core:installed',
     },
     store: {
         created: 'store:created',
-        destroyed: 'store:destroyed'
+        destroyed: 'store:destroyed',
     },
     mutation: {
         before: 'mutation:before',
         after: 'mutation:after',
-        error: 'mutation:error'
-    }
+        error: 'mutation:error',
+    },
 };

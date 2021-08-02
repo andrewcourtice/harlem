@@ -6,13 +6,13 @@ export function lockObject<T extends object>(input: T, exclusions: (keyof T)[]):
             }
 
             const value = target[prop as keyof T];
-            
+
             if (typeof value === 'function') {
                 return (...args: any[]) => Reflect.apply(value, target, args);
             }
 
             return value;
-        }
+        },
     });
 }
 

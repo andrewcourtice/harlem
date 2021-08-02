@@ -9,7 +9,7 @@ import createDevtoolsPlugin from '@harlem/plugin-devtools';
 import createResetPlugin from '@harlem/plugin-reset';
 
 import {
-    createApp
+    createApp,
 } from 'vue';
 
 function start() {
@@ -17,8 +17,8 @@ function start() {
         .use(Harlem, {
             plugins: [
                 createDevtoolsPlugin(),
-                createResetPlugin()
-            ]
+                createResetPlugin(),
+            ],
         })
         .mount('#app');
 }

@@ -2,7 +2,7 @@ import type {
     Emittable,
     EventHandler,
     EventListener,
-    EventPayload
+    EventPayload,
 } from './types';
 
 export class EventEmitter implements Emittable {
@@ -21,7 +21,7 @@ export class EventEmitter implements Emittable {
         this.listeners[event].push(handler);
 
         return {
-            dispose: () => this.off(event, handler)
+            dispose: () => this.off(event, handler),
         };
     }
 

@@ -1,15 +1,15 @@
 import STATE from './state';
 
 import {
-    createStore
+    createStore,
 } from '@harlem/core';
 
 import {
-    reset as _reset
+    reset as _reset,
 } from '@harlem/plugin-reset';
 
 import type {
-    State
+    State,
 } from './types';
 
 const NAME = 'user';
@@ -18,7 +18,7 @@ export const {
     state,
     getter,
     mutation,
-    on
+    on,
 } = createStore<State>(NAME, STATE);
 
 export const reset = () => _reset(NAME);

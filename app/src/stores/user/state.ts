@@ -1,5 +1,5 @@
 import type {
-    State
+    State,
 } from './types';
 
 export default {
@@ -8,6 +8,6 @@ export default {
         firstName: '',
         lastName: '',
         email: null,
-        dateOfBirth: null
-    }
+        dateOfBirth: null,
+    },
 } as State;

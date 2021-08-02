@@ -4,8 +4,8 @@ import type {
     TaskExecutor,
 } from './types';
 
-function safeRun<TResult = unknown>(bodyInvokee: Product<TResult>, finallyInvokee: Product): Product<TResult> {
-    return (...args: unknown[]) => {
+function safeRun<TResult>(bodyInvokee: Product<TResult>, finallyInvokee: Product): Product<TResult> {
+    return (...args: any[]) => {
         try {
             return bodyInvokee(...args);
         } finally {
@@ -17,7 +17,7 @@ function safeRun<TResult = unknown>(bodyInvokee: Product<TResult>, finallyInvoke
 export default class Task<T = void> extends Promise<T> {
 
     private controller: AbortController;
-    private abortReason: any;
+    private abortReason: unknown;
 
     constructor(executor: TaskExecutor<T>, controller: AbortController = new AbortController()) {
         if (controller.signal.aborted) {
@@ -69,7 +69,7 @@ export default class Task<T = void> extends Promise<T> {
         return this.signal.aborted;
     }
 
-    public abort(reason?: any): this {
+    public abort(reason?: unknown): this {
         this.abortReason = reason;
         this.controller.abort();
 

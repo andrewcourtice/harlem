@@ -1,5 +1,5 @@
 import {
-    getter
+    getter,
 } from './store';
 
 export const fullName = getter('fullname', ({ details }) => `${details.firstName} ${details.lastName}`);

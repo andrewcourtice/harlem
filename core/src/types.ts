@@ -1,7 +1,7 @@
 import type {
     App,
     ComputedRef,
-    DeepReadonly
+    DeepReadonly,
 } from 'vue';
 
 type UnionToIntersection<U> = (U extends any ? (arg: U) => any : never) extends ((arg: infer I) => void) ? I : never;
@@ -32,13 +32,13 @@ export interface EventPayload<TData = any> {
     sender: string;
     store: string;
     data: TData;
-};
+}
 
 export interface MutationEventData<TPayload = any, TResult = any> {
     mutation: string;
     payload: TPayload;
     result?: TResult;
-};
+}
 
 export interface StoreBase<TState> {
     getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult>;
@@ -72,7 +72,7 @@ export interface Store<TState> extends StoreBase<TState> {
     onBeforeMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
     onAfterMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
     onMutationError<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
-};
+}
 
 export interface HarlemPlugin {
     name: string;

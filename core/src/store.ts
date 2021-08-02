@@ -2,18 +2,18 @@ import eventEmitter from './event-emitter';
 
 import {
     EVENTS,
-    SENDER
+    SENDER,
 } from './constants';
 
 import {
     reactive,
     readonly,
     computed,
-    ComputedRef
+    ComputedRef,
 } from 'vue';
 
 import {
-    raiseOverwriteError
+    raiseOverwriteError,
 } from './utilities';
 
 import type {
@@ -27,7 +27,7 @@ import type {
     MutationEventData,
     Mutator,
     ReadState,
-    WriteState
+    WriteState,
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
@@ -52,13 +52,13 @@ export default class Store<TState extends object = any> implements InternalStore
     constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {
         this.options = {
             allowOverwrite: true,
-            ...options
+            ...options,
         };
 
         this.stack = new Set();
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
-        
+
         this.name = name;
         this.getters = new Map();
         this.mutations = new Map();
@@ -76,7 +76,7 @@ export default class Store<TState extends object = any> implements InternalStore
         const payload: EventPayload = {
             data,
             sender,
-            store: this.name
+            store: this.name,
         };
 
         eventEmitter.emit(event, payload);
@@ -85,7 +85,7 @@ export default class Store<TState extends object = any> implements InternalStore
     public on(event: string, handler: EventHandler): EventListener {
         return eventEmitter.on(event, localiseHandler(this.name, handler));
     }
-    
+
     public once(event: string, handler: EventHandler): EventListener {
         return eventEmitter.once(event, localiseHandler(this.name, handler));
     }
@@ -98,9 +98,9 @@ export default class Store<TState extends object = any> implements InternalStore
         const output = computed(() => getter(this.state));
 
         this.getters.set(name, () => output.value);
-        
+
         return output;
-    };
+    }
 
     private mutate<TPayload, TResult = void>(name: string, sender: string, mutator: Mutator<TState, TPayload, TResult>, payload: TPayload): TResult {
         if (this.stack.has(name)) {
@@ -109,7 +109,7 @@ export default class Store<TState extends object = any> implements InternalStore
 
         const eventData: MutationEventData<TPayload, TResult> = {
             payload,
-            mutation: name
+            mutation: name,
         };
 
         let result: TResult;
@@ -128,7 +128,7 @@ export default class Store<TState extends object = any> implements InternalStore
 
         this.emit(EVENTS.mutation.after, sender, {
             ...eventData,
-            result
+            result,
         });
 
         return result;
@@ -142,9 +142,9 @@ export default class Store<TState extends object = any> implements InternalStore
         const mutation = ((payload: TPayload) => {
             return this.mutate(name, SENDER, mutator, payload);
         }) as Mutation<TPayload, TResult>;
-        
+
         this.mutations.set(name, mutation);
-        
+
         return mutation;
     }
 
@@ -157,7 +157,7 @@ export default class Store<TState extends object = any> implements InternalStore
 
         return mutation(payload);
     }
-    
+
     public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult {
         return this.mutate(name, sender, mutator, undefined);
     }

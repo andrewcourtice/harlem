@@ -4,17 +4,17 @@ import eventEmitter from './event-emitter';
 
 import {
     EVENTS,
-    SENDER
+    SENDER,
 } from './constants';
 
 import {
     lockObject,
-    raiseOverwriteError
+    raiseOverwriteError,
 } from './utilities';
 
 import type {
     App,
-    Plugin
+    Plugin,
 } from 'vue';
 
 import type {
@@ -30,9 +30,7 @@ import type {
     StoreOptions,
 } from './types';
 
-export {
-    EVENTS
-} from './constants';
+export { EVENTS } from './constants';
 
 export * from './types';
 
@@ -53,13 +51,13 @@ function emitCreated(store: InternalStore, state: any): void {
     This is necessary because the stores may be
     created before the plugin has been installed.
     */
-   const created = () => store.emit(EVENTS.store.created, SENDER, state);
+    const created = () => store.emit(EVENTS.store.created, SENDER, state);
 
-   if (installed) {
-       return created();
-   }
+    if (installed) {
+        return created();
+    }
 
-   eventEmitter.once(EVENTS.core.installed, created);
+    eventEmitter.once(EVENTS.core.installed, created);
 }
 
 function getExtendedStore<TState, TExtensions extends Extension<TState>[]>(store: InternalStore, extensions: TExtensions): ReturnType<Extension<TState>> {
@@ -74,7 +72,7 @@ function getExtendedStore<TState, TExtensions extends Extension<TState>[]>(store
 
         return {
             ...output,
-            ...result
+            ...result,
         };
     }, {});
 }
@@ -86,13 +84,13 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 
     const {
         name,
-        install
+        install,
     } = plugin;
 
     const lockedStores = lockObject(stores, [
         'set',
         'delete',
-        'clear'
+        'clear',
     ]);
 
     try {
@@ -108,17 +106,17 @@ export const once = eventEmitter.once.bind(eventEmitter);
 export function createStore<TState extends object, TExtensions extends Extension<TState>[]>(name: string, state: TState, options?: Partial<StoreOptions<TState, TExtensions>>): Store<TState> & ExtendedStore<TExtensions> {
     const {
         allowOverwrite,
-        extensions
+        extensions,
     } = {
         allowOverwrite: true,
         extensions: [store => ({})] as TExtensions,
-        ...options
+        ...options,
     };
 
     validateStoreCreation(name);
 
     const store = new InternalStore(name, state, {
-        allowOverwrite
+        allowOverwrite,
     });
 
     const destroy = () => {
@@ -132,7 +130,7 @@ export function createStore<TState extends object, TExtensions extends Extension
                 if (event && ([] as string[]).concat(mutationName).includes(event.data.mutation)) {
                     handler(event.data);
                 }
-            })
+            });
         };
     };
 
@@ -155,7 +153,7 @@ export function createStore<TState extends object, TExtensions extends Extension
         mutation: store.mutation.bind(store),
         on: store.on.bind(store),
         once: store.once.bind(store),
-        ...extendedStore
+        ...extendedStore,
     } as any;
 }
 
@@ -163,10 +161,10 @@ export default {
 
     install(app, options?: PluginOptions) {
         const {
-            plugins
+            plugins,
         } = {
             plugins: [],
-            ...options
+            ...options,
         };
 
         if (plugins) {
@@ -175,6 +173,6 @@ export default {
 
         installed = true;
         eventEmitter.emit(EVENTS.core.installed);
-    }
+    },
 
 } as Plugin;

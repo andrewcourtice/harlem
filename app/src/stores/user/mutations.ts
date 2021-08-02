@@ -1,9 +1,9 @@
 import {
-    mutation
+    mutation,
 } from './store';
 
 import type {
-    UserDetails
+    UserDetails,
 } from './types';
 
 export const setUserId = mutation('set-user-id', (state, id: number) => {

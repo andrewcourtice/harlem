@@ -3,5 +3,5 @@ export * from './mutations';
 
 export {
     state,
-    reset
+    reset,
 } from './store';
