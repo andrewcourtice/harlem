@@ -29,6 +29,8 @@ import type {
     Mutator,
     ReadState,
     WriteState,
+    StoreProvider,
+    StoreProviders,
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
@@ -45,6 +47,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     private stack: Set<string>;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
+    private providers: StoreProviders<TState>;
 
     public name: string;
     public getters: Map<string, () => unknown>;
@@ -60,6 +63,11 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
 
+        this.providers = {
+            read: value => value,
+            write: value => value,
+        };
+
         this.name = name;
         this.getters = new Map();
         this.mutations = new Map();
@@ -70,7 +78,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public get state(): ReadState<TState> {
-        return this.readState;
+        return this.providers.read(this.readState);
     }
 
     public emit(event: string, sender: string, data: any): void {
@@ -89,6 +97,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
     public once(event: string, handler: EventHandler): EventListener {
         return eventEmitter.once(event, localiseHandler(this.name, handler));
+    }
+
+    public provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void {
+        this.providers[key] = value;
     }
 
     public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
@@ -119,7 +131,8 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.emit(EVENTS.mutation.before, sender, eventData);
 
         try {
-            result = mutator(this.writeState, payload);
+            const state = this.providers.write(this.writeState);
+            result = mutator(state, payload);
         } catch (error) {
             this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
