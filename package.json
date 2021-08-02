@@ -19,7 +19,7 @@
         "test": "yarn jest",
         "build": "yarn lerna run build --no-private",
         "release": "yarn lerna publish --force-publish",
-        "lint": "eslint \"@(extensions|packages|plugins)/*/@(src|test)/**/*.ts\""
+        "lint": "eslint \"@(extensions|packages|plugins)/*/@(src|test)/**/@(*.ts|*.js)\""
     },
     "devDependencies": {
         "@commitlint/cli": "^13.1.0",

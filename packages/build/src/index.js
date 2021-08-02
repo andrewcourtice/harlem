@@ -20,7 +20,7 @@ function getConfig(format, cwd, fileName, options) {
     const extension = EXTENSIONS[format] || 'js';
 
     const entryPoints = [
-        input
+        input,
     ];
 
     const configs = [
@@ -29,8 +29,8 @@ function getConfig(format, cwd, fileName, options) {
             entryPoints,
             outfile: path.join(output, `/${fileName}.${extension}`),
             define: {
-                __DEV__: false
-            }
+                __DEV__: false,
+            },
         },
         {
             format,
@@ -38,9 +38,9 @@ function getConfig(format, cwd, fileName, options) {
             minify: true,
             outfile: path.join(output, `/${fileName}.min.${extension}`),
             define: {
-                __DEV__: false
-            }
-        }
+                __DEV__: false,
+            },
+        },
     ];
 
     if (format !== 'iife') {
@@ -50,11 +50,11 @@ function getConfig(format, cwd, fileName, options) {
             platform: 'node',
             outfile: path.join(output, `/${fileName}.bundler.${extension}`),
             inject: [
-                path.resolve(__dirname, './injections/dev.js')
-            ]
+                path.resolve(__dirname, './injections/dev.js'),
+            ],
         });
     }
-    
+
     return configs.map(config => merge({}, CONFIG, config, options));
 }
 
@@ -67,33 +67,33 @@ async function build(cwd, filename, options) {
     const output = path.resolve(cwd, './dist');
 
     console.log('Build Started');
-    
+
     try {
         // Delete the output directory
         fs.rmSync(output, {
             recursive: true,
-            force: true
+            force: true,
         });
 
         const tasks = FORMATS.flatMap(format => {
-            const configs = getConfig(format, cwd, filename, options)
-    
+            const configs = getConfig(format, cwd, filename, options);
+
             return configs.map(config => esbuild.build(config));
         });
-    
+
         await Promise.all(tasks);
     } catch (error) {
         process.exit(1);
     }
-    
+
     console.log('Build Complete');
     console.log('Type Generation Started');
-    
+
     try {
         await new Promise((resolve, reject) => {
             childproc.exec(`tsc --emitDeclarationOnly --outDir ${output}`, {
-                cwd
-            }, error => error ? reject(error) : resolve())
+                cwd,
+            }, error => error ? reject(error) : resolve());
         });
     } catch (error) {
         console.error(error);

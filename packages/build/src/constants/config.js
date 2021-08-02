@@ -8,10 +8,10 @@ module.exports = {
     external: [
         'vue',
         '@vue',
-        '@harlem'
+        '@harlem',
     ],
     target: [
-        'es2020'
+        'es2020',
     ],
     define: {
         //'process.env.NODE_ENV': '"production"'

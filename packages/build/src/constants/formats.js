@@ -1,5 +1,5 @@
 module.exports = [
     'esm',
     'cjs',
-    'iife'
+    'iife',
 ];
