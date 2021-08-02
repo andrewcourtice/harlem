@@ -1,6 +1,6 @@
 import {
-    EVENTS,
     SENDER,
+    EVENTS,
 } from './constants';
 
 import {
@@ -8,84 +8,50 @@ import {
     overwrite,
 } from '@harlem/utilities';
 
-import type {
-    Emittable,
-    EventPayload,
-    HarlemPlugin,
-    InternalStores,
+import {
+    BaseState,
+    InternalStore,
+    ReadState,
 } from '@harlem/core';
 
 import type {
     Transactor,
     Transaction,
     TransactionEventData,
-    TransactionRollback,
 } from './types';
 
 export * from './types';
 
-let eventEmitter: Emittable;
-let stores: InternalStores;
+export default function transactionExtension<TState extends BaseState>() {
+    return (store: InternalStore<TState>) => {
+        const rollback = store.mutation('$transaction-rollback', (state, snapshot: ReadState<TState>) => overwrite(state, snapshot));
 
-export function transaction<TPayload>(name: string, transactor: Transactor<TPayload>): Transaction<TPayload> {
-    return payload => {
-        if (!eventEmitter || !stores) {
-            throw new Error('Please ensure the transaction plugin is registered before creating a transaction');
-        }
-
-        const rollbacks = new Map<string, TransactionRollback>();
-
-        const eventPayload: EventPayload<TransactionEventData> = {
-            store: '$all',
-            sender: SENDER,
-            data: {
-                payload,
-                transaction: name,
-            },
-        };
-
-        const listener = eventEmitter.on('mutation:before', payload => {
-            if (!payload || rollbacks.has(payload.store)) {
-                return;
-            }
-
-            const store = stores.get(payload.store);
-
-            if (store) {
+        function transaction<TPayload>(name: string, transactor: Transactor<TPayload>): Transaction<TPayload> {
+            return payload => {
                 const snapshot = clone(store.state);
 
-                rollbacks.set(store.name, () => {
-                    store.write('plugin:transaction:rollback', SENDER, state => overwrite(state, snapshot));
-                });
-            }
-        });
+                const eventData = {
+                    payload,
+                    transaction: name,
+                } as TransactionEventData;
 
-        eventEmitter.emit(EVENTS.transaction.before, eventPayload);
+                store.emit(EVENTS.transaction.before, SENDER, eventData);
 
-        try {
-            transactor(payload!);
-        } catch (error) {
-            rollbacks.forEach(rollback => rollback());
-            eventEmitter.emit(EVENTS.transaction.error, eventPayload);
+                try {
+                    transactor(payload!);
+                } catch (error) {
+                    rollback(snapshot);
+                    store.emit(EVENTS.transaction.error, SENDER, eventData);
 
-            throw error;
-        } finally {
-            listener.dispose();
+                    throw error;
+                }
+
+                store.emit(EVENTS.transaction.after, SENDER, eventData);
+            };
         }
 
-        eventEmitter.emit(EVENTS.transaction.after, eventPayload);
+        return {
+            transaction,
+        };
     };
-}
-
-export default function createTransactionPlugin(): HarlemPlugin {
-
-    return {
-        name: 'transaction',
-
-        install(app, _eventEmitter, _stores) {
-            eventEmitter = _eventEmitter;
-            stores = _stores;
-        },
-    };
-
 }

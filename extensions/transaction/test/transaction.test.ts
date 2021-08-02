@@ -1,25 +1,29 @@
 import {
-    store,
+    getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import createTransactionPlugin, {
-    transaction,
-} from '../src/index';
+import transactionExtension from '../src/index';
 
 describe('Transaction Plugin', () => {
 
-    beforeAll(() => bootstrap([
-        createTransactionPlugin(),
-    ]));
+    beforeAll(() => bootstrap());
 
-    beforeEach(() => store.reset());
+    test('Rollback a transaction', () => {
+        const {
+            store,
+            setUserID,
+            setUserDetails,
+        } = getStore({
+            extensions: [
+                transactionExtension(),
+            ],
+        });
 
-    test('Run a transaction', () => {
-        const transact = transaction<number>('test-transaction', id => {
-            store.setUserID(id);
+        const transact = store.transaction('test-transaction', (id: number) => {
+            setUserID(id);
 
-            store.setUserDetails({
+            setUserDetails({
                 firstName: 'John',
                 lastName: 'Smith',
                 age: 35,
