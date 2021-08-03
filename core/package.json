@@ -6,9 +6,9 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem.cjs.js",
-    "module": "dist/harlem.bundler.esm.js",
-    "unpkg": "dist/harlem.min.js",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.bundler.esm.js",
+    "unpkg": "dist/index.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "keywords": [

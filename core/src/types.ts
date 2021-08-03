@@ -6,7 +6,7 @@ import type {
 
 type UnionToIntersection<U> = (U extends any ? (arg: U) => any : never) extends ((arg: infer I) => void) ? I : never;
 
-export type BaseState = Record<PropertyKey, unknown>;
+export type BaseState = object;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
 export type ReadState<TState extends BaseState> = DeepReadonly<TState>;
 export type WriteState<TState extends BaseState> = TState;
