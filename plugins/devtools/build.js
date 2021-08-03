@@ -4,7 +4,7 @@ const build = require('@harlem/build');
 (async () => {
     const cwd = path.resolve('.');
 
-    return build(cwd, 'harlem-devtools', {
+    return build(cwd, 'index', {
         globalName: 'HarlemDevtoolsPlugin'
     });
 })();

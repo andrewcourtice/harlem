@@ -6,10 +6,9 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official Vue devtools plugin for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-devtools.cjs.js",
-    "module": "dist/harlem-devtools.bundler.esm.js",
-    "umd:main": "dist/harlem-devtools.umd.js",
-    "unpkg": "dist/harlem-devtools.min.js",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.bundler.esm.js",
+    "unpkg": "dist/index.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "keywords": [

@@ -6,9 +6,9 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official reset extension for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-reset.cjs.js",
-    "module": "dist/harlem-reset.bundler.esm.js",
-    "unpkg": "dist/harlem-reset.min.js",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.bundler.esm.js",
+    "unpkg": "dist/index.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "keywords": [
@@ -27,7 +27,6 @@
         "url": "https://github.com/andrewcourtice/harlem/issues"
     },
     "scripts": {
-        "dev": "microbundle watch --raw",
         "build": "node build.js",
         "prepublish": "yarn build"
     },
@@ -35,7 +34,7 @@
         "@harlem/core": "^1.1.2"
     },
     "dependencies": {
-        "@harlem/utilities": "^1.3.2"
+        "@harlem/extension-snapshot": "^1.3.2"
     },
     "devDependencies": {
         "@harlem/build": "^1.3.2",

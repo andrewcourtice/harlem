@@ -1,4 +1,4 @@
-export default function<TTarget extends Record<PropertyKey, unknown>>(target: TTarget, source: any): any {
+export default function<TTarget extends object, TSource extends object>(target: TTarget, source: TSource): TTarget | TSource {
     if (typeof target !== 'object' || typeof source !== 'object') {
         return target;
     }

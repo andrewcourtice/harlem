@@ -5,6 +5,6 @@ const build = require('@harlem/build');
     const cwd = path.resolve('.');
 
     return build(cwd, 'index', {
-        globalName: 'HarlemActionsExtension'
+        globalName: 'HarlemLazyExtension'
     });
 })();

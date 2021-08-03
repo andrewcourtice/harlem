@@ -1,33 +1,24 @@
-
-import {
-    clone,
-    overwrite,
-} from '@harlem/utilities';
+import snapshotExtension from '@harlem/extension-snapshot';
 
 import type {
     InternalStore,
     BaseState,
 } from '@harlem/core';
 
-import type {
-    BranchCallback,
-} from './types';
-
 export default function resetExtension<TState extends BaseState>() {
+    const createSnapshotExtension = snapshotExtension<TState>({
+        mutationName: '$reset',
+    });
+
     return (store: InternalStore<TState>) => {
-        const snapshot = clone(store.state) as TState;
+        const {
+            snapshot,
+        } = createSnapshotExtension(store);
 
-        const reset = store.mutation('$reset', (state, branchCallback: BranchCallback<TState>) => {
-            const branchProducer = branchCallback || (state => state);
-            const snapshotClone = clone(snapshot);
-            const stateBranch = branchProducer(state);
-            const snapshotBranch = branchProducer(snapshotClone);
-
-            overwrite(stateBranch, snapshotBranch);
-        });
+        const snap = snapshot();
 
         return {
-            reset,
+            reset: () => snap.apply(),
         };
     };
 }

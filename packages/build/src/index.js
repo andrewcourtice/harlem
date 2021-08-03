@@ -83,6 +83,7 @@ async function build(cwd, filename, options) {
 
         await Promise.all(tasks);
     } catch (error) {
+        console.error(error);
         process.exit(1);
     }
 

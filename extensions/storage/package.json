@@ -6,9 +6,9 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official storage extension for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/harlem-storage.cjs.js",
-    "module": "dist/harlem-storage.bundler.esm.js",
-    "unpkg": "dist/harlem-storage.min.js",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.bundler.esm.js",
+    "unpkg": "dist/index.min.js",
     "types": "dist/index.d.ts",
     "source": "src/index.ts",
     "keywords": [
