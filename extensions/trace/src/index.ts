@@ -1,26 +1,23 @@
-import isArray from '../type/is-array';
-import isObject from '../type/is-object';
-import clone from './clone';
+import {
+    EVENTS,
+    BaseState,
+    InternalStore,
+} from '@harlem/core';
 
-type TraceGate<TValue extends object> = keyof ProxyHandler<TValue>;
-type TraceCallback<TValue extends object> = (result: TraceResult<TValue>) => void;
+import {
+    clone,
+    isArray,
+    isObject,
+} from '@harlem/utilities';
 
-interface TraceOptions<TValue extends object> {
-    gates: TraceGate<TValue>[];
-    paths: PropertyKey[];
-    hasGetGate: boolean;
-}
-
-interface TraceResult<TValue extends object> {
-    gate: TraceGate<TValue>;
-    paths: PropertyKey[];
-    oldValue: unknown;
-    newValue: unknown;
-}
-
-type GateMap<TValue extends object = any> = {
-    [TGate in TraceGate<TValue>]?: (callback: TraceCallback<TValue>, options: TraceOptions<TValue>) => ProxyHandler<TValue>[TGate];
-}
+import type {
+    GateMap,
+    Options,
+    TraceCallback,
+    TraceGate,
+    TraceListener,
+    TraceOptions,
+} from './types';
 
 const GATE_MAP = {
     get: (callback, { hasGetGate, gates, paths }) => (target, prop, receiver) => {
@@ -46,7 +43,14 @@ const GATE_MAP = {
     },
 } as GateMap;
 
-function defaultCallback<TValue extends object>(callback: TraceCallback<TValue>, gate: TraceGate<TValue>, paths: PropertyKey[], key: PropertyKey, oldValue: unknown, newValue?: unknown) {
+function defaultCallback<TValue extends object>(
+    callback: TraceCallback<TValue>,
+    gate: TraceGate<TValue>,
+    paths: PropertyKey[],
+    key: PropertyKey,
+    oldValue: unknown,
+    newValue?: unknown,
+) {
     try {
         callback({
             gate,
@@ -81,7 +85,7 @@ function deepTrace<TValue extends object>(value: TValue, callback: TraceCallback
     return new Proxy(value, handler);
 }
 
-export default function trace<TValue extends object>(value: TValue, gates: TraceGate<TValue> | TraceGate<TValue>[], callback: TraceCallback<TValue>): TValue {
+function trace<TValue extends object>(value: TValue, gates: TraceGate<TValue> | TraceGate<TValue>[], callback: TraceCallback<TValue>): TValue {
     const allGates = ([] as TraceGate<TValue>[]).concat(gates);
     const hasGetGate = allGates.includes('get');
 
@@ -91,3 +95,45 @@ export default function trace<TValue extends object>(value: TValue, gates: Trace
         paths: [],
     });
 }
+
+export default function traceExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const {
+        autoStart,
+    } = {
+        autoStart: false,
+        ...options,
+    } as Options;
+
+    return (store: InternalStore<TState>) => {
+        const traceCallbacks = new Set<TraceCallback<TState>>();
+
+        function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
+            store.provider('write', state => trace(state, gates, result => traceCallbacks.forEach(callback => callback(result))));
+        }
+
+        function stopTrace() {
+            store.provider('write', state => state);
+        }
+
+        function onTraceResult(callback: TraceCallback<TState>): TraceListener {
+            traceCallbacks.add(callback);
+
+            return {
+                dispose: () => traceCallbacks.delete(callback),
+            };
+        }
+
+        store.once(EVENTS.store.destroyed, () => traceCallbacks.clear());
+
+        if (autoStart) {
+            startTrace();
+        }
+
+        return {
+            startTrace,
+            stopTrace,
+            onTraceResult,
+        };
+    };
+}
+
