@@ -2,7 +2,8 @@ import {
     SENDER,
 } from './constants';
 
-import type {
+import {
+    EVENTS,
     EventPayload,
     HarlemPlugin,
     InternalStore,
@@ -56,7 +57,7 @@ export function createServerSSRPlugin(): HarlemPlugin {
         name: 'server-ssr',
 
         install(app, eventEmitter, stores) {
-            eventEmitter.on('store:created', payload => onStoreEvent(stores, payload, store => {
+            eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
                 snapshot[store.name] = store.state;
             }));
         },
@@ -75,7 +76,7 @@ export function createClientSSRPlugin(): HarlemPlugin {
         install(app, eventEmitter, stores) {
             const data = window.__harlemState;
 
-            eventEmitter.on('store:created', payload => onStoreEvent(stores, payload, store => {
+            eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
                 if (store.name in data) {
                     store.write('plugin:ssr:init', SENDER, state => overwrite(state, data[store.name]));
                 }
