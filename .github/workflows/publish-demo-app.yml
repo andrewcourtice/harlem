@@ -38,7 +38,7 @@ jobs:
         run: yarn build
 
       - name: Build App
-        run: cd app && yarn build
+        run: cd app && yarn build --base "/harlem/"
 
       # please check out the docs of the workflow for more details
       # @see https://github.com/crazy-max/ghaction-github-pages
