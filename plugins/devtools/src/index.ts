@@ -69,36 +69,27 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    const state: StateBase[] = [
-        {
-            key: store.name,
-            value: store.state,
-            editable: true,
-        },
-    ];
+    return Object.entries(store.registrations).reduce((output, [type, registrations]) => {
+        output[type] = Array.from(registrations)
+            .sort(([a], [b]) => stringComparitor(a, b))
+            .map(([key, producer]) => ({
+                key,
+                value: producer(),
+                editable: false,
+                objectType: 'other',
+            } as StateBase));
 
-    const getters: StateBase[] = Array.from(store.getters)
-        .sort(([a], [b]) => stringComparitor(a, b))
-        .map(([key, accessor]) => ({
-            key,
-            value: accessor(),
-            editable: false,
-            objectType: 'computed',
-        }));
-
-    const mutations: StateBase[] = Array.from(store.mutations)
-        .sort(([a], [b]) => stringComparitor(a, b))
-        .map(([key, mutator]) => ({
-            key,
-            value: mutator,
-            editable: false,
-        }));
-
-    return {
-        state,
-        getters,
-        mutations,
-    };
+        return output;
+    }, {
+        state: [
+            {
+                key: store.name,
+                value: store.state,
+                editable: true,
+                objectType: 'reactive',
+            },
+        ],
+    } as Record<string, StateBase[]>);
 }
 
 function getStoreSnapshots(stores: (InternalStore | undefined)[]): CustomInspectorState {
@@ -109,16 +100,13 @@ function getStoreSnapshots(stores: (InternalStore | undefined)[]): CustomInspect
 
         const snapshot = getStoreSnapshot(store);
 
-        return {
-            state: [...output.state, ...snapshot.state],
-            getters: [...output.getters, ...snapshot.getters],
-            mutations: [...output.mutations, ...snapshot.mutations],
-        };
-    }, {
-        state: [],
-        getters: [],
-        mutations: [],
-    } as CustomInspectorState);
+        return Object
+            .entries(snapshot)
+            .reduce((merges, [key, value]) => {
+                merges[key] = (merges[key] || []).concat(value);
+                return merges;
+            }, {} as CustomInspectorState);
+    }, {} as CustomInspectorState);
 }
 
 function getInspectorStateHook(application: App, stores: InternalStores): StateHookHandler {
@@ -253,6 +241,7 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
 
                 eventEmitter.on(EVENTS.mutation.after, afterMutationHook);
                 eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
+                eventEmitter.on(EVENTS.devtools.update, () => api.sendInspectorState(DEVTOOLS_ID));
             });
         },
 
