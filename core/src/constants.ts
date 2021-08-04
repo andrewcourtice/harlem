@@ -13,4 +13,7 @@ export const EVENTS = {
         after: 'mutation:after',
         error: 'mutation:error',
     },
+    devtools: {
+        update: 'devtools:update',
+    },
 };
