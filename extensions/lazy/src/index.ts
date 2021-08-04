@@ -1,13 +1,15 @@
-import type {
-    InternalStore,
+import {
+    EVENTS,
     BaseState,
+    InternalStore,
 } from '@harlem/core';
 
 import {
-    ref,
-    watchEffect,
-    Ref,
     computed,
+    nextTick,
+    ref,
+    Ref,
+    watchEffect,
 } from 'vue';
 
 import type {
@@ -47,7 +49,17 @@ export default function lazyExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
 
         function lazy<TResult>(name: string, body: LazyBody<TState, TResult>, defaultValue?: TResult) {
-            return computedAsync(async onInvalidate => body(store.state, onInvalidate), defaultValue);
+            const output = store.track(() => computedAsync(async onInvalidate => {
+                const result = await body(store.state, onInvalidate);
+
+                nextTick(() => store.emit(EVENTS.devtools.update, 'lazy', result));
+
+                return result;
+            }, defaultValue));
+
+            store.register('lazy', name, () => output[0].value);
+
+            return output;
         }
 
         return {
