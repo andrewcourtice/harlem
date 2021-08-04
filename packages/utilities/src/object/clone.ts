@@ -1,9 +1,9 @@
-import getType from './get-type';
+import getType from '../type/get-type';
 
 import type {
     Constructable,
     RuntimeType,
-} from './types';
+} from '../types';
 
 function cloneIdentity(input: unknown): unknown {
     return input;

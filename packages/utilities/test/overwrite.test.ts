@@ -1,4 +1,4 @@
-import overwrite from '../src/overwrite';
+import overwrite from '../src/object/overwrite';
 
 describe('Utilities', () => {
 

@@ -2,7 +2,7 @@ import type {
     Product,
     TaskAbortCallback,
     TaskExecutor,
-} from './types';
+} from '../types';
 
 function safeRun<TResult>(bodyInvokee: Product<TResult>, finallyInvokee: Product): Product<TResult> {
     return (...args: any[]) => {

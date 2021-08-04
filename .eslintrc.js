@@ -53,5 +53,6 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-inferrable-types': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/ban-types': 'warn',
     },
 };

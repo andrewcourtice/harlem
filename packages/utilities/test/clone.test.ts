@@ -1,4 +1,4 @@
-import clone from '../src/clone';
+import clone from '../src/object/clone';
 
 function getSimpleTypes(): Record<string, unknown> {
     return {
