@@ -6,11 +6,13 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official transaction extension for Harlem",
     "homepage": "https://harlemjs.com",
-    "main": "dist/index.cjs.js",
-    "module": "dist/index.bundler.esm.js",
-    "unpkg": "dist/index.min.js",
-    "types": "dist/index.d.ts",
-    "source": "src/index.ts",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "exports": "./dist/index.js",
+    "unpkg": "./dist/index.global.js",
+    "types": "./dist/index.d.ts",
+    "source": "./src/index.ts",
     "keywords": [
         "vue",
         "state",
@@ -27,8 +29,8 @@
         "url": "https://github.com/andrewcourtice/harlem/issues"
     },
     "scripts": {
-        "dev": "microbundle watch --raw",
-        "build": "node build.js",
+        "dev": "tsup --watch src",
+        "build": "tsup",
         "prepublish": "yarn build"
     },
     "peerDependencies": {

@@ -6,7 +6,7 @@ import {
 
 import storageExtension from '../src';
 
-describe('Snapshot Extension', () => {
+describe('Storage Extension', () => {
 
     beforeAll(() => bootstrap());
 
@@ -41,32 +41,32 @@ describe('Snapshot Extension', () => {
         store.destroy();
     });
 
-    test('Sync from storage', () => {
-        const {
-            name,
-            store,
-        } = getStore({
-            extensions: [
-                storageExtension(),
-            ],
-        });
+    // test('Sync from storage', () => {
+    //     const {
+    //         name,
+    //         store,
+    //     } = getStore({
+    //         extensions: [
+    //             storageExtension(),
+    //         ],
+    //     });
 
-        const key = `harlem:${name}`;
-        const value = jsonClone(store.state);
+    //     const key = `harlem:${name}`;
+    //     const value = jsonClone(store.state);
 
-        Object.assign(value.details, {
-            firstName: 'John',
-            lastName: 'smith',
-            age: 22,
-        });
+    //     Object.assign(value.details, {
+    //         firstName: 'John',
+    //         lastName: 'smith',
+    //         age: 22,
+    //     });
 
-        localStorage.setItem(key, JSON.stringify(value));
+    //     localStorage.setItem(key, JSON.stringify(value));
 
-        expect(store.state.details.firstName).toBe(value.details.firstName);
-        expect(store.state.details.lastName).toBe(value.details.lastName);
-        expect(store.state.details.age).toBe(value.details.age);
+    //     expect(store.state.details.firstName).toBe(value.details.firstName);
+    //     expect(store.state.details.lastName).toBe(value.details.lastName);
+    //     expect(store.state.details.age).toBe(value.details.age);
 
-        store.destroy();
-    });
+    //     store.destroy();
+    // });
 
 });

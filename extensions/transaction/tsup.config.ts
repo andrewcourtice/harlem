@@ -6,5 +6,5 @@ import type {
 
 export default {
     ...base,
-    globalName: 'HarlemUtilities',
+    globalName: 'HarlemTransactionExtension',
 } as Options;

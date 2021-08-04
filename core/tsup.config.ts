@@ -1,4 +1,4 @@
-import base from '../../tsup.config';
+import base from '../tsup.config';
 
 import type {
     Options,
@@ -6,5 +6,5 @@ import type {
 
 export default {
     ...base,
-    globalName: 'HarlemUtilities',
+    globalName: 'Harlem',
 } as Options;
