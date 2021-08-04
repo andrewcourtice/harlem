@@ -6,6 +6,7 @@
 
 # Harlem
 
+[![Build and Test](https://github.com/andrewcourtice/harlem/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/andrewcourtice/harlem/actions/workflows/build-and-test.yml)
 ![npm](https://img.shields.io/npm/v/@harlem/core)
 
 Simple, unopinionated, lightweight and extensible state management for Vue 3. Head over to harlemjs.com to get started or take a look at the [demo](https://codesandbox.io/s/harlem-demo-lmffj) to see it in action.
