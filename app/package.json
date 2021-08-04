@@ -14,10 +14,14 @@
     },
     "dependencies": {
         "@harlem/core": "^1.3.2",
+        "@harlem/extension-action": "^1.3.2",
+        "@harlem/extension-lazy": "^1.3.2",
+        "@harlem/extension-reset": "^1.3.2",
+        "@harlem/extension-snapshot": "^1.3.2",
+        "@harlem/extension-storage": "^1.3.2",
+        "@harlem/extension-trace": "^1.3.2",
+        "@harlem/extension-transaction": "^1.3.2",
         "@harlem/plugin-devtools": "^1.3.2",
-        "@harlem/plugin-reset": "^1.3.2",
-        "@harlem/plugin-storage": "^1.3.2",
-        "@harlem/plugin-transaction": "^1.3.2",
         "flex-layout-attribute": "^1.0.3",
         "vue": "^3.1.5"
     },
