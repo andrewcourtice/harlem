@@ -9,7 +9,9 @@ import {
     reactive,
     readonly,
     computed,
+    effectScope,
     ComputedRef,
+    EffectScope,
 } from 'vue';
 
 import {
@@ -31,6 +33,8 @@ import type {
     WriteState,
     StoreProvider,
     StoreProviders,
+    StoreRegistrations,
+    RegistrationValueProducer,
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
@@ -43,42 +47,55 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
 
 export default class Store<TState extends BaseState = any> implements InternalStore<TState> {
 
-    private options: InternalStoreOptions;
+    private options: InternalStoreOptions<TState>;
+    private scope: EffectScope;
     private stack: Set<string>;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
-    private providers: StoreProviders<TState>;
 
     public name: string;
-    public getters: Map<string, () => unknown>;
-    public mutations: Map<string, Mutation<any>>;
+    public registrations: StoreRegistrations;
 
-    constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {
+    constructor(name: string, state: TState, options?: Partial<InternalStoreOptions<TState>>) {
         this.options = {
             allowOverwrite: true,
             ...options,
-        };
 
-        this.stack = new Set();
-        this.writeState = reactive(state) as WriteState<TState>;
-        this.readState = readonly(this.writeState) as ReadState<TState>;
-
-        this.providers = {
-            read: value => value,
-            write: value => value,
+            providers: {
+                read: value => value,
+                write: value => value,
+                payload: value => value,
+                ...options?.providers,
+            },
         };
 
         this.name = name;
-        this.getters = new Map();
-        this.mutations = new Map();
+        this.stack = new Set();
+        this.scope = effectScope();
+        this.writeState = reactive(state) as WriteState<TState>;
+        this.readState = readonly(this.writeState) as ReadState<TState>;
+
+        this.registrations = {
+            getters: new Map(),
+            mutations: new Map(),
+        };
     }
 
     public get allowsOverwrite(): boolean {
         return this.options.allowOverwrite;
     }
 
+    public get providers(): StoreProviders<TState> {
+        return {
+            read: value => value,
+            write: value => value,
+            payload: value => value,
+            ...this.options.providers,
+        };
+    }
+
     public get state(): ReadState<TState> {
-        return this.providers.read(this.readState);
+        return this.providers.read(this.readState) ?? this.readState;
     }
 
     public emit(event: string, sender: string, data: any): void {
@@ -100,17 +117,41 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void {
-        this.providers[key] = value;
+        this.options.providers[key] = value;
+    }
+
+    public track<TResult>(callback: () => TResult): TResult {
+        return this.scope.run(callback)!;
+    }
+
+    public hasRegistration(type: string, name: string): boolean {
+        return !!this.registrations[type]?.has(name);
+    }
+
+    public getRegistration(type: string, name: string): RegistrationValueProducer | undefined {
+        return this.registrations[type]?.get(name);
+    }
+
+    public register(type: string, name: string, valueProducer: RegistrationValueProducer): void {
+        if (!(type in this.registrations)) {
+            this.registrations[type] = new Map();
+        }
+
+        this.registrations[type].set(name, valueProducer);
+    }
+
+    public unregister(type: string, name: string): void {
+        this.registrations[type]?.delete(name);
     }
 
     public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
-        if (!this.allowsOverwrite && this.getters.has(name)) {
+        if (!this.allowsOverwrite && this.hasRegistration('getters', name)) {
             raiseOverwriteError('getter', name);
         }
 
-        const output = computed(() => getter(this.state));
+        const output = this.track(() => computed(() => getter(this.state)));
 
-        this.getters.set(name, () => output.value);
+        this.register('getters', name, () => output.value);
 
         return output;
     }
@@ -131,8 +172,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.emit(EVENTS.mutation.before, sender, eventData);
 
         try {
-            const state = this.providers.write(this.writeState);
-            result = mutator(state, payload);
+            const _state = this.providers.write(this.writeState) ?? this.writeState;
+            const _payload = this.providers.payload(payload) ?? payload;
+
+            result = mutator(_state, _payload);
         } catch (error) {
             this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
@@ -149,7 +192,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult> {
-        if (!this.allowsOverwrite && this.mutations.has(name)) {
+        if (!this.allowsOverwrite && this.hasRegistration('mutations', name)) {
             raiseOverwriteError('mutation', name);
         }
 
@@ -157,13 +200,13 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             return this.mutate(name, SENDER, mutator, payload);
         }) as Mutation<TPayload, TResult>;
 
-        this.mutations.set(name, mutation);
+        this.register('mutations', name, () => mutation);
 
         return mutation;
     }
 
     public exec<TResult = void>(name: string, payload?: any): TResult {
-        const mutation = this.mutations.get(name) as Mutation<any, TResult>;
+        const mutation = this.getRegistration('mutations', name) as Mutation<any, TResult>;
 
         if (!mutation) {
             throw new Error(`No mutation found for ${name}`);
@@ -174,6 +217,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
     public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult {
         return this.mutate(name, sender, mutator, undefined);
+    }
+
+    public destroy(): void {
+        this.scope.stop();
     }
 
 }

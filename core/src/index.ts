@@ -107,6 +107,7 @@ export const once = eventEmitter.once.bind(eventEmitter);
 export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(name: string, state: TState, options?: Partial<StoreOptions<TState, TExtensions>>): Store<TState> & ExtendedStore<TExtensions> {
     const {
         allowOverwrite,
+        providers,
         extensions,
     } = {
         allowOverwrite: true,
@@ -118,11 +119,13 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
 
     const store = new InternalStore(name, state, {
         allowOverwrite,
+        providers,
     });
 
     const destroy = () => {
         store.emit(EVENTS.store.destroyed, SENDER, state);
         stores.delete(name);
+        store.destroy();
     };
 
     const getMutationHook = (eventName: string) => {

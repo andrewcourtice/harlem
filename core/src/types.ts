@@ -50,27 +50,35 @@ export interface StoreBase<TState extends BaseState> {
 export interface StoreProviders<TState extends BaseState> {
     read(state: ReadState<TState>): ReadState<TState>;
     write(state: WriteState<TState>): WriteState<TState>;
+    payload<TPayload>(payload: TPayload): TPayload;
 }
 
 export interface InternalStore<TState extends BaseState = any> extends StoreBase<TState> {
     readonly allowsOverwrite: boolean;
+    readonly providers: StoreProviders<TState>;
     readonly state: ReadState<TState>;
     name: string;
-    getters: Map<string, () => unknown>;
-    mutations: Map<string, Mutator<TState, any, any>>;
+    registrations: StoreRegistrations;
+    hasRegistration(type: string, name: string): boolean;
+    getRegistration(type: string, name: string): RegistrationValueProducer | undefined;
+    register(type: string, name: string, valueProducer: RegistrationValueProducer): void;
+    unregister(type: string, name: string): void;
     emit(event: string, sender: string, data: any): void;
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener
     exec<TResult = void>(name: string, payload?: any): TResult;
+    track<TResult>(callback: () => TResult): TResult;
     provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void;
     write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult;
+    destroy(): void;
 }
 
-export interface InternalStoreOptions {
+export interface InternalStoreOptions<TState extends BaseState> {
     allowOverwrite: boolean;
+    providers: Partial<StoreProviders<TState>>;
 }
 
-export interface StoreOptions<TState extends BaseState, TExtensions extends Extension<TState>[]> extends InternalStoreOptions {
+export interface StoreOptions<TState extends BaseState, TExtensions extends Extension<TState>[]> extends InternalStoreOptions<TState> {
     extensions?: TExtensions;
 }
 
@@ -91,4 +99,12 @@ export interface HarlemPlugin {
 
 export interface PluginOptions {
     plugins?: HarlemPlugin[];
+}
+
+export type RegistrationValueProducer = () => unknown;
+
+export interface StoreRegistrations {
+    [key: string]: Map<string, RegistrationValueProducer>;
+    getters: Map<string, RegistrationValueProducer>;
+    mutations: Map<string, RegistrationValueProducer>;
 }
