@@ -16,6 +16,8 @@ import type {
     LazyBody,
 } from './types';
 
+export * from './types';
+
 export default function lazyExtension<TState extends BaseState>() {
 
     function computedAsync<TResult>(callback: ComputedAsyncCallback<TResult>): ComputedAsyncResult<TResult | undefined>;

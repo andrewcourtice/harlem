@@ -19,9 +19,11 @@ import type {
     TraceOptions,
 } from './types';
 
+export * from './types';
+
 const GATE_MAP = {
-    get: (callback, { hasGetGate, gates, paths }) => (target, prop, receiver) => {
-        const value = Reflect.get(target, prop, receiver);
+    get: (callback, { hasGetGate, gates, paths }) => (target, prop) => {
+        const value = target[prop];
 
         if (hasGetGate) {
             defaultCallback(callback, 'get', paths, prop, value, value);
@@ -33,13 +35,15 @@ const GATE_MAP = {
             paths: paths.concat(prop),
         });
     },
-    set: (callback, { paths }) => (target, prop, value, receiver) => {
+    set: (callback, { paths }) => (target, prop, value) => {
         defaultCallback(callback, 'set', paths, prop, target[prop], value);
-        return Reflect.set(target, prop, value, receiver);
+        target[prop] = value;
+        return true;
     },
     deleteProperty: (callback, { paths }) => (target, prop) => {
         defaultCallback(callback, 'deleteProperty', paths, prop, target[prop]);
-        return Reflect.deleteProperty(target, prop);
+        delete target[prop];
+        return true;
     },
 } as GateMap;
 

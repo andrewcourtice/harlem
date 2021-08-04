@@ -14,6 +14,8 @@ import type {
     BranchCallback,
 } from './types';
 
+export * from './types';
+
 interface MutationPayload<TState extends BaseState, TBranchState extends BaseState> {
     snapshotBranch: TBranchState;
     branchCallback: BranchCallback<TState, TBranchState>;
@@ -30,7 +32,7 @@ export default function snapshotExtension<TState extends BaseState>(options?: Pa
     return (store: InternalStore<TState>) => {
         const _apply = store.mutation(mutationName, (state, { snapshotBranch, branchCallback }: MutationPayload<TState, BaseState>) => {
             const stateBranch = branchCallback(state);
-            overwrite(stateBranch, snapshotBranch);
+            overwrite(stateBranch, clone(snapshotBranch));
         });
 
         function snapshot<TBranchState extends BaseState = TState>(branchCallback: BranchCallback<TState, TBranchState> = ((state: TState) => state) as any): Snapshot<TBranchState> {

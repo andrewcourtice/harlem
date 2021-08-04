@@ -52,14 +52,13 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         const write = store.mutation('$storage', (state, value: string) => Object.assign(state, parser(value)));
 
         const listener = ({ key, storageArea, newValue }: StorageEvent) => {
-            console.log(key, newValue);
             if (storageArea === storage && key === storageKey && newValue) {
                 write(newValue);
             }
         };
 
         window.addEventListener('storage', listener);
-        store.on(EVENTS.store.destroyed, () => window.removeEventListener('storage', listener));
+        store.once(EVENTS.store.destroyed, () => window.removeEventListener('storage', listener));
 
         return {};
     };
