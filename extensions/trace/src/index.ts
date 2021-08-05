@@ -8,6 +8,7 @@ import {
     clone,
     isArray,
     isObject,
+    toPath,
 } from '@harlem/utilities';
 
 import type {
@@ -51,16 +52,22 @@ function defaultCallback<TValue extends object>(
     callback: TraceCallback<TValue>,
     gate: TraceGate<TValue>,
     paths: PropertyKey[],
-    key: PropertyKey,
+    prop: PropertyKey,
     oldValue: unknown,
     newValue?: unknown,
 ) {
     try {
+        const nodes = paths.slice();
+
         callback({
             gate,
+            nodes,
+            prop,
             newValue,
-            paths: paths.concat(key),
             oldValue: newValue === oldValue ? oldValue : clone(oldValue),
+            get path() {
+                return toPath(nodes.concat(prop));
+            },
         });
     } catch {
         console.warn('Trace callback failed');

@@ -12,8 +12,10 @@ export interface TraceOptions<TValue extends object> {
 }
 
 export interface TraceResult<TValue extends object> {
+    readonly path: string;
     gate: TraceGate<TValue>;
-    paths: PropertyKey[];
+    nodes: PropertyKey[];
+    prop: PropertyKey;
     oldValue: unknown;
     newValue: unknown;
 }
