@@ -72,11 +72,11 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
     return Object.entries(store.registrations).reduce((output, [type, registrations]) => {
         output[type] = Array.from(registrations)
             .sort(([a], [b]) => stringComparitor(a, b))
-            .map(([key, producer]) => ({
+            .map(([key, { type, producer }]) => ({
                 key,
                 value: producer(),
                 editable: false,
-                objectType: 'other',
+                objectType: type,
             } as StateBase));
 
         return output;
@@ -218,7 +218,7 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
             } as PluginDescriptor;
 
             setupDevtoolsPlugin(descriptor, api => {
-                const afterMutationHook = getMutationHook(api);
+                const successMutationHook = getMutationHook(api);
                 const errorMutationHook = getMutationHook(api, 'error');
 
                 api.addInspector({
@@ -239,7 +239,7 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                 api.on.getInspectorState(inspectorStateHook);
                 api.on.editInspectorState(inspectorEditHook);
 
-                eventEmitter.on(EVENTS.mutation.after, afterMutationHook);
+                eventEmitter.on(EVENTS.mutation.success, successMutationHook);
                 eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
                 eventEmitter.on(EVENTS.devtools.update, () => api.sendInspectorState(DEVTOOLS_ID));
             });
