@@ -57,7 +57,7 @@ export default function lazyExtension<TState extends BaseState>() {
                 return result;
             }, defaultValue));
 
-            store.register('lazy', name, () => output[0].value);
+            store.register('lazy', name, () => output[0].value, 'computed');
 
             return output;
         }
