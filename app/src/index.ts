@@ -5,20 +5,22 @@ import App from './app.vue';
 
 import Harlem from '@harlem/core';
 
-import createDevtoolsPlugin from '@harlem/plugin-devtools';
-import createResetPlugin from '@harlem/plugin-reset';
+import devtoolsPlugin from '@harlem/plugin-devtools';
 
 import {
     createApp,
 } from 'vue';
 
 function start() {
+    const plugins = [];
+
+    if (import.meta.env.DEV) {
+        plugins.push(devtoolsPlugin());
+    }
+
     return createApp(App)
         .use(Harlem, {
-            plugins: [
-                createDevtoolsPlugin(),
-                createResetPlugin(),
-            ],
+            plugins,
         })
         .mount('#app');
 }

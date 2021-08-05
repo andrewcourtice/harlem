@@ -2,28 +2,36 @@
     <div class="app" layout="row center-center">
         <div>
             <h1>Harlem Demo App</h1>
-            <user-details-output />
-            <user-details-input />
+            <button @click="loadTimezones()">Load Timezones</button>
+            <div layout="rows top-spread">
+                <clock v-for="clock in clocks" :key="clock.timezone" v-bind="clock"></clock>
+            </div>
+            <div v-if="isLoading">Loading...</div>
+            <div v-else>
+                <select name="" id="">
+                    <option v-for="option in timezoneOptions" :key="option" :value="option">{{ option }}</option>
+                </select>
+            </div>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import UserDetailsInput from './components/user/user-details-input.vue';
-import UserDetailsOutput from './components/user/user-details-output.vue';
+<script lang="ts" setup>
+import Clock from './components/clock.vue';
 
 import {
-    defineComponent
+    computed
 } from 'vue';
 
-export default defineComponent({
+import {
+    clocks,
+    timezoneOptions,
+    loadTimezones,
+    isActionRunning
+} from './stores/time';
 
-    components: {
-        UserDetailsInput,
-        UserDetailsOutput
-    }
+const isLoading = computed(() => isActionRunning('load-timezones'));
 
-});
 </script>
 
 <style>
