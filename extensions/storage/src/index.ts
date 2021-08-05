@@ -33,7 +33,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
     return (store: InternalStore<TState>) => {
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;
 
-        store.on(EVENTS.mutation.after, (event?: EventPayload<MutationEventData>) => {
+        store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
             if (!event || event.data.mutation === '$storage') {
                 return;
             }
