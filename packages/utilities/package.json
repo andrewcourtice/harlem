@@ -17,8 +17,7 @@
         "vue",
         "state",
         "harlem",
-        "plugin",
-        "transaction"
+        "utilities"
     ],
     "repository": {
         "type": "git",

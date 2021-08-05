@@ -10,6 +10,7 @@ export type BaseState = object;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
 export type ReadState<TState extends BaseState> = DeepReadonly<TState>;
 export type WriteState<TState extends BaseState> = TState;
+export type StoreRegistrations = Record<string, Map<string, StoreRegistration>>;
 export type RegistrationType = 'ref' | 'reactive' | 'computed' | 'other';
 export type RegistrationValueProducer = () => unknown;
 export type Getter<TState extends BaseState, TResult> = (state: ReadState<TState>) => TResult;
@@ -106,10 +107,4 @@ export interface PluginOptions {
 export interface StoreRegistration {
     type: RegistrationType;
     producer: RegistrationValueProducer;
-}
-
-export interface StoreRegistrations {
-    [key: string]: Map<string, StoreRegistration>;
-    getters: Map<string, StoreRegistration>;
-    mutations: Map<string, StoreRegistration>;
 }

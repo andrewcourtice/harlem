@@ -17,4 +17,4 @@ export const EVENTS = {
     devtools: {
         update: 'devtools:update',
     },
-};
+} as const;

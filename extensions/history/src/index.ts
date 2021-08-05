@@ -1,5 +1,6 @@
 import {
     COMMAND_MAP,
+    SENDER,
 } from './constants';
 
 import {
@@ -21,7 +22,6 @@ import {
 import type {
     CommandType,
     HistoryCommand,
-    MutationPayload,
     Options,
 } from './types';
 
@@ -53,21 +53,23 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         let commands = [] as HistoryCommand[];
         let results = [] as TraceResult<any>[];
 
-        const mutation = store.mutation('$history', (state, { type, command }: MutationPayload) => {
-            const tasks = COMMAND_MAP[type];
+        function executeCommand(type: CommandType, command: HistoryCommand) {
+            store.write('$history', SENDER, state => {
+                const tasks = COMMAND_MAP[type];
 
-            const {
-                results,
-            } = command;
+                const {
+                    results,
+                } = command;
 
-            results.forEach(({ gate, nodes, prop, newValue, oldValue }) => {
-                const target = fromPath(state, nodes);
+                results.forEach(({ gate, nodes, prop, newValue, oldValue }) => {
+                    const target = fromPath(state, nodes);
 
-                if (target && prop) {
-                    tasks[gate]?.(target, prop, newValue, oldValue);
-                }
+                    if (target && prop) {
+                        tasks[gate]?.(target, prop, newValue, oldValue);
+                    }
+                });
             });
-        });
+        }
 
         function processResults(name: string) {
             if (results.length === 0) {
@@ -114,10 +116,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                 return;
             }
 
-            mutation({
-                type,
-                command,
-            });
+            executeCommand(type, command);
 
             position = Math.max(0, Math.min(commands.length - 1, position + offset));
         }

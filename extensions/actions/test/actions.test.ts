@@ -1,6 +1,4 @@
-import {
-    Task,
-} from '@harlem/utilities';
+import Task from '@harlem/task';
 
 import {
     getStore,

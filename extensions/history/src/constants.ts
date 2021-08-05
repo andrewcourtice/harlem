@@ -3,6 +3,8 @@ import type {
     CommandTasks,
 } from './types';
 
+export const SENDER = 'extension:history';
+
 export const COMMAND_MAP = {
     exec: {
         set: (target, prop, newValue) => target[prop] = newValue,

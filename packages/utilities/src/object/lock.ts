@@ -1,4 +1,4 @@
-export function lockObject<T extends object>(input: T, exclusions: (keyof T)[]): T {
+export default function lock<T extends object>(input: T, exclusions: (keyof T)[]): T {
     return new Proxy(input, {
         get(target, prop) {
             if (exclusions.includes(prop as keyof T)) {
@@ -14,8 +14,4 @@ export function lockObject<T extends object>(input: T, exclusions: (keyof T)[]):
             return value;
         },
     });
-}
-
-export function raiseOverwriteError(type: string, name: string): void {
-    throw new Error(`A ${type} named ${name} has already been registered on this store`);
 }

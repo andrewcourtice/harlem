@@ -8,9 +8,8 @@ import {
 } from './constants';
 
 import {
-    lockObject,
-    raiseOverwriteError,
-} from './utilities';
+    lock,
+} from '@harlem/utilities';
 
 import type {
     App,
@@ -43,7 +42,7 @@ function validateStoreCreation(name: string): void {
     const store = stores.get(name);
 
     if (store && !store.allowsOverwrite) {
-        raiseOverwriteError('store', name);
+        throw new Error(`A store named ${name} has already been registered.`);
     }
 }
 
@@ -88,7 +87,7 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
         install,
     } = plugin;
 
-    const lockedStores = lockObject(stores, [
+    const lockedStores = lock(stores, [
         'set',
         'delete',
         'clear',

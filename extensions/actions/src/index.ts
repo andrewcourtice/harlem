@@ -1,6 +1,8 @@
+import Task from '@harlem/task';
+
 import {
-    Task,
-} from '@harlem/utilities';
+    SENDER,
+} from './constants';
 
 import {
     watchEffect,
@@ -28,46 +30,34 @@ export default function actionsExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
-        _store.write('$add-actions', '$actions-extension', state => {
+        _store.write('$action-init', SENDER, state => {
             state.$actions = {};
         });
 
-        const registerAction = _store.mutation('$register-action', (state, name: string) => {
-            state.$actions[name] = {
-                runCount: 0,
-                instances: new Map<symbol, unknown>(),
-            };
-        });
+        function registerAction(name: string) {
+            _store.write('$action-register', SENDER, state => {
+                state.$actions[name] = {
+                    runCount: 0,
+                    instances: new Map<symbol, unknown>(),
+                };
+            });
+        }
 
-        const clearActionRunCount = _store.mutation('$clear-run-count', (state, name: string) => state.$actions[name].runCount = 0);
-        const incrementRunCount = _store.mutation('$increment-run-count', (state, name: string) => state.$actions[name].runCount += 1);
+        function clearActionRunCount(name: string) {
+            _store.write('$action-clear-run-count', SENDER, state => state.$actions[name].runCount = 0);
+        }
 
-        const addInstance = _store.mutation<AddActionInstancePayload>('$add-action-instance', (state, payload) => {
-            const {
-                actionName,
-                instanceId,
-                instancePayload,
-            } = payload;
+        function incrementRunCount(name: string) {
+            _store.write('$action-increment-run-count', SENDER, state => state.$actions[name].runCount += 1);
+        }
 
-            if (!state.$actions[actionName]) {
-                return;
-            }
+        function addInstance(name: string, instanceId: symbol, payload: unknown) {
+            _store.write('$action-add-instance', SENDER, state => state.$actions[name]?.instances.set(instanceId, payload));
+        }
 
-            state.$actions[actionName].instances.set(instanceId, instancePayload);
-        });
-
-        const removeInstance = _store.mutation<RemoveActionInstancePayload>('$remove-action-instance', (state, payload) => {
-            const {
-                actionName,
-                instanceId,
-            } = payload;
-
-            if (!state.$actions[actionName]) {
-                return;
-            }
-
-            state.$actions[actionName].instances.delete(instanceId);
-        });
+        function removeInstance(name: string, instanceId: symbol) {
+            _store.write('$action-remove-instance', SENDER, state => state.$actions[name]?.instances.delete(instanceId));
+        }
 
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
             registerAction(name);
@@ -94,17 +84,10 @@ export default function actionsExtension<TState extends BaseState>() {
                 const task = new Task<TResult>(async (resolve, reject, controller, onAbort) => {
                     const id = Symbol(name);
 
-                    const complete = () => (tasks.delete(task), removeInstance({
-                        actionName: name,
-                        instanceId: id,
-                    }));
+                    const complete = () => (tasks.delete(task), removeInstance(name, id));
 
                     onAbort(() => (complete(), reject()));
-                    addInstance({
-                        actionName: name,
-                        instanceId: id,
-                        instancePayload: payload,
-                    });
+                    addInstance(name, id, payload);
 
                     try {
                         const result = await body(payload, mutate, controller, onAbort);

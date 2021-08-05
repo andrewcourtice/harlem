@@ -15,8 +15,8 @@ import {
 } from 'vue';
 
 import {
-    raiseOverwriteError,
-} from './utilities';
+    clone,
+} from '@harlem/utilities';
 
 import type {
     BaseState,
@@ -66,21 +66,17 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             providers: {
                 read: value => value,
                 write: value => value,
-                payload: value => value,
+                payload: value => clone(value),
                 ...options?.providers,
             },
         };
 
         this.name = name;
+        this.registrations = {};
         this.stack = new Set();
         this.scope = effectScope();
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
-
-        this.registrations = {
-            getters: new Map(),
-            mutations: new Map(),
-        };
     }
 
     public get allowsOverwrite(): boolean {
@@ -143,6 +139,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             this.registrations[group] = new Map();
         }
 
+        if (!this.allowsOverwrite && this.hasRegistration(group, name)) {
+            throw new Error(`A ${group} named ${name} has already been registered on this store`);
+        }
+
         this.registrations[group].set(name, {
             type,
             producer,
@@ -154,10 +154,6 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
-        if (!this.allowsOverwrite && this.hasRegistration('getters', name)) {
-            raiseOverwriteError('getter', name);
-        }
-
         const output = this.track(() => computed(() => getter(this.state)));
 
         this.register('getters', name, () => output.value, 'computed');
@@ -208,10 +204,6 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult> {
-        if (!this.allowsOverwrite && this.hasRegistration('mutations', name)) {
-            raiseOverwriteError('mutation', name);
-        }
-
         const mutation = ((payload: TPayload) => {
             return this.mutate(name, SENDER, mutator, payload);
         }) as Mutation<TPayload, TResult>;

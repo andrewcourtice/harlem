@@ -1,4 +1,4 @@
-export default function<TTarget extends object, TSource extends object>(target: TTarget, source: TSource): TTarget | TSource {
+export default function overwrite<TTarget extends object, TSource extends object>(target: TTarget, source: TSource): TTarget | TSource {
     if (typeof target !== 'object' || typeof source !== 'object') {
         return target;
     }
