@@ -35,6 +35,8 @@ import type {
     StoreProviders,
     StoreRegistrations,
     RegistrationValueProducer,
+    RegistrationType,
+    StoreRegistration,
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
@@ -99,6 +101,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public emit(event: string, sender: string, data: any): void {
+        if (!this.scope.active) {
+            return;
+        }
+
         const payload: EventPayload = {
             data,
             sender,
@@ -124,24 +130,27 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         return this.scope.run(callback)!;
     }
 
-    public hasRegistration(type: string, name: string): boolean {
-        return !!this.registrations[type]?.has(name);
+    public hasRegistration(group: string, name: string): boolean {
+        return !!this.registrations[group]?.has(name);
     }
 
-    public getRegistration(type: string, name: string): RegistrationValueProducer | undefined {
-        return this.registrations[type]?.get(name);
+    public getRegistration(group: string, name: string): StoreRegistration | undefined {
+        return this.registrations[group]?.get(name);
     }
 
-    public register(type: string, name: string, valueProducer: RegistrationValueProducer): void {
-        if (!(type in this.registrations)) {
-            this.registrations[type] = new Map();
+    public register(group: string, name: string, producer: RegistrationValueProducer, type: RegistrationType = 'other'): void {
+        if (!(group in this.registrations)) {
+            this.registrations[group] = new Map();
         }
 
-        this.registrations[type].set(name, valueProducer);
+        this.registrations[group].set(name, {
+            type,
+            producer,
+        });
     }
 
-    public unregister(type: string, name: string): void {
-        this.registrations[type]?.delete(name);
+    public unregister(group: string, name: string): void {
+        this.registrations[group]?.delete(name);
     }
 
     public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
@@ -151,22 +160,31 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
         const output = this.track(() => computed(() => getter(this.state)));
 
-        this.register('getters', name, () => output.value);
+        this.register('getters', name, () => output.value, 'computed');
 
         return output;
     }
 
     private mutate<TPayload, TResult = void>(name: string, sender: string, mutator: Mutator<TState, TPayload, TResult>, payload: TPayload): TResult {
+        if (!this.scope.active) {
+            throw new Error('The current store has been destroyed. Mutations can no longer take place.');
+        }
+
         if (this.stack.has(name)) {
             throw new Error('Circular mutation reference detected. Avoid calling mutations inside other mutations to prevent circular references.');
         }
+
+        let result: TResult;
 
         const eventData: MutationEventData<TPayload, TResult> = {
             payload,
             mutation: name,
         };
 
-        let result: TResult;
+        const emitComplete = (event: string) => this.emit(event, sender, {
+            ...eventData,
+            result,
+        });
 
         this.stack.add(name);
         this.emit(EVENTS.mutation.before, sender, eventData);
@@ -181,12 +199,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             throw error;
         } finally {
             this.stack.delete(name);
+            emitComplete(EVENTS.mutation.after);
         }
 
-        this.emit(EVENTS.mutation.after, sender, {
-            ...eventData,
-            result,
-        });
+        emitComplete(EVENTS.mutation.success);
 
         return result;
     }
@@ -203,16 +219,6 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.register('mutations', name, () => mutation);
 
         return mutation;
-    }
-
-    public exec<TResult = void>(name: string, payload?: any): TResult {
-        const mutation = this.getRegistration('mutations', name) as Mutation<any, TResult>;
-
-        if (!mutation) {
-            throw new Error(`No mutation found for ${name}`);
-        }
-
-        return mutation(payload);
     }
 
     public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult {

@@ -11,6 +11,7 @@ export const EVENTS = {
     mutation: {
         before: 'mutation:before',
         after: 'mutation:after',
+        success: 'mutation:success',
         error: 'mutation:error',
     },
     devtools: {

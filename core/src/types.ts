@@ -10,6 +10,8 @@ export type BaseState = object;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
 export type ReadState<TState extends BaseState> = DeepReadonly<TState>;
 export type WriteState<TState extends BaseState> = TState;
+export type RegistrationType = 'ref' | 'reactive' | 'computed' | 'other';
+export type RegistrationValueProducer = () => unknown;
 export type Getter<TState extends BaseState, TResult> = (state: ReadState<TState>) => TResult;
 export type Mutator<TState extends BaseState, TPayload, TResult = void> = (state: WriteState<TState>, payload: TPayload) => TResult;
 export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
@@ -59,14 +61,13 @@ export interface InternalStore<TState extends BaseState = any> extends StoreBase
     readonly state: ReadState<TState>;
     name: string;
     registrations: StoreRegistrations;
-    hasRegistration(type: string, name: string): boolean;
-    getRegistration(type: string, name: string): RegistrationValueProducer | undefined;
-    register(type: string, name: string, valueProducer: RegistrationValueProducer): void;
-    unregister(type: string, name: string): void;
+    hasRegistration(group: string, name: string): boolean;
+    getRegistration(group: string, name: string): StoreRegistration | undefined;
+    register(group: string, name: string, valueProducer: RegistrationValueProducer, type?: RegistrationType): void;
+    unregister(group: string, name: string): void;
     emit(event: string, sender: string, data: any): void;
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener
-    exec<TResult = void>(name: string, payload?: any): TResult;
     track<TResult>(callback: () => TResult): TResult;
     provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void;
     write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult;
@@ -89,6 +90,7 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
     destroy(): void;
     onBeforeMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
     onAfterMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onMutationSuccess<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
     onMutationError<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
 }
 
@@ -101,10 +103,13 @@ export interface PluginOptions {
     plugins?: HarlemPlugin[];
 }
 
-export type RegistrationValueProducer = () => unknown;
+export interface StoreRegistration {
+    type: RegistrationType;
+    producer: RegistrationValueProducer;
+}
 
 export interface StoreRegistrations {
-    [key: string]: Map<string, RegistrationValueProducer>;
-    getters: Map<string, RegistrationValueProducer>;
-    mutations: Map<string, RegistrationValueProducer>;
+    [key: string]: Map<string, StoreRegistration>;
+    getters: Map<string, StoreRegistration>;
+    mutations: Map<string, StoreRegistration>;
 }

@@ -140,6 +140,7 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
 
     const onBeforeMutation = getMutationHook(EVENTS.mutation.before);
     const onAfterMutation = getMutationHook(EVENTS.mutation.after);
+    const onMutationSuccess = getMutationHook(EVENTS.mutation.success);
     const onMutationError = getMutationHook(EVENTS.mutation.error);
 
     const extendedStore = getExtendedStore<TState, TExtensions>(store, extensions);
@@ -151,6 +152,7 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         destroy,
         onBeforeMutation,
         onAfterMutation,
+        onMutationSuccess,
         onMutationError,
         state: store.state,
         getter: store.getter.bind(store),
