@@ -1,0 +1,47 @@
+{
+    "name": "@harlem/extension-history",
+    "amdName": "harlemHistory",
+    "version": "1.3.2",
+    "license": "MIT",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "The official history extension for Harlem",
+    "homepage": "https://harlemjs.com",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "exports": "./dist/index.js",
+    "unpkg": "./dist/index.global.js",
+    "types": "./dist/index.d.ts",
+    "source": "./src/index.ts",
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "extension",
+        "history"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "extensions/history"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
+    "scripts": {
+        "dev": "tsup --watch src",
+        "build": "tsup",
+        "prepublish": "yarn build"
+    },
+    "peerDependencies": {
+        "@harlem/core": "^1.1.2"
+    },
+    "dependencies": {
+        "@harlem/extension-trace": "^1.3.2",
+        "@harlem/utilities": "^1.3.2"
+    },
+    "devDependencies": {
+        "@harlem/core": "^1.3.2",
+        "@harlem/testing": "^1.3.2"
+    }
+}
