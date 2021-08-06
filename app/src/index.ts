@@ -22,7 +22,7 @@ function start() {
         .use(Harlem, {
             plugins,
         })
-        .mount('#app');
+        .mount('body');
 }
 
 start();
