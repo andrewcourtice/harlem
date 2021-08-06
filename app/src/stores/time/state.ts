@@ -24,5 +24,6 @@ export default {
         'Asia/Tokyo',
         'Australia/Sydney',
         'Asia/Hong_Kong',
+        'Asia/Dubai',
     ],
 } as State;

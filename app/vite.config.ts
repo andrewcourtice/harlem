@@ -19,6 +19,9 @@ export default defineConfig({
             esmExternals: true,
         },
     },
+    define: {
+        '__VUE_PROD_DEVTOOLS__': true,
+    },
     plugins: [
         vuePlugin(),
     ],

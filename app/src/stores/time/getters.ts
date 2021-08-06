@@ -6,8 +6,10 @@ import {
     utcToZonedTime,
 } from 'date-fns-tz';
 
-export const timezones = getter('timezones', ({ timezones }) => {
-    return timezones.flatMap(({ utc }) => utc);
+export const timezones = getter('timezones', ({ timezones, clocks }) => {
+    return timezones.flatMap(({ utc }) => utc)
+        .filter(timezone => !clocks.includes(timezone))
+        .sort((a, b) => a.localeCompare(b));
 });
 
 export const clocks = getter('clocks', ({ clocks, time }) => {

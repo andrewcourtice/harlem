@@ -10,11 +10,15 @@
 </template>
 
 <script lang="ts" setup>
-import scale from '../../utilities/number/scale';
+import {
+    computed,
+} from 'vue';
 
 import {
-    computed
-} from 'vue';
+    getHourRotation,
+    getMinuteRotation,
+    getSecondRotation
+} from '../../utilities/time/get-rotation';
 
 const props = defineProps({
 
@@ -25,10 +29,6 @@ const props = defineProps({
 
 });
 
-const hourScale = scale([0, 12], [0, 360]);
-const minSecScale = scale([0, 60], [0, 360]);
-const relativeMinSecScale = scale([0, 60], [0, 1]);
-
 const handStyles = computed(() => {
     const hours = props.time.getHours() % 12;
     const minutes = props.time.getMinutes();
@@ -36,20 +36,16 @@ const handStyles = computed(() => {
 
     return {
         hour: {
-            transform: `translateX(var(--clock__hand-offset)) rotate(${hourScale(hours + relativeMinSecScale(minutes))}deg)`
+            transform: `translateX(var(--clock__hand-offset)) rotate(${getHourRotation(hours, minutes)}deg)`
         },
         minute: {
-            transform: `translateX(var(--clock__hand-offset)) rotate(${minSecScale(minutes + relativeMinSecScale(seconds))}deg)`
+            transform: `translateX(var(--clock__hand-offset)) rotate(${getMinuteRotation(minutes, seconds)}deg)`
         },
         second: {
-            transform: `translateX(var(--clock__hand-offset)) rotate(${minSecScale(seconds)}deg)`
+            transform: `translateX(var(--clock__hand-offset)) rotate(${getSecondRotation(seconds)}deg)`
         }
     };
 });
-
-function getMarkerStyle(index: number) {
-    return 
-}
 </script>
 
 <style lang="scss">

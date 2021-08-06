@@ -7,7 +7,6 @@ import {
     createStore,
 } from '@harlem/core';
 
-
 export const {
     state,
     getter,
@@ -24,6 +23,14 @@ export const {
                 {
                     name: 'add-clock',
                     description: 'Add a clock',
+                },
+                {
+                    name: 'remove-clock',
+                    description: 'Remove a clock',
+                },
+                {
+                    name: 'set-clock-type',
+                    description: 'Set clock type',
                 },
             ],
         }),

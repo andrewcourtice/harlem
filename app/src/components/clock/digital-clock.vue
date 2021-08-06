@@ -27,7 +27,7 @@ const props = defineProps({
 });
 
 const labels = computed(() => ({
-    time: format(props.time, 'H:mm', {
+    time: format(props.time, 'h:mm', {
         timeZone: props.timezone
     }),
     phase: format(props.time, 'a', {

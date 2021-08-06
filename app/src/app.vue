@@ -6,29 +6,37 @@
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, recusandae enim expedita iusto, esse voluptatum odio itaque delectus voluptatem dolorum dolores sint quam excepturi, consequatur aliquam nesciunt distinctio! Ullam, excepturi!
                 </p>
-                <div>{{ thing }}</div>
-                <input type="text" v-model="thing">
             </header>
-            <div layout="rows center-justify">
-                <div layout="row center-right">
-                    <div>Clock type:</div>
-                    <choice-group>
-                        <choice v-for="{ label, value } in state.clockTypes" :key="value" :id="value" :value="value" v-model="clockType">
-                            <span>{{ label }}</span>
-                        </choice>
-                    </choice-group>
+            <div class="app__options" layout="rows center-justify">
+                <choice-group>
+                    <choice v-for="{ label, value } in state.clockTypes" :key="value" :id="value" :value="value" v-model="clockType">
+                        <span>{{ label }}</span>
+                    </choice>
+                </choice-group>
+                <div>
+                    <button class="button" @click="undo">Undo</button>
+                    <button class="button" @click="redo">Redo</button>
                 </div>
             </div>
             <div class="clocks">
-                <div class="clock" v-for="{ time, timezone } in clocks" :key="timezone">
-                    <component  :is="clockComponent" :time="time"></component>
-                    <div class="clock__label">
-                        <div class="clock__timezone">{{ timezone }}</div>
-                        <div class="clock__date">{{ getClockDateLabel(time, timezone) }}</div>
+                <transition-group name="clocks">
+                    <div class="clock" v-for="{ time, timezone } in clocks" :key="timezone">
+                        <component :is="clockComponent" :time="time"></component>
+                        <div class="clock__label">
+                            <div class="clock__timezone">{{ timezone }}</div>
+                            <div class="clock__date">{{ getClockDateLabel(time, timezone) }}</div>
+                        </div>
+                        <button @click="removeClock(timezone)">Remove</button>
                     </div>
-                </div>
-                <div class="add-clock">
-                    Add Clock
+                </transition-group>
+                <div class="add-clock" layout="row center-center">
+                    <div>
+                        <div>Add a clock</div>
+                        <select v-model="addClockModel">
+                            <option value="">Select a timezone</option>
+                            <option v-for="timezone in timezones" :key="timezone" :value="timezone">{{ timezone }}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </container>
@@ -44,8 +52,6 @@ import DigitalClock from './components/clock/digital-clock.vue';
 
 import {
     computed,
-    ref,
-    watchEffect,
 } from 'vue';
 
 import {
@@ -55,16 +61,25 @@ import {
 import {
     state,
     clocks,
-    setClockType
+    timezones,
+    setClockType,
+    addClock,
+    removeClock,
+    undo,
+    redo,
+    loadTimezones
 } from './stores/time';
 
-const thing = ref('');
-
-watchEffect(() => console.log(state.clockType));
+loadTimezones();
 
 const clockType = computed({
     get: () => state.clockType,
     set: type => setClockType(type)
+});
+
+const addClockModel = computed({
+    get: () => '',
+    set: value => value && addClock(value)
 });
 
 const clockComponent = computed(() => state.clockType === 'analogue'
@@ -83,6 +98,10 @@ function getClockDateLabel(time: Date, timezone: string) {
 
     .app {
         padding: 2rem;
+    }
+
+    .app__options {
+        margin: 2rem 0;
     }
 
     .clocks {
@@ -112,6 +131,22 @@ function getClockDateLabel(time: Date, timezone: string) {
     .clock__date {
         margin-top: 0.25rem;
         font-size: 0.875rem;
+    }
+
+    .clocks-enter-from,
+    .clocks-leave-to {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    .clocks-enter-active,
+    .clocks-leave-active {
+        transition: opacity var(--animation__timing) var(--animation__easing),
+                    transform var(--animation__timing) var(--animation__easing);
+                }
+                
+    .clocks-move {
+        transition: transform var(--animation__timing) var(--animation__easing);
     }
 
 </style>

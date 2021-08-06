@@ -52,8 +52,8 @@ const choiceClass = computed(() => ({
         font-weight: 600;
         border-radius: 0.5rem;
         cursor: pointer;
-        transition: color 250ms ease-out,
-                    background 250ms ease-out;
+        transition: color var(--animation__timing) var(--animation__easing),
+                    background var(--animation__timing) var(--animation__easing);
     }
 
     .choice--checked {

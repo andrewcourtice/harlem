@@ -1,5 +1,5 @@
 import 'flex-layout-attribute';
-import './styles/index.css';
+import './styles/index.scss';
 
 import App from './app.vue';
 
@@ -12,15 +12,11 @@ import {
 } from 'vue';
 
 function start() {
-    const plugins = [];
-
-    if (import.meta.env.DEV) {
-        plugins.push(devtoolsPlugin());
-    }
-
     return createApp(App)
         .use(Harlem, {
-            plugins,
+            plugins: [
+                devtoolsPlugin(),
+            ],
         })
         .mount('body');
 }
