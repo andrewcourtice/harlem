@@ -6,6 +6,8 @@
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, recusandae enim expedita iusto, esse voluptatum odio itaque delectus voluptatem dolorum dolores sint quam excepturi, consequatur aliquam nesciunt distinctio! Ullam, excepturi!
                 </p>
+                <div>{{ thing }}</div>
+                <input type="text" v-model="thing">
             </header>
             <div layout="rows center-justify">
                 <div layout="row center-right">
@@ -41,7 +43,9 @@ import AnalogueClock from './components/clock/analogue-clock.vue';
 import DigitalClock from './components/clock/digital-clock.vue';
 
 import {
-    computed
+    computed,
+    ref,
+    watchEffect,
 } from 'vue';
 
 import {
@@ -53,6 +57,10 @@ import {
     clocks,
     setClockType
 } from './stores/time';
+
+const thing = ref('');
+
+watchEffect(() => console.log(state.clockType));
 
 const clockType = computed({
     get: () => state.clockType,
