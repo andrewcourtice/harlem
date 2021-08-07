@@ -34,7 +34,7 @@
         "prepublish": "yarn build"
     },
     "peerDependencies": {
-        "@harlem/core": "^1.1.2"
+        "@harlem/core": "^1.3.2"
     },
     "dependencies": {
         "@vue/devtools-api": "^6.0.0-beta.15"

@@ -2131,7 +2131,7 @@
     postcss-selector-parser "^6.0.4"
     source-map "^0.6.1"
 
-"@vue/compiler-sfc@^3.2.0-beta.7":
+"@vue/compiler-sfc@^3.2.0-beta.8":
   version "3.2.0-beta.8"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.0-beta.8.tgz#f237a26f3219a5af7b13c9ee5a2ff7853b8a2248"
   integrity sha512-5kfSiJUtpvBmTazUFDiGGvLTI5lDuJJY/R7jRRE9uBHcxHs7iSveToMYldwQ7tiVB+L1QFItXBLp4o/0uPlmcQ==
@@ -9540,7 +9540,7 @@ vue@^3.1.5:
     "@vue/runtime-dom" "3.1.5"
     "@vue/shared" "3.1.5"
 
-vue@^3.2.0-beta.7:
+vue@^3.2.0-beta.8:
   version "3.2.0-beta.8"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.0-beta.8.tgz#ebc72aacd5579cfc543dec36d6942ebde821fee7"
   integrity sha512-kpBYrcn1YSHrjXO4ELdLqqJ6U0JJ+ZSDaCw95cJnx+B3dH9z6oU7IdBoKXUsTStq+ppAvdKouh+kTYRxG3t/Xg==
