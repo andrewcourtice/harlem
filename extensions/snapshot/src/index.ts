@@ -1,4 +1,8 @@
 import {
+    SENDER,
+} from './constants';
+
+import {
     clone,
     overwrite,
 } from '@harlem/utilities';
@@ -16,11 +20,6 @@ import type {
 
 export * from './types';
 
-interface MutationPayload<TState extends BaseState, TBranchState extends BaseState> {
-    snapshotBranch: TBranchState;
-    branchCallback: BranchCallback<TState, TBranchState>;
-}
-
 export default function snapshotExtension<TState extends BaseState>(options?: Partial<Options>) {
     const {
         mutationName,
@@ -30,23 +29,20 @@ export default function snapshotExtension<TState extends BaseState>(options?: Pa
     } as Options;
 
     return (store: InternalStore<TState>) => {
-        const _apply = store.mutation(mutationName, (state, { snapshotBranch, branchCallback }: MutationPayload<TState, BaseState>) => {
-            const stateBranch = branchCallback(state);
-            overwrite(stateBranch, clone(snapshotBranch));
-        });
+        function apply<TBranchState extends BaseState>(snapshotBranch: TBranchState, branchCallback: BranchCallback<TState, TBranchState>) {
+            store.write(mutationName, SENDER, state => {
+                const stateBranch = branchCallback(state);
+                overwrite(stateBranch, clone(snapshotBranch));
+            });
+        }
 
         function snapshot<TBranchState extends BaseState = TState>(branchCallback: BranchCallback<TState, TBranchState> = ((state: TState) => state) as any): Snapshot<TBranchState> {
             const snapshotBranch = branchCallback(store.state);
             const state = Object.freeze(clone(snapshotBranch));
 
-            const apply = () => _apply({
-                branchCallback,
-                snapshotBranch: state,
-            });
-
             return {
                 state,
-                apply,
+                apply: () => apply(state, branchCallback),
             };
         }
 

@@ -1,4 +1,8 @@
 import {
+    SENDER,
+} from './constants';
+
+import {
     EVENTS,
     BaseState,
     EventPayload,
@@ -45,21 +49,29 @@ export default function storageExtension<TState extends BaseState>(options?: Par
             }
         });
 
-        if (!sync) {
-            return {};
+        function listener({ key, storageArea, newValue }: StorageEvent) {
+            if (storageArea === storage && key === storageKey && newValue) {
+                store.write('$storage', SENDER, state => Object.assign(state, parser(newValue)));
+            }
         }
 
-        const write = store.mutation('$storage', (state, value: string) => Object.assign(state, parser(value)));
+        function startStorageSync() {
+            window.addEventListener('storage', listener);
+        }
 
-        const listener = ({ key, storageArea, newValue }: StorageEvent) => {
-            if (storageArea === storage && key === storageKey && newValue) {
-                write(newValue);
-            }
+        function stopStorageSync() {
+            window.removeEventListener('storage', listener);
+        }
+
+        store.once(EVENTS.store.destroyed, () => stopStorageSync());
+
+        if (sync) {
+            startStorageSync();
+        }
+
+        return {
+            startStorageSync,
+            stopStorageSync,
         };
-
-        window.addEventListener('storage', listener);
-        store.once(EVENTS.store.destroyed, () => window.removeEventListener('storage', listener));
-
-        return {};
     };
 }

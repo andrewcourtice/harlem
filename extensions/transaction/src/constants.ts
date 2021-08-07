@@ -1,4 +1,4 @@
-export const SENDER = 'transaction';
+export const SENDER = 'extension:transaction';
 
 export const EVENTS = {
     transaction: {

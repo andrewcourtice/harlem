@@ -24,7 +24,9 @@ export * from './types';
 
 export default function transactionExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
-        const rollback = store.mutation('$transaction-rollback', (state, snapshot: ReadState<TState>) => overwrite(state, snapshot));
+        function rollback(snapshot: ReadState<TState>) {
+            store.write('$transaction-rollback', SENDER, state => overwrite(state, snapshot));
+        }
 
         function transaction<TPayload>(name: string, transactor: Transactor<TPayload>): Transaction<TPayload> {
             return payload => {

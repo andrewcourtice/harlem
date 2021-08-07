@@ -20,8 +20,6 @@ import type {
     ActionOptions,
     ActionPredicate,
     ActionStoreState,
-    AddActionInstancePayload,
-    RemoveActionInstancePayload,
 } from './types';
 
 export * from './types';
@@ -35,6 +33,7 @@ export default function actionsExtension<TState extends BaseState>() {
         });
 
         function registerAction(name: string) {
+            _store.register('actions', name, () => undefined);
             _store.write('$action-register', SENDER, state => {
                 state.$actions[name] = {
                     runCount: 0,

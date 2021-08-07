@@ -2,7 +2,7 @@ import type {
     Options,
 } from './types';
 
-export const SENDER = 'devtools';
+export const SENDER = 'plugin:devtools';
 export const DEVTOOLS_ID = 'harlem';
 export const ALL_STORES_ID = '$all';
 

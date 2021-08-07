@@ -1,1 +1,1 @@
-export const SENDER = 'ssr';
+export const SENDER = 'plugin:ssr';

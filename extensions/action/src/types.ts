@@ -24,14 +24,3 @@ export interface ActionStoreState {
 export interface ActionOptions {
     parallel: boolean;
 }
-
-export interface AddActionInstancePayload {
-    actionName: string;
-    instanceId: symbol;
-    instancePayload?: unknown;
-}
-
-export interface RemoveActionInstancePayload {
-    actionName: string;
-    instanceId: symbol;
-}

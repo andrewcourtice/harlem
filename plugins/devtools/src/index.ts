@@ -121,13 +121,15 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
             return;
         }
 
-        let internalStores = [stores.get(nodeId)];
+        let internalStores = [stores.get(nodeId) || stores.values().next().value as InternalStore];
 
         if (nodeId === ALL_STORES_ID) {
             internalStores = Array.from(stores.values());
         }
 
-        payload.state = getStoreSnapshots(internalStores);
+        if (internalStores.length > 0) {
+            payload.state = getStoreSnapshots(internalStores);
+        }
     };
 }
 
@@ -168,7 +170,6 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
         }
 
         const {
-            sender,
             store,
         } = payload;
 
@@ -179,9 +180,9 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
                 logType,
                 title: 'Mutation',
                 subtitle: store,
+                groupId: store,
                 time: Date.now(),
                 data: payload,
-                groupId: sender,
                 meta: {
                     store: store,
                 },

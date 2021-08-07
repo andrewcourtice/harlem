@@ -119,7 +119,9 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         const traceCallbacks = new Set<TraceCallback<TState>>();
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
-            store.provider('write', state => trace(state, gates, result => traceCallbacks.forEach(callback => callback(result))));
+            store.provider('write', state => trace(state, gates, result => {
+                traceCallbacks.forEach(callback => callback(result));
+            }));
         }
 
         function stopTrace() {
