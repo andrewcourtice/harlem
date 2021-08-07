@@ -13,6 +13,6 @@
         "@harlem/core": "^2.0.0-alpha.0"
     },
     "devDependencies": {
-        "@harlem/core": "^1.3.2"
+        "@harlem/core": "^2.0.0-alpha.0"
     }
 }

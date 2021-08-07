@@ -7,5 +7,10 @@
         "packages/*",
         "extensions/*",
         "plugins/*"
-    ]
+    ],
+    "command": {
+        "publish": {
+            "graphType": "all"
+        }
+    }
 }
