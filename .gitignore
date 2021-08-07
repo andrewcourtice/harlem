@@ -108,3 +108,5 @@ docs/public
 
 .DS_STORE
 .idea
+
+test-results.xml
