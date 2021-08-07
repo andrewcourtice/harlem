@@ -2,7 +2,7 @@ import clamp from './clamp';
 
 export default function scale(
     domain: [min: number, max: number],
-    range: [min: number, max: number]
+    range: [min: number, max: number],
 ) {
     const [
         domainMin,

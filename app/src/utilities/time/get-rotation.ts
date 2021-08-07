@@ -8,7 +8,7 @@ export function getHourRotation(hours: number, minutes: number = 0) {
     return hourScale(hours + relativeMinSecScale(minutes));
 }
 
-export function getMinuteRotation(minutes: number, seconds: number= 0) {
+export function getMinuteRotation(minutes: number, seconds: number = 0) {
     return minSecScale(minutes + relativeMinSecScale(seconds));
 }
 
