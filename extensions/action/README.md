@@ -4,7 +4,7 @@
 
 This is the official action extension for Harlem. This extension adds action and action-related capabilities to your store. Some of the features of this extension are:
 
-- Cancellable (incl. child actions)
+- Cancellable (incl. nested actions)
 - Direct mutations within the action body - no need to specify a separate mutation
 - Decoupled status checks through helper functions (`isActionRunning` and `hasActionRun`)
 
@@ -27,7 +27,7 @@ yarn add @harlem/extension-action
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-18,21}
+```typescript{16-20,23}
 import actionExtension from '@harlem/extension-action';
 
 import {
@@ -45,7 +45,9 @@ const {
     mutation,
     action,
     hasActionRun,
-    isActionRunning
+    isActionRunning,
+    whenActionIdle,
+    clearActionRunCount
 } = createStore('example', STATE, {
     extensions: [
         actionExtension()
@@ -53,7 +55,7 @@ const {
 });
 ```
 
-Notice how the extension has added 3 new methods to the store instance: `action`, `hasActionRun` and `isActionRunning`.
+Notice how the extension has added 5 new methods to the store instance: `action`, `hasActionRun`, `isActionRunning`, `whenActionIdle` and `clearActionRunCount`.
 
 
 ## Usage
@@ -146,7 +148,7 @@ export default action('parent-action', async (id: number, mutate, controller) =>
 ```
 
 ### Checking action status
-There are 2 ways to check whether an action is running:
+This extension provides a set of helper methods for checking the status of actions. There are 2 ways to check whether an action is running:
 
 - Direct
 - Indirect
@@ -159,4 +161,31 @@ async function runAction() {
 }
 ```
 
-The **indirect** method is using the helper functions on the store to check whether the action is currently running or has run at all.
+The **indirect** method is using the helper methods on the store to check whether the action is currently running or has run at all.
+
+To check whether the action is currently running use the `isActionRunning` method:
+
+```typescript
+const isRunning = computed(() => isActionRunning('load-user-data'));
+```
+
+To check whether the action has run at all use the `isActionRunning` method:
+
+```typescript
+const isRunning = computed(() => hasActionRun('load-user-data'));
+```
+
+To respond to when an action becomes idle use the `whenActionIdle` method:
+```typescript
+await whenActionIdle('load-user-data');
+```
+
+All of these methods accept an optional predicate function as the second argument. The predicate function is used to check the status of a particular instance of that action. for example, say you call the same action with 2 different payloads:
+```typescript
+loadUserData(85);
+loadUserData(88);
+
+const isFirstActionRunning = isActionRunning('load-user-data', payload => payload === 85);
+```
+
+The predicate function is called with the payload for each instance of the action currently running. The function must return a boolean.
