@@ -2377,7 +2377,7 @@
     markdown-it "^12.1.0"
     markdown-it-container "^3.0.0"
 
-"@vuepress/plugin-docsearch@^2.0.0-beta.22":
+"@vuepress/plugin-docsearch@^2.0.0-beta.23":
   version "2.0.0-beta.23"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-docsearch/-/plugin-docsearch-2.0.0-beta.23.tgz#4f8b9aeb4cff11aeeeac6e6fcfa65065829982ce"
   integrity sha512-V8GCwLRdLqAJVaZYNXLOO4cU41JPpYlUgXEmVJUzMTAjBl20COz/U+PGenxhR1/WTt1SVvsgHTIDKRMrbKTG4Q==
@@ -9549,7 +9549,7 @@ vue@^3.2.0-beta.8:
     "@vue/runtime-dom" "3.2.0-beta.8"
     "@vue/shared" "3.2.0-beta.8"
 
-vuepress-vite@^2.0.0-beta.22:
+vuepress-vite@^2.0.0-beta.23:
   version "2.0.0-beta.23"
   resolved "https://registry.yarnpkg.com/vuepress-vite/-/vuepress-vite-2.0.0-beta.23.tgz#b17e65b1589b7f860fd5a00e644322259201f962"
   integrity sha512-K8F1jSJEc1+WEYiPzLYYRuJXL5r0IbAx2s5j9oLEcxnhbBZYHpt8Gcyyn7j8+HOOktZqkJ4dw1onEAVmqLDcoA==
@@ -9559,7 +9559,7 @@ vuepress-vite@^2.0.0-beta.22:
     "@vuepress/core" "2.0.0-beta.23"
     "@vuepress/theme-default" "2.0.0-beta.23"
 
-vuepress@^2.0.0-beta.22:
+vuepress@^2.0.0-beta.23:
   version "2.0.0-beta.23"
   resolved "https://registry.yarnpkg.com/vuepress/-/vuepress-2.0.0-beta.23.tgz#cfdd03f50b2c8610847a7f3f39c2adad4ed7cb21"
   integrity sha512-YuPW4NtQMVntZCJYrYW8eiu7mM9n4S6K0S88ry5oxG0ZnAjlwGKm6o2XFc57pmbMtByd6ObbEEGx8i4YkANuOQ==
