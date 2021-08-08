@@ -89,9 +89,10 @@ export default function actionsExtension<TState extends BaseState>() {
                     addInstance(name, id, payload);
 
                     try {
-                        const result = await body(payload, mutate, controller, onAbort);
-                        resolve(result);
+                        const providedPayload = _store.providers.payload(payload) ?? payload;
+                        const result = await body(providedPayload, mutate, controller, onAbort);
 
+                        resolve(result);
                         incrementRunCount(name);
                     } catch (error) {
                         if (!(error instanceof DOMException)) {
