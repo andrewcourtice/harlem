@@ -186,10 +186,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.emit(EVENTS.mutation.before, sender, eventData);
 
         try {
-            const _state = this.providers.write(this.writeState) ?? this.writeState;
-            const _payload = this.providers.payload(payload) ?? payload;
+            const providedState = this.providers.write(this.writeState) ?? this.writeState;
+            const providedPayload = this.providers.payload(payload) ?? payload;
 
-            result = mutator(_state, _payload);
+            result = mutator(providedState, providedPayload);
         } catch (error) {
             this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
