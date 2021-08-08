@@ -5,11 +5,7 @@ At it's heart, Harlem uses a plugin system to extend functionality and create po
 Here is a list of officially support Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
 
 - [Devtools](devtools.html) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
-- [Reset](reset.html) (`@harlem/plugin-reset`) - The reset plugin provides an API to reset stores to their initial state.
-- [Snapshot](snapshot.html) (`@harlem/plugin-snapshot`) - The snapshot plugin provides an API to snapshot a store's state at a given point and apply it when convenient.
 - [SSR](server-side-rendering.html) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
-- [Storage](storage.html) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
-- [Transactions](transaction.html) (`@harlem/plugin-transaction`) - The transaction plugin provides an API for defining transactions that run multiple mutations. A transaction can safely rollback mutations in the event of an error.
 
 If you require functionality to suit a specific use-case you can write your own plugin. See [Writing your own plugin](#writing-your-own-plugin) below.
 

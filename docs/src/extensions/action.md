@@ -1,4 +1,4 @@
-# Harlem Action Extension
+# Action Extension
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-action)
 

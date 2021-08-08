@@ -22,6 +22,10 @@ module.exports = {
                 link: '/guide/'
             },
             {
+                text: 'Extensions',
+                link: '/extensions/'
+            },
+            {
                 text: 'Plugins',
                 link: '/plugins/'
             },
@@ -46,6 +50,16 @@ module.exports = {
                     ]
                 }
             ],
+            '/extensions/': [
+                {
+                    isGroup: true,
+                    text: 'Extensions',
+                    children: [
+                        '/extensions/README.md',
+                        '/extensions/action.md',
+                    ]
+                }
+            ],
             '/plugins/': [
                 {
                     isGroup: true,
@@ -53,11 +67,7 @@ module.exports = {
                     children: [
                         '/plugins/README.md',
                         '/plugins/devtools.md',
-                        '/plugins/reset.md',
-                        '/plugins/snapshot.md',
                         '/plugins/server-side-rendering.md',
-                        '/plugins/storage.md',
-                        '/plugins/transaction.md',
                     ]
                 }
             ],
