@@ -1,57 +1,73 @@
-<p align="center">
-    <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
-    </a>
-</p>
+# Harlem History Extension
 
-# Harlem Reset Plugin
+![npm](https://img.shields.io/npm/v/@harlem/extension-history)
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-reset)
+This is the official history extension for Harlem. The history extension adds undo and redo capabilities to your store for easily integrating history features into your application. 
 
-This is the official Harlem plugin for resetting stores to their initial state.
+## Getting Started
 
-<!-- TOC depthfrom:2 -->
+Follow the steps below to get started using the history extension.
 
-- [Getting started](#getting-started)
+### Installation
 
-<!-- /TOC -->
+Before installing this extension make sure you have installed `@harlem/core`.
 
-## Getting started
-
-Before installing the reset plugin make sure you have installed `@harlem/core`.
-
-1. Install `@harlem/plugin-reset`:
+Install `@harlem/extension-history`:
 ```
-npm install @harlem/plugin-reset
+npm install @harlem/extension-history
 ```
 Or if you're using Yarn:
 ```
-yarn add @harlem/plugin-reset
+yarn add @harlem/extension-history
 ```
 
-2. Create an instance of the plugin and register it with Harlem:
+### Registration
+
+To get started simply register this extension with the store you wish to extend.
+
 ```typescript
-import App from './app.vue';
+import historyExtension from '@harlem/extension-history';
 
-import harlem from '@harlem/core';
-import createResetPlugin from '@harlem/plugin-reset';
-
-createApp(App)
-    .use(harlem, {
-        plugins: [
-            createResetPlugin()
-        ]
-    })
-    .mount('#app');
-```
-
-3. Call the reset method with the name of the store you wish to reset:
-```typescript
 import {
-    reset
-} from '@harlem/plugin-reset';
+    createStore
+} from '@harlem/core';
 
-export default function() {
-    reset('my-store');
-}
+const STATE = {
+    firstName: 'Jane',
+    lastName: 'Smith'
+};
+
+const {
+    state,
+    getter,
+    mutation,
+    undo,
+    redo
+} = createStore('example', STATE, {
+    extensions: [
+        historyExtension()
+    ]
+});
 ```
+
+The history extension adds 2 new methods to the store instance: `undo` and `redo`.
+
+
+## Usage
+
+### Options
+The history extension method accepts an options object with the following properties:
+
+- **max**: `number` - the maximum number of history steps to store. The default value is `50`.
+- **mutations**: `object[]` - the mutations you wish to track. leaving this undefined will cause all mutations to be tracked. The default is undefined.
+    - **name**: `string` - the name of the mutation to track. This must match the name of a registered mutation.
+    - **description**: `string?` - an optional description of the mutations intentions. This is useful for displaying a list of commands in the UI.
+
+### Undoing/Redoing mutations
+To undo or redo a mutation simply call the `undo` or `redo` method available on the store.
+
+## Considerations
+Please keep the following points in mind when using this extension:
+
+- This extension has a slight performance cost. Each tracked mutation is proxied and values are cloned pre/post mutation. If you are assigning/moving/deleting large object structures around state this cause a performance hit and increase in memory usage. It is recommended to keep mutations granular and precise when tracking them with the history (or trace) extension.
+- This extension cannot handle untracked mutation side-effects. For example, say you have 2 mutations, `mutation1` and `mutation2`. Both mutations modify the same branch of state but `mutation1` is tracked by the history extension and `mutation2` is not. Undoing the changes from `mutation1` any time after running `mutation2` will cause changes from `mutation2` to be lost and unrecoverable.
