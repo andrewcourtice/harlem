@@ -1,57 +1,58 @@
-<p align="center">
-    <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
-    </a>
-</p>
+# Harlem Reset Extension
 
-# Harlem Reset Plugin
+![npm](https://img.shields.io/npm/v/@harlem/extension-reset)
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-reset)
+This is the official reset extension for Harlem. The reset extension adds the ability to reset a store back to it's initial state.
 
-This is the official Harlem plugin for resetting stores to their initial state.
+## Getting Started
 
-<!-- TOC depthfrom:2 -->
+Follow the steps below to get started using the reset extension.
 
-- [Getting started](#getting-started)
+### Installation
 
-<!-- /TOC -->
+Before installing this extension make sure you have installed `@harlem/core`.
 
-## Getting started
-
-Before installing the reset plugin make sure you have installed `@harlem/core`.
-
-1. Install `@harlem/plugin-reset`:
+Install `@harlem/extension-reset`:
 ```
-npm install @harlem/plugin-reset
+npm install @harlem/extension-reset
 ```
 Or if you're using Yarn:
 ```
-yarn add @harlem/plugin-reset
+yarn add @harlem/extension-reset
 ```
 
-2. Create an instance of the plugin and register it with Harlem:
+### Registration
+
+To get started simply register this extension with the store you wish to extend.
+
 ```typescript
-import App from './app.vue';
+import resetExtension from '@harlem/extension-reset';
 
-import harlem from '@harlem/core';
-import createResetPlugin from '@harlem/plugin-reset';
-
-createApp(App)
-    .use(harlem, {
-        plugins: [
-            createResetPlugin()
-        ]
-    })
-    .mount('#app');
-```
-
-3. Call the reset method with the name of the store you wish to reset:
-```typescript
 import {
-    reset
-} from '@harlem/plugin-reset';
+    createStore
+} from '@harlem/core';
 
-export default function() {
-    reset('my-store');
-}
+const STATE = {
+    firstName: 'Jane',
+    lastName: 'Smith'
+};
+
+const {
+    state,
+    getter,
+    mutation,
+    reset
+} = createStore('example', STATE, {
+    extensions: [
+        resetExtension()
+    ]
+});
 ```
+
+The reset extension adds a single `reset` method to the store instance.
+
+
+## Usage
+
+### Resetting a store
+to reset a store simply call the `reset` method returned from the store instance.
