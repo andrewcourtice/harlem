@@ -84,7 +84,7 @@ Once the snapshot is applied the state tree (or sub-branch) will be overwritten 
 
 
 ### Using snapshotted state
-Along with the `apply` method, the snapshot function returns a `state` object. This state object is a readonly copy of the state that was snapshotted.
+Along with the `apply` method, the snapshot function returns a `state` object. This `state` object is a **readonly** copy of the state that was snapshotted.
 
 ```typescript
 const snap = snapshot();
