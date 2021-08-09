@@ -64,7 +64,7 @@ The history extension method accepts an options object with the following proper
     - **description**: `string?` - an optional description of the mutations intentions. This is useful for displaying a list of commands in the UI.
 
 ### Undoing/Redoing mutations
-To undo or redo a mutation simply call the `undo` or `redo` method available on the store.
+To undo or redo a mutation simply call the `undo` or `redo` methods returned from the store instance.
 
 ## Considerations
 Please keep the following points in mind when using this extension:
