@@ -109,13 +109,8 @@ export const state = store.state;
 
 export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
 
-export const setFirstName = mutation('setFirstName', (state, payload) => {
-    state.firstName = payload || '';
-});
-
-export const setLastName = mutation('setLastName', (state, payload) => {
-    state.lastName = payload || '';
-});
+export const setFirstName = mutation('setFirstName', (state, firstName) => state.firstName = firstName);
+export const setFirstName = mutation('setLastName', (state, lastName) => state.lastName = lastName);
 ```
 
 4. Use your store in your app:
@@ -199,9 +194,7 @@ const {
     getter
 } = createStore('user', STATE);
 
-export const fullName = getter('fullname', state => {
-    return `${state.firstName} ${state.lastName}`;
-});
+export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
 ```
 
 The getter function returns a Vue computed property that can now be used in your components or even other getters.
@@ -223,9 +216,7 @@ const {
 } = createStore('user', STATE);
 
 // This mutation takes a string payload and updates the name field
-export const setName = mutation<string>('setName', (state, payload) => {
-    state.firstName = payload;
-});
+export const setName = mutation<string>('setName', (state, name) => state.name = name);
 
 // This mutation takes a string payload, adds a trait to the list and returns it's id
 export const addTrait = mutation<string, symbol>('addTrait', (state, payload) => {
