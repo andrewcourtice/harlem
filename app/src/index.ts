@@ -1,5 +1,5 @@
 import 'flex-layout-attribute';
-import './styles/index.scss';
+import './assets/styles/index.scss';
 
 import App from './app.vue';
 
