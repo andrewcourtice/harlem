@@ -45,7 +45,15 @@ const {
     redo
 } = createStore('example', STATE, {
     extensions: [
-        historyExtension()
+        historyExtension({
+            max: 50,
+            mutations: [
+                {
+                    name: 'set-name',
+                    description: 'Set the current user\'s name'
+                }
+            ]
+        })
     ]
 });
 ```
@@ -58,10 +66,10 @@ The history extension adds 2 new methods to the store instance: `undo` and `redo
 ### Options
 The history extension method accepts an options object with the following properties:
 
-- **max**: `number` - the maximum number of history steps to store. The default value is `50`.
-- **mutations**: `object[]` - the mutations you wish to track. leaving this undefined will cause all mutations to be tracked. The default is undefined.
-    - **name**: `string` - the name of the mutation to track. This must match the name of a registered mutation.
-    - **description**: `string?` - an optional description of the mutations intentions. This is useful for displaying a list of commands in the UI.
+- **max**: `number` - The maximum number of history steps to store. The default value is `50`.
+- **mutations**: `object[]` - The mutations you wish to track. leaving this undefined will cause all mutations to be tracked. The default is undefined.
+    - **name**: `string` - The name of the mutation to track. This must match the name of a registered mutation.
+    - **description**: `string?` - An optional description of the mutations intentions. This is useful for displaying a list of commands in the UI.
 
 ### Undoing/Redoing mutations
 To undo or redo a mutation simply call the `undo` or `redo` methods returned from the store instance.
