@@ -1,98 +1,78 @@
-<p align="center">
-    <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
-    </a>
-</p>
+# Harlem Storage Extension
 
-# Harlem Storage Plugin
+![npm](https://img.shields.io/npm/v/@harlem/extension-storage)
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-storage)
+This is the official storage extension for Harlem. The storage extension adds the ability to storage a store's state at a particular point in time and reapply it later. 
 
-This is the official Harlem storage plugin for adding local/session storage synchronisation to your stores. This plugin will write the specified stores to local/session storage upon mutation.
+## Getting Started
 
-<!-- TOC -->
+Follow the steps below to get started using the storage extension.
 
-- [Getting started](#getting-started)
-- [Options](#options)
-- [Warning](#warning)
+### Installation
 
-<!-- /TOC -->
+Before installing this extension make sure you have installed `@harlem/core`.
 
-## Getting started
-
-Before installing the storage plugin make sure you installed `@harlem/core`.
-
-1. Install `@harlem/plugin-storage`:
+Install `@harlem/extension-storage`:
 ```
-npm install @harlem/plugin-storage
+npm install @harlem/extension-storage
 ```
 Or if you're using Yarn:
 ```
-yarn add @harlem/plugin-storage
+yarn add @harlem/extension-storage
 ```
 
-2. Create an instance of the plugin and register it with Harlem:
+### Registration
+
+To get started simply register this extension with the store you wish to extend.
+
 ```typescript
-import App from './app.vue';
+import storageExtension from '@harlem/extension-storage';
 
-import harlem from '@harlem/core';
-import createStoragePlugin from '@harlem/plugin-storage';
-
-const storagePlugin = createStoragePlugin('*', {
-    type: 'local',
-    prefix: 'my-app',
-    sync: true
-});
-
-createApp(App)
-    .use(harlem, {
-        plugins: [storagePlugin]
-    })
-    .mount('#app');
-```
-
-3. Open your Vue devtools and go to `Application` -> `Local/Session Storage` to see your store written to storage.
-
-
-## Options
-
-The first argument of the `createStoragePlugin` function is a string or array of strings indicating the name(s) of the stores to write to/from storage. If the value is defined as a wildcard `*`, all stores will be written to storage.
-
-- **type** (string?): The type of storage to write to. This can be either `local` or `session`. The default is `local`.
-- **prefix** (string?): The prefix to apply to the store name in storage. If specified, the storage key would appear as `prefix:storeName`. For example if I specified a prefix of `my-app` and my store was called `data`, the resulting storage entry would appear as `my-app:data`.
-- **sync** (boolean?): A flag indicating whether sync changes to storage back to state. This is particularly useful for synchronising state between tabs etc. The default is `true`
-
-*(?) indicates an optional field*
-
-
-## Warning
-
-There a few important items to note before using this plugin:
-
-1. This plugin will **not** automatically load previously written storage into state upon creation of the plugin. This is by design as trying to resolve conflicts between base state and stored state can vary greatly between use-cases. To use previously stored state as your store's base state you can do something along the lines of:
-```typescript
-// state.ts
+import {
+    createStore
+} from '@harlem/core';
 
 const STATE = {
-    firstName: 'John',
+    firstName: 'Jane',
     lastName: 'Smith'
 };
 
-function getState() {
-    const storedState = localStorage.getItem('my-app:data');
-
-    if (!storedState) {
-        return STATE;
-    }
-
-    const state = JSON.parse(storedState);
-
-    return {
-        ...STATE,
-        ...state
-    };
-}
-
-export default getState();
+const {
+    state,
+    getter,
+    mutation,
+    storage
+} = createStore('example', STATE, {
+    extensions: [
+        storageExtension({
+            type: 'local',
+            prefix: 'harlem',
+            sync: true,
+            serialiser: state => JSON.stringify(state),
+            parser: value => JSON.parse(value)
+        })
+    ]
+});
 ```
-2. Be careful when using this plugin with multiple sessions as multiple sessions may case race conditions that will make your mutations unpredictable and difficult to debug.
+
+The storage extension adds 2 methods to the store instance: `startStorageSync` and `stopStorageSync`.
+
+
+## Usage
+
+### Options
+The storage extension method accepts an options object with the following properties:
+- **type**: `string` - The type of storage interface to use. Acceptable values are `local` or `session`. Default value is `local`.
+- **prefix**: `string` - The prefix to use on the storage key. The storage value will be in the form `${prefix}:${storeName}`. Default value is `harlem`.
+- **sync**: `boolean` - Whether to automatically sync changes from the storage interface back to the store. Default value is `true`.
+- **serialiser**: `unknown => string` - A function to serialise the store to string. The default behaviour is `JSON.stringify`.
+- **parser**: `string => unknown` - A function to serialise the storage string to a state structure. The default behaviour is `JSON.parse`.
+
+### Manually starting/stopping sync
+The `startStorageSync` and `stopStorageSync` methods can be used to start or stop sync behaviour.
+
+
+## Considerations
+Please keep the following points in mind when using this extension:
+
+- The default behaviour for serialising/parsing only supports JSON-compatible types. For non-JSON-compatible types please specify a custom serialiser/parser. See [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#description) for a list of JSON-compatible types.
