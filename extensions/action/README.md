@@ -10,6 +10,8 @@ This is the official action extension for Harlem. This extension adds asynchrono
 
 ## Getting Started
 
+Follow the steps below to get started using the action extension.
+
 ### Installation
 
 Before installing this extension make sure you have installed `@harlem/core`.
@@ -27,7 +29,7 @@ yarn add @harlem/extension-action
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-20,23}
+```typescript
 import actionExtension from '@harlem/extension-action';
 
 import {
@@ -55,7 +57,7 @@ const {
 });
 ```
 
-Notice how the extension has added 5 new methods to the store instance: `action`, `hasActionRun`, `isActionRunning`, `whenActionIdle` and `clearActionRunCount`.
+The action extension adds 5 new methods to the store instance: `action`, `hasActionRun`, `isActionRunning`, `whenActionIdle` and `clearActionRunCount`.
 
 
 ## Usage
@@ -133,7 +135,7 @@ Cancelling the task will throw an `ActionAbortError`. It is recommended to wrap 
 ### Handling nested actions
 Using nested actions is as simple as calling any other action(s) within the body of the current action. However, to handle cancellation through nesting, the parent `controller` needs to be passed down to the nested instance(s).
 
-```typescript{7-8}
+```typescript
 import {
     childAction1,
     childAction2,
