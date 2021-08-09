@@ -35,11 +35,11 @@
     },
     "peerDependencies": {
         "@harlem/core": "^2.0.0-alpha.0",
-        "vue": "^3.2.0-beta.8"
+        "vue": "^3.2.1"
     },
     "devDependencies": {
         "@harlem/core": "^2.0.0-alpha.0",
         "@harlem/testing": "^2.0.0-alpha.0",
-        "vue": "^3.2.0-beta.8"
+        "vue": "^3.2.1"
     }
 }
