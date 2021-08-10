@@ -1,0 +1,33 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 1rem;
+    font-weight: var(--font__weight--medium);
+}
+
+h1 {
+    font-size: var(--font__size--heading-1);
+}
+
+h2 {
+    font-size: var(--font__size--heading-2);
+}
+
+h3 {
+    font-size: var(--font__size--heading-3);
+}
+
+h4 {
+    font-size: var(--font__size--heading-4);
+}
+
+h5 {
+    font-size: var(--font__size--heading-5);
+}
+
+h6 {
+    font-size: var(--font__size--heading-6);
+}

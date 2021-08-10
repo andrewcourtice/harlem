@@ -4,8 +4,6 @@ import {
 
 export {
     state,
-    undo,
-    redo,
     isActionRunning,
 } from './store';
 

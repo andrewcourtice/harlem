@@ -48,17 +48,21 @@ const choiceClass = computed(() => ({
 
     .choice {
         display: inline-block;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
+        padding: 0.75rem 2rem;
+        font-weight: var(--font__weight--semi-bold);
         border-radius: 0.5rem;
         cursor: pointer;
         transition: color var(--animation__timing) var(--animation__easing),
                     background var(--animation__timing) var(--animation__easing);
+
+        &:not(.choice--checked):hover {
+            background-color: var(--foreground__colour--dark);
+        }
     }
 
     .choice--checked {
-        color: #FFFFFF;
-        background-color: #76D1A7;
+        color: var(--font__colour--inverse);
+        background-color: var(--colour__primary);
     }
 
     .choice__input {

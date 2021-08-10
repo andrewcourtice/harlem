@@ -7,9 +7,12 @@ import {
 } from 'date-fns-tz';
 
 export const timezones = getter('timezones', ({ timezones, clocks }) => {
-    return timezones.flatMap(({ utc }) => utc)
+    const output = timezones
+        .flatMap(({ utc }) => utc)
         .filter(timezone => !clocks.includes(timezone))
         .sort((a, b) => a.localeCompare(b));
+
+    return Array.from(new Set(output));
 });
 
 export const clocks = getter('clocks', ({ clocks, time }) => {

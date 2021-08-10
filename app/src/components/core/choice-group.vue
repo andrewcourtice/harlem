@@ -10,7 +10,7 @@
         display: inline-flex;
         width: auto;
         border-radius: 0.5rem;
-        background-color: #EEE;
+        background-color: var(--foreground__colour);
         overflow: hidden;
 
         & .choice {

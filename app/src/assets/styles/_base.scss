@@ -9,7 +9,7 @@ body {
 }
 
 html {
-    font-size: 16px;
+    font-size: var(--spacing__size);
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
@@ -22,30 +22,28 @@ html {
 
 body {
     position: relative;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #333333;
-    background-color: #FFFFFF;
+    font-family: var(--font__family);
+    font-size: var(--font__size);
+    font-weight: var(--font__weight);
+    line-height: var(--font__line-height);
+    color: var(--font__colour);
+    background-color: var(--background__colour);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    font: inherit;
-    font-weight: 600;
-    color: #FFF;
-    background-color: #76D1A7;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background var(--animation__timing) var(--animation__easing);
+a {
+    color: var(--colour__primary);
+    text-decoration: none;
     
-    &:hover {
-        background-color: #66ab8b;
+    &:hover,
+    &:active {
+        text-decoration: none;
+        color: var(--colour__primary--dark);
     }
+}
+
+strong {
+    font-weight: var(--font__weight--semi-bold);
 }
