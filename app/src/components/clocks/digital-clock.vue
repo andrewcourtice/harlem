@@ -47,7 +47,7 @@ const labels = computed(() => ({
         font-family: 'Digital', 'Open Sans';
         padding: 1rem;
         color: rgb(200, 200, 200);
-        background-color: #000;
+        background-color: var(--background__colour--inverse);
         border-radius: 0.5rem;
     }
 

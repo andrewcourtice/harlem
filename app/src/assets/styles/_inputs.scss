@@ -1,6 +1,7 @@
 input[type="text"],
 select,
 textarea {
+    color: inherit;
     font: inherit;
     padding: 0.5rem 1rem;
     background-color: var(--foreground__colour);

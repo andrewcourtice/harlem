@@ -6,7 +6,7 @@
         <label class="form-label" for="">Timezone</label>
         <input class="add-clock-modal__filter" v-model="model.filter" type="text" placeholder="Search for a timezone..." autofocus>
         <select class="add-clock-modal__timezones" v-model="model.selection" multiple="true">
-            <option v-for="timezone in filteredTimezones" :key="timezone" :value="timezone">{{ timezone }}</option>
+            <option v-for="timezone in filteredTimezones" :key="timezone" :value="timezone">{{ getTimezoneLabel(timezone) }}</option>
         </select>
         <div class="add-clock-modal__tip">
             <meta-text>
@@ -27,6 +27,7 @@ import Modal from '../core/modal.vue';
 import MetaText from '../core/meta-text.vue';
 
 import isEqual from '../../utilities/string/is-equal';
+import getTimezoneLabel from '../../utilities/time/get-timezone-label';
 
 import {
     computed,
@@ -37,7 +38,7 @@ import {
 import {
     addClocks,
     timezones
-} from '../../stores/time';
+} from '../../stores/app';
 
 const modal = ref();
 

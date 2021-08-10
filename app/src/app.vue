@@ -15,26 +15,27 @@
                     <br>
                     If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank">here</a>. 
                 </p>
+                <choice-group class="app__theme">
+                    <choice v-for="{ label, value } in state.themes" :key="value" :id="value" :value="value" v-model="theme">{{ label }}</choice>
+                </choice-group>
             </header>
             <div class="app__options" layout="rows center-justify">
                 <choice-group>
-                    <choice v-for="{ label, value } in state.clockTypes" :key="value" :id="value" :value="value" v-model="clockType">
-                        <span>{{ label }}</span>
-                    </choice>
+                    <choice v-for="{ label, value } in state.clockTypes" :key="value" :id="value" :value="value" v-model="clockType">{{ label }}</choice>
                 </choice-group>
                 <div layout="rows center-right" self="size-auto">
                     <button class="button button--primary" @click="openAddClockModal()">Add Clock</button>
                 </div>
             </div>
-            <div class="clocks">
+            <div class="app__clocks">
                 <transition-group name="clocks">
-                    <div class="clock" v-for="{ time, timezone } in clocks" :key="timezone">
+                    <div class="app__clock" v-for="{ time, timezone } in clocks" :key="timezone">
                         <component :is="clockComponent" :time="time"></component>
-                        <div class="clock__label">
-                            <div class="clock__timezone">{{ timezone }}</div>
-                            <div class="clock__date">{{ getClockDateLabel(time, timezone) }}</div>
+                        <div class="app__clock-label">
+                            <div class="app__clock-timezone">{{ getTimezoneLabel(timezone) }}</div>
+                            <div class="app__clock-date">{{ getClockDateLabel(time, timezone) }}</div>
                         </div>
-                        <div class="clock__shade" layout="row bottom-stretch">
+                        <div class="app__clock-shade" layout="row bottom-stretch">
                             <button class="button button--alert" @click="removeClock(timezone)">Remove</button>
                         </div>
                     </div>
@@ -57,9 +58,12 @@ import AnalogueClock from './components/clocks/analogue-clock.vue';
 import DigitalClock from './components/clocks/digital-clock.vue';
 import AddClockModal from './components/modals/add-clock.vue'
 
+import getTimezoneLabel from './utilities/time/get-timezone-label';
+
 import {
     computed,
     ref,
+watchEffect,
 } from 'vue';
 
 import {
@@ -71,14 +75,20 @@ import {
     clocks,
     setClockType,
     removeClock,
-    undo,
-    redo,
-    loadTimezones
-} from './stores/time';
+    loadTimezones,
+    setTheme,
+} from './stores/app';
 
 loadTimezones();
 
+watchEffect(() => document.body.setAttribute('theme', state.theme.toLowerCase()));
+
 const addClockModal = ref();
+
+const theme = computed({
+    get: () => state.theme,
+    set: theme => setTheme(theme)
+});
 
 const clockType = computed({
     get: () => state.clockType,
@@ -114,7 +124,7 @@ function openAddClockModal() {
     }
 
     .app__header {
-        border-bottom: 1px solid #EDEDED;
+        border-bottom: 1px solid var(--border__colour);
     }
 
     .app__logo {
@@ -128,11 +138,15 @@ function openAddClockModal() {
         text-align: center;
     }
 
+    .app__theme {
+        margin-top: 2rem;
+    }
+
     .app__options {
         margin: 2rem 0;
     }
 
-    .clocks {
+    .app__clocks {
         display: grid;
         gap: 2rem;
         grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
@@ -141,38 +155,38 @@ function openAddClockModal() {
         align-items: stretch;
     }
     
-    .clock {
+    .app__clock {
         position: relative;
         padding: 1.5rem;
         text-align: center;
-        background-color: #EEE;
+        background-color: var(--foreground__colour);
         border-radius: 1.5rem;
         overflow: hidden;
 
         &:hover {
 
-            & .clock__shade {
+            & .app__clock-shade {
                 display: flex;
                 animation: clock-shade var(--animation__timing) var(--animation__easing)
             }
         }
     }
 
-    .clock__label {
+    .app__clock-label {
         margin-top: 1.5rem;
     }
     
-    .clock__timezone {
+    .app__clock-timezone {
         font-weight: var(--font__weight--semi-bold);
     }
 
-    .clock__date {
+    .app__clock-date {
         margin-top: 0.25rem;
         font-size: var(--font__size--meta);
         color: var(--font__colour--meta)
     }
 
-    .clock__shade {
+    .app__clock-shade {
         display: none;
         position: absolute;
         top: 0;
@@ -180,7 +194,7 @@ function openAddClockModal() {
         width: 100%;
         height: 100%;
         padding: 1.5rem;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: var(--background__colour--shade);
     }
 
     .clocks-enter-from,

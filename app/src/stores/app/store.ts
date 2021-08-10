@@ -12,7 +12,7 @@ export const {
     mutation,
     action,
     isActionRunning,
-} = createStore('time', STATE, {
+} = createStore('app', STATE, {
     extensions: [
         actionExtension(),
     ],

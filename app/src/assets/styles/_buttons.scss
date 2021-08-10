@@ -31,9 +31,9 @@
 
 .button--alert {
     color: var(--font__colour--inverse);
-    background-color: red;
+    background-color: var(--colour__alert);
     
     &:hover {
-        background-color: red;
+        background-color: var(--colour__alert--dark);
     }
 }

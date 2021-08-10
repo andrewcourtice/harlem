@@ -31,6 +31,8 @@ body {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     -moz-osx-font-smoothing: grayscale;
+    transition: color var(--animation__timing) var(--animation__easing),
+                background var(--animation__timing) var(--animation__easing);
 }
 
 a {

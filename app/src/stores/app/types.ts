@@ -1,3 +1,4 @@
+export type Theme = 'light' | 'dark';
 export type ClockType = 'analogue' | 'digital';
 
 export interface Timezone {
@@ -10,6 +11,11 @@ export interface Timezone {
 }
 
 export interface State {
+    theme: Theme;
+    themes: {
+        label: string;
+        value: Theme;
+    }[];
     time: Date;
     timezones: Timezone[];
     clockType: ClockType;

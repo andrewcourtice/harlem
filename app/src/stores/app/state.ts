@@ -3,6 +3,17 @@ import type {
 } from './types';
 
 export default {
+    theme: 'light',
+    themes: [
+        {
+            label: 'Light',
+            value: 'light',
+        },
+        {
+            label: 'Dark',
+            value: 'dark',
+        },
+    ],
     time: new Date(),
     timezones: [],
     clockType: 'analogue',

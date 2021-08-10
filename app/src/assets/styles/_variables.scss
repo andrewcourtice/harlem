@@ -2,6 +2,9 @@
     --spacing__size: 16px;
 
     --background__colour: #FFFFFF;
+    --background__colour--inverse: #333333;
+    --background__colour--shade: rgba(0, 0, 0, 0.5);
+
     --foreground__colour: #EEEEEE;
     --foreground__colour--dark: #DDDDDD;
 
@@ -26,7 +29,25 @@
 
     --colour__primary: #76D1A7;
     --colour__primary--dark: #66AB8B;
+    --colour__alert: #DC2626;
+    --colour__alert--dark: #B91C1C;
+
+    --border__colour: #EDEDED;
 
     --animation__timing: 250ms;
     --animation__easing: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+[theme="dark"] {
+    --background__colour: #333333;
+    --background__colour--inverse: #333333;
+    --background__colour--shade: rgba(0, 0, 0, 0.75);
+    --foreground__colour: #666666;
+    --foreground__colour--dark: #888888;
+
+    --font__colour: #EEEEEE;
+    --font__colour--meta: #CCCCCC;
+    --font__colour--inverse: #FFFFFF;
+
+    --border__colour: #666666;
 }

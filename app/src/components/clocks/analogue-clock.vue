@@ -56,7 +56,7 @@ const handStyles = computed(() => {
         width: 100%;
         aspect-ratio: 1 / 1;
         padding: 0.75rem;
-        background-color: #000;
+        background-color: var(--background__colour--inverse);
         border-radius: 50%;
     }
 
@@ -100,7 +100,7 @@ const handStyles = computed(() => {
         width: 6px;
         height: 6px;
         border-radius: 100%;
-        background-color: #76D1A7;
+        background-color: var(--colour__primary);
         transform: translate(-50%, -50%);
     }
 
@@ -118,7 +118,7 @@ const handStyles = computed(() => {
 
         &::after {
             height: 45%;
-            background-color: #76D1A7;
+            background-color: var(--colour__primary);
         }
     }
 
