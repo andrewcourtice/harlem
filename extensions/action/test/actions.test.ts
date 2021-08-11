@@ -5,7 +5,9 @@ import {
     bootstrap,
 } from '@harlem/testing';
 
-import actionsExtension from '../src';
+import actionsExtension, {
+    ActionAbortError,
+} from '../src';
 
 interface UserInfo {
     firstName: string;
@@ -114,8 +116,8 @@ describe('Actions Extension', () => {
 
         try {
             await task;
-        } catch {
-            // do nothing
+        } catch (error) {
+            expect(error).toBeInstanceOf(ActionAbortError);
         } finally {
             expect(state.details.firstName).toBe('');
             expect(state.details.lastName).toBe('');

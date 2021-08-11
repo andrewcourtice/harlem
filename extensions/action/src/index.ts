@@ -14,6 +14,10 @@ import {
     Mutator,
 } from '@harlem/core';
 
+import {
+    ActionAbortError,
+} from './errors';
+
 import type {
     Action,
     ActionBody,
@@ -21,6 +25,10 @@ import type {
     ActionPredicate,
     ActionStoreState,
 } from './types';
+
+export {
+    ActionAbortError,
+} from './errors';
 
 export * from './types';
 
@@ -84,8 +92,9 @@ export default function actionsExtension<TState extends BaseState>() {
                     const id = Symbol(name);
 
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
+                    const fail = () => reject(new ActionAbortError(name, id));
 
-                    onAbort(() => (complete(), reject()));
+                    onAbort(() => (complete(), fail()));
                     addInstance(name, id, payload);
 
                     try {
@@ -95,9 +104,11 @@ export default function actionsExtension<TState extends BaseState>() {
                         resolve(result);
                         incrementRunCount(name);
                     } catch (error) {
-                        if (!(error instanceof DOMException)) {
-                            reject(error);
+                        if (error instanceof DOMException) {
+                            fail(); // Fetch has been cancelled
                         }
+
+                        reject(error);
                     } finally {
                         complete();
                     }
