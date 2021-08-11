@@ -57,9 +57,13 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             store.write('$history', SENDER, state => {
                 const tasks = COMMAND_MAP[type];
 
-                const {
+                let {
                     results,
                 } = command;
+
+                if (type === 'undo') {
+                    results = results.slice().reverse();
+                }
 
                 results.forEach(({ gate, nodes, prop, newValue, oldValue }) => {
                     const target = fromPath(state, nodes);
