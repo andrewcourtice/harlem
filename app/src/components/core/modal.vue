@@ -1,7 +1,7 @@
 <template>
     <teleport to="body">
         <transition-group name="modal">
-            <div class="modal" layout="row center-center" v-if="isShowing">
+            <div class="modal" layout="row center-center" v-bind="$attrs" v-if="isShowing">
                 <div class="modal__content" self="size-small">
                     <div class="modal__header" v-if="$slots.header">
                         <slot name="header" v-bind="{ open, close }"></slot>
@@ -18,9 +18,15 @@
     </teleport>
 </template>
 
+<script lang="ts">
+export default {
+    inheritAttrs: false
+};
+</script>
+
 <script lang="ts" setup>
 import {
-    ref
+    ref,
 } from 'vue';
 
 const isShowing = ref(false);
