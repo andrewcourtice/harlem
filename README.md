@@ -9,7 +9,7 @@
 [![Build and Test](https://github.com/andrewcourtice/harlem/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/andrewcourtice/harlem/actions/workflows/build-and-test.yml)
 ![npm](https://img.shields.io/npm/v/@harlem/core)
 
-Simple, unopinionated, lightweight and extensible state management for Vue 3. Head over to [harlemjs.com](harlemjs.com) to get started or take a look at the [demo](https://andrewcourtice.github.io/harlem) to see it in action.
+Simple, unopinionated, lightweight and extensible state management for Vue 3. Head over to [harlemjs.com](https://harlemjs.com) to get started or take a look at the [demo](https://andrewcourtice.github.io/harlem) to see it in action.
 
 <!-- TOC depthfrom:2 depthto:4 -->
 
