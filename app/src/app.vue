@@ -10,7 +10,7 @@
                     This world clock application is a basic demonstration of some of the core features of Harlem.
                     <br>
                     <br>
-                    Each clock is synchronised by a single time value stored on <strong>state</strong>. A timer is set to run a <strong>mutation</strong> each second to update the stored time. A <strong>getter</strong> then recalculates each clock's time based on it's timezone.
+                    Each clock is synchronised by a single time value stored on <strong>state</strong>. A timer is set to run a <strong>mutation</strong> each second to update the stored time. A <strong>getter</strong> then recalculates each clock's time based on it's timezone. State is synchronised with localStorage using the <strong>storage extension</strong>. Open this URL in multiple tabs to see your changes synced across tabs.
                     <br>
                     <br>
                     If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank">here</a>. 
@@ -20,12 +20,10 @@
                 </choice-group>
             </header>
             <div class="app__options" layout="rows center-justify">
-                <choice-group>
+                <choice-group self="sm-full">
                     <choice v-for="{ label, value } in state.clockTypes" :key="value" :id="value" :value="value" v-model="clockType">{{ label }}</choice>
                 </choice-group>
-                <div layout="rows center-right" self="size-auto">
-                    <button class="button button--primary" @click="openAddClockModal()">Add Clock</button>
-                </div>
+                <button class="button button--primary" self="sm-full" @click="openAddClockModal()">Add Clock</button>
             </div>
             <div class="app__clocks">
                 <transition-group name="clocks">
@@ -144,6 +142,7 @@ function openAddClockModal() {
 
     .app__options {
         margin: 2rem 0;
+        gap: 1rem;
     }
 
     .app__clocks {

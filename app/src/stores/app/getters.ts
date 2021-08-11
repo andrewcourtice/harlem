@@ -1,4 +1,8 @@
 import {
+    GETTERS,
+} from './constants';
+
+import {
     getter,
 } from './store';
 
@@ -6,7 +10,7 @@ import {
     utcToZonedTime,
 } from 'date-fns-tz';
 
-export const timezones = getter('timezones', ({ timezones, clocks }) => {
+export const timezones = getter(GETTERS.timezones, ({ timezones, clocks }) => {
     const output = timezones
         .flatMap(({ utc }) => utc)
         .filter(timezone => !clocks.includes(timezone))
@@ -15,7 +19,7 @@ export const timezones = getter('timezones', ({ timezones, clocks }) => {
     return Array.from(new Set(output));
 });
 
-export const clocks = getter('clocks', ({ clocks, time }) => {
+export const clocks = getter(GETTERS.clocks, ({ clocks, time }) => {
     return clocks.map(timezone => ({
         timezone,
         time: utcToZonedTime(time, timezone),

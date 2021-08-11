@@ -50,6 +50,7 @@ const choiceClass = computed(() => ({
         display: inline-block;
         padding: 0.75rem 2rem;
         font-weight: var(--font__weight--semi-bold);
+        text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
         border-radius: 0.5rem;

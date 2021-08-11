@@ -2,7 +2,12 @@ import type {
     State,
 } from './types';
 
-export default {
+import {
+    NAME,
+} from './constants';
+
+const STATE = {
+    version: 1.0,
     theme: 'light',
     themes: [
         {
@@ -38,3 +43,28 @@ export default {
         'Asia/Dubai',
     ],
 } as State;
+
+export default function getState(): State {
+    const storageKey = `harlem:${NAME}`;
+    const storedValue = localStorage.getItem(storageKey);
+
+    if (!storedValue) {
+        return STATE;
+    }
+
+    try {
+        const storedState = JSON.parse(storedValue) as State;
+
+        if (storedState.version !== STATE.version) {
+            localStorage.removeItem(storageKey);
+            return STATE;
+        }
+
+        return {
+            ...STATE,
+            ...storedState,
+        };
+    } catch {
+        return STATE;
+    }
+}

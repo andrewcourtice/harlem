@@ -1,8 +1,12 @@
 import {
+    ACTIONS,
+} from './constants';
+
+import {
     action,
 } from './store';
 
-export const loadTimezones = action('load-timezones', async (_, mutate) => {
+export const loadTimezones = action(ACTIONS.loadTimezones, async (_, mutate) => {
     const {
         default: timezones,
     } = await import('../../assets/data/timezones.json');

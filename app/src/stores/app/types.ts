@@ -11,6 +11,7 @@ export interface Timezone {
 }
 
 export interface State {
+    version: number;
     theme: Theme;
     themes: {
         label: string;

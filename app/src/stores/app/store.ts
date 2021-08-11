@@ -1,6 +1,11 @@
-import STATE from './state';
-
+import getState from './state';
 import actionExtension from '@harlem/extension-action';
+import storageExtension from '@harlem/extension-storage';
+
+import {
+    NAME,
+    MUTATIONS,
+} from './constants';
 
 import {
     createStore,
@@ -12,8 +17,13 @@ export const {
     mutation,
     action,
     isActionRunning,
-} = createStore('app', STATE, {
+} = createStore(NAME, getState(), {
     extensions: [
         actionExtension(),
+        storageExtension({
+            exclude: [
+                MUTATIONS.updateTime,
+            ],
+        }),
     ],
 });

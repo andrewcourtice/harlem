@@ -42,6 +42,7 @@ defineExpose({
         left: 0;
         width: 100%;
         height: 100%;
+        padding: 2rem;
         background-color: var(--background__colour--shade);
         z-index: 1000;
     }
