@@ -21,12 +21,14 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         type,
         prefix,
         sync,
+        exclude,
         serialiser,
         parser,
     } = {
         type: 'local',
         prefix: 'harlem',
         sync: true,
+        exclude: [],
         serialiser: state => JSON.stringify(state),
         parser: value => JSON.parse(value),
         ...options,
@@ -38,7 +40,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;
 
         store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
-            if (!event || event.data.mutation === '$storage') {
+            if (!event || event.data.mutation === '$storage' || exclude.includes(event.data.mutation)) {
                 return;
             }
 
@@ -63,6 +65,10 @@ export default function storageExtension<TState extends BaseState>(options?: Par
             window.removeEventListener('storage', listener);
         }
 
+        function clearStorage() {
+            storage.removeItem(storageKey);
+        }
+
         store.once(EVENTS.store.destroyed, () => stopStorageSync());
 
         if (sync) {
@@ -72,6 +78,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         return {
             startStorageSync,
             stopStorageSync,
+            clearStorage,
         };
     };
 }
