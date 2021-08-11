@@ -35,9 +35,7 @@ module.exports = {
                 'consistent': true,
             },
             'ImportDeclaration': 'always',
-            'ExportDeclaration': {
-                'minProperties': 2,
-            },
+            'ExportDeclaration': 'always',
         }],
         'object-curly-spacing': ['error', 'always'],
         'prefer-const': ['error', {
