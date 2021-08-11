@@ -1,6 +1,6 @@
 # Devtools Integration
 
-Harlem fully supports Vue devtools integration through the [Harlem devtools plugin](/plugins/devtools.html). Install `@harlem/plugin-devtools` and register it with your Harlem plugin:
+Harlem fully supports Vue devtools integration through the [Harlem devtools plugin](/extensibility/plugins/devtools.html). Install `@harlem/plugin-devtools` and register it with your Harlem plugin:
 
 ```typescript
 import App from './app.vue';
@@ -31,7 +31,7 @@ function start() {
 start();
 ```
 
-See the [devtools plugin docs](/plugins/devtools.html) for more information on the options available. 
+See the [devtools plugin docs](/extensibility/plugins/devtools.html) for more information on the options available. 
 
 ![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
 

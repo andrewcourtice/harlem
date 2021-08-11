@@ -1,27 +1,9 @@
 # FAQ
 
-## What about actions?
-Harlem doesn't provide a mechanism for actions - this is by design. Actions are commonly asynchronous methods that contain business logic which group a single mutation or set of mutations together. Harlem leaves your action design up to you. Here is a simple example of an action using Harlem:
+## Why aren't actions included by default?
+The decision to not include actions in the core package by default is to remain faithful to the philosophy of keeping Harlem lightweight, simple and unopinionated. Different projects have different needs for actions. Some larger projects may require nested actions and cancellation while smaller projects may not need all of those features but instead just need simple direct mutations. 
 
-``` typescript
-import {
-    setLoading,
-    setUserDetails
-} from './mutations';
-
-export async function loadUserDetails(userId) {
-    setLoading(true);
-
-    try {
-        const response = await fetch(`/api/users/${userId}`);
-        const data = await response.json();
-
-        setUserDetails(data);
-    } finally {
-        setLoading(false);
-    }
-}
-```
+To ship a full action implementation as part of the core package would force every project (especially the small projects) to incur that cost (size, performance etc.) even if not all of the action features are being used. For this reason Harlem provides a [full-featured action implementation](/extensibility/extensions/action.html) as an optional extension and leaves your action implementation up to you should you wish to keep things simple or get really complex.
 
 
 ## Can I share state between stores?

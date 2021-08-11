@@ -19,15 +19,11 @@ module.exports = {
         navbar: [
             {
                 text: 'Guide',
-                link: '/guide/'
+                link: '/guide/introduction/features.html'
             },
             {
-                text: 'Extensions',
-                link: '/extensions/'
-            },
-            {
-                text: 'Plugins',
-                link: '/plugins/'
+                text: 'Extensibility',
+                link: '/extensibility/'
             },
             {
                 text: 'API Reference',
@@ -37,48 +33,94 @@ module.exports = {
         sidebar: {
             '/guide/': [
                 {
-                    isGroup: true,
-                    text: 'Guide',
+                    text: 'Introduction',
                     children: [
-                        '/guide/README.md',
-                        '/guide/getting-started.md',
-                        '/guide/core-concepts.md',
-                        '/guide/devtools-integration.md',
-                        '/guide/server-side-rendering.md',
-                        '/guide/typescript-support.md',
-                        '/guide/FAQ.md',
+                        {
+                            text: 'Features',
+                            link: '/guide/introduction/features.html'
+                        },
+                        {
+                            text: 'Getting Started',
+                            link: '/guide/introduction/getting-started.html'
+                        },
                     ]
+                },
+                {
+                    text: 'Core Concepts',
+                    children: [
+                        {
+                            text: 'Architecture',
+                            link: '/guide/core-concepts/architecture.html'
+                        },
+                        {
+                            text: 'State',
+                            link: '/guide/core-concepts/state.html'
+                        },
+                        {
+                            text: 'Getters',
+                            link: '/guide/core-concepts/getters.html'
+                        },
+                        {
+                            text: 'Mutations',
+                            link: '/guide/core-concepts/mutations.html'
+                        },
+                        {
+                            text: 'Actions',
+                            link: '/guide/core-concepts/actions.html'
+                        },
+                        {
+                            text: 'Triggers',
+                            link: '/guide/core-concepts/triggers.html'
+                        },
+                    ]
+                },
+                {
+                    text: 'Developer Experience',
+                    children: [
+                        {
+                            text: 'Typescript Support',
+                            link: '/guide/dx/typescript-support.html'
+                        },
+                        {
+                            text: 'Devtools Integration',
+                            link: '/guide/dx/devtools-integration.html'
+                        },
+                    ]
+                },
+                {
+                    text: 'FAQ',
+                    link: '/guide/FAQ.html'
                 }
             ],
-            '/extensions/': [
+            '/extensibility/': [
                 {
-                    isGroup: true,
                     text: 'Extensions',
                     children: [
-                        '/extensions/README.md',
-                        '/extensions/action.md',
+                        '/extensibility/extensions/introduction.html',
+                        '/extensibility/extensions/action.html',
+                        '/extensibility/extensions/history.html',
+                        '/extensibility/extensions/lazy.html',
+                        '/extensibility/extensions/reset.html',
+                        '/extensibility/extensions/snapshot.html',
+                        '/extensibility/extensions/storage.html',
                     ]
-                }
-            ],
-            '/plugins/': [
+                },
                 {
-                    isGroup: true,
                     text: 'Plugins',
                     children: [
-                        '/plugins/README.md',
-                        '/plugins/devtools.md',
-                        '/plugins/server-side-rendering.md',
+                        '/extensibility/plugins/introduction.html',
+                        '/extensibility/plugins/devtools.html',
+                        '/extensibility/plugins/server-side-rendering.html',
                     ]
                 }
             ],
             '/api-reference/': [
                 {
-                    isGroup: true,
                     text: 'API Reference',
                     children: [
-                        '/api-reference/README.md',
-                        '/api-reference/store.md',
-                        '/api-reference/types.md',
+                        '/api-reference/README.html',
+                        '/api-reference/store.html',
+                        '/api-reference/types.html',
                     ]
                 }
             ]
