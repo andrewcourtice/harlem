@@ -19,7 +19,7 @@ module.exports = {
         navbar: [
             {
                 text: 'Guide',
-                link: '/guide/introduction/features.html'
+                link: '/guide/'
             },
             {
                 text: 'Extensibility',
@@ -35,62 +35,36 @@ module.exports = {
                 {
                     text: 'Introduction',
                     children: [
-                        {
-                            text: 'Features',
-                            link: '/guide/introduction/features.html'
-                        },
-                        {
-                            text: 'Getting Started',
-                            link: '/guide/introduction/getting-started.html'
-                        },
+                        '/guide/introduction/features.html',
+                        '/guide/introduction/getting-started.html',
                     ]
                 },
                 {
                     text: 'Core Concepts',
                     children: [
-                        {
-                            text: 'Architecture',
-                            link: '/guide/core-concepts/architecture.html'
-                        },
-                        {
-                            text: 'State',
-                            link: '/guide/core-concepts/state.html'
-                        },
-                        {
-                            text: 'Getters',
-                            link: '/guide/core-concepts/getters.html'
-                        },
-                        {
-                            text: 'Mutations',
-                            link: '/guide/core-concepts/mutations.html'
-                        },
-                        {
-                            text: 'Actions',
-                            link: '/guide/core-concepts/actions.html'
-                        },
-                        {
-                            text: 'Triggers',
-                            link: '/guide/core-concepts/triggers.html'
-                        },
+                        '/guide/core-concepts/architecture.html',
+                        '/guide/core-concepts/state.html',
+                        '/guide/core-concepts/getters.html',
+                        '/guide/core-concepts/mutations.html',
+                        '/guide/core-concepts/actions.html',
+                        '/guide/core-concepts/triggers.html',
                     ]
                 },
                 {
                     text: 'Developer Experience',
                     children: [
-                        {
-                            text: 'Typescript Support',
-                            link: '/guide/dx/typescript-support.html'
-                        },
-                        {
-                            text: 'Devtools Integration',
-                            link: '/guide/dx/devtools-integration.html'
-                        },
+                        '/guide/dx/typescript-support.html',
+                        '/guide/dx/devtools-integration.html',
                     ]
                 },
                 {
-                    text: 'FAQ',
-                    link: '/guide/FAQ.html'
-                }
+                    text: 'Support',
+                    children: [
+                        '/guide/support/tips.html',
+                        '/guide/support/FAQ.html'
+                    ]
+                },
+                '/guide/server-side-rendering.html',
             ],
             '/extensibility/': [
                 {
