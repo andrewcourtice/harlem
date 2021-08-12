@@ -13,13 +13,18 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. He
 
 <!-- TOC depthfrom:2 depthto:4 -->
 
-- [Features](#features)
+- [Foundations](#foundations)
     - [Simple](#simple)
     - [Unopinionated](#unopinionated)
     - [Immutable](#immutable)
     - [Lightweight](#lightweight)
     - [Extensible](#extensible)
     - [Great DX](#great-dx)
+- [Features](#features)
+    - [Powerfully simple](#powerfully-simple)
+    - [TypeScript support](#typescript-support)
+    - [Devtools integration](#devtools-integration)
+    - [Server-side rendering](#server-side-rendering)
 - [Getting started](#getting-started)
 - [Core concepts](#core-concepts)
     - [State](#state)
@@ -27,9 +32,6 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. He
     - [Mutations](#mutations)
     - [Actions](#actions)
     - [Triggers](#triggers)
-- [TypeScript support](#typescript-support)
-- [Devtools integration](#devtools-integration)
-- [Server-Side Rendering](#server-side-rendering)
 - [Extensibility](#extensibility)
     - [Extensions](#extensions)
     - [Plugins](#plugins)
@@ -39,11 +41,12 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. He
     - [Does Harlem have a file structure convention for stores?](#does-harlem-have-a-file-structure-convention-for-stores)
         - [Single file structure](#single-file-structure)
         - [Multi-file structure](#multi-file-structure)
+    - [Is Harlem suitable for large projects?](#is-harlem-suitable-for-large-projects)
 - [Credits](#credits)
 
 <!-- /TOC -->
 
-## Features
+## Foundations
 
 ### Simple
 Harlem has a simple functional API for creating, reading and mutating state. At it's heart, Harlem just uses Vue reactive objects and computeds which means if you know how to use Vue, you'll know how to use Harlem.
@@ -64,6 +67,73 @@ Harlem is architectured with extensibility in mind so you can extend it any way 
 
 ### Great DX
 Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
+
+
+## Features
+
+### Powerfully simple
+
+Harlem boasts a simple yet powerful API. The core package comes with everything you need to get started with state management such as state, getters and mutations.
+
+By keeping the core feature set lightweight it means even the simplest project can use Harlem without incurring the cost of unneeded features.
+
+Need more than the core set? Check out the great range of official [extensions](/extensibility/extensions/introduction.html) and [plugins](/extensibility/plugins/introduction.html) for adding features such as cancellable actions, resetting, lazy getters, devtools, ssr and more.
+
+### TypeScript support
+Harlem is built on TypeScript which means you get rich TypeScript support out of the box. Types can be automatically inferred nearly everywhere state is used, the only place you will have to explicitly define types is for payload objects.
+
+```typescript
+export const setFirstName = mutation<string>('setFirstName', (state, payload) => {
+    state.firstName = payload;
+});
+```
+
+Not using TypeScript? Not to worry - Harlem works just as well without it.
+
+
+### Devtools integration
+
+Harlem fully supports Vue devtools integration through the [Harlem devtools plugin](/extensibility/plugins/devtools.html). Install `@harlem/plugin-devtools` and register it with your Harlem plugin:
+
+```typescript
+import App from './app.vue';
+import Harlem from '@harlem/core';
+
+import createDevtoolsPlugin from '@harlem/plugin-devtools';
+
+import {
+    createApp
+} from 'vue';
+
+function start() {
+    let plugins = [];
+
+    if (process.env.NODE_ENV === 'development') {
+        plugins.push(createDevtoolsPlugin({
+            label: 'State'
+        }));
+    }
+
+    return createApp(App)
+        .use(Harlem, {
+            plugins
+        })
+        .mount('#app');
+}
+
+start();
+```
+
+See the [devtools plugin docs](/extensibility/plugins/devtools.html) for more information on the options available. 
+
+![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
+
+*At the time of writing this you will need to use the Beta version of the Vue devtools.*
+
+
+### Server-side rendering
+
+Harlem supports using stores in an SSR application via the [SSR plugin](/extensibility/plugins/server-side-rendering.html) (`@harlem/plugin-ssr`). Refer to the SSR plugin documentation for more information and how to get started.
 
 
 ## Getting started
@@ -277,87 +347,6 @@ onMutationSuccess('my-mutation-name', event => {
 ```
 
 
-## TypeScript support
-Harlem fully supports Typescript - just decorate your mutation with the payload type and Harlem will take care of the rest:
-
-```typescript
-export const setFirstName = mutation<string>('setFirstName', (state, payload) => {
-    state.firstName = payload || ''
-});
-```
-
-All other types (state, getters etc) are automatically inferred, however should you wish to define your own state type you can do so during store creation:
-
-```typescript
-import {
-    createStore
-} from '@harlem/core';
-
-interface State {
-    firstName?: string;
-    lastName?: string;
-};
-
-const STATE: State = {
-    firstName: 'John',
-    lastName: 'Smith'
-};
-
-const {
-    getter,
-    mutation,
-    ...store
-} = createStore<State>('user', STATE);
-```
-
-In most cases this will be unnecessary but it can be useful for defining nullable fields or fields that don't exist at the time of store creation.
-
-
-## Devtools integration
-
-Enabling devtools support is, you guessed it, simple. Just import `@harlem/plugin-devtools` and register it with your Harlem plugin:
-
-```typescript
-import App from './app.vue';
-import Harlem from '@harlem/core';
-
-import createDevtoolsPlugin from '@harlem/plugin-devtools';
-
-import {
-    createApp
-} from 'vue';
-
-function start() {
-    let plugins = [];
-
-    if (process.env.NODE_ENV === 'development') {
-        plugins.push(createDevtoolsPlugin({
-            label: 'State'
-        }));
-    }
-
-    return createApp(App)
-        .use(Harlem, {
-            plugins
-        })
-        .mount('#app');
-}
-
-start();
-```
-
-See the [devtools plugin docs](plugins/devtools) for more information on the options available. 
-
-![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
-
-*At the time of writing this you will need to use the Beta version of the Vue devtools.*
-
-
-## Server-Side Rendering
-
-Harlem supports using stores in an SSR application via the SSR plugin (`@harlem/plugin-ssr`). Refer to the SSR plugin documentation for more information and how to get started. The SSR plugin docs are available [here](plugins/ssr).
-
-
 ## Extensibility
 
 Harlem uses a combination of extensions and plugins to extend core functionality. 
@@ -514,6 +503,12 @@ export { default as getter2 } from './getters/getter-2';
 export { default as mutation1 } from './mutations/mutation-1';
 export { default as mutation2 } from './mutations/mutation-2';
 ```
+
+### Is Harlem suitable for large projects?
+
+Absolutely! Harlem is currently being used by [Fathom](https://www.fathomhq.com/) to power their extensive financial intelligence product. The Fathom implementation consists of several stores with hundreds of getters, mutations and actions.
+
+If you are using Harlem in a large project and would be comfortable in sharing your experience, please let me know.
 
 ## Credits
 
