@@ -35,7 +35,7 @@ export default {
 } as HarlemPlugin;
 ```
 
-**Note:** If you're using Typescript it is recommended that you add `@harlem/core` as a devDependency and export your plugin object cast as a `HarlemPlugin` (as shown in the example above). This will give you full typing support when authoring your plugin.
+**Note:** If you're using TypeScript it is recommended that you add `@harlem/core` as a devDependency and export your plugin object cast as a `HarlemPlugin` (as shown in the example above). This will give you full typing support when authoring your plugin.
 
 As you can see the plugin is similar to Vue in that it has a single `install` method. Note however that Harlem plugins require a name field to identify your plugin and the install method has `eventEmitter` and `stores` args as opposed to `options`. 
 

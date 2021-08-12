@@ -25,7 +25,7 @@ yarn add @harlem/extension-storage
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16-18,21-28}
 import storageExtension from '@harlem/extension-storage';
 
 import {
@@ -41,7 +41,9 @@ const {
     state,
     getter,
     mutation,
-    storage
+    startStorageSync,
+    stopStorageSync,
+    clearStorage
 } = createStore('example', STATE, {
     extensions: [
         storageExtension({
@@ -56,7 +58,7 @@ const {
 });
 ```
 
-The storage extension adds 2 methods to the store instance: `startStorageSync` and `stopStorageSync`.
+The storage extension adds 3 methods to the store instance: `startStorageSync`, `stopStorageSync` and `clearStorage`.
 
 
 ## Usage
@@ -72,6 +74,10 @@ The storage extension method accepts an options object with the following proper
 
 ### Manually starting/stopping sync
 The `startStorageSync` and `stopStorageSync` methods can be used to start or stop sync behaviour.
+
+
+### Clearing storage
+Use the `clearStorage` method to clear all stored data relating to this store.
 
 
 ## Considerations

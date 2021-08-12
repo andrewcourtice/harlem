@@ -25,7 +25,7 @@ yarn add @harlem/extension-lazy
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16,19}
 import lazyExtension from '@harlem/extension-lazy';
 
 import {

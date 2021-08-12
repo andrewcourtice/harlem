@@ -25,7 +25,7 @@ yarn add @harlem/extension-reset
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16,19}
 import resetExtension from '@harlem/extension-reset';
 
 import {

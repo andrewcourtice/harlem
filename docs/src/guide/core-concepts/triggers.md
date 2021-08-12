@@ -70,6 +70,6 @@ on(EVENTS.mutation.after, event => console.log(event));
 on(EVENTS.mutation.error, event => console.log(event));
 ```
 
-## See Also
+## See also
 
 [On](/api-reference/#on) API Reference

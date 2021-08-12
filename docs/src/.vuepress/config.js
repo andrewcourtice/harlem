@@ -19,15 +19,18 @@ module.exports = {
         navbar: [
             {
                 text: 'Guide',
-                link: '/guide/'
+                link: '/guide/introduction/about.html',
+                activeMatch: '^/guide/'
             },
             {
                 text: 'Extensibility',
-                link: '/extensibility/'
+                link: '/extensibility/',
+                activeMatch: '^/extensibility/'
             },
             {
                 text: 'API Reference',
-                link: '/api-reference/'
+                link: '/api-reference/global.html',
+                activeMatch: '^/api-reference/'
             }
         ],
         sidebar: {
@@ -35,26 +38,19 @@ module.exports = {
                 {
                     text: 'Introduction',
                     children: [
-                        '/guide/introduction/features.html',
+                        '/guide/introduction/about.html',
                         '/guide/introduction/getting-started.html',
                     ]
                 },
                 {
                     text: 'Core Concepts',
                     children: [
-                        '/guide/core-concepts/architecture.html',
+                        '/guide/core-concepts/stores.html',
                         '/guide/core-concepts/state.html',
                         '/guide/core-concepts/getters.html',
                         '/guide/core-concepts/mutations.html',
                         '/guide/core-concepts/actions.html',
                         '/guide/core-concepts/triggers.html',
-                    ]
-                },
-                {
-                    text: 'Developer Experience',
-                    children: [
-                        '/guide/dx/typescript-support.html',
-                        '/guide/dx/devtools-integration.html',
                     ]
                 },
                 {
@@ -64,7 +60,6 @@ module.exports = {
                         '/guide/support/FAQ.html'
                     ]
                 },
-                '/guide/server-side-rendering.html',
             ],
             '/extensibility/': [
                 {
@@ -92,7 +87,7 @@ module.exports = {
                 {
                     text: 'API Reference',
                     children: [
-                        '/api-reference/README.html',
+                        '/api-reference/global.html',
                         '/api-reference/store.html',
                         '/api-reference/types.html',
                     ]

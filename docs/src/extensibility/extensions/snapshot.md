@@ -25,7 +25,7 @@ yarn add @harlem/extension-snapshot
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16,19}
 import snapshotExtension from '@harlem/extension-snapshot';
 
 import {

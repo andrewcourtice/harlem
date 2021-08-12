@@ -18,7 +18,7 @@ const {
 
 // This mutation takes a string payload and updates the name field
 export const setName = mutation<string>('setName', (state, payload) => {
-    state.firstName = payload;
+    state.name = payload;
 });
 
 // This mutation takes a string payload, adds a trait to the list and returns it's id
@@ -32,18 +32,15 @@ export const addTrait = mutation<string, symbol>('addTrait', (state, payload) =>
 
     return traitId;
 });
-
-/*
-Usage
-
-setName('Jane Smith');
-
-const traitId = addTrait('funny');
-*/
 ```
 
+::: warning
+It is not recommended to call other mutations within the body of a mutation. This could cause unintended side-effects. Harlem has built-in protection to prevent infinite circular mutation calls from occurring.
+:::
 
-## Usage in Components
+## Usage in components
+
+To use a mutation just import it like any other function and call it with the expected payload type (if specified).
 
 ```html
 <template>
@@ -70,6 +67,6 @@ const name = computed({
 </script>
 ```
 
-## See Also
+## See also
 
 [Mutation](/api-reference/store.html#mutation) API Reference

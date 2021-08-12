@@ -26,7 +26,7 @@ export const fullName = getter('fullname', state => {
 The getter function returns a Vue computed property that can now be used in your components or even other getters.
 
 
-## Usage in Components
+## Usage in components
 
 ```html
 <template>
@@ -46,6 +46,6 @@ import {
 </script>
 ```
 
-## See Also
+## See also
 
 [Getter](/api-reference/store.html#getter) API Reference

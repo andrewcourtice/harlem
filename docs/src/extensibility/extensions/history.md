@@ -25,7 +25,7 @@ yarn add @harlem/extension-history
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16-17,20-28}
 import historyExtension from '@harlem/extension-history';
 
 import {

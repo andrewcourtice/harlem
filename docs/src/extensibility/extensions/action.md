@@ -29,7 +29,7 @@ yarn add @harlem/extension-action
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16-20,23}
 import actionExtension from '@harlem/extension-action';
 
 import {

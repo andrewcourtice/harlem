@@ -125,3 +125,9 @@ export { default as getter2 } from './getters/getter-2';
 export { default as mutation1 } from './mutations/mutation-1';
 export { default as mutation2 } from './mutations/mutation-2';
 ```
+
+## Is Harlem suitable for large projects?
+
+Absolutely! Harlem is currently being used by [Fathom](https://www.fathomhq.com/) to power their extensive financial intelligence product. The Fathom implementation consists of several stores with hundreds of getters, mutations and actions.
+
+If you are using Harlem in a large project and would be comfortable in sharing your experience, please let me know.
