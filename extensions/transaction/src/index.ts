@@ -30,7 +30,7 @@ export default function transactionExtension<TState extends BaseState>() {
 
         function transaction<TPayload>(name: string, transactor: Transactor<TPayload>): Transaction<TPayload> {
             return payload => {
-                const snapshot = clone(store.state);
+                const snapshot = clone(store.state) as ReadState<TState>;
 
                 const eventData = {
                     payload,
