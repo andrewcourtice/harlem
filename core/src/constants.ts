@@ -1,3 +1,11 @@
+import {
+    clone,
+} from '@harlem/utilities';
+
+import type {
+    StoreProviders,
+} from './types';
+
 export const SENDER = 'core';
 
 export const EVENTS = {
@@ -18,3 +26,9 @@ export const EVENTS = {
         update: 'devtools:update',
     },
 } as const;
+
+export const PROVIDERS = {
+    read: value => value,
+    write: value => value,
+    payload: value => clone(value),
+} as StoreProviders<any>;

@@ -3,6 +3,7 @@ import eventEmitter from './event-emitter';
 import {
     EVENTS,
     SENDER,
+    PROVIDERS,
 } from './constants';
 
 import {
@@ -13,10 +14,6 @@ import {
     ComputedRef,
     EffectScope,
 } from 'vue';
-
-import {
-    clone,
-} from '@harlem/utilities';
 
 import type {
     BaseState,
@@ -52,6 +49,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     private options: InternalStoreOptions<TState>;
     private scope: EffectScope;
     private stack: Set<string>;
+    private isSuppressing: boolean;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
 
@@ -64,9 +62,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             ...options,
 
             providers: {
-                read: value => value,
-                write: value => value,
-                payload: value => clone(value),
+                ...PROVIDERS,
                 ...options?.providers,
             },
         };
@@ -74,6 +70,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.name = name;
         this.registrations = {};
         this.stack = new Set();
+        this.isSuppressing = false;
         this.scope = effectScope();
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
@@ -85,9 +82,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
     public get providers(): StoreProviders<TState> {
         return {
-            read: value => value,
-            write: value => value,
-            payload: value => value,
+            ...PROVIDERS,
             ...this.options.providers,
         };
     }
@@ -97,7 +92,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public emit(event: string, sender: string, data: any): void {
-        if (!this.scope.active) {
+        if (!this.scope.active || this.isSuppressing) {
             return;
         }
 
@@ -151,6 +146,16 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
     public unregister(group: string, name: string): void {
         this.registrations[group]?.delete(name);
+    }
+
+    public suppress(callback: () => void): void {
+        this.isSuppressing = true;
+
+        try {
+            callback();
+        } finally {
+            this.isSuppressing = false;
+        }
     }
 
     public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {

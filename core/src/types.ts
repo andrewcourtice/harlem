@@ -70,6 +70,7 @@ export interface InternalStore<TState extends BaseState = any> extends StoreBase
     on(event: string, handler: EventHandler): EventListener;
     once(event: string, handler: EventHandler): EventListener
     track<TResult>(callback: () => TResult): TResult;
+    suppress(callback: () => void): void;
     provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void;
     write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult;
     destroy(): void;
