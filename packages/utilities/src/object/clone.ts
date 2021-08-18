@@ -1,5 +1,10 @@
 import getType from '../type/get-type';
 
+import {
+    unref,
+    UnwrapRef
+} from 'vue';
+
 import type {
     Constructable,
     RuntimeType,
@@ -11,6 +16,13 @@ function cloneIdentity(input: unknown): unknown {
 
 function cloneBasic(input: Constructable): unknown {
     return new input.constructor(input);
+}
+
+function cloneRegex(input: RegExp): RegExp {
+    const clonedRegex = new RegExp(input.source);
+    clonedRegex.lastIndex = input.lastIndex;
+
+    return clonedRegex;
 }
 
 function cloneSymbol(input: symbol): symbol {
@@ -52,15 +64,19 @@ function cloneMap(input: Map<unknown, unknown>): Map<unknown, unknown> {
 }
 
 const CLONE_MAP = {
-    default: () => null,
-    null: () => null,
-    undefined: () => null,
-    boolean: cloneBasic,
-    number: cloneBasic,
-    string: cloneBasic,
+    default: cloneIdentity,
+
+    // Primitives
+    null: cloneIdentity,
+    undefined: cloneIdentity,
+    boolean: cloneBasic, // only for new Boolean()
+    number: cloneBasic, // only for new Number()
+    string: cloneBasic, // only for new String()
+
+    // Objects
     error: cloneBasic,
     date: cloneBasic,
-    regexp: cloneBasic,
+    regexp: cloneRegex,
     function: cloneIdentity,
     symbol: cloneSymbol,
     array: cloneArray,
@@ -69,13 +85,14 @@ const CLONE_MAP = {
     set: cloneSet,
 } as Record<RuntimeType | 'default', ((value: unknown) => unknown)>;
 
-export default function clone<TValue = unknown>(value: TValue): TValue {
+export default function clone<TValue = unknown>(value: TValue): UnwrapRef<TValue> {
     if (typeof value !== 'object' || value === null) {
-        return value;
+        return value as UnwrapRef<TValue>;
     }
 
     const type = getType(value);
     const cloner = CLONE_MAP[type] || CLONE_MAP.default;
+    const input = unref(value);
 
-    return cloner(value) as TValue;
+    return cloner(input) as UnwrapRef<TValue>;
 }
