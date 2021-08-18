@@ -6,13 +6,18 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official lazy extension for Harlem",
     "homepage": "https://harlemjs.com",
-    "type": "module",
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.js",
-    "exports": "./dist/index.js",
-    "unpkg": "./dist/index.global.js",
-    "types": "./dist/index.d.ts",
-    "source": "./src/index.ts",
+    "source": "src/index.ts",
+    "main": "dist/index.js",
+    "module": "dist/esm/index.js",
+    "unpkg": "dist/iife/index.js",
+    "jsdelivr": "dist/iife/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/esm/index.js",
+            "require": "./dist/index.js"
+        }
+    },
     "keywords": [
         "vue",
         "state",

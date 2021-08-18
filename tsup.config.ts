@@ -6,6 +6,7 @@ export default {
     clean: true,
     dts: true,
     sourcemap: true,
+    legacyOutput: true,
     target: 'es2020',
     format: [
         'esm',

@@ -30,7 +30,9 @@ import type {
     StoreOptions,
 } from './types';
 
-export { EVENTS } from './constants';
+export {
+    EVENTS,
+} from './constants';
 
 export * from './types';
 
