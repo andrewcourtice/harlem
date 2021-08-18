@@ -72,4 +72,4 @@ on(EVENTS.mutation.error, event => console.log(event));
 
 ## See also
 
-[On](/api-reference/#on) API Reference
+[On](/api/#on) API Reference

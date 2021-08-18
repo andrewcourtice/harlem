@@ -19,7 +19,7 @@ module.exports = {
         navbar: [
             {
                 text: 'Guide',
-                link: '/guide/introduction/about.html',
+                link: '/guide/introduction/about',
                 activeMatch: '^/guide/'
             },
             {
@@ -29,8 +29,8 @@ module.exports = {
             },
             {
                 text: 'API Reference',
-                link: '/api-reference/global.html',
-                activeMatch: '^/api-reference/'
+                link: '/api/global',
+                activeMatch: '^/api/'
             }
         ],
         sidebar: {
@@ -38,26 +38,26 @@ module.exports = {
                 {
                     text: 'Introduction',
                     children: [
-                        '/guide/introduction/about.html',
-                        '/guide/introduction/getting-started.html',
+                        '/guide/introduction/about',
+                        '/guide/introduction/getting-started',
                     ]
                 },
                 {
                     text: 'Core Concepts',
                     children: [
-                        '/guide/core-concepts/stores.html',
-                        '/guide/core-concepts/state.html',
-                        '/guide/core-concepts/getters.html',
-                        '/guide/core-concepts/mutations.html',
-                        '/guide/core-concepts/actions.html',
-                        '/guide/core-concepts/triggers.html',
+                        '/guide/core-concepts/stores',
+                        '/guide/core-concepts/state',
+                        '/guide/core-concepts/getters',
+                        '/guide/core-concepts/mutations',
+                        '/guide/core-concepts/actions',
+                        '/guide/core-concepts/triggers',
                     ]
                 },
                 {
                     text: 'Support',
                     children: [
-                        '/guide/support/tips.html',
-                        '/guide/support/FAQ.html'
+                        '/guide/support/tips',
+                        '/guide/support/FAQ'
                     ]
                 },
             ],
@@ -65,33 +65,29 @@ module.exports = {
                 {
                     text: 'Extensions',
                     children: [
-                        '/extensibility/extensions/introduction.html',
-                        '/extensibility/extensions/action.html',
-                        '/extensibility/extensions/history.html',
-                        '/extensibility/extensions/lazy.html',
-                        '/extensibility/extensions/reset.html',
-                        '/extensibility/extensions/snapshot.html',
-                        '/extensibility/extensions/storage.html',
+                        '/extensibility/extensions/introduction',
+                        '/extensibility/extensions/action',
+                        '/extensibility/extensions/history',
+                        '/extensibility/extensions/lazy',
+                        '/extensibility/extensions/reset',
+                        '/extensibility/extensions/snapshot',
+                        '/extensibility/extensions/storage',
                     ]
                 },
                 {
                     text: 'Plugins',
                     children: [
-                        '/extensibility/plugins/introduction.html',
-                        '/extensibility/plugins/devtools.html',
-                        '/extensibility/plugins/server-side-rendering.html',
+                        '/extensibility/plugins/introduction',
+                        '/extensibility/plugins/devtools',
+                        '/extensibility/plugins/server-side-rendering',
                     ]
                 }
             ],
-            '/api-reference/': [
-                {
-                    text: 'API Reference',
-                    children: [
-                        '/api-reference/global.html',
-                        '/api-reference/store.html',
-                        '/api-reference/types.html',
-                    ]
-                }
+            '/api/': [
+                '/api/global',
+                '/api/store',
+                '/api/extension',
+                '/api/types',
             ]
         }
     },

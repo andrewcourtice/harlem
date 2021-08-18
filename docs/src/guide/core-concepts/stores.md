@@ -31,7 +31,7 @@ export default createStore('user', {
 
 ## Specifying options
 
-You can specifiy a range of options when creating a store. This is most useful for adding any extensions you wish to include with this store. For the complete set of options available refer to the [API documentation](/api-reference/global.html#createstore).
+You can specifiy a range of options when creating a store. This is most useful for adding any extensions you wish to include with this store. For the complete set of options available refer to the [API documentation](/api/global.html#createstore).
 
 ```typescript
 import {

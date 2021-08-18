@@ -1,3 +1,7 @@
+---
+sidebarDepth: 1
+---
+
 # Types
 
 ## Store Options

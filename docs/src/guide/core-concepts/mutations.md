@@ -69,4 +69,4 @@ const name = computed({
 
 ## See also
 
-[Mutation](/api-reference/store.html#mutation) API Reference
+[Mutation](/api/store.html#mutation) API Reference

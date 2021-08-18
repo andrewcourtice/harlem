@@ -98,4 +98,4 @@ const lastName = computed({
 
 ### See also
 
-[Create Store](/api-reference/#createStore) API Reference
+[Create Store](/api/#createStore) API Reference
