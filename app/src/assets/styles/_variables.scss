@@ -38,16 +38,26 @@
     --animation__easing: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-[theme="dark"] {
+@mixin dark-mode {
     --background__colour: #333333;
     --background__colour--inverse: #333333;
     --background__colour--shade: rgba(0, 0, 0, 0.75);
     --foreground__colour: #666666;
     --foreground__colour--dark: #888888;
-
+    
     --font__colour: #EEEEEE;
     --font__colour--meta: #CCCCCC;
     --font__colour--inverse: #FFFFFF;
+    
+    --border__colour: #666666;    
+}
 
-    --border__colour: #666666;
+[theme="dark"] {
+    @include dark-mode();
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        @include dark-mode();
+    }
 }
