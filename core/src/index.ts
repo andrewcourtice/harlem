@@ -158,6 +158,7 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         state: store.state,
         getter: store.getter.bind(store),
         mutation: store.mutation.bind(store),
+        suppress: store.suppress.bind(store),
         on: store.on.bind(store),
         once: store.once.bind(store),
         ...extendedStore,

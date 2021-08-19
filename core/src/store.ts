@@ -148,11 +148,11 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.registrations[group]?.delete(name);
     }
 
-    public suppress(callback: () => void): void {
+    public suppress<TResult = void>(callback: () => TResult): TResult {
         this.isSuppressing = true;
 
         try {
-            callback();
+            return callback();
         } finally {
             this.isSuppressing = false;
         }
@@ -218,8 +218,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         return mutation;
     }
 
-    public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult {
-        return this.mutate(name, sender, mutator, undefined);
+    public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>, suppress?: boolean): TResult {
+        const mutation = () => this.mutate(name, sender, mutator, undefined);
+
+        return (suppress ? () => this.suppress(mutation) : mutation)();
     }
 
     public destroy(): void {

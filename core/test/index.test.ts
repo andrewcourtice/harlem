@@ -8,6 +8,7 @@ function getStore() {
         state,
         getter,
         mutation,
+        suppress,
         onBeforeMutation,
         onAfterMutation,
     } = createStore('main', {
@@ -47,6 +48,7 @@ function getStore() {
         state,
         getter,
         mutation,
+        suppress,
         fullName,
         setId,
         setFirstName,
@@ -64,6 +66,7 @@ describe('Harlem Core', () => {
         state,
         getter,
         mutation,
+        suppress,
         fullName,
         setId,
         setFirstName,
@@ -165,6 +168,19 @@ describe('Harlem Core', () => {
             setId();
 
             expect(handler).toHaveBeenCalled();
+            dispose();
+        });
+
+        test('Should not fire if events are suppressed', () => {
+            const handler = jest.fn();
+
+            const {
+                dispose,
+            } = onAfterMutation('set-id', handler);
+
+            suppress(() => setId());
+
+            expect(handler).not.toHaveBeenCalled();
             dispose();
         });
 
