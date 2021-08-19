@@ -36,9 +36,7 @@ export default function actionsExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
-        _store.write('$action-init', SENDER, state => {
-            state.$actions = {};
-        });
+        _store.write('$action-init', SENDER, state => state.$actions = {}, true);
 
         function registerAction(name: string) {
             _store.register('actions', name, () => undefined);
@@ -47,7 +45,7 @@ export default function actionsExtension<TState extends BaseState>() {
                     runCount: 0,
                     instances: new Map<symbol, unknown>(),
                 };
-            });
+            }, true);
         }
 
         function clearActionRunCount(name: string) {
@@ -78,7 +76,7 @@ export default function actionsExtension<TState extends BaseState>() {
                 ...options,
             };
 
-            const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, '$actions-extension', mutator);
+            const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
 
             return ((payload: TPayload, controller?: AbortController) => {
                 if (!parallel && tasks.size > 0) {
@@ -105,9 +103,10 @@ export default function actionsExtension<TState extends BaseState>() {
                         incrementRunCount(name);
                     } catch (error) {
                         if (error instanceof DOMException) {
-                            fail(); // Fetch has been cancelled
+                            return fail(); // Fetch has been cancelled
                         }
 
+                        incrementRunCount(name);
                         reject(error);
                     } finally {
                         complete();
