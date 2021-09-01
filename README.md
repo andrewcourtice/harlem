@@ -11,37 +11,14 @@
 
 Simple, unopinionated, lightweight and extensible state management for Vue 3. Head over to [harlemjs.com](https://harlemjs.com) to get started or take a look at the [demo](https://andrewcourtice.github.io/harlem) to see it in action.
 
-<!-- TOC depthfrom:2 depthto:4 -->
+<!-- TOC depthfrom:2 depthto:2 -->
 
 - [Foundations](#foundations)
-    - [Simple](#simple)
-    - [Unopinionated](#unopinionated)
-    - [Immutable](#immutable)
-    - [Lightweight](#lightweight)
-    - [Extensible](#extensible)
-    - [Great DX](#great-dx)
 - [Features](#features)
-    - [Powerfully simple](#powerfully-simple)
-    - [TypeScript support](#typescript-support)
-    - [Devtools integration](#devtools-integration)
-    - [Server-side rendering](#server-side-rendering)
 - [Getting started](#getting-started)
 - [Core concepts](#core-concepts)
-    - [State](#state)
-    - [Getters](#getters)
-    - [Mutations](#mutations)
-    - [Actions](#actions)
-    - [Triggers](#triggers)
 - [Extensibility](#extensibility)
-    - [Extensions](#extensions)
-    - [Plugins](#plugins)
 - [FAQ](#faq)
-    - [Why aren't actions included by default?](#why-arent-actions-included-by-default)
-    - [Can I share state between stores?](#can-i-share-state-between-stores)
-    - [Does Harlem have a file structure convention for stores?](#does-harlem-have-a-file-structure-convention-for-stores)
-        - [Single file structure](#single-file-structure)
-        - [Multi-file structure](#multi-file-structure)
-    - [Is Harlem suitable for large projects?](#is-harlem-suitable-for-large-projects)
 - [Credits](#credits)
 
 <!-- /TOC -->
