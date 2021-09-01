@@ -2,7 +2,7 @@ import getType from '../type/get-type';
 
 import {
     unref,
-    UnwrapRef
+    UnwrapRef,
 } from 'vue';
 
 import type {
@@ -86,13 +86,14 @@ const CLONE_MAP = {
 } as Record<RuntimeType | 'default', ((value: unknown) => unknown)>;
 
 export default function clone<TValue = unknown>(value: TValue): UnwrapRef<TValue> {
-    if (typeof value !== 'object' || value === null) {
-        return value as UnwrapRef<TValue>;
+    const input = unref(value);
+
+    if (typeof input !== 'object' || input === null) {
+        return input as UnwrapRef<TValue>;
     }
 
-    const type = getType(value);
+    const type = getType(input);
     const cloner = CLONE_MAP[type] || CLONE_MAP.default;
-    const input = unref(value);
 
     return cloner(input) as UnwrapRef<TValue>;
 }
