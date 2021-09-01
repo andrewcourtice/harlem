@@ -79,6 +79,17 @@ describe('Harlem Core', () => {
             });
         });
 
+        test('Should prevent changes after being destroyed', () => {
+            const {
+                setId,
+                destroy,
+            } = store;
+
+            destroy();
+
+            expect(() => setId()).toThrow();
+        });
+
     });
 
     describe('State', () => {
