@@ -10,6 +10,16 @@ describe('Reset Extension', () => {
     const getInstance = () => getStore({
         extensions: [
             resetExtension(),
+            store => {
+                const value = 'value';
+
+                // @ts-ignore
+                store.write('$test', 'test', state => state.$internal = value);
+
+                return {
+                    value,
+                };
+            },
         ],
     });
 
@@ -30,6 +40,7 @@ describe('Reset Extension', () => {
         setUserDetails({
             firstName: 'John',
             lastName: 'Smith',
+            age: 35,
         });
 
         expect(store.state.id).toBe(5);
@@ -41,33 +52,63 @@ describe('Reset Extension', () => {
         expect(store.state.id).toBe(0);
         expect(store.state.details.firstName).toBe('');
         expect(store.state.details.lastName).toBe('');
+        expect(store.state.details.age).toBe(0);
     });
 
-    // test('Performs a partial reset', () => {
-    //     const {
-    //         store,
-    //         setUserID,
-    //         setUserDetails,
-    //     } = instance;
+    test('Performs a partial reset', () => {
+        const {
+            store,
+            setUserID,
+            setUserDetails,
+        } = instance;
 
-    //     setUserID(7);
-    //     setUserDetails({
-    //         firstName: 'John',
-    //         lastName: 'Smith',
-    //         age: 35,
-    //     });
+        setUserID(7);
+        setUserDetails({
+            firstName: 'John',
+            lastName: 'Smith',
+            age: 35,
+        });
 
-    //     expect(store.state.id).toBe(7);
-    //     expect(store.state.details.firstName).toBe('John');
-    //     expect(store.state.details.lastName).toBe('Smith');
-    //     expect(store.state.details.age).toBe(35);
+        expect(store.state.id).toBe(7);
+        expect(store.state.details.firstName).toBe('John');
+        expect(store.state.details.lastName).toBe('Smith');
+        expect(store.state.details.age).toBe(35);
 
-    //     store.reset(state => state.details);
+        store.reset(state => state.details);
 
-    //     expect(store.state.id).toBe(7);
-    //     expect(store.state.details.firstName).toBe('');
-    //     expect(store.state.details.lastName).toBe('');
-    //     expect(store.state.details.age).toBe(0);
-    // });
+        expect(store.state.id).toBe(7);
+        expect(store.state.details.firstName).toBe('');
+        expect(store.state.details.lastName).toBe('');
+        expect(store.state.details.age).toBe(0);
+    });
+
+    test('Ignores internal properties', () => {
+        const {
+            store,
+            setUserID,
+            setUserDetails,
+        } = instance;
+
+        setUserID(7);
+        setUserDetails({
+            firstName: 'John',
+            lastName: 'Smith',
+            age: 35,
+        });
+
+        expect(store.state.id).toBe(7);
+        expect(store.state.details.firstName).toBe('John');
+        expect(store.state.details.lastName).toBe('Smith');
+        expect(store.state.details.age).toBe(35);
+
+        store.reset();
+
+        // @ts-ignore
+        expect(store.state.$internal).toBe(store.value);
+        expect(store.state.id).toBe(0);
+        expect(store.state.details.firstName).toBe('');
+        expect(store.state.details.lastName).toBe('');
+        expect(store.state.details.age).toBe(0);
+    });
 
 });
