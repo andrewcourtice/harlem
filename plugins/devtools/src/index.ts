@@ -242,7 +242,11 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
 
                 eventEmitter.on(EVENTS.mutation.success, successMutationHook);
                 eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
-                eventEmitter.on(EVENTS.devtools.update, () => api.sendInspectorState(DEVTOOLS_ID));
+
+                eventEmitter.on(EVENTS.devtools.update, () => {
+                    api.sendInspectorTree(DEVTOOLS_ID);
+                    api.sendInspectorState(DEVTOOLS_ID);
+                });
             });
         },
 
