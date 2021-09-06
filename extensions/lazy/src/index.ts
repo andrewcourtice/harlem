@@ -1,4 +1,8 @@
 import {
+    SENDER,
+} from './constants';
+
+import {
     EVENTS,
     BaseState,
     InternalStore,
@@ -52,7 +56,7 @@ export default function lazyExtension<TState extends BaseState>() {
             const output = store.track(() => computedAsync(async onInvalidate => {
                 const result = await body(store.state, onInvalidate);
 
-                nextTick(() => store.emit(EVENTS.devtools.update, 'lazy', result));
+                nextTick(() => store.emit(EVENTS.devtools.update, SENDER, result));
 
                 return result;
             }, defaultValue));
