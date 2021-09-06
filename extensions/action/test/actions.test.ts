@@ -162,4 +162,24 @@ describe('Actions Extension', () => {
         expect(hasConcurrentFailed).toBe(false);
     });
 
+    test('Handles action resetting', async () => {
+        const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
+            hasActionRun,
+            resetActionState,
+        } = instance.store;
+
+        expect(hasActionRun(loadUserInfoName)).toBe(false);
+
+        await loadUserInfo();
+
+        expect(hasActionRun(loadUserInfoName)).toBe(true);
+        resetActionState();
+        expect(hasActionRun(loadUserInfoName)).toBe(false);
+    });
+
 });

@@ -38,18 +38,16 @@ export default function actionsExtension<TState extends BaseState>() {
 
         _store.write('$action-init', SENDER, state => state.$actions = {}, true);
 
-        function registerAction(name: string) {
-            _store.register('actions', name, () => undefined);
-            _store.write('$action-register', SENDER, state => {
-                state.$actions[name] = {
-                    runCount: 0,
-                    instances: new Map<symbol, unknown>(),
-                };
-            }, true);
+        function setActionState(state: TState & ActionStoreState, name: string) {
+            state.$actions[name] = {
+                runCount: 0,
+                instances: new Map<symbol, unknown>(),
+            };
         }
 
-        function clearActionRunCount(name: string) {
-            _store.write('$action-clear-run-count', SENDER, state => state.$actions[name].runCount = 0);
+        function registerAction(name: string) {
+            _store.register('actions', name, () => _store.state.$actions[name]);
+            _store.write('$action-register', SENDER, state => setActionState(state, name), true);
         }
 
         function incrementRunCount(name: string) {
@@ -155,12 +153,22 @@ export default function actionsExtension<TState extends BaseState>() {
             }, controller);
         }
 
+        function resetActionState(name?: string | string[]) {
+            const names = ([] as string[]).concat(name || Object.keys(_store.state.$actions));
+
+            _store.write('$action-reset-state', SENDER, state => names.forEach(name => {
+                if (name in state.$actions) {
+                    setActionState(state, name);
+                }
+            }));
+        }
+
         return {
             action,
             hasActionRun,
             isActionRunning,
             whenActionIdle,
-            clearActionRunCount,
+            resetActionState,
         };
     };
 }
