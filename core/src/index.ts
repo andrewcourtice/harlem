@@ -53,7 +53,10 @@ function emitCreated(store: InternalStore, state: any): void {
     This is necessary because the stores may be
     created before the plugin has been installed.
     */
-    const created = () => store.emit(EVENTS.store.created, SENDER, state);
+    const created = () => {
+        store.emit(EVENTS.store.created, SENDER, state);
+        store.emit(EVENTS.devtools.update, SENDER, state);
+    };
 
     if (installed) {
         return created();
@@ -124,9 +127,10 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
     });
 
     const destroy = () => {
-        store.emit(EVENTS.store.destroyed, SENDER, state);
         stores.delete(name);
         store.destroy();
+        store.emit(EVENTS.store.destroyed, SENDER, state);
+        store.emit(EVENTS.devtools.update, SENDER, state);
     };
 
     const getMutationHook = (eventName: string) => {
