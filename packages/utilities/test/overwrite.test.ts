@@ -41,6 +41,7 @@ describe('Utilities', () => {
                 a: 'hello',
                 b: 5,
                 c: [1, 2],
+                d: 35,
             }, /^d/);
 
             expect(typeof source.a).toBe('string');
