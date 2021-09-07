@@ -26,11 +26,11 @@
         "date-fns": "^2.23.0",
         "date-fns-tz": "^1.1.6",
         "flex-layout-attribute": "^1.0.3",
-        "vue": "^3.2.4"
+        "vue": "^3.2.9"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^1.4.0",
-        "@vue/compiler-sfc": "^3.2.4",
-        "vite": "^2.5.0"
+        "@vitejs/plugin-vue": "^1.6.1",
+        "@vue/compiler-sfc": "^3.2.9",
+        "vite": "^2.5.3"
     }
 }
