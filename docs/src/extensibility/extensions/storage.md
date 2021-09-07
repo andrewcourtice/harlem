@@ -58,7 +58,7 @@ const {
 });
 ```
 
-The storage extension adds 3 methods to the store instance: `startStorageSync`, `stopStorageSync` and `clearStorage`.
+The storage extension adds several new methods to the store instance (highlighted above).
 
 
 ## Usage

@@ -58,7 +58,7 @@ const {
 });
 ```
 
-The history extension adds 2 new methods to the store instance: `undo` and `redo`.
+The history extension adds several new methods to the store instance (highlighted above).
 
 
 ## Usage

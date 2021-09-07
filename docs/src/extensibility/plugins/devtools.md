@@ -46,7 +46,7 @@ createApp(App)
 
 ### Options
 
-- **label** (string?): The name that will appear in the Vue devtools pane. The default is 'Harlem'.
-- **color** (number?): A Hexadecimal number indicating the color to be used on the timeline for Harlem events. The default is `0x40c48d`.
+- **label**: `string?` - the name that will appear in the Vue devtools pane. The default is 'Harlem'.
+- **color**: `number?` - a Hexadecimal number indicating the color to be used on the timeline for Harlem events. The default is `0x40c48d`.
 
 *(?) indicates an optional field*

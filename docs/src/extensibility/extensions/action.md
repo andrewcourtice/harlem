@@ -29,7 +29,7 @@ yarn add @harlem/extension-action
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-20,23}
+```typescript{16-22,25}
 import actionExtension from '@harlem/extension-action';
 
 import {
@@ -48,8 +48,10 @@ const {
     action,
     hasActionRun,
     isActionRunning,
+    hasActionFailed,
+    getActionErrors,
     whenActionIdle,
-    clearActionRunCount
+    resetActionState,
 } = createStore('example', STATE, {
     extensions: [
         actionExtension()
@@ -57,7 +59,7 @@ const {
 });
 ```
 
-The action extension adds 5 new methods to the store instance: `action`, `hasActionRun`, `isActionRunning`, `whenActionIdle` and `clearActionRunCount`.
+The action extension adds several new methods to the store instance (highlighted above).
 
 
 ## Usage
@@ -95,11 +97,13 @@ The third argument to the action body is an options object.
 export default action('load-user-data', async (id: number, mutate, controller) => {
     ...
 }, {
-    parallel: true
+    parallel: true,
+    autoClearErrors: true
 });
 ```
 
 - **parallel**: `boolean` - indicates whether this action allows multiple instances running in parallel. This is set to `false` by default meaning any instance of this action that starts while another is running will cause the already running action to abort.
+- **autoClearErrors**: `boolean` - indicates whether any currently stored errors for this action should be cleared upon a new instance starting. Default is `true`.
 
 
 ### Calling an action
@@ -191,3 +195,21 @@ const isFirstActionRunning = isActionRunning('load-user-data', payload => payloa
 ```
 
 The predicate function is called with the payload for each instance of the action currently running. The predicate function must return a boolean.
+
+
+### Handling action errors
+A few methods are available for handling errors that occur within actions.
+
+To check whether an action has failed use the `hasActionFailed` method:
+
+```typescript
+const hasFailed = computed(() => hasActionFailed('load-user-data'));
+```
+
+To get a list of errors for this action use the `getActionErrors` method:
+
+```typescript
+const errors = getActionErrors('load-user-data');
+```
+
+The list of errors is an array of objects with an **id**: `symbol` property and a **error**: `unknown` property. The id is the unique identifier for the instance this error occurred on.
