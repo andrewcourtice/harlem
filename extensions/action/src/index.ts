@@ -46,7 +46,7 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function registerAction(name: string) {
-            _store.register('actions', name, () => _store.state.$actions[name]);
+            _store.register('actions', name, () => () => {});
             _store.write('$action-register', SENDER, state => setActionState(state, name), true);
         }
 
