@@ -131,8 +131,8 @@ describe('Actions Extension', () => {
             action,
         } = instance.store;
 
-        const singleAction = action('cation', async () => {});
-        const concurrentAction = action('cation', async () => {}, {
+        const singleAction = action('single-action', async () => {});
+        const concurrentAction = action('concurrent-action', async () => {}, {
             parallel: true,
         });
 
@@ -160,6 +160,34 @@ describe('Actions Extension', () => {
 
         expect(hasSingleFailed).toBe(true);
         expect(hasConcurrentFailed).toBe(false);
+    });
+
+    test('Handles errors', async () => {
+        const {
+            action,
+            hasActionFailed,
+            getActionErrors,
+        } = instance.store;
+
+        const name = 'failing-action';
+        const catchAssertion = jest.fn();
+
+        const failingAction = action(name, async () => {
+            throw new Error('failed');
+        });
+
+        try {
+            await failingAction();
+        } catch {
+            catchAssertion();
+        }
+
+        const errors = getActionErrors(name);
+
+        expect(catchAssertion).toHaveBeenCalled();
+        expect(hasActionFailed(name)).toBe(true);
+        expect(errors.length).toBe(1);
+        expect(errors[0].error).toBeInstanceOf(Error);
     });
 
     test('Handles action resetting', async () => {

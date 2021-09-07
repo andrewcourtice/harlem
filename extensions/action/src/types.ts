@@ -14,6 +14,7 @@ export type ActionPredicate<TPayload = unknown> = (payload?: TPayload) => boolea
 export interface ActionTaskState {
     runCount: number;
     instances: Map<symbol, unknown>;
+    errors: Map<symbol, unknown>;
 }
 
 export interface ActionStoreState {
@@ -22,4 +23,5 @@ export interface ActionStoreState {
 
 export interface ActionOptions {
     parallel: boolean;
+    autoClearErrors: boolean;
 }

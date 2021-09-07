@@ -41,7 +41,8 @@ export default function actionsExtension<TState extends BaseState>() {
         function setActionState(state: TState & ActionStoreState, name: string) {
             state.$actions[name] = {
                 runCount: 0,
-                instances: new Map<symbol, unknown>(),
+                instances: new Map(),
+                errors: new Map(),
             };
         }
 
@@ -62,6 +63,14 @@ export default function actionsExtension<TState extends BaseState>() {
             _store.write('$action-remove-instance', SENDER, state => state.$actions[name]?.instances.delete(instanceId));
         }
 
+        function addError(name: string, instanceId: symbol, error: unknown) {
+            _store.write('$action-add-error', SENDER, state => state.$actions[name]?.errors.set(instanceId, error));
+        }
+
+        function clearErrors(name: string) {
+            _store.write('$action-clear-errors', SENDER, state => state.$actions[name]?.errors.clear());
+        }
+
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
             registerAction(name);
 
@@ -69,8 +78,10 @@ export default function actionsExtension<TState extends BaseState>() {
 
             const {
                 parallel,
+                autoClearErrors,
             } = {
                 parallel: false,
+                autoClearErrors: true,
                 ...options,
             };
 
@@ -82,6 +93,10 @@ export default function actionsExtension<TState extends BaseState>() {
                         task.abort();
                         tasks.delete(task);
                     });
+                }
+
+                if (autoClearErrors) {
+                    clearErrors(name);
                 }
 
                 const task = new Task<TResult>(async (resolve, reject, controller, onAbort) => {
@@ -97,14 +112,15 @@ export default function actionsExtension<TState extends BaseState>() {
                         const providedPayload = _store.providers.payload(payload) ?? payload;
                         const result = await body(providedPayload, mutate, controller, onAbort);
 
-                        resolve(result);
                         incrementRunCount(name);
+                        resolve(result);
                     } catch (error) {
                         if (error instanceof DOMException) {
                             return fail(); // Fetch has been cancelled
                         }
 
                         incrementRunCount(name);
+                        addError(name, id, error);
                         reject(error);
                     } finally {
                         complete();
@@ -153,6 +169,19 @@ export default function actionsExtension<TState extends BaseState>() {
             }, controller);
         }
 
+        function hasActionFailed(name: string) {
+            return _store.state.$actions[name]?.errors.size > 0;
+        }
+
+        function getActionErrors(name: string) {
+            return Array
+                .from(_store.state.$actions[name]?.errors.entries())
+                .map(([id, error]) => ({
+                    id,
+                    error,
+                }));
+        }
+
         function resetActionState(name?: string | string[]) {
             const names = ([] as string[]).concat(name || Object.keys(_store.state.$actions));
 
@@ -168,6 +197,8 @@ export default function actionsExtension<TState extends BaseState>() {
             hasActionRun,
             isActionRunning,
             whenActionIdle,
+            hasActionFailed,
+            getActionErrors,
             resetActionState,
         };
     };
