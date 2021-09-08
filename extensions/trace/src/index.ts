@@ -1,4 +1,8 @@
 import {
+    GATE_COLOUR,
+} from './constants';
+
+import {
     EVENTS,
     BaseState,
     InternalStore,
@@ -18,6 +22,7 @@ import type {
     TraceGate,
     TraceListener,
     TraceOptions,
+    TraceResult,
 } from './types';
 
 export * from './types';
@@ -107,11 +112,30 @@ function trace<TValue extends object>(value: TValue, gates: TraceGate<TValue> | 
     });
 }
 
+function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
+    const {
+        foreground,
+        background,
+    } = (GATE_COLOUR[gate] || GATE_COLOUR.default);
+
+    const style = [
+        'padding: 3px',
+        'font-weight: bold',
+        'border-radius: 3px',
+        `color: ${foreground}`,
+        `background-color: ${background}`,
+    ].join(';');
+
+    console.log(`%c${gate}%c ${path}`, style, '');
+}
+
 export default function traceExtension<TState extends BaseState>(options?: Partial<Options>) {
     const {
         autoStart,
+        debug,
     } = {
         autoStart: false,
+        debug: false,
         ...options,
     } as Options;
 
@@ -120,6 +144,10 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
             store.provider('write', state => trace(state, gates, result => {
+                if (debug) {
+                    logResult(result);
+                }
+
                 traceCallbacks.forEach(callback => callback(result));
             }));
         }

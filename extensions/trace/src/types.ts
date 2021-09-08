@@ -26,4 +26,5 @@ export interface TraceListener {
 
 export interface Options {
     autoStart: boolean;
+    debug: boolean;
 }
