@@ -2,6 +2,7 @@ import Task from '@harlem/task';
 
 import {
     SENDER,
+    EVENTS,
 } from './constants';
 
 import {
@@ -10,6 +11,7 @@ import {
 
 import {
     BaseState,
+    EventPayload,
     InternalStore,
     Mutator,
 } from '@harlem/core';
@@ -21,6 +23,8 @@ import {
 import type {
     Action,
     ActionBody,
+    ActionEventData,
+    ActionHookHandler,
     ActionOptions,
     ActionPredicate,
     ActionStoreState,
@@ -86,6 +90,11 @@ export default function actionsExtension<TState extends BaseState>() {
             };
 
             const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
+            const emit = (event: string, payload: unknown, result?: unknown) => _store.emit(event, SENDER, {
+                action: name,
+                payload,
+                result,
+            } as ActionEventData);
 
             return ((payload: TPayload, controller?: AbortController) => {
                 if (!parallel && tasks.size > 0) {
@@ -105,13 +114,19 @@ export default function actionsExtension<TState extends BaseState>() {
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
                     const fail = () => reject(new ActionAbortError(name, id));
 
+                    let result: TResult | undefined;
+
                     onAbort(() => (complete(), fail()));
                     addInstance(name, id, payload);
 
+                    emit(EVENTS.action.before, payload);
+
                     try {
                         const providedPayload = _store.providers.payload(payload) ?? payload;
-                        const result = await body(providedPayload, mutate, controller, onAbort);
 
+                        result = await body(providedPayload, mutate, controller, onAbort);
+
+                        emit(EVENTS.action.success, payload, result);
                         incrementRunCount(name);
                         resolve(result);
                     } catch (error) {
@@ -119,10 +134,13 @@ export default function actionsExtension<TState extends BaseState>() {
                             return fail(); // Fetch has been cancelled
                         }
 
+                        emit(EVENTS.action.error, payload);
+
                         incrementRunCount(name);
                         addError(name, id, error);
                         reject(error);
                     } finally {
+                        emit(EVENTS.action.after, payload, result);
                         complete();
                     }
                 }, controller);
@@ -131,6 +149,18 @@ export default function actionsExtension<TState extends BaseState>() {
 
                 return task;
             }) as Action<TPayload, TResult>;
+        }
+
+        function getActionHook(eventName: string) {
+            return <TPayload = any, TResult = any>(actionName: string | string[], handler: ActionHookHandler<TPayload, TResult>) => {
+                const actions = ([] as string[]).concat(actionName);
+
+                return _store.on(eventName, (event?: EventPayload<ActionEventData<TPayload, TResult>>) => {
+                    if (event && actions.includes(event.data.action)) {
+                        handler(event.data);
+                    }
+                });
+            };
         }
 
         function hasActionRun(name: string) {
@@ -192,6 +222,11 @@ export default function actionsExtension<TState extends BaseState>() {
             }));
         }
 
+        const onBeforeAction = getActionHook(EVENTS.action.before);
+        const onAfterAction = getActionHook(EVENTS.action.after);
+        const onActionSuccess = getActionHook(EVENTS.action.success);
+        const onActionError = getActionHook(EVENTS.action.error);
+
         return {
             action,
             hasActionRun,
@@ -200,6 +235,10 @@ export default function actionsExtension<TState extends BaseState>() {
             hasActionFailed,
             getActionErrors,
             resetActionState,
+            onBeforeAction,
+            onAfterAction,
+            onActionSuccess,
+            onActionError,
         };
     };
 }
