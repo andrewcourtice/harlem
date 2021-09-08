@@ -105,7 +105,6 @@ export default function actionsExtension<TState extends BaseState>() {
 
                 const task = new Task<TResult>(async (resolve, reject, controller, onAbort) => {
                     const id = Symbol(name);
-                    const providedPayload = _store.providers.payload(payload) ?? payload;
 
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
                     const fail = () => reject(new ActionAbortError(name, id));
@@ -114,7 +113,7 @@ export default function actionsExtension<TState extends BaseState>() {
 
                     const emit = (event: string) => _store.emit(event, SENDER, {
                         action: name,
-                        payload: providedPayload,
+                        payload,
                         result,
                     } as ActionEventData);
 
@@ -124,6 +123,8 @@ export default function actionsExtension<TState extends BaseState>() {
                     emit(EVENTS.action.before);
 
                     try {
+                        const providedPayload = _store.providers.payload(payload) ?? payload;
+
                         result = await body(providedPayload, mutate, controller, onAbort);
 
                         emit(EVENTS.action.success);

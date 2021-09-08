@@ -175,21 +175,22 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             throw new Error('Circular mutation reference detected. Avoid calling mutations inside other mutations to prevent circular references.');
         }
 
-        const providedState = this.providers.write(this.writeState) ?? this.writeState;
-        const providedPayload = this.providers.payload(payload) ?? payload;
+        this.stack.add(name);
 
         let result: TResult;
 
         const emit = (event: string) => this.emit(event, sender, {
             mutation: name,
-            payload: providedPayload,
+            payload,
             result,
         } as MutationEventData<TPayload, TResult>);
 
-        this.stack.add(name);
         emit(EVENTS.mutation.before);
 
         try {
+            const providedState = this.providers.write(this.writeState) ?? this.writeState;
+            const providedPayload = this.providers.payload(payload) ?? payload;
+
             result = mutator(providedState, providedPayload);
 
             emit(EVENTS.mutation.success);

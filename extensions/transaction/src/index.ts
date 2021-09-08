@@ -29,17 +29,15 @@ export default function transactionExtension<TState extends BaseState>() {
             mutationName: '$transaction-rollback',
         })(store);
 
-
         function transaction<TPayload>(name: string, transactor: Transactor<TState, TPayload>): Transaction<TPayload> {
             const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, SENDER, mutator);
 
             return ((payload: TPayload) => {
                 const snap = snapshot();
-                const providedPayload = store.providers.payload(payload) ?? payload;
 
                 const emit = (event: string) => store.emit(event, SENDER, {
                     transaction: name,
-                    payload: providedPayload,
+                    payload,
                 } as TransactionEventData);
 
                 emit(EVENTS.transaction.before);
