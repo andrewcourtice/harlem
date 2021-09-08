@@ -12,13 +12,10 @@ Follow the steps below to get started using the reset extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-reset`:
-```
-npm install @harlem/extension-reset
-```
-Or if you're using Yarn:
-```
+```bash
 yarn add @harlem/extension-reset
+# or
+npm install @harlem/extension-reset
 ```
 
 ### Registration

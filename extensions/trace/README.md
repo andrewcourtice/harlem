@@ -1,67 +1,91 @@
-<p align="center">
-    <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
-    </a>
-</p>
+# Harlem Trace Extension
 
-# Harlem Snapshot Plugin
+![npm](https://img.shields.io/npm/v/@harlem/extension-trace)
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-snapshot)
+This is the official trace extension for Harlem. The trace extension adds the ability to trace granular changes to state. It is useful for detailed auditing of state changes or as a building block of undo/redo functionality.
 
-This is the official Harlem plugin for taking state snapshots and applying them when convenient.
+## Getting Started
 
-<!-- TOC depthfrom:2 -->
+Follow the steps below to get started using the trace extension.
 
-- [Getting started](#getting-started)
+### Installation
 
-<!-- /TOC -->
+Before installing this extension make sure you have installed `@harlem/core`.
 
-## Getting started
-
-Before installing the snapshot plugin make sure you have installed `@harlem/core`.
-
-1. Install `@harlem/plugin-snapshot`:
-```
-npm install @harlem/plugin-snapshot
-```
-Or if you're using Yarn:
-```
-yarn add @harlem/plugin-snapshot
+```bash
+yarn add @harlem/extension-trace
+# or
+npm install @harlem/extension-trace
 ```
 
-2. Create an instance of the plugin and register it with Harlem:
+### Registration
+
+To get started simply register this extension with the store you wish to extend.
+
 ```typescript
-import App from './app.vue';
+import traceExtension from '@harlem/extension-trace';
 
-import harlem from '@harlem/core';
-import createSnapshotPlugin from '@harlem/plugin-snapshot';
-
-createApp(App)
-    .use(harlem, {
-        plugins: [
-            createSnapshotPlugin()
-        ]
-    })
-    .mount('#app');
-```
-
-3. Call the snapshot method with the name of the store you wish to snapshot:
-```typescript
 import {
-    snapshot
-} from '@harlem/plugin-snapshot';
+    createStore
+} from '@harlem/core';
 
-export default function() {
-    const snap = snapshot('my-store');
+const STATE = {
+    firstName: 'Jane',
+    lastName: 'Smith'
+};
 
-    // ...
-}
+const {
+    state,
+    getter,
+    mutation,
+    startTrace,
+    stopTrace,
+    onTraceResult,
+} = createStore('example', STATE, {
+    extensions: [
+        traceExtension({
+            autoStart: true,
+            debug: true,
+        })
+    ]
+});
 ```
 
-4. Apply the snapshot:
+The trace extension adds several new methods to the store instance (highlighted above).
+
+
+## Usage
+
+### Options
+The storage extension method accepts an options object with the following properties:
+- **autoStart**: `boolean` - Indicates whether to start tracing automatically after the store is created. Default value is `false`.
+- **debug**: `boolean` - Enables debug mode. This logs all trace results to the console. Default value is `false`.
+
+
+### Manually starting/stopping tracing
+Tracing can be manually started or stopped at any time using the `startTrace` and `stopTrace` methods. The `startTrace` method accepts an optional `gates` parameter which is an array of strings representing the proxy gates to catch during tracing. The default gate is `set`.
+
+See [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy#handler_functions) for a full list of proxy gates available.
+
+::: tip Note
+The only gates currently available for tracing are `get`, `set` and `deleteProperty`.
+:::
+
+
+### Handling trace results
+The `onTraceResult` method lets you handle the result when one of the specified gates is accessed during a trace. The method takes a single function parameter with a `result` as it's only argument.
+
 ```typescript
-const snap = snapshot('my-store');
+const listener = onTraceResult(result => console.log(result));
 
-snap.apply(); // Apply the snapshot over the top of current state
-snap.apply(true) // Replace state with the current snapshot
+// To cleanup:
+listener.dispose();
 ```
+
+The `result` object has the following properties:
+- **path**: `string` - The path at which the trace gate was triggered. Eg. `/user/details/roles[0]/id`.
+- **gate**: `string` - The gate this result was triggered for.
+- **nodes**: `(string | number)[]` - The nodes traversed when this gate was triggered. Given the above path, this value would be `['user', 'details', 'roles', 0]`.
+- **prop**: `string | number` - The prop that triggered the gate. Eg. `id`.
+- **oldValue**: `unknown` - The value before the change.
+- **newValue**: `unknown` - The value after the change.

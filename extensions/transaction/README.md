@@ -1,99 +1,72 @@
-<p align="center">
-    <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
-    </a>
-</p>
+# Harlem Transaction Extension
 
-# Harlem Transaction Plugin
+![npm](https://img.shields.io/npm/v/@harlem/extension-transaction)
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-transaction)
+This is the official transaction extension for Harlem. The transaction extension adds the ability to rollback a set of mutations in the event of an error.
 
-This is the official Harlem plugin for adding transactions to your stores. This plugin works similar to a SQL Database transaction in that if an error occurs during the transaction, all mutations that have taken place will be rolled-back.
+## Getting Started
 
-This is particularly useful for updating state in multiple stores or multiple branches in the same store at the same time.
+Follow the steps below to get started using the transaction extension.
 
-<!-- TOC depthfrom:2 -->
+### Installation
 
-- [Getting started](#getting-started)
+Before installing this extension make sure you have installed `@harlem/core`.
 
-<!-- /TOC -->
-
-## Getting started
-
-Before installing the transaction plugin make sure you have installed `@harlem/core`.
-
-1. Install `@harlem/plugin-transaction`:
-```
-npm install @harlem/plugin-transaction
-```
-Or if you're using Yarn:
-```
-yarn add @harlem/plugin-transaction
+```bash
+yarn add @harlem/extension-transaction
+# or
+npm install @harlem/extension-transaction
 ```
 
-2. Create an instance of the plugin and register it with Harlem:
+### Registration
+
+To get started simply register this extension with the store you wish to extend.
+
 ```typescript
-import App from './app.vue';
-
-import harlem from '@harlem/core';
-import createTransactionPlugin from '@harlem/plugin-transaction';
-
-createApp(App)
-    .use(harlem, {
-        plugins: [
-            createTransactionPlugin()
-        ]
-    })
-    .mount('#app');
-```
-
-3. Define a transaction that utilises multiple mutations:
-```typescript
-import {
-    transaction
-} from '@harlem/plugin-transaction';
+import transactionExtension from '@harlem/extension-transaction';
 
 import {
-    setUserDetails,
-    setUserPermissions
-} from './mutations';
+    createStore
+} from '@harlem/core';
 
-import {
-    getUserDetails,
-    getUserPermissions
-} from './services';
+const STATE = {
+    firstName: 'Jane',
+    lastName: 'Smith'
+};
 
-/*
-The setUserPermissions has an error in it causing
-the transaction to fail in which case the user details
-mutation will be rolled back.
-*/
-const setUserData = transaction('setUserData', payload => {
-    const {
-        details,
-        permissions
-    } = payload;
-
-    setUserDetails(details);
-    setUserPermissions(permissions);
+const {
+    state,
+    getter,
+    mutation,
+    transaction,
+    onBeforeTransaction,
+    onAfterTransaction,
+    onTransactionSuccess,
+    onTransactionError,
+} = createStore('example', STATE, {
+    extensions: [
+        transactionExtension()
+    ]
 });
-
-/*
-Here is an example action that loads some data
-about a user and updates the store
-*/
-export async function loadUserData(userId) {
-    const [
-        details,
-        permissions
-    ] = await Promise.all([
-        getUserDetails(userId),
-        getUserPermissions(userId),
-    ]);
-
-    setUserData({
-        details,
-        permissions
-    });
-}
 ```
+
+The transaction extension adds several new methods to the store instance (highlighted above).
+
+
+## Usage
+
+### Defining a transaction
+A transaction can be defined the same way you define any other core functionality (eg. `getter`, `mutation` etc.).
+
+```typescript
+export default transaction('my-transaction', (payload, mutate) => {
+    /*
+    Any mutations run during this method
+    will be rolled back if an error occurs
+    */
+});
+```
+
+## Considerations
+- This extension comes with a performance cost. The entire state tree is cloned and stored before a transaction is run in order to rollback in the event of an error.
+- This extension does not protect against issues attempting to roll back state in async scenarios

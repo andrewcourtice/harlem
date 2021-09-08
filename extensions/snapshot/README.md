@@ -12,13 +12,10 @@ Follow the steps below to get started using the snapshot extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-snapshot`:
-```
-npm install @harlem/extension-snapshot
-```
-Or if you're using Yarn:
-```
+```bash
 yarn add @harlem/extension-snapshot
+# or
+npm install @harlem/extension-snapshot
 ```
 
 ### Registration

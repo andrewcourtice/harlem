@@ -1,4 +1,4 @@
-# Harlem Lazy Extension
+# Lazy Extension
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-lazy)
 
@@ -12,13 +12,10 @@ Follow the steps below to get started using the lazy extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-lazy`:
-```
-npm install @harlem/extension-lazy
-```
-Or if you're using Yarn:
-```
+```bash
 yarn add @harlem/extension-lazy
+# or
+npm install @harlem/extension-lazy
 ```
 
 ### Registration

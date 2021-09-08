@@ -1,4 +1,4 @@
-# Harlem History Extension
+# Harlem History Extension (Preview)
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-history)
 
@@ -12,14 +12,12 @@ Follow the steps below to get started using the history extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-history`:
-```
+```bash
+yarn add @harlem/extension-history
+# or
 npm install @harlem/extension-history
 ```
-Or if you're using Yarn:
-```
-yarn add @harlem/extension-history
-```
+
 
 ### Registration
 
@@ -58,7 +56,7 @@ const {
 });
 ```
 
-The history extension adds 2 new methods to the store instance: `undo` and `redo`.
+The history extension adds several new methods to the store instance (highlighted above).
 
 
 ## Usage

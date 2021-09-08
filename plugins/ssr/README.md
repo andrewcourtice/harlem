@@ -1,36 +1,24 @@
-<p align="center">
-    <a href="https://harlemjs.com">
-        <img src="https://raw.githubusercontent.com/andrewcourtice/harlem/main/docs/src/.vuepress/public/assets/images/logo-192.svg" alt="Harlem"/>
-    </a>
-</p>
-
-# Harlem SSR Plugin
+# Harlem Server-Side Rendering Plugin
 
 ![npm](https://img.shields.io/npm/v/@harlem/plugin-ssr)
 
 This is the official plugin for using Harlem in a Vue SSR application.
 
-<!-- TOC depthfrom:2 -->
-
-- [Getting started](#getting-started)
-- [Warning](#warning)
-
-<!-- /TOC -->
-
-## Getting started
+## Installation
 
 Before installing the ssr plugin make sure you have installed `@harlem/core`.
 
-1. Install `@harlem/plugin-ssr`:
-```
+```bash
+yarn add @harlem/plugin-ssr
+# or
 npm install @harlem/plugin-ssr
 ```
-Or if you're using Yarn:
-```
-yarn add @harlem/plugin-ssr
-```
 
-2. Create an instance of the plugin and register it with Harlem on the **server**:
+## Usage
+
+### Server
+
+Create an instance of the plugin and register it with Harlem on the **server**:
 ```typescript
 import App from './app.vue';
 
@@ -48,7 +36,7 @@ createSSRApp(App)
     });
 ```
 
-3. Generate the bridging script block and insert it into the server-rendered content:
+Generate the bridging script block and insert it into the server-rendered content:
 ```typescript
 import {
     renderToString
@@ -62,7 +50,9 @@ let output = await renderToString(app);
 output += getBridgingScriptBlock();
 ```
 
-4. Create an instance of the plugin and register it with Harlem on the **client**:
+### Client
+
+Create an instance of the plugin and register it with Harlem on the **client**:
 ```typescript
 import App from './app.vue';
 
