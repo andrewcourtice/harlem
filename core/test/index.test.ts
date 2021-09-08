@@ -1,6 +1,5 @@
 import {
     createStore,
-    MutationHookHandler,
 } from '../src/index';
 
 import {
@@ -173,44 +172,51 @@ describe('Harlem Core', () => {
 
     describe('Triggers', () => {
 
-        test('Should trigger on onBeforeMutation', () => {
+        test('Should run correctly for all valid hooks', () => {
             const {
-                setId,
+                mutation,
                 onBeforeMutation,
-            } = store;
-
-            const handler = jest.fn(({ result }) => {
-                expect(result).toBeUndefined();
-            }) as MutationHookHandler<any, any>;
-
-            const {
-                dispose,
-            } = onBeforeMutation('set-id', handler);
-
-            setId();
-
-            expect(handler).toHaveBeenCalled();
-            dispose();
-        });
-
-        test('Should trigger on onAfterMutation', () => {
-            const {
-                setId,
                 onAfterMutation,
+                onMutationSuccess,
+                onMutationError,
             } = store;
 
-            const handler = jest.fn(({ result }) => {
-                expect(result).not.toBeUndefined();
-            }) as MutationHookHandler<any, any>;
+            const name = 'test-mutation';
+            const beforeTrigger = jest.fn();
+            const afterTrigger = jest.fn();
+            const successTrigger = jest.fn();
+            const errorTrigger = jest.fn();
 
-            const {
-                dispose,
-            } = onAfterMutation('set-id', handler);
+            const testMutation = mutation(name, (state, throwError: boolean) => {
+                if (throwError) {
+                    throw new Error('failed');
+                }
+            });
 
-            setId();
+            const listeners = [
+                onBeforeMutation(name, beforeTrigger),
+                onAfterMutation(name, afterTrigger),
+                onMutationSuccess(name, successTrigger),
+                onMutationError(name, errorTrigger),
+            ];
 
-            expect(handler).toHaveBeenCalled();
-            dispose();
+            const run = (throwError: boolean) => {
+                try {
+                    testMutation(throwError);
+                } catch {
+                    // do nothing
+                }
+            };
+
+            run(true);
+            run(false);
+
+            expect(beforeTrigger).toHaveBeenCalledTimes(2);
+            expect(afterTrigger).toHaveBeenCalledTimes(2);
+            expect(errorTrigger).toHaveBeenCalledTimes(1);
+            expect(successTrigger).toHaveBeenCalledTimes(1);
+
+            listeners.forEach(({ dispose }) => dispose());
         });
 
         test('Should not fire if events are suppressed', () => {
