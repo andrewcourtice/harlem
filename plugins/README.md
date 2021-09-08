@@ -4,11 +4,12 @@ At it's heart, Harlem uses a plugin system to extend functionality and create po
 
 <!-- TOC -->
 
-- [Official plugins](#official-plugins)
-- [Writing your own plugin](#writing-your-own-plugin)
-    - [Basic example](#basic-example)
-    - [Providing options](#providing-options)
-    - [Publishing your plugin](#publishing-your-plugin)
+- [Harlem Plugins](#harlem-plugins)
+    - [Official plugins](#official-plugins)
+    - [Writing your own plugin](#writing-your-own-plugin)
+        - [Basic example](#basic-example)
+        - [Providing options](#providing-options)
+        - [Publishing your plugin](#publishing-your-plugin)
 
 <!-- /TOC -->
 
@@ -16,11 +17,7 @@ At it's heart, Harlem uses a plugin system to extend functionality and create po
 Here is a list of officially support Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
 
 - [Devtools](devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
-- [Reset](reset) (`@harlem/plugin-reset`) - The reset plugin provides an API to reset stores to their initial state.
-- [Snapshot](snapshot) (`@harlem/plugin-snapshot`) - The snapshot plugin provides an API to snapshot a store's state at a given point and apply it when convenient.
 - [SSR](ssr) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
-- [Storage](storage) (`@harlem/plugin-storage`) - The storage plugin provides simple local/session storage synchronisation with your state. This plugin relieves the burden of having to manually save your state to a web storage resource.
-- [Transactions](transaction) (`@harlem/plugin-transaction`) - The transaction plugin provides an API for defining transactions that run multiple mutations. A transaction can safely rollback mutations in the event of an error.
 
 If you require functionality to suit a specific use-case you can write your own plugin. See [Writing your own plugin](#writing-your-own-plugin) below.
 

@@ -1,4 +1,4 @@
-# History Extension
+# History Extension (Preview)
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-history)
 
@@ -12,14 +12,23 @@ Follow the steps below to get started using the history extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-history`:
-```
-npm install @harlem/extension-history
-```
-Or if you're using Yarn:
-```
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/extension-history
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/extension-history
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ### Registration
 

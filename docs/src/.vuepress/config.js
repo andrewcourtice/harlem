@@ -72,6 +72,8 @@ module.exports = {
                         '/extensibility/extensions/reset',
                         '/extensibility/extensions/snapshot',
                         '/extensibility/extensions/storage',
+                        '/extensibility/extensions/trace',
+                        '/extensibility/extensions/transaction',
                     ]
                 },
                 {

@@ -12,14 +12,23 @@ Follow the steps below to get started using the lazy extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-lazy`:
-```
-npm install @harlem/extension-lazy
-```
-Or if you're using Yarn:
-```
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/extension-lazy
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/extension-lazy
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ### Registration
 

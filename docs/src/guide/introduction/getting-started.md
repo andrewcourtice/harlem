@@ -5,13 +5,24 @@ Getting started with Harlem is easy. Just follow the steps below and you'll be u
 ## Installation
 
 Install `@harlem/core` and any plugins you wish to include (I recommend installing `@harlem/plugin-devtools` during development):
-```
-npm install @harlem/core
-```
-Or if you're using Yarn:
-```
+
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/core
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/core
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ## Register the Harlem plugin
 

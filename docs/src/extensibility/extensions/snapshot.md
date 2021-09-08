@@ -12,14 +12,23 @@ Follow the steps below to get started using the snapshot extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-snapshot`:
-```
-npm install @harlem/extension-snapshot
-```
-Or if you're using Yarn:
-```
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/extension-snapshot
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/extension-snapshot
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ### Registration
 

@@ -12,14 +12,23 @@ This is the official Harlem devtools plugin for adding Vue devtools integration 
 
 Before installing the devtools plugin make sure you installed `@harlem/core`.
 
-Install `@harlem/plugin-devtools`:
-```
-npm install @harlem/plugin-devtools
-```
-Or if you're using Yarn:
-```
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/plugin-devtools
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/plugin-devtools
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ## Usage
 
@@ -28,15 +37,15 @@ Create an instance of the plugin and register it with Harlem:
 import App from './app.vue';
 
 import harlem from '@harlem/core';
-import createDevtoolsPlugin from '@harlem/plugin-devtools';
-
-const devtoolsPlugin = createDevtoolsPlugin({
-    label: 'My State'
-});
+import devtoolsPlugin from '@harlem/plugin-devtools';
 
 createApp(App)
     .use(harlem, {
-        plugins: [devtoolsPlugin]
+        plugins: [
+            devtoolsPlugin({
+                label: 'My State'
+            })
+        ]
     })
     .mount('#app');
 ```

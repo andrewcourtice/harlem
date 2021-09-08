@@ -16,20 +16,29 @@ Follow the steps below to get started using the action extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-action`:
-```
-npm install @harlem/extension-action
-```
-Or if you're using Yarn:
-```
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/extension-action
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/extension-action
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ### Registration
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-22,25}
+```typescript{16-26,29}
 import actionExtension from '@harlem/extension-action';
 
 import {
@@ -52,6 +61,10 @@ const {
     getActionErrors,
     whenActionIdle,
     resetActionState,
+    onBeforeAction,
+    onAfterAction,
+    onActionSuccess,
+    onActionError,
 } = createStore('example', STATE, {
     extensions: [
         actionExtension()
@@ -213,3 +226,7 @@ const errors = getActionErrors('load-user-data');
 ```
 
 The list of errors is an array of objects with an **id**: `symbol` property and a **error**: `unknown` property. The id is the unique identifier for the instance this error occurred on.
+
+
+### Using triggers
+Action triggers are used the same way mutation triggers are with the only difference being using the action name as opposed to the mutation name. See the [triggers documentation](/guide/core-concepts/triggers) for more details.

@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-storage)
 
-This is the official storage extension for Harlem. The storage extension adds the ability to storage a store's state at a particular point in time and reapply it later. 
+This is the official storage extension for Harlem. The storage extension adds the ability to sync store state to/from `localStorage` or `sessionStorage`.
 
 ## Getting Started
 
@@ -12,14 +12,23 @@ Follow the steps below to get started using the storage extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-Install `@harlem/extension-storage`:
-```
-npm install @harlem/extension-storage
-```
-Or if you're using Yarn:
-```
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
 yarn add @harlem/extension-storage
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/extension-storage
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ### Registration
 

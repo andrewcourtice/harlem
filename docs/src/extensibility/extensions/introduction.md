@@ -10,7 +10,7 @@ Feel free to choose from some of the official extensions or write your own. See 
 Here is a list of officially supported Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
 
 - [Action](action.html) (`@harlem/extension-action`) - Extends a store to support cancellable async actions.
-- [History](history.html) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
+- [History (Preview)](history.html) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
 - [Lazy](lazy.html) (`@harlem/extension-lazy`) - Extends a store to support lazy async getters.
 - [Reset](reset.html) (`@harlem/extension-reset`) - Extends a store to support resetting a store back to it's original state.
 - [Snapshot](snapshot.html) (`@harlem/extension-snapshot`) - Extends a store to support taking snapshots of state and applying it at a later stage.
