@@ -210,4 +210,47 @@ describe('Actions Extension', () => {
         expect(hasActionRun(loadUserInfoName)).toBe(false);
     });
 
+    test('Handles triggers', async () => {
+        const {
+            action,
+            onBeforeAction,
+            onAfterAction,
+            onActionSuccess,
+            onActionError,
+        } = instance.store;
+
+        const name = 'test-action';
+        const beforeTrigger = jest.fn();
+        const afterTrigger = jest.fn();
+        const successTrigger = jest.fn();
+        const errorTrigger = jest.fn();
+
+        const testAction = action(name, async (throwError?: boolean) => {
+            if (throwError) {
+                throw new Error('failed');
+            }
+        });
+
+        const listeners = [
+            onBeforeAction(name, beforeTrigger),
+            onAfterAction(name, afterTrigger),
+            onActionSuccess(name, successTrigger),
+            onActionError(name, errorTrigger),
+        ];
+
+        const run = (throwError?: boolean) => testAction(throwError).catch(() => {});
+
+        await Promise.all([
+            run(false),
+            run(true),
+        ]);
+
+        expect(beforeTrigger).toHaveBeenCalledTimes(2);
+        expect(afterTrigger).toHaveBeenCalledTimes(2);
+        expect(errorTrigger).toHaveBeenCalledTimes(1);
+        expect(successTrigger).toHaveBeenCalledTimes(1);
+
+        listeners.forEach(({ dispose }) => dispose());
+    });
+
 });
