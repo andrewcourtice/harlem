@@ -34,7 +34,7 @@ npm install @harlem/extension-trace
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-18,21-23}
+```typescript{16-18,21-24}
 import traceExtension from '@harlem/extension-trace';
 
 import {
@@ -56,7 +56,8 @@ const {
 } = createStore('example', STATE, {
     extensions: [
         traceExtension({
-            autoStart: true
+            autoStart: true,
+            debug: true,
         })
     ]
 });
@@ -69,7 +70,8 @@ The trace extension adds several new methods to the store instance (highlighted 
 
 ### Options
 The storage extension method accepts an options object with the following properties:
-- **autoStart**: `boolean` - Indicates whether to start tracing automatically after the store is created. Default value is `true`.
+- **autoStart**: `boolean` - Indicates whether to start tracing automatically after the store is created. Default value is `false`.
+- **debug**: `boolean` - Enables debug mode. This logs all trace results to the console. Default value is `false`.
 
 
 ### Manually starting/stopping tracing
