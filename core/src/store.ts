@@ -195,6 +195,8 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             const providedPayload = this.providers.payload(payload) ?? payload;
 
             result = mutator(providedState, providedPayload);
+
+            emitComplete(EVENTS.mutation.success);
         } catch (error) {
             this.emit(EVENTS.mutation.error, sender, eventData);
             throw error;
@@ -202,8 +204,6 @@ export default class Store<TState extends BaseState = any> implements InternalSt
             this.stack.delete(name);
             emitComplete(EVENTS.mutation.after);
         }
-
-        emitComplete(EVENTS.mutation.success);
 
         return result;
     }

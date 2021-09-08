@@ -18,7 +18,7 @@ export type Mutator<TState extends BaseState, TPayload, TResult = void> = (state
 export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
 export type InternalStores = Map<string, InternalStore<any>>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
-export type MutationHookHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void;
+export type MutationTriggerHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
 export type ExtendedStore<TExtensions extends Extension<any>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
 
@@ -245,7 +245,7 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      * @param mutationName - The name(s) of the mutation(s) to listen to
      * @param handler - The handler that will be called when this event is triggered
      */
-    onBeforeMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onBeforeMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
 
     /**
      * A convenience method to register triggers for after mutation events
@@ -253,7 +253,7 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      * @param mutationName - The name(s) of the mutation(s) to listen to
      * @param handler - The handler that will be called when this event is triggered
      */
-    onAfterMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onAfterMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
 
     /**
      * A convenience method to register triggers for mutation success events
@@ -261,7 +261,7 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      * @param mutationName - The name(s) of the mutation(s) to listen to
      * @param handler - The handler that will be called when this event is triggered
      */
-    onMutationSuccess<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onMutationSuccess<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
 
     /**
      * A convenience method to register triggers for mutation error events
@@ -269,7 +269,7 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      * @param mutationName - The name(s) of the mutation(s) to listen to
      * @param handler - The handler that will be called when this event is triggered
      */
-    onMutationError<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>): EventListener;
+    onMutationError<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
 }
 
 export interface HarlemPlugin {

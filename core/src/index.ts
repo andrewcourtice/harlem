@@ -24,7 +24,7 @@ import type {
     HarlemPlugin,
     InternalStores,
     MutationEventData,
-    MutationHookHandler,
+    MutationTriggerHandler,
     PluginOptions,
     Store,
     StoreOptions,
@@ -133,20 +133,22 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         store.emit(EVENTS.devtools.update, SENDER, state);
     };
 
-    const getMutationHook = (eventName: string) => {
-        return <TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationHookHandler<TPayload, TResult>) => {
+    const getMutationTrigger = (eventName: string) => {
+        return <TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>) => {
+            const mutations = ([] as string[]).concat(mutationName);
+
             return store.on(eventName, (event?: EventPayload<MutationEventData<TPayload, TResult>>) => {
-                if (event && ([] as string[]).concat(mutationName).includes(event.data.mutation)) {
+                if (event && mutations.includes(event.data.mutation)) {
                     handler(event.data);
                 }
             });
         };
     };
 
-    const onBeforeMutation = getMutationHook(EVENTS.mutation.before);
-    const onAfterMutation = getMutationHook(EVENTS.mutation.after);
-    const onMutationSuccess = getMutationHook(EVENTS.mutation.success);
-    const onMutationError = getMutationHook(EVENTS.mutation.error);
+    const onBeforeMutation = getMutationTrigger(EVENTS.mutation.before);
+    const onAfterMutation = getMutationTrigger(EVENTS.mutation.after);
+    const onMutationSuccess = getMutationTrigger(EVENTS.mutation.success);
+    const onMutationError = getMutationTrigger(EVENTS.mutation.error);
 
     const extendedStore = getExtendedStore<TState, TExtensions>(store, extensions);
 
