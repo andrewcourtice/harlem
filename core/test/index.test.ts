@@ -1,4 +1,8 @@
 import {
+    EventEmitter,
+} from '../src/event-emitter';
+
+import {
     createStore,
 } from '../src/index';
 
@@ -59,6 +63,31 @@ describe('Harlem Core', () => {
         store = getStore();
     });
 
+    describe('Event Emitter', () => {
+
+        test('Should handle on, once and emit', () => {
+            const eventEmitter = new EventEmitter();
+
+            const eventName = 'test-event';
+            const onListener = jest.fn();
+            const onceListener = jest.fn();
+
+            const listeners = [
+                eventEmitter.on(eventName, onListener),
+                eventEmitter.once(eventName, onceListener),
+            ];
+
+            eventEmitter.emit(eventName);
+            eventEmitter.emit(eventName);
+
+            expect(onListener).toHaveBeenCalledTimes(2);
+            expect(onceListener).toHaveBeenCalledTimes(1);
+
+            listeners.forEach(({ dispose }) => dispose());
+        });
+
+    });
+
     describe('Store', () => {
 
         test('Should prevent duplicate creation of store objects', () => {
@@ -107,7 +136,7 @@ describe('Harlem Core', () => {
                 state,
             } = store;
 
-            // @ts-expect-error
+            // @ts-expect-error This is readonly
             state.firstName = 'Billy';
 
             expect(state.firstName).toBe('John');
