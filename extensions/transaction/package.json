@@ -38,11 +38,11 @@
         "build": "tsup",
         "prepublish": "yarn build"
     },
+    "dependencies": {
+        "@harlem/extension-snapshot": "^2.0.0-beta.9"
+    },
     "peerDependencies": {
         "@harlem/core": "^2.0.0-alpha.0"
-    },
-    "dependencies": {
-        "@harlem/utilities": "^2.0.0-beta.9"
     },
     "devDependencies": {
         "@harlem/core": "^2.0.0-beta.9"

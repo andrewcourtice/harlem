@@ -1,59 +1,88 @@
+import snapshotExtension from '@harlem/extension-snapshot';
+
 import {
     SENDER,
     EVENTS,
 } from './constants';
 
 import {
-    clone,
-    overwrite,
-} from '@harlem/utilities';
-
-import {
     BaseState,
+    EventPayload,
     InternalStore,
-    ReadState,
+    Mutator,
 } from '@harlem/core';
 
 import type {
     Transactor,
     Transaction,
     TransactionEventData,
+    TransactionHookHandler,
 } from './types';
 
 export * from './types';
 
 export default function transactionExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
-        function rollback(snapshot: ReadState<TState>) {
-            store.write('$transaction-rollback', SENDER, state => overwrite(state, snapshot));
-        }
+        const {
+            snapshot,
+        } = snapshotExtension({
+            mutationName: '$transaction-rollback',
+        })(store);
 
-        function transaction<TPayload>(name: string, transactor: Transactor<TPayload>): Transaction<TPayload> {
-            return payload => {
-                const snapshot = clone(store.state) as ReadState<TState>;
 
-                const eventData = {
-                    payload,
+        function transaction<TPayload>(name: string, transactor: Transactor<TState, TPayload>): Transaction<TPayload> {
+            const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, SENDER, mutator);
+
+            return ((payload: TPayload) => {
+                const snap = snapshot();
+                const providedPayload = store.providers.payload(payload) ?? payload;
+
+                const emit = (event: string) => store.emit(event, SENDER, {
                     transaction: name,
-                } as TransactionEventData;
+                    payload: providedPayload,
+                } as TransactionEventData);
 
-                store.emit(EVENTS.transaction.before, SENDER, eventData);
+                emit(EVENTS.transaction.before);
 
                 try {
-                    transactor(payload!);
+                    const providedPayload = store.providers.payload(payload) ?? payload;
+
+                    transactor(providedPayload, mutate);
+                    emit(EVENTS.transaction.success);
                 } catch (error) {
-                    rollback(snapshot);
-                    store.emit(EVENTS.transaction.error, SENDER, eventData);
+                    snap.apply();
+                    emit(EVENTS.transaction.error);
 
                     throw error;
+                } finally {
+                    emit(EVENTS.transaction.after);
                 }
+            }) as Transaction<TPayload>;
+        }
 
-                store.emit(EVENTS.transaction.after, SENDER, eventData);
+        function getTransactionTrigger(eventName: string) {
+            return <TPayload = any>(actionName: string | string[], handler: TransactionHookHandler<TPayload>) => {
+                const transactions = ([] as string[]).concat(actionName);
+
+                return store.on(eventName, (event?: EventPayload<TransactionEventData>) => {
+                    if (event && transactions.includes(event.data.transaction)) {
+                        handler(event.data);
+                    }
+                });
             };
         }
 
+        const onBeforeTransaction = getTransactionTrigger(EVENTS.transaction.before);
+        const onAfterTransaction = getTransactionTrigger(EVENTS.transaction.after);
+        const onTransactionSuccess = getTransactionTrigger(EVENTS.transaction.success);
+        const onTransactionError = getTransactionTrigger(EVENTS.transaction.error);
+
         return {
             transaction,
+            onBeforeTransaction,
+            onAfterTransaction,
+            onTransactionSuccess,
+            onTransactionError,
         };
     };
 }
