@@ -90,11 +90,6 @@ export default function actionsExtension<TState extends BaseState>() {
             };
 
             const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
-            const emit = (event: string, payload: unknown, result?: unknown) => _store.emit(event, SENDER, {
-                action: name,
-                payload,
-                result,
-            } as ActionEventData);
 
             return ((payload: TPayload, controller?: AbortController) => {
                 if (!parallel && tasks.size > 0) {
@@ -110,23 +105,28 @@ export default function actionsExtension<TState extends BaseState>() {
 
                 const task = new Task<TResult>(async (resolve, reject, controller, onAbort) => {
                     const id = Symbol(name);
+                    const providedPayload = _store.providers.payload(payload) ?? payload;
 
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
                     const fail = () => reject(new ActionAbortError(name, id));
 
                     let result: TResult | undefined;
 
+                    const emit = (event: string) => _store.emit(event, SENDER, {
+                        action: name,
+                        payload: providedPayload,
+                        result,
+                    } as ActionEventData);
+
                     onAbort(() => (complete(), fail()));
                     addInstance(name, id, payload);
 
-                    emit(EVENTS.action.before, payload);
+                    emit(EVENTS.action.before);
 
                     try {
-                        const providedPayload = _store.providers.payload(payload) ?? payload;
-
                         result = await body(providedPayload, mutate, controller, onAbort);
 
-                        emit(EVENTS.action.success, payload, result);
+                        emit(EVENTS.action.success);
                         incrementRunCount(name);
                         resolve(result);
                     } catch (error) {
@@ -134,13 +134,13 @@ export default function actionsExtension<TState extends BaseState>() {
                             return fail(); // Fetch has been cancelled
                         }
 
-                        emit(EVENTS.action.error, payload);
+                        emit(EVENTS.action.error);
 
                         incrementRunCount(name);
                         addError(name, id, error);
                         reject(error);
                     } finally {
-                        emit(EVENTS.action.after, payload, result);
+                        emit(EVENTS.action.after);
                         complete();
                     }
                 }, controller);
@@ -151,7 +151,7 @@ export default function actionsExtension<TState extends BaseState>() {
             }) as Action<TPayload, TResult>;
         }
 
-        function getActionHook(eventName: string) {
+        function getActionTrigger(eventName: string) {
             return <TPayload = any, TResult = any>(actionName: string | string[], handler: ActionHookHandler<TPayload, TResult>) => {
                 const actions = ([] as string[]).concat(actionName);
 
@@ -222,10 +222,10 @@ export default function actionsExtension<TState extends BaseState>() {
             }));
         }
 
-        const onBeforeAction = getActionHook(EVENTS.action.before);
-        const onAfterAction = getActionHook(EVENTS.action.after);
-        const onActionSuccess = getActionHook(EVENTS.action.success);
-        const onActionError = getActionHook(EVENTS.action.error);
+        const onBeforeAction = getActionTrigger(EVENTS.action.before);
+        const onAfterAction = getActionTrigger(EVENTS.action.after);
+        const onActionSuccess = getActionTrigger(EVENTS.action.success);
+        const onActionError = getActionTrigger(EVENTS.action.error);
 
         return {
             action,
