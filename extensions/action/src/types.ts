@@ -19,7 +19,7 @@ export interface ActionTaskState {
 }
 
 export interface ActionStoreState {
-    $actions: Record<string, ActionTaskState>;
+    '$harlem:actions': Record<string, ActionTaskState>;
 }
 
 export interface ActionOptions {

@@ -1,8 +1,8 @@
-import overwrite from '../src/object/overwrite';
+import overwrite from '../../src/object/overwrite';
 
 describe('Utilities', () => {
 
-    describe('Overwrite', () => {
+    describe('Object Overwrite', () => {
 
         test('Should overwrite an objects properties with anothers', () => {
             const source = {

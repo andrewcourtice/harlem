@@ -3,6 +3,7 @@ import Task from '@harlem/task';
 import {
     SENDER,
     EVENTS,
+    STATE_PROP,
 } from './constants';
 
 import {
@@ -40,10 +41,10 @@ export default function actionsExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
-        _store.write('$action-init', SENDER, state => state.$actions = {}, true);
+        _store.write('$action-init', SENDER, state => state[STATE_PROP] = {}, true);
 
         function setActionState(state: TState & ActionStoreState, name: string) {
-            state.$actions[name] = {
+            state[STATE_PROP][name] = {
                 runCount: 0,
                 instances: new Map(),
                 errors: new Map(),
@@ -56,23 +57,23 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function incrementRunCount(name: string) {
-            _store.write('$action-increment-run-count', SENDER, state => state.$actions[name].runCount += 1);
+            _store.write('$action-increment-run-count', SENDER, state => state[STATE_PROP][name].runCount += 1);
         }
 
         function addInstance(name: string, instanceId: symbol, payload: unknown) {
-            _store.write('$action-add-instance', SENDER, state => state.$actions[name]?.instances.set(instanceId, payload));
+            _store.write('$action-add-instance', SENDER, state => state[STATE_PROP][name]?.instances.set(instanceId, payload));
         }
 
         function removeInstance(name: string, instanceId: symbol) {
-            _store.write('$action-remove-instance', SENDER, state => state.$actions[name]?.instances.delete(instanceId));
+            _store.write('$action-remove-instance', SENDER, state => state[STATE_PROP][name]?.instances.delete(instanceId));
         }
 
         function addError(name: string, instanceId: symbol, error: unknown) {
-            _store.write('$action-add-error', SENDER, state => state.$actions[name]?.errors.set(instanceId, error));
+            _store.write('$action-add-error', SENDER, state => state[STATE_PROP][name]?.errors.set(instanceId, error));
         }
 
         function clearErrors(name: string) {
-            _store.write('$action-clear-errors', SENDER, state => state.$actions[name]?.errors.clear());
+            _store.write('$action-clear-errors', SENDER, state => state[STATE_PROP][name]?.errors.clear());
         }
 
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
@@ -165,13 +166,13 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function hasActionRun(name: string) {
-            return _store.state.$actions[name].runCount > 0;
+            return _store.state[STATE_PROP][name].runCount > 0;
         }
 
         function isActionRunning<TPayload = unknown>(name: string, predicate?: ActionPredicate<TPayload>) {
             const {
                 instances,
-            } = _store.state.$actions[name];
+            } = _store.state[STATE_PROP][name];
 
             const payloads = Array.from(instances.values());
 
@@ -201,12 +202,12 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function hasActionFailed(name: string) {
-            return _store.state.$actions[name]?.errors.size > 0;
+            return _store.state[STATE_PROP][name]?.errors.size > 0;
         }
 
         function getActionErrors(name: string) {
             return Array
-                .from(_store.state.$actions[name]?.errors.entries())
+                .from(_store.state[STATE_PROP][name]?.errors.entries())
                 .map(([id, error]) => ({
                     id,
                     error,
@@ -214,10 +215,10 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function resetActionState(name?: string | string[]) {
-            const names = ([] as string[]).concat(name || Object.keys(_store.state.$actions));
+            const names = ([] as string[]).concat(name || Object.keys(_store.state[STATE_PROP]));
 
             _store.write('$action-reset-state', SENDER, state => names.forEach(name => {
-                if (name in state.$actions) {
+                if (name in state[STATE_PROP]) {
                     setActionState(state, name);
                 }
             }));

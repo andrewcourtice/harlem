@@ -1,4 +1,8 @@
 import {
+    INTERNAL,
+} from '@harlem/core';
+
+import {
     getStore,
     bootstrap,
 } from '@harlem/testing';
@@ -11,12 +15,14 @@ describe('Reset Extension', () => {
         extensions: [
             resetExtension(),
             store => {
+                const key = `${INTERNAL.prefix}test`;
                 const value = 'value';
 
                 // @ts-ignore
-                store.write('$test', 'test', state => state.$internal = value);
+                store.write('$test', 'test', state => state[key] = value);
 
                 return {
+                    key,
                     value,
                 };
             },
@@ -104,7 +110,7 @@ describe('Reset Extension', () => {
         store.reset();
 
         // @ts-ignore
-        expect(store.state.$internal).toBe(store.value);
+        expect(store.state[store.key]).toBe(store.value);
         expect(store.state.id).toBe(0);
         expect(store.state.details.firstName).toBe('');
         expect(store.state.details.lastName).toBe('');

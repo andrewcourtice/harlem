@@ -8,7 +8,12 @@ import {
     EventPayload,
     InternalStore,
     MutationEventData,
+    INTERNAL,
 } from '@harlem/core';
+
+import {
+    omit,
+} from '@harlem/utilities';
 
 import type {
     Options,
@@ -45,7 +50,8 @@ export default function storageExtension<TState extends BaseState>(options?: Par
             }
 
             try {
-                storage.setItem(storageKey, serialiser(store.state));
+                const state = omit(store.state, INTERNAL.pattern);
+                storage.setItem(storageKey, serialiser(state));
             } catch {
                 console.warn('Failed to write to storage');
             }

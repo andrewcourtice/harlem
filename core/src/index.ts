@@ -32,6 +32,7 @@ import type {
 
 export {
     EVENTS,
+    INTERNAL,
 } from './constants';
 
 export * from './types';

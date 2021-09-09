@@ -32,3 +32,8 @@ export const PROVIDERS = {
     write: value => value,
     payload: value => clone(value),
 } as StoreProviders<any>;
+
+export const INTERNAL = {
+    prefix: '$harlem:',
+    pattern: /^\$harlem:/,
+} as const;

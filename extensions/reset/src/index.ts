@@ -7,7 +7,8 @@ import {
     overwrite,
 } from '@harlem/utilities';
 
-import type {
+import {
+    INTERNAL,
     InternalStore,
     BaseState,
 } from '@harlem/core';
@@ -27,7 +28,7 @@ export default function resetExtension<TState extends BaseState>() {
                 const source = branchCallback(snapshot);
                 const target = branchCallback(state);
 
-                overwrite(target, source, /^\$/);
+                overwrite(target, source, INTERNAL.pattern);
             });
         }
 

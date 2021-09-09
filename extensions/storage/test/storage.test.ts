@@ -1,7 +1,6 @@
 import {
     bootstrap,
     getStore,
-    jsonClone,
 } from '@harlem/testing';
 
 import storageExtension from '../src';

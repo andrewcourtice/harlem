@@ -1,4 +1,4 @@
-import clone from '../src/object/clone';
+import clone from '../../src/object/clone';
 
 import {
     isReactive,
@@ -46,7 +46,7 @@ function getComplexTypes(): Record<string, unknown> {
 
 describe('Utilities', () => {
 
-    describe('Clone', () => {
+    describe('Object Clone', () => {
 
         test('Should deep clone an object with simple types', () => {
             const source = getSimpleTypes();

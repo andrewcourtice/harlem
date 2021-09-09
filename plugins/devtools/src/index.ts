@@ -7,7 +7,12 @@ import {
 
 import {
     EVENTS,
+    INTERNAL,
 } from '@harlem/core';
+
+import {
+    omit,
+} from '@harlem/utilities';
 
 import {
     PluginDescriptor,
@@ -84,7 +89,7 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
         state: [
             {
                 key: store.name,
-                value: store.state,
+                value: omit(store.state, INTERNAL.pattern),
                 editable: true,
                 objectType: 'reactive',
             },
