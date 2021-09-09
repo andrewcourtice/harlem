@@ -116,13 +116,11 @@ Harlem supports using stores in an SSR application via the [SSR plugin](/extensi
 ## Getting started
 Getting started is simple:
 
-1. Install `@harlem/core` and any plugins you wish to include (it is recommended to install `@harlem/plugin-devtools` during development):
-```
-npm install @harlem/core
-```
-Or if you're using Yarn:
-```
+1. Install `@harlem/core` and any extensions/plugins you wish to include (it is recommended to install `@harlem/plugin-devtools` during development):
+```bash
 yarn add @harlem/core
+# or
+npm install @harlem/core
 ```
 
 2. Register the Harlem plugin with your Vue app instance:
@@ -153,11 +151,9 @@ const {
 } = createStore('user', STATE);
 
 export const state = store.state;
-
 export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
-
-export const setFirstName = mutation('setFirstName', (state, firstName) => state.firstName = firstName);
-export const setFirstName = mutation('setLastName', (state, lastName) => state.lastName = lastName);
+export const setFirstName = mutation('set-first-name', (state, payload) => state.firstName = payload);
+export const setLastName = mutation('set-last-name', (state, payload) => state.lastName = payload);
 ```
 
 4. Use your store in your app:
@@ -263,10 +259,10 @@ const {
 } = createStore('user', STATE);
 
 // This mutation takes a string payload and updates the name field
-export const setName = mutation<string>('setName', (state, name) => state.name = name);
+export const setName = mutation<string>('set-name', (state, name) => state.name = name);
 
 // This mutation takes a string payload, adds a trait to the list and returns it's id
-export const addTrait = mutation<string, symbol>('addTrait', (state, payload) => {
+export const addTrait = mutation<string, symbol>('add-trait', (state, payload) => {
     const traitId = Symbol(payload);
 
     state.traits.push({
@@ -335,7 +331,7 @@ Extensions are per-store additions to Harlem's core functionaility. Extensions a
 The official extensions include:
 
 - [Action](extensions/action) (`@harlem/extension-action`) - Extends a store to support cancellable async actions.
-- [History](extensions/history) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
+- [History (preview)](extensions/history) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
 - [Lazy](extensions/lazy) (`@harlem/extension-lazy`) - Extends a store to support lazy async getters.
 - [Reset](extensions/reset) (`@harlem/extension-reset`) - Extends a store to support resetting a store back to it's original state.
 - [Snapshot](extensions/snapshot) (`@harlem/extension-snapshot`) - Extends a store to support taking snapshots of state and applying it at a later stage.
@@ -367,13 +363,13 @@ Certainly - just import the state or getter from one store into the getter you a
 ```typescript
 import {
     state as otherState
-} from '../other-store;
+} from '../other-store';
 
 import {
     getter
 } from './store';
 
-export const myNumberGetter = getter('myNumber', state => state.myNumber +  otherState.otherNumber);
+export const myNumberGetter = getter('my-number', state => state.myNumber +  otherState.otherNumber);
 ```
 
 This also works for importing getters from other stores. Just remember that to access the value of a getter you will need to use the `.value` property of the getter. For example, if I had a getter name `myGetter` and I wanted to use it in another getter I would have to use `myGetter.value` to access it's raw value. 
@@ -456,7 +452,9 @@ export const {
 ```typescript
 // index.js - single file structure
 
-export { state } from './store';
+export {
+    state
+} from './store';
 
 export {
     getter1,
@@ -472,7 +470,9 @@ export {
 ```typescript
 // index.js - multi-file structure
 
-export { state } from './store';
+export {
+    state
+} from './store';
 
 export { default as getter1 } from './getters/getter-1';
 export { default as getter2 } from './getters/getter-2';
