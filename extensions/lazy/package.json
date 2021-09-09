@@ -39,7 +39,7 @@
         "prepublish": "yarn build"
     },
     "peerDependencies": {
-        "@harlem/core": "^2.0.0-alpha.0",
+        "@harlem/core": "^2.0.0",
         "vue": "^3.2.0"
     },
     "devDependencies": {
