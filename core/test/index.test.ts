@@ -1,25 +1,32 @@
 import {
+    EventEmitter,
+} from '../src/event-emitter';
+
+import {
     createStore,
-    MutationHookHandler
 } from '../src/index';
+
+import {
+    isRef,
+    ref,
+} from 'vue';
 
 function getStore() {
     const {
         state,
         getter,
         mutation,
-        onBeforeMutation,
-        onAfterMutation
+        ...store
     } = createStore('main', {
         id: 0,
         firstName: 'John',
-        lastName: 'Smith'
+        lastName: 'Smith',
     }, {
-        allowOverwrite: false
+        allowOverwrite: false,
     });
 
     const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
-    
+
     const setId = mutation<undefined, number>('set-id', state => {
         const id = Math.round(Math.random() * 100000);
 
@@ -35,14 +42,6 @@ function getStore() {
         state.lastName = payload;
     });
 
-    const circularParent = mutation('circular-parent', state => {
-        circularChild();
-    });
-
-    const circularChild = mutation('circular-child', state => {
-        circularParent();
-    });
-
     return {
         state,
         getter,
@@ -51,55 +50,95 @@ function getStore() {
         setId,
         setFirstName,
         setLastName,
-        circularParent,
-        circularChild,
-        onBeforeMutation,
-        onAfterMutation
+        ...store,
     };
 }
 
 describe('Harlem Core', () => {
 
-    const {
-        state,
-        getter,
-        mutation,
-        fullName,
-        setId,
-        setFirstName,
-        setLastName,
-        circularParent,
-        onBeforeMutation,
-        onAfterMutation
-    } = getStore();
+    let store = getStore();
+
+    afterEach(() => {
+        store?.destroy();
+        store = getStore();
+    });
+
+    describe('Event Emitter', () => {
+
+        test('Should handle on, once and emit', () => {
+            const eventEmitter = new EventEmitter();
+
+            const eventName = 'test-event';
+            const onListener = jest.fn();
+            const onceListener = jest.fn();
+
+            const listeners = [
+                eventEmitter.on(eventName, onListener),
+                eventEmitter.once(eventName, onceListener),
+            ];
+
+            eventEmitter.emit(eventName);
+            eventEmitter.emit(eventName);
+
+            expect(onListener).toHaveBeenCalledTimes(2);
+            expect(onceListener).toHaveBeenCalledTimes(1);
+
+            listeners.forEach(({ dispose }) => dispose());
+        });
+
+    });
 
     describe('Store', () => {
 
         test('Should prevent duplicate creation of store objects', () => {
+            const {
+                getter,
+                mutation,
+            } = store;
+
             const duplicates = [
                 () => createStore('main', {}),
                 () => getter('fullname', () => {}),
-                () => mutation('set-firstname', () => {})
+                () => mutation('set-firstname', () => {}),
             ];
-    
+
             duplicates.forEach(invokee => {
                 expect(() => invokee()).toThrow();
             });
         });
 
+        test('Should prevent changes after being destroyed', () => {
+            const {
+                setId,
+                destroy,
+            } = store;
+
+            destroy();
+
+            expect(() => setId()).toThrow();
+        });
+
     });
 
     describe('State', () => {
-        
+
         test('Should be populated', () => {
+            const {
+                state,
+            } = store;
+
             expect(state).toHaveProperty('firstName');
             expect(state).toHaveProperty('lastName');
         });
-    
+
         test('Should be readonly', () => {
-            // @ts-expect-error
+            const {
+                state,
+            } = store;
+
+            // @ts-expect-error This is readonly
             state.firstName = 'Billy';
-    
+
             expect(state.firstName).toBe('John');
         });
 
@@ -108,6 +147,10 @@ describe('Harlem Core', () => {
     describe('Getters', () => {
 
         test('Should be populated', () => {
+            const {
+                fullName,
+            } = store;
+
             expect(fullName.value).toBe('John Smith');
         });
 
@@ -116,14 +159,24 @@ describe('Harlem Core', () => {
     describe('Mutations', () => {
 
         test('Should correctly mutate state', () => {
+            const {
+                state,
+                setFirstName,
+                setLastName,
+            } = store;
+
             setFirstName('Jane');
             setLastName('Doe');
-    
+
             expect(state.firstName).toBe('Jane');
             expect(state.lastName).toBe('Doe');
         });
 
         test('Should return a result from a mutation', () => {
+            const {
+                setId,
+            } = store;
+
             const id = setId();
 
             expect(id).toBeDefined();
@@ -131,6 +184,16 @@ describe('Harlem Core', () => {
         });
 
         test('Should detect a circular reference', () => {
+            const {
+                mutation,
+            } = store;
+
+            let circularParent = () => {};
+            let circularChild = () => {};
+
+            circularParent = mutation('circular-parent', () => circularChild());
+            circularChild = mutation('circular-child', () => circularParent());
+
             expect(() => circularParent()).toThrow();
         });
 
@@ -138,36 +201,96 @@ describe('Harlem Core', () => {
 
     describe('Triggers', () => {
 
-        test('Should trigger on onBeforeMutation', () => {
-            const handler = jest.fn(({ result }) => {
-                expect(result).toBeUndefined();
-            }) as MutationHookHandler<any, any>;
-
+        test('Should run correctly for all valid hooks', () => {
             const {
-                dispose
-            } = onBeforeMutation('set-id', handler);
+                mutation,
+                onBeforeMutation,
+                onAfterMutation,
+                onMutationSuccess,
+                onMutationError,
+            } = store;
 
-            setId();
+            const name = 'test-mutation';
+            const beforeTrigger = jest.fn();
+            const afterTrigger = jest.fn();
+            const successTrigger = jest.fn();
+            const errorTrigger = jest.fn();
 
-            expect(handler).toHaveBeenCalled();
-            dispose();
+            const testMutation = mutation(name, (state, throwError: boolean) => {
+                if (throwError) {
+                    throw new Error('failed');
+                }
+            });
+
+            const listeners = [
+                onBeforeMutation(name, beforeTrigger),
+                onAfterMutation(name, afterTrigger),
+                onMutationSuccess(name, successTrigger),
+                onMutationError(name, errorTrigger),
+            ];
+
+            const run = (throwError: boolean) => {
+                try {
+                    testMutation(throwError);
+                } catch {
+                    // do nothing
+                }
+            };
+
+            run(true);
+            run(false);
+
+            expect(beforeTrigger).toHaveBeenCalledTimes(2);
+            expect(afterTrigger).toHaveBeenCalledTimes(2);
+            expect(errorTrigger).toHaveBeenCalledTimes(1);
+            expect(successTrigger).toHaveBeenCalledTimes(1);
+
+            listeners.forEach(({ dispose }) => dispose());
         });
 
-        test('Should trigger on onAfterMutation', () => {
-            const handler = jest.fn(({ result }) => {
-                expect(result).not.toBeUndefined();
-            }) as MutationHookHandler<any, any>;
+        test('Should not fire if events are suppressed', () => {
+            const {
+                suppress,
+                setId,
+                onAfterMutation,
+            } = store;
+
+            const handler = jest.fn();
 
             const {
-                dispose
+                dispose,
             } = onAfterMutation('set-id', handler);
 
-            setId();
+            suppress(() => setId());
 
-            expect(handler).toHaveBeenCalled();
+            expect(handler).not.toHaveBeenCalled();
             dispose();
         });
 
-    })
+    });
+
+    describe('Producers', () => {
+
+        test('Should clean payloads by default', () => {
+            const {
+                state,
+                mutation,
+            } = store;
+
+            const payload = {
+                firstName: ref('Jim'),
+            };
+
+            const setRefToState = mutation<typeof payload>('set-ref-to-state', (state, { firstName }) => {
+                state.firstName = firstName as unknown as string;
+            });
+
+            setRefToState(payload);
+
+            expect(isRef(state.firstName)).toBe(false);
+            expect(state.firstName).toBe('Jim');
+        });
+
+    });
 
 });

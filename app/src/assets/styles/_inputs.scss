@@ -1,0 +1,26 @@
+input[type="text"],
+select,
+textarea {
+    color: inherit;
+    font: inherit;
+    padding: 0.5rem 1rem;
+    background-color: var(--foreground__colour);
+    border: 1px solid var(--foreground__colour);
+    border-radius: 0.5rem;
+    outline: none;
+
+    &:focus {
+        border: 1px solid var(--colour__primary);
+    }
+}
+
+select[multiple] {
+    min-height: 10rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: var(--font__size--meta);
+    font-weight: var(--font__weight--semi-bold);
+}

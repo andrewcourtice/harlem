@@ -1,26 +1,24 @@
 import 'flex-layout-attribute';
-import './styles/index.css';
+import './assets/styles/index.scss';
 
 import App from './app.vue';
 
 import Harlem from '@harlem/core';
 
-import createDevtoolsPlugin from '@harlem/plugin-devtools';
-import createResetPlugin from '@harlem/plugin-reset';
+import devtoolsPlugin from '@harlem/plugin-devtools';
 
 import {
-    createApp
+    createApp,
 } from 'vue';
 
 function start() {
     return createApp(App)
         .use(Harlem, {
             plugins: [
-                createDevtoolsPlugin(),
-                createResetPlugin()
-            ]
+                devtoolsPlugin(),
+            ],
         })
-        .mount('#app');
+        .mount('body');
 }
 
 start();

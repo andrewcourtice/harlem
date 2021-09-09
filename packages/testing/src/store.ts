@@ -1,5 +1,8 @@
 import {
-    createStore
+    BaseState,
+    createStore,
+    Extension,
+    StoreOptions,
 } from '@harlem/core';
 
 export interface UserDetails {
@@ -8,36 +11,42 @@ export interface UserDetails {
     age: number;
 }
 
-export interface State {
+export interface State extends BaseState {
     id: number;
     details: UserDetails
 }
-
-const NAME = 'testing';
 
 const STATE = {
     id: 0,
     details: {
         firstName: '',
         lastName: '',
-        age: 0
-    }
-} as State;
+        age: 0,
+    },
+};
 
-const {
-    mutation,
-    ...store
-} = createStore(NAME, STATE);
+export function jsonClone<T>(value: T): T {
+    return JSON.parse(JSON.stringify(value));
+}
 
-const resetState = JSON.parse(JSON.stringify(STATE));
+export function getStore<TExtensions extends Extension<typeof STATE>[]>(options?: Partial<StoreOptions<typeof STATE, TExtensions>>) {
+    const resetState = jsonClone(STATE);
 
-export const name = NAME;
-export const state = store.state;
+    const name = 'testing';
+    const store = createStore(name, jsonClone(STATE), options);
+    const reset = store.mutation('reset', state => Object.assign(state, resetState));
+    const fullName = store.getter('full-name', ({ details }) => `${details.firstName} ${details.lastName}`);
+    const setUserID = store.mutation<number>('set-user-id', (state, id = Math.random() * 1000) => state.id = id);
+    const setUserDetails = store.mutation<Partial<UserDetails>>('set-user-details', (state, details) => {
+        Object.assign(state.details, details);
+    });
 
-export const setUserID = mutation<number>('set-user-id', (state, id) => state.id = id);
-
-export const setUserDetails = mutation<Partial<UserDetails>>('set-user-details', (state, details) => {
-    Object.assign(state.details, details);
-});
-
-export const reset = mutation('reset', state => Object.assign(state, resetState));
+    return {
+        name,
+        store,
+        reset,
+        fullName,
+        setUserID,
+        setUserDetails,
+    };
+}

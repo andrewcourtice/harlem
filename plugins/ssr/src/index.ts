@@ -1,16 +1,17 @@
 import {
-    SENDER
+    SENDER,
 } from './constants';
 
-import type {
+import {
+    EVENTS,
     EventPayload,
     HarlemPlugin,
     InternalStore,
-    InternalStores
+    InternalStores,
 } from '@harlem/core';
 
 import {
-    overwrite
+    overwrite,
 } from '@harlem/utilities';
 
 declare global {
@@ -19,15 +20,15 @@ declare global {
     }
 }
 
-let snapshot: Record<string, any> = {};
+const snapshot: Record<string, any> = {};
 
 function onStoreEvent(stores: InternalStores, payload: EventPayload | undefined, callback: (store: InternalStore) => void): void {
     if (!payload) {
         return;
     }
-    
+
     const store = stores.get(payload.store);
-    
+
     if (store) {
         callback(store);
     }
@@ -52,15 +53,15 @@ export function getBridgingScriptBlock(): string {
 */
 export function createServerSSRPlugin(): HarlemPlugin {
     return {
-        
+
         name: 'server-ssr',
-        
+
         install(app, eventEmitter, stores) {
-            eventEmitter.on('store:created', payload => onStoreEvent(stores, payload, store => {
+            eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
                 snapshot[store.name] = store.state;
             }));
-        }
-        
+        },
+
     };
 }
 
@@ -71,16 +72,16 @@ export function createClientSSRPlugin(): HarlemPlugin {
     return {
 
         name: 'client-ssr',
-    
+
         install(app, eventEmitter, stores) {
             const data = window.__harlemState;
-    
-            eventEmitter.on('store:created', payload => onStoreEvent(stores, payload, store => {
+
+            eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
                 if (store.name in data) {
                     store.write('plugin:ssr:init', SENDER, state => overwrite(state, data[store.name]));
                 }
             }));
-        }
-    
+        },
+
     };
 }

@@ -2,21 +2,21 @@ import eventEmitter from './event-emitter';
 
 import {
     EVENTS,
-    SENDER
+    SENDER,
+    PROVIDERS,
 } from './constants';
 
 import {
     reactive,
     readonly,
     computed,
-    ComputedRef
+    effectScope,
+    ComputedRef,
+    EffectScope,
 } from 'vue';
 
-import {
-    raiseOverwriteError
-} from './utilities';
-
 import type {
+    BaseState,
     EventHandler,
     EventListener,
     EventPayload,
@@ -27,7 +27,13 @@ import type {
     MutationEventData,
     Mutator,
     ReadState,
-    WriteState
+    WriteState,
+    StoreProvider,
+    StoreProviders,
+    StoreRegistrations,
+    RegistrationValueProducer,
+    RegistrationType,
+    StoreRegistration,
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
@@ -38,46 +44,62 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
     };
 }
 
-export default class Store<TState extends object = any> implements InternalStore<TState> {
+export default class Store<TState extends BaseState = any> implements InternalStore<TState> {
 
-    private options: InternalStoreOptions;
+    private options: InternalStoreOptions<TState>;
+    private scope: EffectScope;
     private stack: Set<string>;
+    private isSuppressing: boolean;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
 
     public name: string;
-    public getters: Map<string, Function>;
-    public mutations: Map<string, Mutation<any>>;
+    public registrations: StoreRegistrations;
 
-
-    constructor(name: string, state: TState, options?: Partial<InternalStoreOptions>) {
+    constructor(name: string, state: TState, options?: Partial<InternalStoreOptions<TState>>) {
         this.options = {
             allowOverwrite: true,
-            ...options
+            ...options,
+
+            providers: {
+                ...PROVIDERS,
+                ...options?.providers,
+            },
         };
 
+        this.name = name;
+        this.registrations = {};
         this.stack = new Set();
+        this.isSuppressing = false;
+        this.scope = effectScope();
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
-        
-        this.name = name;
-        this.getters = new Map();
-        this.mutations = new Map();
     }
 
     public get allowsOverwrite(): boolean {
         return this.options.allowOverwrite;
     }
 
+    public get providers(): StoreProviders<TState> {
+        return {
+            ...PROVIDERS,
+            ...this.options.providers,
+        };
+    }
+
     public get state(): ReadState<TState> {
-        return this.readState;
+        return this.providers.read(this.readState) ?? this.readState;
     }
 
     public emit(event: string, sender: string, data: any): void {
+        if (!this.scope.active || this.isSuppressing) {
+            return;
+        }
+
         const payload: EventPayload = {
             data,
             sender,
-            store: this.name
+            store: this.name,
         };
 
         eventEmitter.emit(event, payload);
@@ -86,81 +108,121 @@ export default class Store<TState extends object = any> implements InternalStore
     public on(event: string, handler: EventHandler): EventListener {
         return eventEmitter.on(event, localiseHandler(this.name, handler));
     }
-    
+
     public once(event: string, handler: EventHandler): EventListener {
         return eventEmitter.once(event, localiseHandler(this.name, handler));
     }
 
-    public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
-        if (!this.allowsOverwrite && this.getters.has(name)) {
-            raiseOverwriteError('getter', name);
+    public provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void {
+        this.options.providers[key] = value;
+    }
+
+    public track<TResult>(callback: () => TResult): TResult {
+        return this.scope.run(callback)!;
+    }
+
+    public hasRegistration(group: string, name: string): boolean {
+        return !!this.registrations[group]?.has(name);
+    }
+
+    public getRegistration(group: string, name: string): StoreRegistration | undefined {
+        return this.registrations[group]?.get(name);
+    }
+
+    public register(group: string, name: string, producer: RegistrationValueProducer, type: RegistrationType = 'other'): void {
+        if (!(group in this.registrations)) {
+            this.registrations[group] = new Map();
         }
 
-        const output = computed(() => getter(this.state));
+        if (!this.allowsOverwrite && this.hasRegistration(group, name)) {
+            throw new Error(`A ${group} named ${name} has already been registered on this store`);
+        }
 
-        this.getters.set(name, () => output.value);
-        
+        this.registrations[group].set(name, {
+            type,
+            producer,
+        });
+    }
+
+    public unregister(group: string, name: string): void {
+        this.registrations[group]?.delete(name);
+    }
+
+    public suppress<TResult = void>(callback: () => TResult): TResult {
+        this.isSuppressing = true;
+
+        try {
+            return callback();
+        } finally {
+            this.isSuppressing = false;
+        }
+    }
+
+    public getter<TResult>(name: string, getter: Getter<TState, TResult>): ComputedRef<TResult> {
+        const output = this.track(() => computed(() => getter(this.state)));
+
+        this.register('getters', name, () => output.value, 'computed');
+
         return output;
-    };
+    }
 
     private mutate<TPayload, TResult = void>(name: string, sender: string, mutator: Mutator<TState, TPayload, TResult>, payload: TPayload): TResult {
+        if (!this.scope.active) {
+            throw new Error('The current store has been destroyed. Mutations can no longer take place.');
+        }
+
         if (this.stack.has(name)) {
             throw new Error('Circular mutation reference detected. Avoid calling mutations inside other mutations to prevent circular references.');
         }
 
-        const eventData: MutationEventData<TPayload, TResult> = {
-            payload,
-            mutation: name
-        };
+        this.stack.add(name);
 
         let result: TResult;
 
-        this.stack.add(name);
-        this.emit(EVENTS.mutation.before, sender, eventData);
+        const emit = (event: string) => this.emit(event, sender, {
+            mutation: name,
+            payload,
+            result,
+        } as MutationEventData<TPayload, TResult>);
+
+        emit(EVENTS.mutation.before);
 
         try {
-            result = mutator(this.writeState, payload);
+            const providedState = this.providers.write(this.writeState) ?? this.writeState;
+            const providedPayload = this.providers.payload(payload) ?? payload;
+
+            result = mutator(providedState, providedPayload);
+
+            emit(EVENTS.mutation.success);
         } catch (error) {
-            this.emit(EVENTS.mutation.error, sender, eventData);
+            emit(EVENTS.mutation.error);
             throw error;
         } finally {
             this.stack.delete(name);
+            emit(EVENTS.mutation.after);
         }
-
-        this.emit(EVENTS.mutation.after, sender, {
-            ...eventData,
-            result
-        });
 
         return result;
     }
 
     public mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult> {
-        if (!this.allowsOverwrite && this.mutations.has(name)) {
-            raiseOverwriteError('mutation', name);
-        }
-
         const mutation = ((payload: TPayload) => {
             return this.mutate(name, SENDER, mutator, payload);
         }) as Mutation<TPayload, TResult>;
-        
-        this.mutations.set(name, mutation);
-        
+
+        this.register('mutations', name, () => mutation);
+
         return mutation;
     }
 
-    public exec<TResult = void>(name: string, payload?: any): TResult {
-        const mutation = this.mutations.get(name) as Mutation<any, TResult>;
+    public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>, suppress?: boolean): TResult {
+        const mutation = () => this.mutate(name, sender, mutator, undefined);
 
-        if (!mutation) {
-            throw new Error(`No mutation found for ${name}`);
-        }
-
-        return mutation(payload);
+        return (suppress ? () => this.suppress(mutation) : mutation)();
     }
-    
-    public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>): TResult {
-        return this.mutate(name, sender, mutator, undefined);
+
+    public destroy(): void {
+        this.scope.stop();
     }
 
 }

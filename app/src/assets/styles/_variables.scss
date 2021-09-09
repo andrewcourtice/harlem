@@ -1,0 +1,63 @@
+:root {
+    --spacing__size: 16px;
+
+    --background__colour: #FFFFFF;
+    --background__colour--inverse: #333333;
+    --background__colour--shade: rgba(0, 0, 0, 0.5);
+
+    --foreground__colour: #EEEEEE;
+    --foreground__colour--dark: #DDDDDD;
+
+    --font__family: 'Poppins', sans-serif;
+    --font__weight: 400;
+    --font__weight--medium: 500;
+    --font__weight--semi-bold: 600;
+    --font__weight--bold: 700;
+    --font__line-height: 1.5;
+    --font__colour: #333333;
+    --font__colour--meta: #777777;
+    --font__colour--inverse: #FFFFFF;
+
+    --font__size: 16px;
+    --font__size--meta: 14px;
+    --font__size--heading-1: 48px;
+    --font__size--heading-2: 36px;
+    --font__size--heading-3: 28px;
+    --font__size--heading-4: 24px;
+    --font__size--heading-5: 18px;
+    --font__size--heading-6: 14px;
+
+    --colour__primary: #76D1A7;
+    --colour__primary--dark: #66AB8B;
+    --colour__alert: #DC2626;
+    --colour__alert--dark: #B91C1C;
+
+    --border__colour: #EDEDED;
+
+    --animation__timing: 250ms;
+    --animation__easing: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@mixin dark-mode {
+    --background__colour: #333333;
+    --background__colour--inverse: #333333;
+    --background__colour--shade: rgba(0, 0, 0, 0.75);
+    --foreground__colour: #666666;
+    --foreground__colour--dark: #888888;
+    
+    --font__colour: #EEEEEE;
+    --font__colour--meta: #CCCCCC;
+    --font__colour--inverse: #FFFFFF;
+    
+    --border__colour: #666666;    
+}
+
+[theme="dark"] {
+    @include dark-mode();
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        @include dark-mode();
+    }
+}

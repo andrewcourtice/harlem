@@ -1,0 +1,51 @@
+{
+    "name": "@harlem/extension-reset",
+    "amdName": "harlemReset",
+    "version": "2.0.0-beta.10",
+    "license": "MIT",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "The official reset extension for Harlem",
+    "homepage": "https://harlemjs.com",
+    "source": "src/index.ts",
+    "main": "dist/index.js",
+    "module": "dist/esm/index.js",
+    "unpkg": "dist/iife/index.js",
+    "jsdelivr": "dist/iife/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/esm/index.js",
+            "require": "./dist/index.js"
+        }
+    },
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "extension",
+        "reset"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "extensions/reset"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
+    "scripts": {
+        "dev": "tsup --watch src",
+        "build": "tsup",
+        "prepublish": "yarn build"
+    },
+    "peerDependencies": {
+        "@harlem/core": "^2.0.0-alpha.0"
+    },
+    "dependencies": {
+        "@harlem/utilities": "^2.0.0-beta.10"
+    },
+    "devDependencies": {
+        "@harlem/core": "^2.0.0-beta.10",
+        "@harlem/testing": "^2.0.0-beta.10"
+    }
+}

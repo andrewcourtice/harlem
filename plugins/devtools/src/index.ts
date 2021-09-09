@@ -2,23 +2,28 @@ import {
     ALL_STORES_ID,
     DEVTOOLS_ID,
     OPTIONS,
-    SENDER
+    SENDER,
 } from './constants';
 
 import {
-    EVENTS
+    EVENTS,
+    INTERNAL,
 } from '@harlem/core';
 
 import {
+    omit,
+} from '@harlem/utilities';
+
+import {
     PluginDescriptor,
-    setupDevtoolsPlugin
+    setupDevtoolsPlugin,
 } from '@vue/devtools-api';
 
 import type {
     App,
     CustomInspectorState,
     DevtoolsPluginApi,
-    StateBase
+    StateBase,
 } from '@vue/devtools-api';
 
 import type {
@@ -26,14 +31,14 @@ import type {
     Options,
     StateHookHandler,
     TreeHookHandler,
-    EditHookHandler
+    EditHookHandler,
 } from './types';
 
 import type {
     EventHandler,
     HarlemPlugin,
     InternalStore,
-    InternalStores
+    InternalStores,
 } from '@harlem/core';
 
 function stringComparitor(valueA: string, valueB: string): number {
@@ -44,7 +49,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
     return payload => {
         const {
             app,
-            inspectorId
+            inspectorId,
         } = payload;
 
         if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
@@ -55,7 +60,7 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
             .sort(stringComparitor)
             .map(name => ({
                 id: name,
-                label: name
+                label: name,
             }));
 
         payload.rootNodes = [
@@ -63,42 +68,33 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
                 children,
                 id: ALL_STORES_ID,
                 label: 'Stores',
-            }
+            },
         ];
-    }
+    };
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    const state: StateBase[] = [
-        {
-            key: store.name,
-            value: store.state,
-            editable: true
-        }
-    ];
+    return Object.entries(store.registrations).reduce((output, [type, registrations]) => {
+        output[type] = Array.from(registrations)
+            .sort(([a], [b]) => stringComparitor(a, b))
+            .map(([key, { type, producer }]) => ({
+                key,
+                value: producer(),
+                editable: false,
+                objectType: type,
+            } as StateBase));
 
-    const getters: StateBase[] = Array.from(store.getters)
-        .sort(([a], [b]) => stringComparitor(a, b))
-        .map(([key, accessor]) => ({
-            key,
-            value: accessor(),
-            editable: false,
-            objectType: 'computed'
-        }))
-        
-    const mutations: StateBase[] = Array.from(store.mutations)
-        .sort(([a], [b]) => stringComparitor(a, b))
-        .map(([key, mutator]) => ({
-            key,
-            value: mutator,
-            editable: false
-        }));
-
-    return {
-        state,
-        getters,
-        mutations,
-    };
+        return output;
+    }, {
+        state: [
+            {
+                key: store.name,
+                value: omit(store.state, INTERNAL.pattern),
+                editable: true,
+                objectType: 'reactive',
+            },
+        ],
+    } as Record<string, StateBase[]>);
 }
 
 function getStoreSnapshots(stores: (InternalStore | undefined)[]): CustomInspectorState {
@@ -109,16 +105,13 @@ function getStoreSnapshots(stores: (InternalStore | undefined)[]): CustomInspect
 
         const snapshot = getStoreSnapshot(store);
 
-        return {
-            state: [...output.state, ...snapshot.state],
-            getters: [...output.getters, ...snapshot.getters],
-            mutations: [...output.mutations, ...snapshot.mutations],
-        };
-    }, {
-        state: [],
-        getters: [],
-        mutations: []
-    } as CustomInspectorState);
+        return Object
+            .entries(snapshot)
+            .reduce((merges, [key, value]) => {
+                merges[key] = (merges[key] || []).concat(value);
+                return merges;
+            }, {} as CustomInspectorState);
+    }, {} as CustomInspectorState);
 }
 
 function getInspectorStateHook(application: App, stores: InternalStores): StateHookHandler {
@@ -126,21 +119,23 @@ function getInspectorStateHook(application: App, stores: InternalStores): StateH
         const {
             app,
             inspectorId,
-            nodeId
+            nodeId,
         } = payload;
 
         if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
             return;
         }
 
-        let internalStores = [stores.get(nodeId)];
+        let internalStores = [stores.get(nodeId) || stores.values().next().value as InternalStore];
 
         if (nodeId === ALL_STORES_ID) {
             internalStores = Array.from(stores.values());
         }
 
-        payload.state = getStoreSnapshots(internalStores);
-    }
+        if (internalStores.length > 0) {
+            payload.state = getStoreSnapshots(internalStores);
+        }
+    };
 }
 
 function getInspectorEditHook(application: App, stores: InternalStores): EditHookHandler {
@@ -151,7 +146,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
             nodeId,
             path,
             state,
-            set
+            set,
         } = payload;
 
         if (app !== application || inspectorId !== DEVTOOLS_ID || stores.size === 0) {
@@ -161,7 +156,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
         const root = path.shift();
         const storeId = nodeId === ALL_STORES_ID
             ? root || nodeId
-            : nodeId
+            : nodeId;
 
         const store = stores.get(storeId);
 
@@ -169,8 +164,8 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
             return;
         }
 
-        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));  
-    }
+        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));
+    };
 }
 
 function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandler {
@@ -180,10 +175,9 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
         }
 
         const {
-            sender,
-            store
+            store,
         } = payload;
-        
+
         api.sendInspectorState(DEVTOOLS_ID);
         api.addTimelineEvent({
             layerId: DEVTOOLS_ID,
@@ -191,13 +185,13 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
                 logType,
                 title: 'Mutation',
                 subtitle: store,
+                groupId: store,
                 time: Date.now(),
                 data: payload,
-                groupId: sender,
                 meta: {
-                    store: store
-                }
-            }
+                    store: store,
+                },
+            },
         });
     };
 }
@@ -205,56 +199,61 @@ function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandle
 export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS): HarlemPlugin {
     const {
         label,
-        color
+        color,
     } = {
         ...OPTIONS,
-        ...options
+        ...options,
     };
 
     return {
 
         name: 'devtools',
-        
+
         install(app, eventEmitter, stores) {
             const inspectorTreeHook = getInspectorTreeHook(app, stores);
             const inspectorStateHook = getInspectorStateHook(app, stores);
             const inspectorEditHook = getInspectorEditHook(app, stores);
-            
+
             const descriptor = {
                 app,
                 label,
                 id: DEVTOOLS_ID,
                 logo: 'https://harlemjs.com/assets/images/favicon.png',
                 homepage: 'https://harlemjs.com',
-                packageName: '@harlem/plugin-devtools'
+                packageName: '@harlem/plugin-devtools',
             } as PluginDescriptor;
-            
+
             setupDevtoolsPlugin(descriptor, api => {
-                const afterMutationHook = getMutationHook(api);
+                const successMutationHook = getMutationHook(api);
                 const errorMutationHook = getMutationHook(api, 'error');
-                
+
                 api.addInspector({
                     label,
                     id: DEVTOOLS_ID,
                     icon: 'source',
-                    treeFilterPlaceholder: 'Search stores'
+                    treeFilterPlaceholder: 'Search stores',
                 });
-    
+
                 api.addTimelineLayer({
                     label,
                     color,
                     id: DEVTOOLS_ID,
-                    skipScreenshots: true
+                    skipScreenshots: true,
                 });
-    
+
                 api.on.getInspectorTree(inspectorTreeHook);
                 api.on.getInspectorState(inspectorStateHook);
                 api.on.editInspectorState(inspectorEditHook);
 
-                eventEmitter.on(EVENTS.mutation.after, afterMutationHook);
+                eventEmitter.on(EVENTS.mutation.success, successMutationHook);
                 eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
+
+                eventEmitter.on(EVENTS.devtools.update, () => {
+                    api.sendInspectorTree(DEVTOOLS_ID);
+                    api.sendInspectorState(DEVTOOLS_ID);
+                });
             });
-        }
+        },
 
     };
 }

@@ -1,12 +1,12 @@
 import type {
-    Options
+    Options,
 } from './types';
 
-export const SENDER = 'devtools';
+export const SENDER = 'plugin:devtools';
 export const DEVTOOLS_ID = 'harlem';
 export const ALL_STORES_ID = '$all';
 
 export const OPTIONS: Options = {
     label: 'Harlem',
-    color: 0x40c48d
+    color: 0x40c48d,
 };

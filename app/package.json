@@ -1,6 +1,6 @@
 {
     "name": "@harlem/app",
-    "version": "1.3.2",
+    "version": "2.0.0-beta.10",
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
@@ -13,17 +13,24 @@
         "build": "vite build"
     },
     "dependencies": {
-        "@harlem/core": "^1.3.2",
-        "@harlem/plugin-devtools": "^1.3.2",
-        "@harlem/plugin-reset": "^1.3.2",
-        "@harlem/plugin-storage": "^1.3.2",
-        "@harlem/plugin-transaction": "^1.3.2",
+        "@harlem/core": "^2.0.0-beta.10",
+        "@harlem/extension-action": "^2.0.0-beta.10",
+        "@harlem/extension-history": "^2.0.0-beta.10",
+        "@harlem/extension-lazy": "^2.0.0-beta.10",
+        "@harlem/extension-reset": "^2.0.0-beta.10",
+        "@harlem/extension-snapshot": "^2.0.0-beta.10",
+        "@harlem/extension-storage": "^2.0.0-beta.10",
+        "@harlem/extension-trace": "^2.0.0-beta.10",
+        "@harlem/extension-transaction": "^2.0.0-beta.10",
+        "@harlem/plugin-devtools": "^2.0.0-beta.10",
+        "date-fns": "^2.23.0",
+        "date-fns-tz": "^1.1.6",
         "flex-layout-attribute": "^1.0.3",
-        "vue": "^3.1.5"
+        "vue": "^3.2.11"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^1.3.0",
-        "@vue/compiler-sfc": "^3.1.5",
-        "vite": "^2.4.4"
+        "@vitejs/plugin-vue": "^1.6.1",
+        "@vue/compiler-sfc": "^3.2.11",
+        "vite": "^2.5.3"
     }
 }

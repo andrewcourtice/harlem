@@ -19,58 +19,77 @@ module.exports = {
         navbar: [
             {
                 text: 'Guide',
-                link: '/guide/'
+                link: '/guide/introduction/about',
+                activeMatch: '^/guide/'
             },
             {
-                text: 'Plugins',
-                link: '/plugins/'
+                text: 'Extensibility',
+                link: '/extensibility/',
+                activeMatch: '^/extensibility/'
             },
             {
                 text: 'API Reference',
-                link: '/api-reference/'
+                link: '/api/global',
+                activeMatch: '^/api/'
             }
         ],
         sidebar: {
             '/guide/': [
                 {
-                    isGroup: true,
-                    text: 'Guide',
+                    text: 'Introduction',
                     children: [
-                        '/guide/README.md',
-                        '/guide/getting-started.md',
-                        '/guide/core-concepts.md',
-                        '/guide/devtools-integration.md',
-                        '/guide/server-side-rendering.md',
-                        '/guide/typescript-support.md',
-                        '/guide/FAQ.md',
+                        '/guide/introduction/about',
+                        '/guide/introduction/getting-started',
                     ]
-                }
-            ],
-            '/plugins/': [
+                },
                 {
-                    isGroup: true,
+                    text: 'Core Concepts',
+                    children: [
+                        '/guide/core-concepts/stores',
+                        '/guide/core-concepts/state',
+                        '/guide/core-concepts/getters',
+                        '/guide/core-concepts/mutations',
+                        '/guide/core-concepts/actions',
+                        '/guide/core-concepts/triggers',
+                    ]
+                },
+                {
+                    text: 'Support',
+                    children: [
+                        '/guide/support/tips',
+                        '/guide/support/FAQ'
+                    ]
+                },
+            ],
+            '/extensibility/': [
+                {
+                    text: 'Extensions',
+                    children: [
+                        '/extensibility/extensions/introduction',
+                        '/extensibility/extensions/action',
+                        '/extensibility/extensions/history',
+                        '/extensibility/extensions/lazy',
+                        '/extensibility/extensions/reset',
+                        '/extensibility/extensions/snapshot',
+                        '/extensibility/extensions/storage',
+                        '/extensibility/extensions/trace',
+                        '/extensibility/extensions/transaction',
+                    ]
+                },
+                {
                     text: 'Plugins',
                     children: [
-                        '/plugins/README.md',
-                        '/plugins/devtools.md',
-                        '/plugins/reset.md',
-                        '/plugins/snapshot.md',
-                        '/plugins/server-side-rendering.md',
-                        '/plugins/storage.md',
-                        '/plugins/transaction.md',
+                        '/extensibility/plugins/introduction',
+                        '/extensibility/plugins/devtools',
+                        '/extensibility/plugins/server-side-rendering',
                     ]
                 }
             ],
-            '/api-reference/': [
-                {
-                    isGroup: true,
-                    text: 'API Reference',
-                    children: [
-                        '/api-reference/README.md',
-                        '/api-reference/store.md',
-                        '/api-reference/types.md',
-                    ]
-                }
+            '/api/': [
+                '/api/global',
+                '/api/store',
+                '/api/extension',
+                '/api/types',
             ]
         }
     },
