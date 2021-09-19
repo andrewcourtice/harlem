@@ -7,7 +7,7 @@ export default {
     dts: true,
     sourcemap: true,
     legacyOutput: true,
-    target: 'es2020',
+    target: 'es2016',
     format: [
         'esm',
         'cjs',
