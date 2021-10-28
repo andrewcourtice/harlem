@@ -70,7 +70,7 @@ To take a snapshot simply call the `snapshot` method returned from the store ins
 const snap = snapshot();
 ```
 
-The snapshot method also accepts an optional 2nd argument which is a function that returns a sub-branch of state. This is useful for taking more granular snapshots instead of the whole state tree.
+The snapshot method also accepts an optional argument which is a function that returns a sub-branch of state. This is useful for taking more granular snapshots instead of the whole state tree.
 
 ```typescript
 const snap = snapshot(state => state.details);
