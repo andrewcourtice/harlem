@@ -99,7 +99,7 @@ describe('Actions Extension', () => {
         expect(hasActionRun(loadUserInfoName)).toBe(true);
     });
 
-    test('Handles cancellation', async () => {
+    test('Handles direct cancellation', async () => {
         const {
             loadUserInfo,
             loadUserInfoName,
@@ -113,6 +113,34 @@ describe('Actions Extension', () => {
         const task = loadUserInfo();
 
         setTimeout(() => task.abort(), 100);
+
+        try {
+            await task;
+        } catch (error) {
+            expect(error).toBeInstanceOf(ActionAbortError);
+        } finally {
+            expect(state.details.firstName).toBe('');
+            expect(state.details.lastName).toBe('');
+            expect(state.details.age).toBe(0);
+            expect(hasActionRun(loadUserInfoName)).toBe(false);
+        }
+    });
+
+    test('Handles indirect cancellation', async () => {
+        const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
+            state,
+            hasActionRun,
+            abortAction,
+        } = instance.store;
+
+        const task = loadUserInfo();
+
+        setTimeout(() => abortAction(loadUserInfoName), 100);
 
         try {
             await task;

@@ -41,6 +41,8 @@ export default function actionsExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
+        const actionTasks = new Map<string, Set<Task<unknown>>>();
+
         _store.write('$action-init', SENDER, state => state[STATE_PROP] = {}, true);
 
         function setActionState(state: TState & ActionStoreState, name: string) {
@@ -54,6 +56,14 @@ export default function actionsExtension<TState extends BaseState>() {
         function registerAction(name: string) {
             _store.register('actions', name, () => () => {});
             _store.write('$action-register', SENDER, state => setActionState(state, name), true);
+
+            const tasks = new Set<Task<unknown>>();
+
+            actionTasks.set(name, tasks);
+
+            return {
+                tasks,
+            };
         }
 
         function incrementRunCount(name: string) {
@@ -77,9 +87,9 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
-            registerAction(name);
-
-            const tasks = new Set<Task<TResult>>();
+            const {
+                tasks,
+            } = registerAction(name);
 
             const {
                 parallel,
@@ -93,11 +103,8 @@ export default function actionsExtension<TState extends BaseState>() {
             const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
 
             return ((payload: TPayload, controller?: AbortController) => {
-                if (!parallel && tasks.size > 0) {
-                    tasks.forEach(task => {
-                        task.abort();
-                        tasks.delete(task);
-                    });
+                if (!parallel) {
+                    abortAction(name);
                 }
 
                 if (autoClearErrors) {
@@ -224,6 +231,21 @@ export default function actionsExtension<TState extends BaseState>() {
             }));
         }
 
+        function abortAction(name: string | string[]) {
+            ([] as string[])
+                .concat(name)
+                .forEach(name => {
+                    const tasks = actionTasks.get(name);
+
+                    if (tasks && tasks.size > 0) {
+                        tasks.forEach(task => {
+                            task.abort();
+                            tasks.delete(task);
+                        });
+                    }
+                });
+        }
+
         const onBeforeAction = getActionTrigger(EVENTS.action.before);
         const onAfterAction = getActionTrigger(EVENTS.action.after);
         const onActionSuccess = getActionTrigger(EVENTS.action.success);
@@ -237,6 +259,7 @@ export default function actionsExtension<TState extends BaseState>() {
             hasActionFailed,
             getActionErrors,
             resetActionState,
+            abortAction,
             onBeforeAction,
             onAfterAction,
             onActionSuccess,
