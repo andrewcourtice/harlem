@@ -38,7 +38,7 @@ npm install @harlem/extension-action
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-26,29}
+```typescript{16-27,30}
 import actionExtension from '@harlem/extension-action';
 
 import {
@@ -61,6 +61,7 @@ const {
     getActionErrors,
     whenActionIdle,
     resetActionState,
+    abortAction,
     onBeforeAction,
     onAfterAction,
     onActionSuccess,
@@ -134,7 +135,12 @@ async function runAction() {
 
 
 ### Cancelling an action
-Each time an action is called it returns an instance of a `Task` class. The `Task` class is an extension of the in-built `Promise` class that adds an `abort` method you can use to terminate the action.
+There are 2 ways to cancel a running action:
+
+- Direct
+- Indirect
+
+The **direct** method is simply calling the action and then calling the `abort` method. Each time an action is called it returns an instance of a `Task` class. The `Task` class is an extension of the in-built `Promise` class that adds an `abort` method you can use to terminate the action.
 
 ```typescript
 async function runAction() {
@@ -146,7 +152,15 @@ async function runAction() {
 }
 ```
 
-Cancelling the task will throw an `ActionAbortError`. It is recommended to wrap actions you intend on cancelling in a `try/catch` statement to handle this.
+The **indirect** method is using the helper method on the store to cancel the action by name.
+
+```typescript
+abortAction('load-user-data');
+```
+
+::: warning
+Cancelling the task will throw an `ActionAbortError` where the action is executed. It is recommended to wrap actions you intend on cancelling (or that are not parallel) in a `try/catch` statement to handle this.
+:::
 
 
 ### Handling nested actions
@@ -167,7 +181,7 @@ export default action('parent-action', async (id: number, mutate, controller) =>
 ```
 
 ### Checking action status
-This extension provides a set of helper methods for checking the status of actions. There are 2 ways to check whether an action is running:
+This extension provides a set of helper methods for checking the status of actions. Similar to cancelling an action, there are 2 ways to check whether an action is running:
 
 - Direct
 - Indirect
