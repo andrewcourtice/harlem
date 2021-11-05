@@ -887,6 +887,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@harlem/extension-compose@workspace:extensions/compose":
+  version: 0.0.0-use.local
+  resolution: "@harlem/extension-compose@workspace:extensions/compose"
+  dependencies:
+    "@harlem/core": ^2.1.0
+    "@harlem/utilities": ^2.1.0
+    vue: ^3.2.0
+  peerDependencies:
+    "@harlem/core": ^2.0.0
+    vue: ^3.2.0
+  languageName: unknown
+  linkType: soft
+
 "@harlem/extension-history@^2.1.0, @harlem/extension-history@workspace:extensions/history":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-history@workspace:extensions/history"

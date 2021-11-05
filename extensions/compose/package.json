@@ -1,0 +1,53 @@
+{
+    "name": "@harlem/extension-compose",
+    "amdName": "harlemCompose",
+    "version": "2.1.0",
+    "license": "MIT",
+    "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
+    "description": "The official compose extension for Harlem",
+    "homepage": "https://harlemjs.com",
+    "source": "src/index.ts",
+    "main": "dist/index.js",
+    "module": "dist/esm/index.js",
+    "unpkg": "dist/iife/index.js",
+    "jsdelivr": "dist/iife/index.js",
+    "types": "dist/index.d.ts",
+    "private": true,
+    "exports": {
+        ".": {
+            "import": "./dist/esm/index.js",
+            "require": "./dist/index.js"
+        }
+    },
+    "keywords": [
+        "vue",
+        "state",
+        "harlem",
+        "extension",
+        "compose"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrewcourtice/harlem.git",
+        "directory": "extensions/compose"
+    },
+    "bugs": {
+        "url": "https://github.com/andrewcourtice/harlem/issues"
+    },
+    "scripts": {
+        "dev": "tsup --watch src",
+        "build": "tsup",
+        "prepublish": "yarn build"
+    },
+    "dependencies": {
+        "@harlem/utilities": "^2.1.0"
+    },
+    "peerDependencies": {
+        "@harlem/core": "^2.0.0",
+        "vue": "^3.2.0"
+    },
+    "devDependencies": {
+        "@harlem/core": "^2.1.0",
+        "vue": "^3.2.0"
+    }
+}
