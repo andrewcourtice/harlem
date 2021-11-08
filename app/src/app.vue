@@ -61,7 +61,7 @@ import getTimezoneLabel from './utilities/time/get-timezone-label';
 import {
     computed,
     ref,
-watchEffect,
+    watchEffect,
 } from 'vue';
 
 import {
@@ -71,10 +71,9 @@ import {
 import {
     state,
     clocks,
-    setClockType,
     removeClock,
     loadTimezones,
-    setTheme,
+    computeState,
 } from './stores/app';
 
 loadTimezones();
@@ -83,15 +82,8 @@ watchEffect(() => document.body.setAttribute('theme', state.theme.toLowerCase())
 
 const addClockModal = ref();
 
-const theme = computed({
-    get: () => state.theme,
-    set: theme => setTheme(theme)
-});
-
-const clockType = computed({
-    get: () => state.clockType,
-    set: type => setClockType(type)
-});
+const theme = computeState(state => state.theme);
+const clockType = computeState(state => state.clockType);
 
 const clockComponent = computed(() => state.clockType === 'analogue'
     ? AnalogueClock

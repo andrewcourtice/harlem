@@ -15,6 +15,7 @@
     "dependencies": {
         "@harlem/core": "^2.1.0",
         "@harlem/extension-action": "^2.1.0",
+        "@harlem/extension-compose": "^2.1.0",
         "@harlem/extension-history": "^2.1.0",
         "@harlem/extension-lazy": "^2.1.0",
         "@harlem/extension-reset": "^2.1.0",
