@@ -12,7 +12,6 @@
     "unpkg": "dist/iife/index.js",
     "jsdelivr": "dist/iife/index.js",
     "types": "dist/index.d.ts",
-    "private": true,
     "exports": {
         ".": {
             "import": "./dist/esm/index.js",
