@@ -34,8 +34,8 @@
         "url": "https://github.com/andrewcourtice/harlem/issues"
     },
     "scripts": {
-        "dev": "tsup --watch src",
-        "build": "tsup",
+        "dev": "yarn run --top-level tsup --watch src",
+        "build": "yarn run --top-level tsup",
         "prepublish": "yarn build"
     },
     "dependencies": {
