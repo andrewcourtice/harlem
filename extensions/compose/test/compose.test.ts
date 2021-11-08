@@ -65,4 +65,25 @@ describe('Compose Extension', () => {
         expect(details.age).toBe(45);
     });
 
+    test('Compute state', () => {
+        const {
+            store,
+        } = getStore({
+            extensions: [
+                composeExtension(),
+            ],
+        });
+
+        const {
+            state,
+            computeState,
+        } = store;
+
+        const firstName = computeState(state => state.details.firstName);
+
+        firstName.value = 'John';
+
+        expect(state.details.firstName).toBe('John');
+    });
+
 });
