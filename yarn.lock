@@ -832,6 +832,7 @@ __metadata:
   dependencies:
     "@harlem/core": ^2.1.0
     "@harlem/extension-action": ^2.1.0
+    "@harlem/extension-compose": ^2.1.0
     "@harlem/extension-history": ^2.1.0
     "@harlem/extension-lazy": ^2.1.0
     "@harlem/extension-reset": ^2.1.0
@@ -880,6 +881,19 @@ __metadata:
     "@harlem/core": ^2.1.0
     "@harlem/task": ^2.1.0
     "@harlem/testing": ^2.1.0
+    vue: ^3.2.0
+  peerDependencies:
+    "@harlem/core": ^2.0.0
+    vue: ^3.2.0
+  languageName: unknown
+  linkType: soft
+
+"@harlem/extension-compose@^2.1.0, @harlem/extension-compose@workspace:extensions/compose":
+  version: 0.0.0-use.local
+  resolution: "@harlem/extension-compose@workspace:extensions/compose"
+  dependencies:
+    "@harlem/core": ^2.1.0
+    "@harlem/utilities": ^2.1.0
     vue: ^3.2.0
   peerDependencies:
     "@harlem/core": ^2.0.0

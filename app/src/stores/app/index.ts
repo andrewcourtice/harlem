@@ -5,6 +5,7 @@ import {
 export {
     state,
     isActionRunning,
+    computeState,
 } from './store';
 
 export * from './getters';
