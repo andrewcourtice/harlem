@@ -13,6 +13,8 @@ import {
 
 import {
     fromPath,
+    toPath,
+    isNil,
 } from '@harlem/utilities';
 
 import type {
@@ -58,13 +60,13 @@ export default function composeExtension<TState extends BaseState>() {
             accessor(value);
 
             const nodes = getNodes();
+            const name = mutationName || `compose:${toPath(['root', ...nodes])}`;
             const key = nodes.pop();
-            const name = mutationName || `compose:${String(key)}`;
             const parent = (state: object) => fromPath(state, nodes) as Record<PropertyKey, unknown>;
 
             resetNodes();
 
-            if (!key) {
+            if (isNil(key)) {
                 throw new Error('A valid property must be used');
             }
 
