@@ -1,4 +1,4 @@
-# Harlem Compose Extension
+# Compose Extension
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-compose)
 
@@ -12,17 +12,29 @@ Follow the steps below to get started using the compose extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-```bash
-yarn add @harlem/extension-action
-# or
-npm install @harlem/extension-action
+<CodeGroup>
+  <CodeGroupItem title="YARN" active>
+
+```bash:no-line-numbers
+yarn add @harlem/extension-compose
 ```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="NPM">
+
+```bash:no-line-numbers
+npm install @harlem/extension-compose
+```
+
+  </CodeGroupItem>
+</CodeGroup>
 
 ### Registration
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript
+```typescript{16-17,20}
 import composeExtension from '@harlem/extension-compose';
 
 import {

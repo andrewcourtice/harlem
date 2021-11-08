@@ -67,6 +67,7 @@ module.exports = {
                     children: [
                         '/extensibility/extensions/introduction',
                         '/extensibility/extensions/action',
+                        '/extensibility/extensions/compose',
                         '/extensibility/extensions/history',
                         '/extensibility/extensions/lazy',
                         '/extensibility/extensions/reset',
