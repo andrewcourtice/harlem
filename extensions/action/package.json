@@ -36,7 +36,7 @@
     "scripts": {
         "dev": "yarn run --top-level tsup --watch src",
         "build": "yarn run --top-level tsup",
-        "prepublish": "yarn build"
+        "prepublishOnly": "yarn build"
     },
     "dependencies": {
         "@harlem/task": "^2.1.0"
