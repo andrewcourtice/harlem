@@ -6,6 +6,10 @@ The decision to not include actions in the core package by default is to remain 
 To ship a full action implementation as part of the core package would force every project (especially the small projects) to incur that cost (size, performance etc.) even if not all of the action features are being used. For this reason Harlem provides a [full-featured action implementation](/extensibility/extensions/action.html) as an optional extension and leaves your action implementation up to you should you wish to keep things simple or get really complex.
 
 
+## Why does Harlem still have Mutations?
+Mutations are a key concept of Harlem. They are foundational in providing functionality for triggers, devtools, tracing, and extension/plugin integration. That being said, although they are a core *concept*, they are not *mandatory*. With the [action extension](/extensibility/extensions/action.html), you can author your stores entirely without explicitly defining mutations and still have all the benefits of triggers, devtools etc.
+
+
 ## Can I share state between stores?
 Certainly - just import the state or getter from one store into the getter you are authoring on another store. For example:
 
