@@ -40,13 +40,15 @@ const {
     mutation,
     startStorageSync,
     stopStorageSync,
-    clearStorage
+    clearStorage,
+    restoreStorage
 } = createStore('example', STATE, {
     extensions: [
         storageExtension({
             type: 'local',
             prefix: 'harlem',
             sync: true,
+            restore: false,
             exclude: [],
             serialiser: state => JSON.stringify(state),
             parser: value => JSON.parse(value)
@@ -76,6 +78,8 @@ The `startStorageSync` and `stopStorageSync` methods can be used to start or sto
 ### Clearing storage
 Use the `clearStorage` method to clear all stored data relating to this store.
 
+### Restoring storage
+Use the `restoreStorage` method to manually restore the store from storage.
 
 ## Considerations
 Please keep the following points in mind when using this extension:

@@ -52,13 +52,15 @@ const {
     mutation,
     startStorageSync,
     stopStorageSync,
-    clearStorage
+    clearStorage,
+    restoreStorage
 } = createStore('example', STATE, {
     extensions: [
         storageExtension({
             type: 'local',
             prefix: 'harlem',
             sync: true,
+            restore: false,
             exclude: [],
             serialiser: state => JSON.stringify(state),
             parser: value => JSON.parse(value)
@@ -77,6 +79,7 @@ The storage extension method accepts an options object with the following proper
 - **type**: `string` - The type of storage interface to use. Acceptable values are `local` or `session`. Default value is `local`.
 - **prefix**: `string` - The prefix to use on the storage key. The storage value will be in the form `${prefix}:${storeName}`. Default value is `harlem`.
 - **sync**: `boolean` - Whether to automatically sync changes from the storage interface back to the store. Default value is `true`.
+- **restore**: `boolean` - Whether to automatically restore the state back from the storage on load. Default is `false`.
 - **exclude**: `string[]` - A list of mutation names to exclude from triggering a storage sync event.
 - **serialiser**: `unknown => string` - A function to serialise the store to string. The default behaviour is `JSON.stringify`.
 - **parser**: `string => unknown` - A function to serialise the storage string to a state structure. The default behaviour is `JSON.parse`.
@@ -88,6 +91,8 @@ The `startStorageSync` and `stopStorageSync` methods can be used to start or sto
 ### Clearing storage
 Use the `clearStorage` method to clear all stored data relating to this store.
 
+### Restoring storage
+Use the `restoreStorage` method to manually restore the state from storage.
 
 ## Considerations
 Please keep the following points in mind when using this extension:
