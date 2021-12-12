@@ -26,6 +26,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         type,
         prefix,
         sync,
+        restore,
         exclude,
         serialiser,
         parser,
@@ -33,6 +34,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         type: 'local',
         prefix: 'harlem',
         sync: true,
+        restore: false,
         exclude: [],
         serialiser: state => JSON.stringify(state),
         parser: value => JSON.parse(value),
@@ -75,16 +77,25 @@ export default function storageExtension<TState extends BaseState>(options?: Par
             storage.removeItem(storageKey);
         }
 
+        function restoreStorage() {
+            store.write('$storage', SENDER, state => Object.assign(state, parser(<string>storage.getItem(storageKey))));
+        }
+
         store.once(EVENTS.store.destroyed, () => stopStorageSync());
 
         if (sync) {
             startStorageSync();
         }
 
+        if (restore) {
+            restoreStorage();
+        }
+
         return {
             startStorageSync,
             stopStorageSync,
             clearStorage,
+            restoreStorage,
         };
     };
 }
