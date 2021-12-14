@@ -28,7 +28,7 @@ export default function resetExtension<TState extends BaseState>() {
                 const source = branchCallback(snapshot);
                 const target = branchCallback(state);
 
-                overwrite(target, source, INTERNAL.pattern);
+                overwrite(target, clone(source), INTERNAL.pattern);
             });
         }
 
