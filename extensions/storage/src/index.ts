@@ -78,7 +78,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         }
 
         function restoreStorage() {
-            store.write('$storage', SENDER, state => Object.assign(state, parser(<string>storage.getItem(storageKey))));
+            store.write('$storage', SENDER, state => Object.assign(state, parser(storage.getItem(storageKey) as string)));
         }
 
         store.once(EVENTS.store.destroyed, () => stopStorageSync());
