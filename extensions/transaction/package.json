@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-transaction",
     "amdName": "harlemTransaction",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official transaction extension for Harlem",
@@ -39,12 +39,12 @@
         "prepublishOnly": "yarn build"
     },
     "dependencies": {
-        "@harlem/extension-snapshot": "^2.1.0"
+        "@harlem/extension-snapshot": "^2.1.1"
     },
     "peerDependencies": {
         "@harlem/core": "^2.0.0"
     },
     "devDependencies": {
-        "@harlem/core": "^2.1.0"
+        "@harlem/core": "^2.1.1"
     }
 }
