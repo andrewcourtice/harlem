@@ -221,6 +221,10 @@ export default function actionsExtension<TState extends BaseState>() {
                 }));
         }
 
+        function isActionAbortError(value: unknown) {
+            return value instanceof ActionAbortError;
+        }
+
         function resetActionState(name?: string | string[]) {
             const names = ([] as string[]).concat(name || Object.keys(_store.state[STATE_PROP]));
 
@@ -258,6 +262,7 @@ export default function actionsExtension<TState extends BaseState>() {
             whenActionIdle,
             hasActionFailed,
             getActionErrors,
+            isActionAbortError,
             resetActionState,
             abortAction,
             onBeforeAction,

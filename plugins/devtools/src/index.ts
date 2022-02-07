@@ -168,7 +168,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
     };
 }
 
-function getMutationHook(api: DevtoolsPluginApi, logType?: LogType): EventHandler {
+function getMutationHook(api: DevtoolsPluginApi<unknown>, logType?: LogType): EventHandler {
     return payload => {
         if (!payload) {
             return;
