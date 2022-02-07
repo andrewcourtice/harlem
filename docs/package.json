@@ -17,7 +17,7 @@
         "vuepress-vite": "^2.0.0-beta.25"
     },
     "devDependencies": {
-        "postcss": "^8.3.6",
-        "postcss-loader": "^6.1.1"
+        "postcss": "^8.4.6",
+        "postcss-loader": "^6.2.1"
     }
 }

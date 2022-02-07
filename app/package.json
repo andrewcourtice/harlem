@@ -24,14 +24,14 @@
         "@harlem/extension-trace": "^2.2.1",
         "@harlem/extension-transaction": "^2.2.1",
         "@harlem/plugin-devtools": "^2.2.1",
-        "date-fns": "^2.23.0",
-        "date-fns-tz": "^1.1.6",
+        "date-fns": "^2.28.0",
+        "date-fns-tz": "^1.2.2",
         "flex-layout-attribute": "^1.0.3",
-        "vue": "^3.2.11"
+        "vue": "^3.2.29"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^1.6.1",
-        "@vue/compiler-sfc": "^3.2.11",
-        "vite": "2.5.3"
+        "@vitejs/plugin-vue": "^2.1.0",
+        "@vue/compiler-sfc": "^3.2.29",
+        "vite": "2.7.13"
     }
 }
