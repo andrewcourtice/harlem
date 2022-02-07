@@ -3,7 +3,8 @@ import {
 } from './constants';
 
 import {
-    computed, DeepReadonly,
+    computed,
+    DeepReadonly,
 } from 'vue';
 
 import {
