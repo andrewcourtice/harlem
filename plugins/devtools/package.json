@@ -43,7 +43,7 @@
     },
     "dependencies": {
         "@harlem/utilities": "^2.2.2",
-        "@vue/devtools-api": "^6.0.0-beta.21"
+        "@vue/devtools-api": "^6.0.1"
     },
     "devDependencies": {
         "@harlem/core": "^2.2.2"
