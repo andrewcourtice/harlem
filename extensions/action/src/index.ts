@@ -23,12 +23,14 @@ import {
 
 import type {
     Action,
+    ActionAbortStrategies,
     ActionBody,
     ActionEventData,
     ActionHookHandler,
     ActionOptions,
     ActionPredicate,
     ActionStoreState,
+    Options,
 } from './types';
 
 export {
@@ -37,7 +39,27 @@ export {
 
 export * from './types';
 
-export default function actionsExtension<TState extends BaseState>() {
+export const ABORT_STRATEGY = {
+    error: (name, id, resolve, reject, reason) => {
+        reject(new ActionAbortError(name, id, reason));
+    },
+    warn: (name, id, resolve, reject, reason) => {
+        console.warn(`Action ${name} has been cancelled. Reason: ${reason || 'unknown'}`);
+        resolve();
+    },
+} as ActionAbortStrategies;
+
+export default function actionsExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const {
+        strategies,
+    } = {
+        ...options,
+        strategies: {
+            abort: ABORT_STRATEGY.error,
+            ...options?.strategies,
+        },
+    };
+
     return (store: InternalStore<TState>) => {
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
@@ -98,13 +120,13 @@ export default function actionsExtension<TState extends BaseState>() {
                 parallel: false,
                 autoClearErrors: true,
                 ...options,
-            };
+            } as ActionOptions;
 
             const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
 
             return ((payload: TPayload, controller?: AbortController) => {
                 if (!parallel) {
-                    abortAction(name);
+                    abortAction(name, 'New instance started on non-parallel action');
                 }
 
                 if (autoClearErrors) {
@@ -115,7 +137,7 @@ export default function actionsExtension<TState extends BaseState>() {
                     const id = Symbol(name);
 
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
-                    const fail = () => reject(new ActionAbortError(name, id));
+                    const fail = (reason?: unknown) => strategies.abort(name, id, resolve, reject, reason);
 
                     let result: TResult | undefined;
 
@@ -125,7 +147,7 @@ export default function actionsExtension<TState extends BaseState>() {
                         result,
                     } as ActionEventData);
 
-                    onAbort(() => (complete(), fail()));
+                    onAbort(reason => (complete(), fail(reason)));
                     addInstance(name, id, payload);
 
                     emit(EVENTS.action.before);
@@ -140,7 +162,7 @@ export default function actionsExtension<TState extends BaseState>() {
                         resolve(result);
                     } catch (error) {
                         if (error instanceof DOMException) {
-                            return fail(); // Fetch has been cancelled
+                            return fail('Network request cancelled'); // Fetch has been cancelled
                         }
 
                         emit(EVENTS.action.error);
@@ -235,7 +257,7 @@ export default function actionsExtension<TState extends BaseState>() {
             }));
         }
 
-        function abortAction(name: string | string[]) {
+        function abortAction(name: string | string[], reason?: unknown) {
             ([] as string[])
                 .concat(name)
                 .forEach(name => {
@@ -243,7 +265,7 @@ export default function actionsExtension<TState extends BaseState>() {
 
                     if (tasks && tasks.size > 0) {
                         tasks.forEach(task => {
-                            task.abort();
+                            task.abort(reason);
                             tasks.delete(task);
                         });
                     }

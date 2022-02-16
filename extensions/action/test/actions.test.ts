@@ -112,7 +112,9 @@ describe('Actions Extension', () => {
 
         const task = loadUserInfo();
 
-        setTimeout(() => task.abort(), 100);
+        setTimeout(() => task.abort('Direct cancellation'), 100);
+
+        expect.assertions(5);
 
         try {
             await task;
@@ -140,7 +142,9 @@ describe('Actions Extension', () => {
 
         const task = loadUserInfo();
 
-        setTimeout(() => abortAction(loadUserInfoName), 100);
+        setTimeout(() => abortAction(loadUserInfoName, 'Indirect cancellation'), 100);
+
+        expect.assertions(5);
 
         try {
             await task;
