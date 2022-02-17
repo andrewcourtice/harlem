@@ -34,7 +34,7 @@ npm install @harlem/extension-storage
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-18,21-28}
+```typescript{16-19,22-29}
 import storageExtension from '@harlem/extension-storage';
 
 import {
