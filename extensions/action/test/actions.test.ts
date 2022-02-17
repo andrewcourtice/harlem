@@ -100,6 +100,8 @@ describe('Actions Extension', () => {
     });
 
     test('Handles direct cancellation', async () => {
+        expect.assertions(5);
+
         const {
             loadUserInfo,
             loadUserInfoName,
@@ -114,8 +116,6 @@ describe('Actions Extension', () => {
 
         setTimeout(() => task.abort('Direct cancellation'), 100);
 
-        expect.assertions(5);
-
         try {
             await task;
         } catch (error) {
@@ -129,6 +129,8 @@ describe('Actions Extension', () => {
     });
 
     test('Handles indirect cancellation', async () => {
+        expect.assertions(5);
+
         const {
             loadUserInfo,
             loadUserInfoName,
@@ -143,8 +145,6 @@ describe('Actions Extension', () => {
         const task = loadUserInfo();
 
         setTimeout(() => abortAction(loadUserInfoName, 'Indirect cancellation'), 100);
-
-        expect.assertions(5);
 
         try {
             await task;
@@ -169,6 +169,7 @@ describe('Actions Extension', () => {
         });
 
         let hasSingleFailed = false;
+        let hasConcurrentFailed = false;
 
         try {
             await Promise.all([
@@ -178,8 +179,6 @@ describe('Actions Extension', () => {
         } catch {
             hasSingleFailed = true;
         }
-
-        let hasConcurrentFailed = false;
 
         try {
             await Promise.all([
@@ -195,6 +194,8 @@ describe('Actions Extension', () => {
     });
 
     test('Handles errors', async () => {
+        expect.assertions(4);
+
         const {
             action,
             hasActionFailed,
@@ -220,6 +221,31 @@ describe('Actions Extension', () => {
         expect(hasActionFailed(name)).toBe(true);
         expect(errors.length).toBe(1);
         expect(errors[0].error).toBeInstanceOf(Error);
+    });
+
+    test('Handles custom abort strategies', async () => {
+        expect.assertions(2);
+
+        const {
+            action,
+            hasActionRun,
+        } = instance.store;
+
+        const name = 'strategy-action';
+        const strategyFn = jest.fn();
+
+        const task = action(name, async (p, m, controller) => fetchUserInfo(controller), {
+            strategies: {
+                abort: (name, id, resolve) => (strategyFn(), resolve()),
+            },
+        })();
+
+        setTimeout(() => task.abort('Abort strategy cancellation'), 100);
+
+        await task;
+
+        expect(strategyFn).toHaveBeenCalled();
+        expect(hasActionRun(name)).toBe(false);
     });
 
     test('Handles action resetting', async () => {
