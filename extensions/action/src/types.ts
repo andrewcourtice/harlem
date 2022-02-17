@@ -14,9 +14,11 @@ export type ActionHookHandler<TPayload, TResult> = (data: ActionEventData<TPaylo
 export type ActionAbortStrategy = (name: string, id: symbol, resolve: (value?: any) => void, reject: (reason: unknown) => void, reason?: unknown) => void;
 
 export interface Options {
-    strategies: {
-        abort: ActionAbortStrategy
-    }
+    strategies: ActionStrategies;
+}
+
+export interface ActionStrategies {
+    abort: ActionAbortStrategy;
 }
 
 export interface ActionAbortStrategies {
@@ -38,6 +40,7 @@ export interface ActionOptions {
     parallel: boolean;
     autoClearErrors: boolean;
     suppressAbortErrors: boolean;
+    strategies: ActionStrategies;
 }
 
 export interface ActionEventData<TPayload = any, TResult = any> {

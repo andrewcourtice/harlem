@@ -51,7 +51,7 @@ export const ABORT_STRATEGY = {
 
 export default function actionsExtension<TState extends BaseState>(options?: Partial<Options>) {
     const {
-        strategies,
+        strategies: rootStrategies,
     } = {
         ...options,
         strategies: {
@@ -116,10 +116,17 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             const {
                 parallel,
                 autoClearErrors,
+                strategies,
             } = {
                 parallel: false,
                 autoClearErrors: true,
+
                 ...options,
+
+                strategies: {
+                    ...rootStrategies,
+                    ...options?.strategies,
+                },
             } as ActionOptions;
 
             const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
@@ -158,6 +165,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                         result = await body(providedPayload, mutate, controller, onAbort);
 
                         emit(EVENTS.action.success);
+
                         incrementRunCount(name);
                         resolve(result);
                     } catch (error) {
