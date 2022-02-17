@@ -24,6 +24,8 @@ npm install @harlem/core
   </CodeGroupItem>
 </CodeGroup>
 
+**Note**: If you're using Nuxt, instead follow the instructions to [install the Nuxt module](https://github.com/nuxt-community/harlem-module) and then resume this guide below, at [Create your first store](#create-your-first-store).
+
 ## Register the Harlem plugin
 
 Register the Harlem plugin with your Vue app instance:
