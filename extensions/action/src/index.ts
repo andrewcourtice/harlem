@@ -21,6 +21,10 @@ import {
     ActionAbortError,
 } from './errors';
 
+import {
+    getAbortMessage,
+} from './utilities';
+
 import type {
     Action,
     ActionAbortStrategies,
@@ -44,7 +48,7 @@ export const ABORT_STRATEGY = {
         reject(new ActionAbortError(name, id, reason));
     },
     warn: (name, id, resolve, reject, reason) => {
-        console.warn(`Action ${name} has been cancelled. Reason: ${reason || 'unknown'}`);
+        console.warn(getAbortMessage(name, reason));
         resolve();
     },
 } as ActionAbortStrategies;
