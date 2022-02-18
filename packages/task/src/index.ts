@@ -63,6 +63,10 @@ export default class Task<T = void> extends Promise<T> {
         this.controller = controller;
     }
 
+    public static isTask(value: unknown): value is Task {
+        return value instanceof Task;
+    }
+
     public get signal(): AbortSignal {
         return this.controller.signal;
     }
