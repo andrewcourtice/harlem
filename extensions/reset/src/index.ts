@@ -1,5 +1,6 @@
 import {
     SENDER,
+    MUTATIONS,
 } from './constants';
 
 import {
@@ -24,7 +25,7 @@ export default function resetExtension<TState extends BaseState>() {
         const snapshot = clone(store.state) as TState;
 
         function reset<TBranchState extends BaseState>(branchCallback: BranchCallback<TState, TBranchState> = state => state as TBranchState) {
-            store.write('$reset', SENDER, state => {
+            store.write(MUTATIONS.reset, SENDER, state => {
                 const source = branchCallback(snapshot);
                 const target = branchCallback(state);
 

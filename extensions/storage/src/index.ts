@@ -1,5 +1,6 @@
 import {
     SENDER,
+    MUTATIONS,
 } from './constants';
 
 import {
@@ -47,7 +48,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;
 
         store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
-            if (!event || event.data.mutation === '$storage' || exclude.includes(event.data.mutation)) {
+            if (!event || event.data.mutation === MUTATIONS.storage || exclude.includes(event.data.mutation)) {
                 return;
             }
 
@@ -61,7 +62,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
 
         function listener({ key, storageArea, newValue }: StorageEvent) {
             if (storageArea === storage && key === storageKey && newValue) {
-                store.write('$storage', SENDER, state => Object.assign(state, parser(newValue)));
+                store.write(MUTATIONS.storage, SENDER, state => Object.assign(state, parser(newValue)));
             }
         }
 
@@ -78,7 +79,9 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         }
 
         function restoreStorage() {
-            store.write('$storage', SENDER, state => Object.assign(state, parser(storage.getItem(storageKey) as string)));
+            store.write(MUTATIONS.storage, SENDER, state => {
+                Object.assign(state, parser(storage.getItem(storageKey) as string));
+            });
         }
 
         store.once(EVENTS.store.destroyed, () => stopStorageSync());

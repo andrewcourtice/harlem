@@ -223,6 +223,38 @@ describe('Actions Extension', () => {
         expect(errors[0].error).toBeInstanceOf(Error);
     });
 
+    test('Handles suppressing abort errors', async () => {
+        expect.assertions(5);
+
+        const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
+            state,
+            hasActionRun,
+            suppressAbortError,
+        } = instance.store;
+
+        const task = suppressAbortError(loadUserInfo)();
+        const catchAssertion = jest.fn();
+
+        setTimeout(() => task.abort('Direct cancellation'), 100);
+
+        try {
+            await task;
+        } catch (error) {
+            catchAssertion(error);
+        } finally {
+            expect(catchAssertion).not.toHaveBeenCalled();
+            expect(state.details.firstName).toBe('');
+            expect(state.details.lastName).toBe('');
+            expect(state.details.age).toBe(0);
+            expect(hasActionRun(loadUserInfoName)).toBe(false);
+        }
+    });
+
     test('Handles custom abort strategies', async () => {
         expect.assertions(2);
 

@@ -1,5 +1,6 @@
 import {
     SENDER,
+    MUTATIONS,
 } from './constants';
 
 import {
@@ -24,7 +25,7 @@ export default function snapshotExtension<TState extends BaseState>(options?: Pa
     const {
         mutationName,
     } = {
-        mutationName: '$snapshot',
+        mutationName: MUTATIONS.snapshot,
         ...options,
     } as Options;
 
