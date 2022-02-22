@@ -72,7 +72,8 @@ export default function composeExtension<TState extends BaseState>() {
             }
 
             const getter = () => parent(store.state)[key] as DeepReadonly<TValue>;
-            const setter = (value: TValue) => store.write(name, SENDER, state => {
+            const setter:Setter<TValue> = (valueOrCallback) => store.write(name, SENDER, state => {
+                const value = typeof valueOrCallback === 'function' ? (valueOrCallback as (value: DeepReadonly<TValue>) => TValue)(getter()) : valueOrCallback;
                 parent(state)[key] = value;
             });
 
