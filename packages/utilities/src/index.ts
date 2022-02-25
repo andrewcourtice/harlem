@@ -7,6 +7,7 @@ export { default as toPath } from './object/to-path';
 
 export { default as getType } from './type/get-type';
 export { default as isArray } from './type/is-array';
+export { default as isFunction } from './type/is-function';
 export { default as isObject } from './type/is-object';
 export { default as isNil } from './type/is-nil';
 
