@@ -1,5 +1,5 @@
 export const SENDER = 'extension:storage';
 
 export const MUTATIONS = {
-    storage: 'extension:storage:write',
+    sync: 'extension:storage:sync',
 } as const;
