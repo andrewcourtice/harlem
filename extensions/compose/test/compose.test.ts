@@ -30,6 +30,8 @@ describe('Compose Extension', () => {
         expect(getFirstName()).toBe('');
         setFirstName('John');
         expect(getFirstName()).toBe('John');
+        setFirstName((name) => `${name} Doe`);
+        expect(getFirstName()).toBe('John Doe');
     });
 
     test('Use state with complex value', () => {
