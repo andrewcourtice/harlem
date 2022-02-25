@@ -16,6 +16,7 @@ import {
     fromPath,
     toPath,
     isNil,
+    isFunction,
 } from '@harlem/utilities';
 
 import type {
@@ -72,10 +73,11 @@ export default function composeExtension<TState extends BaseState>() {
             }
 
             const getter = () => parent(store.state)[key] as DeepReadonly<TValue>;
-            const setter:Setter<TValue> = (valueOrCallback) => store.write(name, SENDER, state => {
-                const value = typeof valueOrCallback === 'function' ? (valueOrCallback as (value: DeepReadonly<TValue>) => TValue)(getter()) : valueOrCallback;
-                parent(state)[key] = value;
-            });
+            const setter = (value => store.write(name, SENDER, state => {
+                parent(state)[key] = isFunction(value)
+                    ? value(getter())
+                    : value;
+            })) as Setter<TValue>;
 
             return [
                 getter,
