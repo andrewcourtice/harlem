@@ -180,6 +180,24 @@ export interface InternalStore<TState extends BaseState = any> extends StoreBase
     unregister(group: string, name: string): void;
 
     /**
+     * Get a flag value on this store
+     *
+     * @param {string} key
+     * @return {*}  {unknown}
+     * @memberof InternalStore
+     */
+    getFlag(key: string): unknown;
+
+    /**
+     * Set a flag value on this store
+     *
+     * @param {string} key
+     * @param {unknown} value
+     * @memberof InternalStore
+     */
+    setFlag(key: string, value: unknown): void;
+
+    /**
      * Emit an event from this store
      *
      * @param event - The name of the event to emit

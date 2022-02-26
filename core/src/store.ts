@@ -47,6 +47,7 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
 export default class Store<TState extends BaseState = any> implements InternalStore<TState> {
 
     private options: InternalStoreOptions<TState>;
+    private flags: Map<string, unknown>;
     private scope: EffectScope;
     private stack: Set<string>;
     private isSuppressing: boolean;
@@ -69,6 +70,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
         this.name = name;
         this.registrations = {};
+        this.flags = new Map();
         this.stack = new Set();
         this.isSuppressing = false;
         this.scope = effectScope();
@@ -111,6 +113,14 @@ export default class Store<TState extends BaseState = any> implements InternalSt
 
     public once(event: string, handler: EventHandler): EventListener {
         return eventEmitter.once(event, localiseHandler(this.name, handler));
+    }
+
+    public getFlag(key: string): unknown {
+        return this.flags.get(key);
+    }
+
+    public setFlag(key: string, value: unknown) {
+        this.flags.set(key, value);
     }
 
     public provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void {

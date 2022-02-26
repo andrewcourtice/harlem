@@ -55,7 +55,9 @@ function emitCreated(store: InternalStore, state: any): void {
     created before the plugin has been installed.
     */
     const created = () => {
+        store.emit(EVENTS.ssr.initClient, SENDER, state);
         store.emit(EVENTS.store.created, SENDER, state);
+        store.emit(EVENTS.ssr.initServer, SENDER, state);
         store.emit(EVENTS.devtools.update, SENDER, state);
     };
 
