@@ -140,6 +140,8 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
     } as Options;
 
     return (store: InternalStore<TState>) => {
+        store.register('extensions', 'trace', () => options);
+
         const traceCallbacks = new Set<TraceCallback<TState>>();
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
@@ -164,11 +166,13 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
             };
         }
 
-        store.once(EVENTS.store.destroyed, () => traceCallbacks.clear());
+        store.once(EVENTS.store.created, () => {
+            if (autoStart) {
+                startTrace();
+            }
+        });
 
-        if (autoStart) {
-            startTrace();
-        }
+        store.once(EVENTS.store.destroyed, () => traceCallbacks.clear());
 
         return {
             startTrace,

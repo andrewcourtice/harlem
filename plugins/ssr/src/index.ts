@@ -58,7 +58,9 @@ export function createServerSSRPlugin(): HarlemPlugin {
         name: 'server-ssr',
 
         install(app, eventEmitter, stores) {
-            eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
+            stores.forEach(store => store.setFlag('ssr:server', true));
+
+            eventEmitter.on(EVENTS.ssr.initServer, payload => onStoreEvent(stores, payload, store => {
                 snapshot[store.name] = store.state;
             }));
         },
@@ -68,7 +70,7 @@ export function createServerSSRPlugin(): HarlemPlugin {
 
 /**
  * Create a new instance of the client-side SSR plugin
-*/
+ */
 export function createClientSSRPlugin(): HarlemPlugin {
     return {
 
@@ -77,7 +79,9 @@ export function createClientSSRPlugin(): HarlemPlugin {
         install(app, eventEmitter, stores) {
             const data = window.__harlemState;
 
-            eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
+            stores.forEach(store => store.setFlag('ssr:client', true));
+
+            eventEmitter.on(EVENTS.ssr.initClient, payload => onStoreEvent(stores, payload, store => {
                 if (store.name in data) {
                     store.write(MUTATIONS.init, SENDER, state => overwrite(state, data[store.name]));
                 }

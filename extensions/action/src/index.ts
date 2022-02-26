@@ -67,6 +67,8 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
     };
 
     return (store: InternalStore<TState>) => {
+        store.register('extensions', 'action', () => options);
+
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
         const actionTasks = new Map<string, Set<Task<unknown>>>();

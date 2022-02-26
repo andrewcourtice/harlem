@@ -62,8 +62,11 @@ dist
 docs/public
 
 # vuepress build output
-.vuepress/dist
+.vuepress/dist/
 .vuepress/.temp/
+
+.nuxt/
+.output/
 
 .DS_STORE
 .idea

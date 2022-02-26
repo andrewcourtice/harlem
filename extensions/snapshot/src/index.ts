@@ -30,6 +30,8 @@ export default function snapshotExtension<TState extends BaseState>(options?: Pa
     } as Options;
 
     return (store: InternalStore<TState>) => {
+        store.register('extensions', 'snapshot', () => options);
+
         function apply<TBranchState extends BaseState>(snapshotBranch: TBranchState, branchCallback: BranchCallback<TState, TBranchState>) {
             store.write(mutationName, SENDER, state => {
                 const stateBranch = branchCallback(state);

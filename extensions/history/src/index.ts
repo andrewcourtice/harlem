@@ -44,6 +44,8 @@ export default function historyExtension<TState extends BaseState>(options?: Par
     });
 
     return (store: InternalStore<TState>) => {
+        store.register('extensions', 'history', () => options);
+
         const {
             startTrace,
             stopTrace,

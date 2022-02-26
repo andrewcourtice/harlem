@@ -12,6 +12,7 @@ import {
     INTERNAL,
     InternalStore,
     BaseState,
+    EVENTS,
 } from '@harlem/core';
 
 import type {
@@ -22,16 +23,24 @@ export * from './types';
 
 export default function resetExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
-        const snapshot = clone(store.state) as TState;
+        store.register('extensions', 'reset', () => ({}));
+
+        let snapshot: TState | undefined;
 
         function reset<TBranchState extends BaseState>(branchCallback: BranchCallback<TState, TBranchState> = state => state as TBranchState) {
             store.write(MUTATIONS.reset, SENDER, state => {
+                if (!snapshot) {
+                    return;
+                }
+
                 const source = branchCallback(snapshot);
                 const target = branchCallback(state);
 
                 overwrite(target, clone(source), INTERNAL.pattern);
             });
         }
+
+        store.on(EVENTS.store.created, () => snapshot = clone(store.state) as TState);
 
         return {
             reset,
