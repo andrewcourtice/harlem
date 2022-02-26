@@ -52,6 +52,8 @@ function getTraceObject<TValue extends object>() {
 export default function composeExtension<TState extends BaseState>() {
 
     return (store: InternalStore<TState>) => {
+        store.register('extensions', 'compose', () => ({}));
+
         const {
             value,
             getNodes,

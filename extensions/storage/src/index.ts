@@ -5,11 +5,11 @@ import {
 
 import {
     EVENTS,
+    INTERNAL,
     BaseState,
     EventPayload,
     InternalStore,
     MutationEventData,
-    INTERNAL,
 } from '@harlem/core';
 
 import {
@@ -43,23 +43,37 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         ...options,
     } as Options<TState>;
 
-    const storage = type === 'session' ? sessionStorage : localStorage;
-
     return (store: InternalStore<TState>) => {
+        if (store.getFlag('ssr:server')) {
+            const noop = () => {};
+
+            return {
+                startStorageSync: noop,
+                stopStorageSync: noop,
+                clearStorage: noop,
+                restoreStorage: noop,
+            };
+        }
+
+        store.register('extensions', 'storage', () => options);
+
+        const storage = type === 'session' ? sessionStorage : localStorage;
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;
 
-        store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
-            if (!event || event.data.mutation === MUTATIONS.sync || exclude.includes(event.data.mutation)) {
-                return;
-            }
+        function startStorageWrite() {
+            store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
+                if (!event || event.data.mutation === MUTATIONS.sync || exclude.includes(event.data.mutation)) {
+                    return;
+                }
 
-            try {
-                const state = omit(store.state, INTERNAL.pattern);
-                storage.setItem(storageKey, serialiser(state));
-            } catch {
-                console.warn('Failed to write to storage');
-            }
-        });
+                try {
+                    const state = omit(store.state, INTERNAL.pattern);
+                    storage.setItem(storageKey, serialiser(state));
+                } catch {
+                    console.warn('Failed to write to storage');
+                }
+            });
+        }
 
         function syncStorage(value: string) {
             store.write(MUTATIONS.sync, SENDER, state => Object.assign(state, parser(value)));
@@ -91,15 +105,19 @@ export default function storageExtension<TState extends BaseState>(options?: Par
             }
         }
 
+        store.once(EVENTS.store.created, () => {
+            startStorageWrite();
+
+            if (sync) {
+                startStorageSync();
+            }
+
+            if (restore) {
+                restoreStorage();
+            }
+        });
+
         store.once(EVENTS.store.destroyed, () => stopStorageSync());
-
-        if (sync) {
-            startStorageSync();
-        }
-
-        if (restore) {
-            restoreStorage();
-        }
 
         return {
             startStorageSync,

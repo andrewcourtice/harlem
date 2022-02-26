@@ -51,6 +51,7 @@ export default function lazyExtension<TState extends BaseState>() {
     }
 
     return (store: InternalStore<TState>) => {
+        store.register('extensions', 'lazy', () => ({}));
 
         function lazy<TResult>(name: string, body: LazyBody<TState, TResult>, defaultValue?: TResult) {
             const output = store.track(() => computedAsync(async onInvalidate => {
