@@ -38,8 +38,10 @@ npm install @harlem/extension-action
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-27,30}
-import actionExtension from '@harlem/extension-action';
+```typescript{18-29,32-36}
+import actionExtension, {
+    ABORT_STRATEGY
+} from '@harlem/extension-action';
 
 import {
     createStore
@@ -68,7 +70,11 @@ const {
     onActionError,
 } = createStore('example', STATE, {
     extensions: [
-        actionExtension()
+        actionExtension({
+            strategies: {
+                abort: ABORT_STRATEGY.error
+            }
+        })
     ]
 });
 ```
@@ -77,6 +83,10 @@ The action extension adds several new methods to the store instance (highlighted
 
 
 ## Usage
+
+### Options
+The action extension method accepts an options object with the following properties:
+- **strategies**: `object` - A set of custom strategies to apply globally to all actions. See [Changing action strategies](#changing-action-strategies).
 
 ### Defining an action
 An action can be defined the same way you define any other core functionality (eg. `getter`, `mutation` etc.).
@@ -159,7 +169,7 @@ abortAction('load-user-data');
 ```
 
 ::: warning
-Cancelling the task will throw an `ActionAbortError` where the action is executed. It is recommended to wrap actions you intend on cancelling (or that are not parallel) in a `try/catch` statement to handle this.
+By default, cancelling the task will throw an `ActionAbortError` where the action is executed. It is recommended to wrap actions you intend on cancelling (or that are not parallel) in a `try/catch` statement to handle this. To change this behaviour see [Changing action strategies](#changing-action-strategies).
 :::
 
 
@@ -241,6 +251,43 @@ const errors = getActionErrors('load-user-data');
 
 The list of errors is an array of objects with an **id**: `symbol` property and a **error**: `unknown` property. The id is the unique identifier for the instance this error occurred on.
 
+
+### Changing action strategies
+Each action has a set of strategies it executes in order to complete a set workload. The most common strategy is the abort strategy. The abort strategy indicates how the action should handle cancellation. By default, when an action is cancelled (or new instance started on a non-parallel action) an `ActionAbortError` is thrown.
+
+The abort strategy can be overridden either per-action (via action options) or globally for all actions (via the extension options).
+
+```typescript
+import {
+    ABORT_STRATEGY
+} from '@harlem/extension-action';
+
+export default action('load-user-data', async (id: number, mutate, controller) => {
+    ...
+}, {
+    strategies: {
+        // specify a custom abort action
+        abort: (name, instanceId, resolve, reject, reason) => reject(reason)
+
+        // or use a predefined one from Harlem
+        // the default strategy is ABORT_STRATEGY.error
+        abort: ABORT_STRATEGY.warn
+    }
+});
+```
+
+The abort strategy function is called with the following arguments:
+- **name**: `string` - The name of the action.
+- **instanceId**: `symbol` - The unique id of the action instance that was cancelled.
+- **resolve**: `function` - A function to resolve the task and consider the action execution succussful.
+- **reject**: `function` - A function to reject the task and consider the action execution unsuccussful.
+- **reason**: `any` - The reason the action was aborted.
+
+A custom abort strategy function **must** call either `resolve` or `reject` (recommended) synchronously. 
+
+::: warning
+Changing the abort strategy is **not recommended**! This option is provided for advanced use-cases. Changing the abort strategy has a significant impact on action workflow, especially parent-child action cancellation.
+:::
 
 ### Using triggers
 Action triggers are used the same way mutation triggers are with the only difference being using the action name as opposed to the mutation name. See the [triggers documentation](/guide/core-concepts/triggers) for more details.

@@ -3,6 +3,7 @@ import snapshotExtension from '@harlem/extension-snapshot';
 import {
     SENDER,
     EVENTS,
+    MUTATIONS,
 } from './constants';
 
 import {
@@ -26,7 +27,7 @@ export default function transactionExtension<TState extends BaseState>() {
         const {
             snapshot,
         } = snapshotExtension({
-            mutationName: '$transaction-rollback',
+            mutationName: MUTATIONS.rollback,
         })(store);
 
         function transaction<TPayload>(name: string, transactor: Transactor<TState, TPayload>): Transaction<TPayload> {

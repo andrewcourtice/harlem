@@ -100,6 +100,8 @@ describe('Actions Extension', () => {
     });
 
     test('Handles direct cancellation', async () => {
+        expect.assertions(5);
+
         const {
             loadUserInfo,
             loadUserInfoName,
@@ -112,7 +114,7 @@ describe('Actions Extension', () => {
 
         const task = loadUserInfo();
 
-        setTimeout(() => task.abort(), 100);
+        setTimeout(() => task.abort('Direct cancellation'), 100);
 
         try {
             await task;
@@ -127,6 +129,8 @@ describe('Actions Extension', () => {
     });
 
     test('Handles indirect cancellation', async () => {
+        expect.assertions(5);
+
         const {
             loadUserInfo,
             loadUserInfoName,
@@ -140,7 +144,7 @@ describe('Actions Extension', () => {
 
         const task = loadUserInfo();
 
-        setTimeout(() => abortAction(loadUserInfoName), 100);
+        setTimeout(() => abortAction(loadUserInfoName, 'Indirect cancellation'), 100);
 
         try {
             await task;
@@ -165,6 +169,7 @@ describe('Actions Extension', () => {
         });
 
         let hasSingleFailed = false;
+        let hasConcurrentFailed = false;
 
         try {
             await Promise.all([
@@ -174,8 +179,6 @@ describe('Actions Extension', () => {
         } catch {
             hasSingleFailed = true;
         }
-
-        let hasConcurrentFailed = false;
 
         try {
             await Promise.all([
@@ -191,6 +194,8 @@ describe('Actions Extension', () => {
     });
 
     test('Handles errors', async () => {
+        expect.assertions(4);
+
         const {
             action,
             hasActionFailed,
@@ -216,6 +221,63 @@ describe('Actions Extension', () => {
         expect(hasActionFailed(name)).toBe(true);
         expect(errors.length).toBe(1);
         expect(errors[0].error).toBeInstanceOf(Error);
+    });
+
+    test('Handles suppressing abort errors', async () => {
+        expect.assertions(5);
+
+        const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
+            state,
+            hasActionRun,
+            suppressAbortError,
+        } = instance.store;
+
+        const task = suppressAbortError(loadUserInfo)();
+        const catchAssertion = jest.fn();
+
+        setTimeout(() => task.abort('Direct cancellation'), 100);
+
+        try {
+            await task;
+        } catch (error) {
+            catchAssertion(error);
+        } finally {
+            expect(catchAssertion).not.toHaveBeenCalled();
+            expect(state.details.firstName).toBe('');
+            expect(state.details.lastName).toBe('');
+            expect(state.details.age).toBe(0);
+            expect(hasActionRun(loadUserInfoName)).toBe(false);
+        }
+    });
+
+    test('Handles custom abort strategies', async () => {
+        expect.assertions(2);
+
+        const {
+            action,
+            hasActionRun,
+        } = instance.store;
+
+        const name = 'strategy-action';
+        const strategyFn = jest.fn();
+
+        const task = action(name, async (p, m, controller) => fetchUserInfo(controller), {
+            strategies: {
+                abort: (name, id, resolve) => (strategyFn(), resolve()),
+            },
+        })();
+
+        setTimeout(() => task.abort('Abort strategy cancellation'), 100);
+
+        await task;
+
+        expect(strategyFn).toHaveBeenCalled();
+        expect(hasActionRun(name)).toBe(false);
     });
 
     test('Handles action resetting', async () => {

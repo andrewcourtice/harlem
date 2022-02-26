@@ -4,6 +4,7 @@ import type {
 } from './types';
 
 export const SENDER = 'extension:history';
+export const MUTATION_FILTER = /^(plugin|extension)/;
 
 export const COMMAND_MAP = {
     exec: {

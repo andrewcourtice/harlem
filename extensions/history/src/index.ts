@@ -1,14 +1,15 @@
 import {
     COMMAND_MAP,
     SENDER,
+    MUTATION_FILTER,
 } from './constants';
 
 import {
-    EventPayload,
     EVENTS,
-    MutationEventData,
-    InternalStore,
     BaseState,
+    EventPayload,
+    InternalStore,
+    MutationEventData,
 } from '@harlem/core';
 
 import traceExtension, {
@@ -54,7 +55,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         let results = [] as TraceResult<any>[];
 
         function executeCommand(type: CommandType, command: HistoryCommand) {
-            store.write('$history', SENDER, state => {
+            store.write(`extension:history:${type}`, SENDER, state => {
                 const tasks = COMMAND_MAP[type];
 
                 let {
@@ -94,7 +95,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         }
 
         store.on(EVENTS.mutation.before, (event?: EventPayload<MutationEventData>) => {
-            if (!event || event.data.mutation.startsWith('$') || (mutationLookup.size > 0 && !mutationLookup.has(event.data.mutation))) {
+            if (!event || MUTATION_FILTER.test(event.data.mutation) || (mutationLookup.size > 0 && !mutationLookup.has(event.data.mutation))) {
                 return;
             }
 

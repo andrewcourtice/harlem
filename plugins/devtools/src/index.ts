@@ -3,11 +3,13 @@ import {
     DEVTOOLS_ID,
     OPTIONS,
     SENDER,
+    MUTATIONS,
 } from './constants';
 
 import {
     EVENTS,
     INTERNAL,
+    RegistrationValueProducer,
 } from '@harlem/core';
 
 import {
@@ -73,13 +75,21 @@ function getInspectorTreeHook(application: App, stores: InternalStores): TreeHoo
     };
 }
 
+function getRegistrationValue(producer: RegistrationValueProducer): unknown {
+    try {
+        return producer();
+    } catch {
+        return 'Failed to compute value...';
+    }
+}
+
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
     return Object.entries(store.registrations).reduce((output, [type, registrations]) => {
         output[type] = Array.from(registrations)
             .sort(([a], [b]) => stringComparitor(a, b))
             .map(([key, { type, producer }]) => ({
                 key,
-                value: producer(),
+                value: getRegistrationValue(producer),
                 editable: false,
                 objectType: type,
             } as StateBase));
@@ -164,7 +174,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
             return;
         }
 
-        store.write('plugin:devtools:set', SENDER, _state => set(_state, path, state.value));
+        store.write(MUTATIONS.set, SENDER, _state => set(_state, path, state.value));
     };
 }
 

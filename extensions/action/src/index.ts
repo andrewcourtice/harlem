@@ -4,6 +4,7 @@ import {
     SENDER,
     EVENTS,
     STATE_PROP,
+    MUTATIONS,
 } from './constants';
 
 import {
@@ -11,24 +12,30 @@ import {
 } from 'vue';
 
 import {
+    ActionAbortError,
+} from './errors';
+
+import {
+    getAbortMessage,
+} from './utilities';
+
+import type {
     BaseState,
     EventPayload,
     InternalStore,
     Mutator,
 } from '@harlem/core';
 
-import {
-    ActionAbortError,
-} from './errors';
-
 import type {
     Action,
+    ActionAbortStrategies,
     ActionBody,
     ActionEventData,
     ActionHookHandler,
     ActionOptions,
     ActionPredicate,
     ActionStoreState,
+    Options,
 } from './types';
 
 export {
@@ -37,13 +44,34 @@ export {
 
 export * from './types';
 
-export default function actionsExtension<TState extends BaseState>() {
+export const ABORT_STRATEGY = {
+    error: (name, id, resolve, reject, reason) => {
+        reject(new ActionAbortError(name, id, reason));
+    },
+    warn: (name, id, resolve, reject, reason) => {
+        console.warn(getAbortMessage(name, reason));
+        resolve();
+    },
+} as ActionAbortStrategies;
+
+export default function actionsExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const {
+        strategies: rootStrategies,
+    } = {
+        ...options,
+
+        strategies: {
+            abort: ABORT_STRATEGY.error,
+            ...options?.strategies,
+        },
+    };
+
     return (store: InternalStore<TState>) => {
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
         const actionTasks = new Map<string, Set<Task<unknown>>>();
 
-        _store.write('$action-init', SENDER, state => state[STATE_PROP] = {}, true);
+        _store.write(MUTATIONS.init, SENDER, state => state[STATE_PROP] = {}, true);
 
         function setActionState(state: TState & ActionStoreState, name: string) {
             state[STATE_PROP][name] = {
@@ -55,7 +83,7 @@ export default function actionsExtension<TState extends BaseState>() {
 
         function registerAction(name: string) {
             _store.register('actions', name, () => () => {});
-            _store.write('$action-register', SENDER, state => setActionState(state, name), true);
+            _store.write(MUTATIONS.register, SENDER, state => setActionState(state, name), true);
 
             const tasks = new Set<Task<unknown>>();
 
@@ -67,23 +95,23 @@ export default function actionsExtension<TState extends BaseState>() {
         }
 
         function incrementRunCount(name: string) {
-            _store.write('$action-increment-run-count', SENDER, state => state[STATE_PROP][name].runCount += 1);
+            _store.write(MUTATIONS.incrementRunCount, SENDER, state => state[STATE_PROP][name].runCount += 1);
         }
 
         function addInstance(name: string, instanceId: symbol, payload: unknown) {
-            _store.write('$action-add-instance', SENDER, state => state[STATE_PROP][name]?.instances.set(instanceId, payload));
+            _store.write(MUTATIONS.addInstance, SENDER, state => state[STATE_PROP][name]?.instances.set(instanceId, payload));
         }
 
         function removeInstance(name: string, instanceId: symbol) {
-            _store.write('$action-remove-instance', SENDER, state => state[STATE_PROP][name]?.instances.delete(instanceId));
+            _store.write(MUTATIONS.removeInstance, SENDER, state => state[STATE_PROP][name]?.instances.delete(instanceId));
         }
 
         function addError(name: string, instanceId: symbol, error: unknown) {
-            _store.write('$action-add-error', SENDER, state => state[STATE_PROP][name]?.errors.set(instanceId, error));
+            _store.write(MUTATIONS.addError, SENDER, state => state[STATE_PROP][name]?.errors.set(instanceId, error));
         }
 
         function clearErrors(name: string) {
-            _store.write('$action-clear-errors', SENDER, state => state[STATE_PROP][name]?.errors.clear());
+            _store.write(MUTATIONS.clearErrors, SENDER, state => state[STATE_PROP][name]?.errors.clear());
         }
 
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
@@ -94,17 +122,24 @@ export default function actionsExtension<TState extends BaseState>() {
             const {
                 parallel,
                 autoClearErrors,
+                strategies,
             } = {
                 parallel: false,
                 autoClearErrors: true,
+
                 ...options,
-            };
+
+                strategies: {
+                    ...rootStrategies,
+                    ...options?.strategies,
+                },
+            } as ActionOptions;
 
             const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
 
             return ((payload: TPayload, controller?: AbortController) => {
                 if (!parallel) {
-                    abortAction(name);
+                    abortAction(name, 'New instance started on non-parallel action');
                 }
 
                 if (autoClearErrors) {
@@ -115,7 +150,7 @@ export default function actionsExtension<TState extends BaseState>() {
                     const id = Symbol(name);
 
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
-                    const fail = () => reject(new ActionAbortError(name, id));
+                    const fail = (reason?: unknown) => strategies.abort(name, id, resolve, reject, reason);
 
                     let result: TResult | undefined;
 
@@ -125,7 +160,7 @@ export default function actionsExtension<TState extends BaseState>() {
                         result,
                     } as ActionEventData);
 
-                    onAbort(() => (complete(), fail()));
+                    onAbort(reason => (complete(), fail(reason)));
                     addInstance(name, id, payload);
 
                     emit(EVENTS.action.before);
@@ -136,11 +171,12 @@ export default function actionsExtension<TState extends BaseState>() {
                         result = await body(providedPayload, mutate, controller, onAbort);
 
                         emit(EVENTS.action.success);
+
                         incrementRunCount(name);
                         resolve(result);
                     } catch (error) {
                         if (error instanceof DOMException) {
-                            return fail(); // Fetch has been cancelled
+                            return fail('Network request cancelled'); // Fetch has been cancelled
                         }
 
                         emit(EVENTS.action.error);
@@ -228,14 +264,14 @@ export default function actionsExtension<TState extends BaseState>() {
         function resetActionState(name?: string | string[]) {
             const names = ([] as string[]).concat(name || Object.keys(_store.state[STATE_PROP]));
 
-            _store.write('$action-reset-state', SENDER, state => names.forEach(name => {
+            _store.write(MUTATIONS.resetState, SENDER, state => names.forEach(name => {
                 if (name in state[STATE_PROP]) {
                     setActionState(state, name);
                 }
             }));
         }
 
-        function abortAction(name: string | string[]) {
+        function abortAction(name: string | string[], reason?: unknown) {
             ([] as string[])
                 .concat(name)
                 .forEach(name => {
@@ -243,11 +279,26 @@ export default function actionsExtension<TState extends BaseState>() {
 
                     if (tasks && tasks.size > 0) {
                         tasks.forEach(task => {
-                            task.abort();
+                            task.abort(reason);
                             tasks.delete(task);
                         });
                     }
                 });
+        }
+
+        function suppressAbortError<TPayload, TResult>(action: Action<TPayload, TResult>) {
+            return ((payload: TPayload, controller?: AbortController) => {
+                return new Task<TResult | undefined>(async (resolve, reject, controller) => {
+                    try {
+                        const result = await action(payload, controller);
+                        resolve(result);
+                    } catch (error) {
+                        isActionAbortError(error)
+                            ? resolve(undefined)
+                            : reject(error);
+                    }
+                }, controller);
+            }) as Action<TPayload, TResult | undefined>;
         }
 
         const onBeforeAction = getActionTrigger(EVENTS.action.before);
@@ -265,6 +316,7 @@ export default function actionsExtension<TState extends BaseState>() {
             isActionAbortError,
             resetActionState,
             abortAction,
+            suppressAbortError,
             onBeforeAction,
             onAfterAction,
             onActionSuccess,

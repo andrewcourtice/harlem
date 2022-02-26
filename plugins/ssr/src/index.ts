@@ -1,5 +1,6 @@
 import {
     SENDER,
+    MUTATIONS,
 } from './constants';
 
 import {
@@ -78,7 +79,7 @@ export function createClientSSRPlugin(): HarlemPlugin {
 
             eventEmitter.on(EVENTS.store.created, payload => onStoreEvent(stores, payload, store => {
                 if (store.name in data) {
-                    store.write('plugin:ssr:init', SENDER, state => overwrite(state, data[store.name]));
+                    store.write(MUTATIONS.init, SENDER, state => overwrite(state, data[store.name]));
                 }
             }));
         },

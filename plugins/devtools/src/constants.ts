@@ -10,3 +10,7 @@ export const OPTIONS: Options = {
     label: 'Harlem',
     color: 0x40c48d,
 };
+
+export const MUTATIONS = {
+    set: 'plugin:devtools:set',
+} as const;
