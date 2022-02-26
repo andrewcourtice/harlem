@@ -10,6 +10,7 @@
         "app",
         "core",
         "docs",
+        "examples/*",
         "packages/*",
         "extensions/*",
         "plugins/*"

@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "nuxi dev",
+        "build": "nuxi build",
+        "start": "node .output/server/index.mjs"
+    },
+    "devDependencies": {
+        "nuxt3": "latest"
+    },
+    "dependencies": {
+        "@harlem/extension-compose": "^2.2.3",
+        "@harlem/extension-reset": "^2.2.3",
+        "@harlem/extension-storage": "^2.2.3",
+        "@nuxtjs/harlem": "^1.0.1"
+    }
+}
