@@ -7,6 +7,12 @@ import {
     ref,
 } from 'vue';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 function getSimpleTypes(): Record<string, unknown> {
     return {
         num: 1,

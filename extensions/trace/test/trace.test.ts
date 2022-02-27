@@ -1,9 +1,19 @@
+import traceExtension from '../src';
+
 import {
     getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import traceExtension from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    vi,
+} from 'vitest';
 
 describe('Trace Extension', () => {
 
@@ -16,7 +26,10 @@ describe('Trace Extension', () => {
     let instance = getInstance();
 
     beforeAll(() => bootstrap());
-    beforeEach(() => instance = getInstance());
+    beforeEach(() => {
+        instance = getInstance();
+    });
+
     afterEach(() => instance.store.destroy());
 
     test('Run a trace', () => {
@@ -32,7 +45,7 @@ describe('Trace Extension', () => {
             onTraceResult,
         } = store;
 
-        const callback = jest.fn();
+        const callback = vi.fn();
 
         onTraceResult(callback);
         startTrace();

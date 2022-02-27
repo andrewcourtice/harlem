@@ -1,9 +1,18 @@
+import lazyExtension from '../src';
+
 import {
     getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import lazyExtension from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    beforeEach,
+    afterEach,
+} from 'vitest';
 
 describe('Lazy Extension', () => {
 

@@ -1,9 +1,16 @@
+import transactionExtension from '../src/index';
+
 import {
     getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import transactionExtension from '../src/index';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+} from 'vitest';
 
 describe('Transaction Plugin', () => {
 

@@ -1,3 +1,5 @@
+import resetExtension from '../src';
+
 import {
     INTERNAL,
 } from '@harlem/core';
@@ -7,7 +9,14 @@ import {
     bootstrap,
 } from '@harlem/testing';
 
-import resetExtension from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    beforeEach,
+    afterEach,
+} from 'vitest';
 
 describe('Reset Extension', () => {
 
@@ -32,7 +41,10 @@ describe('Reset Extension', () => {
     let instance = getInstance();
 
     beforeAll(() => bootstrap());
-    beforeEach(() => instance = getInstance());
+    beforeEach(() => {
+        instance = getInstance();
+    });
+
     afterEach(() => instance.store.destroy());
 
     test('Performs a root reset', () => {

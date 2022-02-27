@@ -1,13 +1,23 @@
 import Task from '@harlem/task';
 
+import actionsExtension, {
+    ActionAbortError,
+} from '../src';
+
 import {
     getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import actionsExtension, {
-    ActionAbortError,
-} from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    vi,
+} from 'vitest';
 
 interface UserInfo {
     firstName: string;
@@ -23,7 +33,7 @@ function fetchUserInfo(controller: AbortController, timeout: number = 300): Task
             age: 32,
         }), timeout);
 
-        onAbort(() => (clearTimeout(handle), reject('Aborted!')));
+        onAbort(() => clearTimeout(handle));
     }, controller);
 }
 
@@ -53,7 +63,10 @@ describe('Actions Extension', () => {
     let instance = getInstance();
 
     beforeAll(() => bootstrap());
-    beforeEach(() => instance = getInstance());
+    beforeEach(() => {
+        instance = getInstance();
+    });
+
     afterEach(() => instance.store.destroy());
 
     test('Runs an action', async () => {
@@ -203,7 +216,7 @@ describe('Actions Extension', () => {
         } = instance.store;
 
         const name = 'failing-action';
-        const catchAssertion = jest.fn();
+        const catchAssertion = vi.fn();
 
         const failingAction = action(name, async () => {
             throw new Error('failed');
@@ -238,7 +251,7 @@ describe('Actions Extension', () => {
         } = instance.store;
 
         const task = suppressAbortError(loadUserInfo)();
-        const catchAssertion = jest.fn();
+        const catchAssertion = vi.fn();
 
         setTimeout(() => task.abort('Direct cancellation'), 100);
 
@@ -264,7 +277,7 @@ describe('Actions Extension', () => {
         } = instance.store;
 
         const name = 'strategy-action';
-        const strategyFn = jest.fn();
+        const strategyFn = vi.fn();
 
         const task = action(name, async (p, m, controller) => fetchUserInfo(controller), {
             strategies: {
@@ -310,10 +323,10 @@ describe('Actions Extension', () => {
         } = instance.store;
 
         const name = 'test-action';
-        const beforeTrigger = jest.fn();
-        const afterTrigger = jest.fn();
-        const successTrigger = jest.fn();
-        const errorTrigger = jest.fn();
+        const beforeTrigger = vi.fn();
+        const afterTrigger = vi.fn();
+        const successTrigger = vi.fn();
+        const errorTrigger = vi.fn();
 
         const testAction = action(name, async (throwError?: boolean) => {
             if (throwError) {

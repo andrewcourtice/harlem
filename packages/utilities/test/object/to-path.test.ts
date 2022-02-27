@@ -1,5 +1,11 @@
 import toPath from '../../src/object/to-path';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Utilities', () => {
 
     describe('Object To Path', () => {

@@ -1,5 +1,11 @@
 import lock from '../../src/object/lock';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Utilities', () => {
 
     describe('Object Lock', () => {

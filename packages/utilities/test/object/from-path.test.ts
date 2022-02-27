@@ -1,5 +1,11 @@
 import fromPath from '../../src/object/from-path';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Utilities', () => {
 
     describe('Object From Path', () => {
