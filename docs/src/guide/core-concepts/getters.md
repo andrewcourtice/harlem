@@ -36,10 +36,7 @@ The getter function returns a Vue computed property that can now be used in your
 </template>
 
 <script lang="ts" setup>
-import {
-    computed
-} from 'vue';
-
+// We can import getters we need right away
 import {
     fullName
 } from './stores/user';
