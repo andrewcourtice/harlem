@@ -1,9 +1,18 @@
+import snapshotExtension from '../src';
+
 import {
     getStore,
     bootstrap,
 } from '@harlem/testing';
 
-import snapshotExtension from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    beforeEach,
+    afterEach,
+} from 'vitest';
 
 describe('Snapshot Extension', () => {
 
@@ -16,7 +25,10 @@ describe('Snapshot Extension', () => {
     let instance = getInstance();
 
     beforeAll(() => bootstrap());
-    beforeEach(() => instance = getInstance());
+    beforeEach(() => {
+        instance = getInstance();
+    });
+
     afterEach(() => instance.store.destroy());
 
     test('Apply a snapshot', () => {

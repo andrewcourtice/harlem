@@ -1,5 +1,11 @@
 import isArray from '../../src/type/is-array';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Utilities', () => {
 
     describe('Type Is Array', () => {

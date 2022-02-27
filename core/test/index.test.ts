@@ -11,6 +11,14 @@ import {
     ref,
 } from 'vue';
 
+import {
+    describe,
+    test,
+    expect,
+    afterEach,
+    vi,
+} from 'vitest';
+
 function getStore() {
     const {
         state,
@@ -69,8 +77,8 @@ describe('Harlem Core', () => {
             const eventEmitter = new EventEmitter();
 
             const eventName = 'test-event';
-            const onListener = jest.fn();
-            const onceListener = jest.fn();
+            const onListener = vi.fn();
+            const onceListener = vi.fn();
 
             const listeners = [
                 eventEmitter.on(eventName, onListener),
@@ -211,10 +219,10 @@ describe('Harlem Core', () => {
             } = store;
 
             const name = 'test-mutation';
-            const beforeTrigger = jest.fn();
-            const afterTrigger = jest.fn();
-            const successTrigger = jest.fn();
-            const errorTrigger = jest.fn();
+            const beforeTrigger = vi.fn();
+            const afterTrigger = vi.fn();
+            const successTrigger = vi.fn();
+            const errorTrigger = vi.fn();
 
             const testMutation = mutation(name, (state, throwError: boolean) => {
                 if (throwError) {
@@ -255,7 +263,7 @@ describe('Harlem Core', () => {
                 onAfterMutation,
             } = store;
 
-            const handler = jest.fn();
+            const handler = vi.fn();
 
             const {
                 dispose,

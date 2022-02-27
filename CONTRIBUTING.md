@@ -13,7 +13,7 @@ The table below has basic information about the project to get you aquainted qui
 | Package Manager | Yarn 1.22+ |
 | Primary Language | TypeScript |
 | Build Agent | Vite |
-| Test Runner | Jest |
+| Test Runner | Vitest |
 | Documentation Framework | Vuepress |
 | Linter | ESLint |
 | Commit Convention | Angular (Standard) |

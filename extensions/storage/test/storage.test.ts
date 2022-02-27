@@ -1,9 +1,16 @@
+import storageExtension from '../src';
+
 import {
     bootstrap,
     getStore,
 } from '@harlem/testing';
 
-import storageExtension from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+} from 'vitest';
 
 describe('Storage Extension', () => {
 

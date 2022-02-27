@@ -1,9 +1,16 @@
+import composeExtension from '../src';
+
 import {
     bootstrap,
     getStore,
 } from '@harlem/testing';
 
-import composeExtension from '../src';
+import {
+    describe,
+    test,
+    expect,
+    beforeAll,
+} from 'vitest';
 
 describe('Compose Extension', () => {
 

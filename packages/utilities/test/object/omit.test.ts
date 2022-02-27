@@ -1,5 +1,11 @@
 import omit from '../../src/object/omit';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Utilities', () => {
 
     describe('Object Omit', () => {

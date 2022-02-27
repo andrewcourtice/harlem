@@ -1,5 +1,11 @@
 import Task from '../src';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Task', () => {
 
     test('Should handle cancellation', () => {

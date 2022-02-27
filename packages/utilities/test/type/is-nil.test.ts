@@ -1,5 +1,11 @@
 import isNil from '../../src/type/is-nil';
 
+import {
+    describe,
+    test,
+    expect,
+} from 'vitest';
+
 describe('Utilities', () => {
 
     describe('Type Is Nil', () => {
