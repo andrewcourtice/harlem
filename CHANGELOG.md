@@ -1,3 +1,219 @@
+# [2.3.0](https://github.com/andrewcourtice/harlem/compare/v2.2.3...v2.3.0) (2022-02-27)
+
+
+### Bug Fixes
+
+* **action:** fixed abort message typo ([e49d77e](https://github.com/andrewcourtice/harlem/commit/e49d77eb5d5e648a226d21105820b24aaf209ea4))
+* **action:** fixed reject callback typing ([82b1b7c](https://github.com/andrewcourtice/harlem/commit/82b1b7c2543127a69bf4a6627f4826496fa1522c))
+* **workflow:** removed ci arg for testing ([fa19b3c](https://github.com/andrewcourtice/harlem/commit/fa19b3cbb1386cb6922da6c327f44418cdd4125e))
+* **workflow:** removed reporting test results (temp) ([deef20c](https://github.com/andrewcourtice/harlem/commit/deef20c6a424ae37bf8f7243890803a92858e0b4))
+
+
+### Features
+
+* **action:** added custom strategy options to action extension ([cf49768](https://github.com/andrewcourtice/harlem/commit/cf497681928974438a044e46d70ac88cb7e2aaaa))
+* **action:** added root strategies ([407f2a0](https://github.com/andrewcourtice/harlem/commit/407f2a0512bdf22693e7c200e97567b44333ad4e))
+* **core:** added flags and new ssr events ([41207b5](https://github.com/andrewcourtice/harlem/commit/41207b5d259e58c2199f17db7c4d17111da60cc5))
+* **examples:** added nuxt 3 demo ([e79beea](https://github.com/andrewcourtice/harlem/commit/e79beea8c1f6f2cb686f6a3979a08e2c9c2b58c8))
+* **extensions:** added extensions registration for devtools ([4dcc809](https://github.com/andrewcourtice/harlem/commit/4dcc8095f1acb1336f72898eae1e2f79e4672a72))
+* **task:** added isTask static method ([5a207ce](https://github.com/andrewcourtice/harlem/commit/5a207cebb5617e6a9dfb45d4ac575b8a224bd8ed))
+* **utilities:** added isFunction type check ([3851c92](https://github.com/andrewcourtice/harlem/commit/3851c9243e813459bcc0f171881b9a4eb38b826e))
+
+
+
+## [2.2.3](https://github.com/andrewcourtice/harlem/compare/v2.2.2...v2.2.3) (2022-02-07)
+
+
+### Bug Fixes
+
+* **compose:** fixed incompatible readonly types ([1c59eec](https://github.com/andrewcourtice/harlem/commit/1c59eec9d5de637b8692d9149b1a31068411bc4d))
+
+
+
+## [2.2.2](https://github.com/andrewcourtice/harlem/compare/v2.2.1...v2.2.2) (2022-02-07)
+
+
+### Features
+
+* **action:** added isActionAbortError helper function ([ba62d3a](https://github.com/andrewcourtice/harlem/commit/ba62d3a5b92f9ad457e58fdf21e99c4b3afdee79))
+
+
+
+## [2.2.1](https://github.com/andrewcourtice/harlem/compare/v2.1.0...v2.2.1) (2021-12-14)
+
+
+### Bug Fixes
+
+* **compose:** fixed mutation name and nil check ([3859cf4](https://github.com/andrewcourtice/harlem/commit/3859cf48d7ae2558c773de0dc367b0e12f6570a8))
+* fixed prepublish script ([3fe2801](https://github.com/andrewcourtice/harlem/commit/3fe28018f21ecadd0ff973f56ed9b1dde9fbc2d3))
+* fixed yarn 2 workspace build commands ([312aebb](https://github.com/andrewcourtice/harlem/commit/312aebb8922568d28689112c6d71c5e2833e3481))
+* **reset:** fixed stale reference to snapshot ([033fbc2](https://github.com/andrewcourtice/harlem/commit/033fbc2a0d1f192e2ce7beaa60539b8e18912cec))
+* **workflow:** fixed frozen lock file cli command ([feedd11](https://github.com/andrewcourtice/harlem/commit/feedd11f293c5b4e1b2c2f0325df0be4c1a5cfe5))
+
+
+### Features
+
+* **compose:** started a basic compose extension ([aecf3e1](https://github.com/andrewcourtice/harlem/commit/aecf3e124e6602de48062cc34ef800ee45c7734f))
+* **utilities:** added is-nil utility ([90086f4](https://github.com/andrewcourtice/harlem/commit/90086f446b83f03cae12bad29c13698ccc179a96))
+
+
+
+# [2.1.0](https://github.com/andrewcourtice/harlem/compare/v2.0.1...v2.1.0) (2021-11-01)
+
+
+### Bug Fixes
+
+* fixed husky shell ref ([c67e038](https://github.com/andrewcourtice/harlem/commit/c67e038affc70f4e04a8432a63c1a503aa7015aa))
+
+
+### Features
+
+* **action:** added indirect cancellation to action extension ([a16f083](https://github.com/andrewcourtice/harlem/commit/a16f0839659cc5b88456c1674dca2a0259a7d418))
+* updated logo ([f31c847](https://github.com/andrewcourtice/harlem/commit/f31c8478341f36cdbb1d10747d97e7c1f265e9ad))
+
+
+
+## [2.0.1](https://github.com/andrewcourtice/harlem/compare/v2.0.0...v2.0.1) (2021-09-19)
+
+
+### Bug Fixes
+
+* **app:** fixed demo app due to vite bug ([651c453](https://github.com/andrewcourtice/harlem/commit/651c453111e0e6a14277bed54468025485076a0a))
+* match vue 3 target ecmascript version ([b7166a5](https://github.com/andrewcourtice/harlem/commit/b7166a5be0194493061b3621cba88343fe0a678d))
+
+
+
+# [2.0.0](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.10...v2.0.0) (2021-09-09)
+
+
+### Bug Fixes
+
+* fixed internal properties being visible in various areas ([3ef1606](https://github.com/andrewcourtice/harlem/commit/3ef160658d858d386cb60e56d399165584e4b5fe))
+
+
+### Features
+
+* **trace:** added debug option for logging results ([d241bea](https://github.com/andrewcourtice/harlem/commit/d241beac31b88a183a380cff3034329acb0aa716))
+
+
+
+# [2.0.0-beta.10](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.9...v2.0.0-beta.10) (2021-09-08)
+
+
+### Bug Fixes
+
+* fixed trigger order ([4d4d26e](https://github.com/andrewcourtice/harlem/commit/4d4d26e756568cdc2488bfad1c9d01ee3a4212e5))
+
+
+### Features
+
+* **transaction:** added transaction triggers and mutator helpers ([88cab67](https://github.com/andrewcourtice/harlem/commit/88cab67320067d373e6923fb9bd7be8a689445c0))
+
+
+
+# [2.0.0-beta.9](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.8...v2.0.0-beta.9) (2021-09-08)
+
+
+### Features
+
+* **action:** added action triggers ([b58fc6a](https://github.com/andrewcourtice/harlem/commit/b58fc6afbdbfb101c993260e844d2389aca35157))
+
+
+
+# [2.0.0-beta.8](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2021-09-07)
+
+
+### Features
+
+* **action:** added error states ([974dd80](https://github.com/andrewcourtice/harlem/commit/974dd805a9dda47e2f8e33ea323ef2caa8a1dcbe))
+
+
+
+# [2.0.0-beta.7](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2021-09-07)
+
+
+### Bug Fixes
+
+* **action:** return function as devtools value ([b7efd94](https://github.com/andrewcourtice/harlem/commit/b7efd94f4e63ab2cfbc418db6a900fdd5c8ebcaf))
+* **devtools:** send inspector tree on manual devtools update ([97e7203](https://github.com/andrewcourtice/harlem/commit/97e720317fb7f7f93432a3c32fab78bc7ae3a19b))
+
+
+
+# [2.0.0-beta.6](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2021-09-06)
+
+
+### Bug Fixes
+
+* **core:** notify devtools when store is created/destroyed ([5930537](https://github.com/andrewcourtice/harlem/commit/5930537b338005a7b47a6ef86e67633ed899189c))
+* **extensions:** added sender constant to lazy extension ([7af6778](https://github.com/andrewcourtice/harlem/commit/7af6778649cd4c9850b24b5289666230d542e633))
+
+
+### Features
+
+* **extensions:** added state reset method to action extension ([9deba20](https://github.com/andrewcourtice/harlem/commit/9deba202d35aa6a1d5198467e42feccce2a793fb))
+
+
+
+# [2.0.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2021-09-06)
+
+
+### Bug Fixes
+
+* **utilities:** fixed overwrite ignore logic ([c1e4b49](https://github.com/andrewcourtice/harlem/commit/c1e4b49b33f76d38c2ebd67c798a16ddf4ad2bf7))
+
+
+
+# [2.0.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2021-09-05)
+
+
+### Features
+
+* **extensions:** added branch function to reset ([3501915](https://github.com/andrewcourtice/harlem/commit/350191519b3dd7e08daf89c7b61701a9c17d6f07))
+* **utilities:** added top-level ignore pattern to overwrite ([9d8e71b](https://github.com/andrewcourtice/harlem/commit/9d8e71bdc762f54b12392c5abe8c49901d10f479))
+
+
+
+# [2.0.0-beta.3](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2021-09-01)
+
+
+### Bug Fixes
+
+* **utilities:** unref value before testing type for cloning ([fd5cc56](https://github.com/andrewcourtice/harlem/commit/fd5cc562ac569a37fc662763de2716a1cb753530))
+
+
+
+# [2.0.0-beta.2](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2021-08-19)
+
+
+### Bug Fixes
+
+* **action:** suppress initial write ops to prevent thrashing triggers ([268dd93](https://github.com/andrewcourtice/harlem/commit/268dd9342992b376362fa752f8413db6e2bf435f))
+* allowed comments in tsconfig ([6151630](https://github.com/andrewcourtice/harlem/commit/61516308c7252d129345d53b3a997971fb9ced26))
+* **core:** fixed suppress return type ([7dd5622](https://github.com/andrewcourtice/harlem/commit/7dd562267ba79cb90ed330f4b2ac68d94ea00f42))
+
+
+### Features
+
+* **core:** added event suppression ([8f5cbd3](https://github.com/andrewcourtice/harlem/commit/8f5cbd3100e7387689a54aaeac06d0633a3f6984))
+
+
+
+# [2.0.0-beta.1](https://github.com/andrewcourtice/harlem/compare/v2.0.0-beta.0...v2.0.0-beta.1) (2021-08-18)
+
+
+### Bug Fixes
+
+* fixed clone typing ([4f109d0](https://github.com/andrewcourtice/harlem/commit/4f109d086d366dc6d29a35b8519ef5ef5acb963d))
+* fixed package.json config for output ([da93d25](https://github.com/andrewcourtice/harlem/commit/da93d25577d812f25110878f88b7e8ffc98f550c))
+* **utilities:** added support for unwrapping reactives during clone ([e77ee3f](https://github.com/andrewcourtice/harlem/commit/e77ee3f2e150abaf5ca7ddb1f4946806c4691edc))
+
+
+### Features
+
+* **app:** added support for user defined theme ([86af320](https://github.com/andrewcourtice/harlem/commit/86af320badf76ef18ac74ff4ce553f350b864aaa))
+
+
+
 # [2.0.0-beta.0](https://github.com/andrewcourtice/harlem/compare/v2.0.0-alpha.0...v2.0.0-beta.0) (2021-08-11)
 
 
