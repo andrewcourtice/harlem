@@ -11,5 +11,11 @@ export default defineConfig({
             'verbose',
             'junit',
         ],
+        coverage: {
+            enabled: true,
+            reporter: [
+                'text-summary',
+            ],
+        },
     },
 });

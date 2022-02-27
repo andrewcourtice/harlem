@@ -27,6 +27,7 @@
         "@commitlint/config-conventional": "^16.2.1",
         "@typescript-eslint/eslint-plugin": "^5.12.0",
         "@typescript-eslint/parser": "^5.12.0",
+        "c8": "^7.11.0",
         "eslint": "^8.9.0",
         "happy-dom": "^2.41.0",
         "husky": "^7.0.4",
