@@ -869,6 +869,8 @@ __metadata:
   resolution: "@harlem/docs@workspace:docs"
   dependencies:
     "@vuepress/plugin-docsearch": ^2.0.0-beta.35
+    "@vuepress/plugin-google-analytics": ^2.0.0-beta.35
+    dotenv: ^16.0.0
     postcss: ^8.4.6
     postcss-loader: ^6.2.1
     vuepress: ^2.0.0-beta.35
@@ -3225,6 +3227,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vuepress/plugin-google-analytics@npm:^2.0.0-beta.35":
+  version: 2.0.0-beta.35
+  resolution: "@vuepress/plugin-google-analytics@npm:2.0.0-beta.35"
+  dependencies:
+    "@vuepress/client": 2.0.0-beta.35
+    "@vuepress/core": 2.0.0-beta.35
+    "@vuepress/utils": 2.0.0-beta.35
+  checksum: ad6e7620b323ea1f35a9507f1c5e4a1106d7a1e54d295966c62fd2864e80b4fd35266cff96f18f8e049d7063b9950039b5412be5faef5e1f724720c9db233db7
+  languageName: node
+  linkType: hard
+
 "@vuepress/plugin-medium-zoom@npm:2.0.0-beta.35":
   version: 2.0.0-beta.35
   resolution: "@vuepress/plugin-medium-zoom@npm:2.0.0-beta.35"
@@ -5411,6 +5424,13 @@ __metadata:
   version: 14.3.2
   resolution: "dotenv@npm:14.3.2"
   checksum: 86c06758915d6facc35275f4a7fafc16705b6f3b44befaa8abca91367991efc8ff8db5437d3cc14778231d19fb97610fe82d60f8a53ba723cdb69fe4171439aa
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "dotenv@npm:16.0.0"
+  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
   languageName: node
   linkType: hard
 

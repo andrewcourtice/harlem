@@ -72,3 +72,4 @@ docs/public
 .idea
 
 test-results.xml
+.vercel
