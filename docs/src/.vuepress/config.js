@@ -1,3 +1,10 @@
+const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({
+    path: path.resolve(__dirname, '../../../.env')
+});
+
 /**
  * @type {import('vuepress').AppConfig}
  */
@@ -95,9 +102,12 @@ module.exports = {
         }
     },
     plugins: [
+        ['@vuepress/plugin-google-analytics', {
+            id: process.env.DOCS_GA_ID
+        }],
         ['@vuepress/plugin-docsearch', {
-            apiKey: '08de2c25d5edc44bfcccacce8f8a9a78',
-            indexName: 'harlemjs'
+            apiKey: process.env.DOCS_ALGOLIA_KEY,
+            indexName: process.env.DOCS_ALGOLIA_INDEX
         }]
     ]
 };
