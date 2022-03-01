@@ -6,6 +6,7 @@ import {
     describe,
     test,
     expect,
+    vi,
 } from 'vitest';
 
 describe('Task', () => {
@@ -22,6 +23,40 @@ describe('Task', () => {
         setTimeout(() => task.abort(), 100);
 
         expect(task).rejects.toBeInstanceOf(TaskAbortError);
+    });
+
+    test('Should handle nested child cancellation', async () => {
+        expect.assertions(2);
+
+        const abortFn = vi.fn();
+        const catchFn = vi.fn();
+
+        const task = new Task((resolve, reject, controller, onAbort) => {
+            onAbort(() => abortFn());
+
+            new Task((resolve, reject, controller, onAbort) => {
+                onAbort(() => abortFn());
+
+                new Task((resolve, reject, controller, onAbort) => {
+                    const handle = setTimeout(() => resolve(), 1000);
+                    onAbort(() => {
+                        abortFn();
+                        clearTimeout(handle);
+                    });
+                }, controller);
+            }, controller);
+        });
+
+        setTimeout(() => task.abort(), 100);
+
+        try {
+            await task;
+        } catch {
+            catchFn();
+        }
+
+        expect(catchFn).toHaveBeenCalled();
+        expect(abortFn).toHaveBeenCalledTimes(3);
     });
 
 });
