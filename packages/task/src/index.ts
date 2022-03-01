@@ -1,63 +1,65 @@
+import {
+    TaskAbortError,
+} from './errors';
+
 import type {
     Product,
     TaskAbortCallback,
+    TaskAbortedCallback,
     TaskExecutor,
 } from './types';
 
+export * from './errors';
 export * from './types';
 
-function safeRun<TResult>(bodyInvokee: Product<TResult>, finallyInvokee: Product): Product<TResult> {
-    return (...args: any[]) => {
-        try {
-            return bodyInvokee(...args);
-        } finally {
-            finallyInvokee();
-        }
-    };
-}
-
-export default class Task<T = void> extends Promise<T> {
+export default class Task<TResult = void> extends Promise<TResult> {
 
     private controller: AbortController;
     private abortReason: unknown;
 
-    constructor(executor: TaskExecutor<T>, controller: AbortController = new AbortController()) {
+    constructor(executor: TaskExecutor<TResult>, controller: AbortController = new AbortController()) {
         if (controller.signal.aborted) {
             throw new Error('Cannot attach task to an already aborted controller');
         }
 
-        const listeners = new Set<Product>();
+        const listeners = new Set<TaskAbortCallback>();
+        let isAborting = false;
 
-        const addListener = (listener: Product) => {
-            listeners.add(listener);
-            controller.signal.addEventListener('abort', listener);
-        };
-
-        const removeListener = (listener: Product) => {
-            listeners.delete(listener);
-            controller.signal.removeEventListener('abort', listener);
-        };
-
-        const cleanup = () => {
-            if (listeners.size > 0) {
-                listeners.forEach(removeListener);
+        const execResolution = (callback: Product) => {
+            if (!isAborting) {
+                callback();
             }
         };
 
         super((_resolve, _reject) => {
-            const resolve = safeRun(_resolve, cleanup);
-            const reject = safeRun(_reject, cleanup);
+            let finaliser: TaskAbortedCallback = (reason) => _reject(new TaskAbortError(reason));
 
-            const onAbort = (callback: TaskAbortCallback) => {
-                const listener = safeRun(
-                    () => callback(this.abortReason),
-                    () => removeListener(listener),
-                ) as Product;
+            const resolve = (value: TResult | PromiseLike<TResult>) => execResolution(() => _resolve(value));
+            const reject = (reason?: any) => execResolution(() => _reject(reason));
+            const onAbort = (callback: TaskAbortCallback) => listeners.add(callback);
+            const onAborted = (callback: TaskAbortedCallback) => finaliser = callback;
 
-                addListener(listener);
+            const abort = () => {
+                controller.signal.removeEventListener('abort', abort);
+
+                isAborting = true;
+
+                listeners.forEach(listener => {
+                    try {
+                        listener(this.abortReason);
+                    } finally {
+                        listeners.delete(listener);
+                    }
+                });
+
+                isAborting = false;
+
+                finaliser(this.abortReason);
             };
 
-            executor(resolve, reject, controller, onAbort);
+            controller.signal.addEventListener('abort', abort);
+
+            executor(resolve, reject, controller, onAbort, onAborted);
         });
 
         this.controller = controller;
