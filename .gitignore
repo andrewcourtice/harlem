@@ -73,3 +73,5 @@ docs/public
 
 test-results.xml
 .vercel
+
+.reports

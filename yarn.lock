@@ -878,7 +878,50 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-action@^2.3.0, @harlem/extension-action@workspace:extensions/action":
+"@harlem/example-nuxt@workspace:examples/nuxt":
+  version: 0.0.0-use.local
+  resolution: "@harlem/example-nuxt@workspace:examples/nuxt"
+  dependencies:
+    "@harlem/extension-compose": ^2.3.0
+    "@harlem/extension-reset": ^2.3.0
+    "@harlem/extension-storage": ^2.3.0
+    "@nuxtjs/harlem": ^1.0.1
+    nuxt3: latest
+  languageName: unknown
+  linkType: soft
+
+"@harlem/example-vite-ts-actions@workspace:examples/vite-ts-actions":
+  version: 0.0.0-use.local
+  resolution: "@harlem/example-vite-ts-actions@workspace:examples/vite-ts-actions"
+  dependencies:
+    "@harlem/core": ^2.3.0
+    "@harlem/extension-action": "workspace:^"
+    "@harlem/extension-compose": ^2.3.0
+    "@harlem/extension-reset": ^2.3.0
+    "@harlem/extension-storage": ^2.3.0
+    "@harlem/plugin-devtools": ^2.3.0
+    "@vitejs/plugin-vue": ^2.2.4
+    vite: ^2.8.5
+    vue: ^3.2.31
+  languageName: unknown
+  linkType: soft
+
+"@harlem/example-vite-ts@workspace:examples/vite-ts":
+  version: 0.0.0-use.local
+  resolution: "@harlem/example-vite-ts@workspace:examples/vite-ts"
+  dependencies:
+    "@harlem/core": ^2.3.0
+    "@harlem/extension-compose": ^2.3.0
+    "@harlem/extension-reset": ^2.3.0
+    "@harlem/extension-storage": ^2.3.0
+    "@harlem/plugin-devtools": ^2.3.0
+    "@vitejs/plugin-vue": ^2.2.4
+    vite: ^2.8.5
+    vue: ^3.2.31
+  languageName: unknown
+  linkType: soft
+
+"@harlem/extension-action@^2.3.0, @harlem/extension-action@workspace:^, @harlem/extension-action@workspace:extensions/action":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-action@workspace:extensions/action"
   dependencies:
@@ -892,7 +935,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-compose@^2.2.3, @harlem/extension-compose@^2.3.0, @harlem/extension-compose@workspace:extensions/compose":
+"@harlem/extension-compose@^2.3.0, @harlem/extension-compose@workspace:extensions/compose":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-compose@workspace:extensions/compose"
   dependencies:
@@ -931,7 +974,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-reset@^2.2.3, @harlem/extension-reset@^2.3.0, @harlem/extension-reset@workspace:extensions/reset":
+"@harlem/extension-reset@^2.3.0, @harlem/extension-reset@workspace:extensions/reset":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-reset@workspace:extensions/reset"
   dependencies:
@@ -955,7 +998,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-storage@^2.2.3, @harlem/extension-storage@^2.3.0, @harlem/extension-storage@workspace:extensions/storage":
+"@harlem/extension-storage@^2.3.0, @harlem/extension-storage@workspace:extensions/storage":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-storage@workspace:extensions/storage"
   dependencies:
@@ -2918,6 +2961,16 @@ __metadata:
     vite: ^2.5.10
     vue: ^3.2.25
   checksum: f05920e282569c3721dbbd730c83e40978134c0f53cd10f9429cc37b22152c494782f7b9541db937a2fd7ed324b819ec8aa0b54f136c3c6adbed7298c9c9e9da
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-vue@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@vitejs/plugin-vue@npm:2.2.4"
+  peerDependencies:
+    vite: ^2.5.10
+    vue: ^3.2.25
+  checksum: 915f494940dd62d20204671a0d3bd81bcd44c02b314847325c9d0ad2f634eb3c012d3a00ffcac60416a5239e1d5e47e9cbf38f9c8cc9de708e12b98876ce946b
   languageName: node
   linkType: hard
 
@@ -9858,18 +9911,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-6d426f@workspace:examples/nuxt":
-  version: 0.0.0-use.local
-  resolution: "nuxt-6d426f@workspace:examples/nuxt"
-  dependencies:
-    "@harlem/extension-compose": ^2.2.3
-    "@harlem/extension-reset": ^2.2.3
-    "@harlem/extension-storage": ^2.2.3
-    "@nuxtjs/harlem": ^1.0.1
-    nuxt3: latest
-  languageName: unknown
-  linkType: soft
-
 "nuxt3@npm:latest":
   version: 3.0.0-27430570.4cfad4d
   resolution: "nuxt3@npm:3.0.0-27430570.4cfad4d"
@@ -13327,6 +13368,35 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 0531ea17d354c35026c87e732d28c777492cc5165c4abdaa507c4894535ecbbfcf447fa3f270bbb160cd7cba8ad319cc86a221be18b2ccd40d8be139f9d7381d
+  languageName: node
+  linkType: hard
+
+"vite@npm:^2.8.5":
+  version: 2.8.5
+  resolution: "vite@npm:2.8.5"
+  dependencies:
+    esbuild: ^0.14.14
+    fsevents: ~2.3.2
+    postcss: ^8.4.6
+    resolve: ^1.22.0
+    rollup: ^2.59.0
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 07688f8183fee2595e389d966011e94b2a069a3b6f3ff06b8edf452daaea76e2432c26e0eb60156543b3e42fb93e739a5d74667cc4bfc2c86b7c58ac7912a333
   languageName: node
   linkType: hard
 

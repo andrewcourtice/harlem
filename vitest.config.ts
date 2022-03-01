@@ -4,8 +4,8 @@ import {
 
 export default defineConfig({
     test: {
-        environment: 'jsdom',
         watch: false,
+        environment: 'jsdom',
         outputFile: 'test-results.xml',
         reporters: [
             'verbose',
@@ -13,6 +13,7 @@ export default defineConfig({
         ],
         coverage: {
             enabled: true,
+            reportsDirectory: './.reports/coverage',
             reporter: [
                 'text-summary',
             ],
