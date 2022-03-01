@@ -148,7 +148,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                     clearErrors(name);
                 }
 
-                const task = new Task<TResult>(async (resolve, reject, controller, onAbort) => {
+                const task = new Task<TResult>(async (resolve, reject, controller, onAbort, onAborted) => {
                     const id = Symbol(name);
 
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
@@ -162,7 +162,8 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                         result,
                     } as ActionEventData);
 
-                    onAbort(reason => (complete(), fail(reason)));
+                    onAbort(reason => complete());
+                    onAborted(reason => fail(reason));
                     addInstance(name, id, payload);
 
                     emit(EVENTS.action.before);
@@ -225,7 +226,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
         }
 
         function whenActionIdle<TPayload = unknown>(name: string, predicate?: ActionPredicate<TPayload>, controller?: AbortController): Task<void> {
-            return new Task((resolve, reject, controller, onAbort) => {
+            return new Task((resolve, reject, controller, onAbort, onAborted) => {
                 const isComplete = () => !isActionRunning(name, predicate);
 
                 if (isComplete()) {
@@ -239,10 +240,8 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                     }
                 });
 
-                onAbort(() => {
-                    unwatch();
-                    resolve();
-                });
+                onAbort(() => unwatch());
+                onAborted(() => resolve());
             }, controller);
         }
 
@@ -290,7 +289,9 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
 
         function suppressAbortError<TPayload, TResult>(action: Action<TPayload, TResult>) {
             return ((payload: TPayload, controller?: AbortController) => {
-                return new Task<TResult | undefined>(async (resolve, reject, controller) => {
+                return new Task<TResult | undefined>(async (resolve, reject, controller, onAbort, onAborted) => {
+                    onAborted(() => resolve(undefined));
+
                     try {
                         const result = await action(payload, controller);
                         resolve(result);
