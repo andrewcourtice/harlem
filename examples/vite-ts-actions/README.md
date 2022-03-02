@@ -1,6 +1,6 @@
-# Nuxt 3 Minimal Starter
+# Harlem Example - Vite + TS + Action Extension
 
-We recommend to look at the [documentation](https://v3.nuxtjs.org).
+This is a basic example of using Harlem with Vite, TypeScript and the Action Extension.
 
 ## Setup
 
@@ -25,5 +25,3 @@ Build the application for production:
 ```bash
 yarn build
 ```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/docs/deployment).
