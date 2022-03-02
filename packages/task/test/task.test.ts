@@ -1,5 +1,8 @@
 import Task, {
     TaskAbortError,
+    TaskExecutor,
+    TaskReject,
+    TaskResolve,
 } from '../src';
 
 import {
@@ -11,7 +14,18 @@ import {
 
 describe('Task', () => {
 
-    test('Should handle cancellation', () => {
+    function getChildTask(
+        executer: TaskExecutor<void>,
+        resolve: TaskResolve<void>,
+        reject: TaskReject,
+        controller: AbortController,
+    ) {
+        return new Task(executer, controller)
+            .then(() => resolve())
+            .catch(reason => reject(reason));
+    }
+
+    test('Should handle cancellation', async () => {
         const runTimeout = (timeout: number) => new Task<boolean>((resolve, reject, controller, onAbort) => {
             const handle = setTimeout(() => resolve(true), timeout);
 
@@ -22,7 +36,7 @@ describe('Task', () => {
 
         setTimeout(() => task.abort(), 100);
 
-        expect(task).rejects.toBeInstanceOf(TaskAbortError);
+        await expect(task).rejects.toBeInstanceOf(TaskAbortError);
     });
 
     test('Should handle nested child cancellation', async () => {
@@ -34,17 +48,18 @@ describe('Task', () => {
         const task = new Task((resolve, reject, controller, onAbort) => {
             onAbort(() => abortFn());
 
-            new Task((resolve, reject, controller, onAbort) => {
+            getChildTask((resolve, reject, controller, onAbort) => {
                 onAbort(() => abortFn());
-
-                new Task((resolve, reject, controller, onAbort) => {
+                getChildTask((resolve, reject, controller, onAbort) => {
                     const handle = setTimeout(() => resolve(), 1000);
+
                     onAbort(() => {
                         abortFn();
                         clearTimeout(handle);
                     });
-                }, controller);
-            }, controller);
+                }, resolve, reject, controller);
+            }, resolve, reject, controller);
+
         });
 
         setTimeout(() => task.abort(), 100);
@@ -57,6 +72,36 @@ describe('Task', () => {
 
         expect(catchFn).toHaveBeenCalled();
         expect(abortFn).toHaveBeenCalledTimes(3);
+    });
+
+    test('Should handle different abort resolutions', async () => {
+        expect.assertions(3);
+
+        const task1 = new Task((resolve) => {
+            setTimeout(() => resolve(), 1000);
+        });
+
+        const task2 = new Task((resolve, reject, controller, onAbort) => {
+            onAbort(() => reject('Error!'));
+            setTimeout(() => resolve(), 1000);
+        });
+
+        const task3 = new Task<number>((resolve, reject, controller, onAbort) => {
+            onAbort(() => resolve(1));
+            setTimeout(() => resolve(0), 1000);
+        });
+
+        setTimeout(() => [
+            task1,
+            task2,
+            task3,
+        ].forEach(task => task.abort()), 100);
+
+        await Promise.all([
+            expect(task1).rejects.toBeInstanceOf(TaskAbortError),
+            expect(task2).rejects.toBe('Error!'),
+            expect(task3).resolves.toBe(1),
+        ]);
     });
 
 });
