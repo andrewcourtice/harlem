@@ -45,21 +45,20 @@ describe('Task', () => {
         const abortFn = vi.fn();
         const catchFn = vi.fn();
 
-        const task = new Task((resolve, reject, controller, onAbort) => {
+        const task = new Task((resolve1, reject1, controller1, onAbort) => {
             onAbort(() => abortFn());
 
-            getChildTask((resolve, reject, controller, onAbort) => {
+            getChildTask((resolve2, reject2, controller2, onAbort) => {
                 onAbort(() => abortFn());
-                getChildTask((resolve, reject, controller, onAbort) => {
-                    const handle = setTimeout(() => resolve(), 1000);
+                getChildTask((resolve3, reject3, controller3, onAbort) => {
+                    const handle = setTimeout(() => resolve3(), 1000);
 
                     onAbort(() => {
                         abortFn();
                         clearTimeout(handle);
                     });
-                }, resolve, reject, controller);
-            }, resolve, reject, controller);
-
+                }, resolve2, reject2, controller2);
+            }, resolve1, reject1, controller1);
         });
 
         setTimeout(() => task.abort(), 100);
