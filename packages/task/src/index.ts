@@ -5,7 +5,6 @@ import {
 import type {
     Product,
     TaskAbortCallback,
-    TaskAbortedCallback,
     TaskExecutor,
 } from './types';
 
@@ -23,21 +22,23 @@ export default class Task<TResult = void> extends Promise<TResult> {
         }
 
         const listeners = new Set<TaskAbortCallback>();
+
         let isAborting = false;
+        let finaliser: Product | undefined;
 
         const execResolution = (callback: Product) => {
-            if (!isAborting) {
+            if (isAborting) {
+                finaliser = finaliser || callback;
+            } else {
                 callback();
             }
         };
 
         super((_resolve, _reject) => {
-            let finaliser: TaskAbortedCallback = (reason) => _reject(new TaskAbortError(reason));
-
+            const defaultFinaliser: TaskAbortCallback = (reason) => _reject(new TaskAbortError(reason));
             const resolve = (value: TResult | PromiseLike<TResult>) => execResolution(() => _resolve(value));
             const reject = (reason?: any) => execResolution(() => _reject(reason));
             const onAbort = (callback: TaskAbortCallback) => listeners.add(callback);
-            const onAborted = (callback: TaskAbortedCallback) => finaliser = callback;
 
             const abort = () => {
                 controller.signal.removeEventListener('abort', abort);
@@ -54,12 +55,12 @@ export default class Task<TResult = void> extends Promise<TResult> {
 
                 isAborting = false;
 
-                finaliser(this.abortReason);
+                (finaliser || defaultFinaliser)(this.abortReason);
             };
 
             controller.signal.addEventListener('abort', abort);
 
-            executor(resolve, reject, controller, onAbort, onAborted);
+            executor(resolve, reject, controller, onAbort);
         });
 
         this.controller = controller;
