@@ -26,23 +26,22 @@ export default class Task<TResult = void> extends Promise<TResult> {
         let isAborting = false;
         let finaliser: Product | undefined;
 
-        const execResolution = (callback: Product) => {
-            if (isAborting) {
-                finaliser = finaliser || callback;
-            } else {
-                callback();
-            }
-        };
-
         super((_resolve, _reject) => {
-            const defaultFinaliser: TaskAbortCallback = (reason) => _reject(new TaskAbortError(reason));
             const resolve = (value: TResult | PromiseLike<TResult>) => execResolution(() => _resolve(value));
             const reject = (reason?: any) => execResolution(() => _reject(reason));
             const onAbort = (callback: TaskAbortCallback) => listeners.add(callback);
+            const dispose = () => controller.signal.removeEventListener('abort', abort);
+
+            const execResolution = (resolution: Product) => {
+                if (isAborting) {
+                    finaliser = finaliser || resolution;
+                } else {
+                    dispose();
+                    resolution();
+                }
+            };
 
             const abort = () => {
-                controller.signal.removeEventListener('abort', abort);
-
                 isAborting = true;
 
                 listeners.forEach(listener => {
@@ -55,7 +54,10 @@ export default class Task<TResult = void> extends Promise<TResult> {
 
                 isAborting = false;
 
-                (finaliser || defaultFinaliser)(this.abortReason);
+                const finalise = finaliser || (reason => _reject(new TaskAbortError(reason)));
+
+                dispose();
+                finalise(this.abortReason);
             };
 
             controller.signal.addEventListener('abort', abort);
