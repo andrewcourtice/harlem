@@ -8,7 +8,7 @@
     },
     "dependencies": {
         "@harlem/core": "^2.3.0",
-        "@harlem/extension-action": "workspace:^",
+        "@harlem/extension-action": "^2.3.0",
         "@harlem/extension-compose": "^2.3.0",
         "@harlem/extension-reset": "^2.3.0",
         "@harlem/extension-storage": "^2.3.0",
