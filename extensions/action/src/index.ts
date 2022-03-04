@@ -239,10 +239,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                     }
                 });
 
-                onAbort(() => {
-                    unwatch();
-                    resolve();
-                });
+                onAbort(() => (unwatch(), resolve()));
             }, controller);
         }
 
@@ -290,13 +287,15 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
 
         function suppressAbortError<TPayload, TResult>(action: Action<TPayload, TResult>) {
             return ((payload: TPayload, controller?: AbortController) => {
-                return new Task<TResult | undefined>(async (resolve, reject, controller) => {
+                return new Task<TResult | void>(async (resolve, reject, controller, onAbort) => {
+                    onAbort(() => resolve());
+
                     try {
                         const result = await action(payload, controller);
                         resolve(result);
                     } catch (error) {
                         isActionAbortError(error)
-                            ? resolve(undefined)
+                            ? resolve()
                             : reject(error);
                     }
                 }, controller);

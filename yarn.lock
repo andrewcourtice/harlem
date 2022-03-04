@@ -895,7 +895,7 @@ __metadata:
   resolution: "@harlem/example-vite-ts-actions@workspace:examples/vite-ts-actions"
   dependencies:
     "@harlem/core": ^2.3.0
-    "@harlem/extension-action": "workspace:^"
+    "@harlem/extension-action": ^2.3.0
     "@harlem/extension-compose": ^2.3.0
     "@harlem/extension-reset": ^2.3.0
     "@harlem/extension-storage": ^2.3.0
@@ -921,7 +921,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-action@^2.3.0, @harlem/extension-action@workspace:^, @harlem/extension-action@workspace:extensions/action":
+"@harlem/extension-action@^2.3.0, @harlem/extension-action@workspace:extensions/action":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-action@workspace:extensions/action"
   dependencies:

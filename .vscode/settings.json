@@ -3,6 +3,8 @@
     "files.exclude": {
         "**/node_modules": true
     },
-    "vetur.experimental.templateInterpolationService": true,
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "[vue]": {
+        "editor.semanticHighlighting.enabled": false
+    }
 }
