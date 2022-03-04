@@ -794,17 +794,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/app@workspace:app"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/extension-action": ^2.3.0
-    "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-history": ^2.3.0
-    "@harlem/extension-lazy": ^2.3.0
-    "@harlem/extension-reset": ^2.3.0
-    "@harlem/extension-snapshot": ^2.3.0
-    "@harlem/extension-storage": ^2.3.0
-    "@harlem/extension-trace": ^2.3.0
-    "@harlem/extension-transaction": ^2.3.0
-    "@harlem/plugin-devtools": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/extension-action": ^2.3.1
+    "@harlem/extension-compose": ^2.3.1
+    "@harlem/extension-history": ^2.3.1
+    "@harlem/extension-lazy": ^2.3.1
+    "@harlem/extension-reset": ^2.3.1
+    "@harlem/extension-snapshot": ^2.3.1
+    "@harlem/extension-storage": ^2.3.1
+    "@harlem/extension-trace": ^2.3.1
+    "@harlem/extension-transaction": ^2.3.1
+    "@harlem/plugin-devtools": ^2.3.1
     "@vitejs/plugin-vue": ^2.2.0
     "@vue/compiler-sfc": ^3.2.31
     date-fns: ^2.28.0
@@ -815,11 +815,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/core@^2.0.0, @harlem/core@^2.2.3, @harlem/core@^2.3.0, @harlem/core@workspace:core":
+"@harlem/core@^2.0.0, @harlem/core@^2.2.3, @harlem/core@^2.3.0, @harlem/core@^2.3.1, @harlem/core@workspace:core":
   version: 0.0.0-use.local
   resolution: "@harlem/core@workspace:core"
   dependencies:
-    "@harlem/utilities": ^2.3.0
+    "@harlem/utilities": ^2.3.1
     vue: ^3.2.0
   peerDependencies:
     vue: ^3.2.0
@@ -883,13 +883,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-action@^2.3.0, @harlem/extension-action@workspace:extensions/action":
+"@harlem/extension-action@^2.3.0, @harlem/extension-action@^2.3.1, @harlem/extension-action@workspace:extensions/action":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-action@workspace:extensions/action"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/task": ^2.3.0
-    "@harlem/testing": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/task": ^2.3.1
+    "@harlem/testing": ^2.3.1
     vue: ^3.2.0
   peerDependencies:
     "@harlem/core": ^2.0.0
@@ -897,12 +897,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-compose@^2.3.0, @harlem/extension-compose@workspace:extensions/compose":
+"@harlem/extension-compose@^2.3.0, @harlem/extension-compose@^2.3.1, @harlem/extension-compose@workspace:extensions/compose":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-compose@workspace:extensions/compose"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/utilities": ^2.3.1
     vue: ^3.2.0
   peerDependencies:
     "@harlem/core": ^2.0.0
@@ -910,25 +910,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-history@^2.3.0, @harlem/extension-history@workspace:extensions/history":
+"@harlem/extension-history@^2.3.1, @harlem/extension-history@workspace:extensions/history":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-history@workspace:extensions/history"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/extension-trace": ^2.3.0
-    "@harlem/testing": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/extension-trace": ^2.3.1
+    "@harlem/testing": ^2.3.1
+    "@harlem/utilities": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-lazy@^2.3.0, @harlem/extension-lazy@workspace:extensions/lazy":
+"@harlem/extension-lazy@^2.3.1, @harlem/extension-lazy@workspace:extensions/lazy":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-lazy@workspace:extensions/lazy"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/testing": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/testing": ^2.3.1
     vue: ^3.2.0
   peerDependencies:
     "@harlem/core": ^2.0.0
@@ -936,70 +936,70 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-reset@^2.3.0, @harlem/extension-reset@workspace:extensions/reset":
+"@harlem/extension-reset@^2.3.0, @harlem/extension-reset@^2.3.1, @harlem/extension-reset@workspace:extensions/reset":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-reset@workspace:extensions/reset"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/testing": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/testing": ^2.3.1
+    "@harlem/utilities": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-snapshot@^2.3.0, @harlem/extension-snapshot@workspace:extensions/snapshot":
+"@harlem/extension-snapshot@^2.3.1, @harlem/extension-snapshot@workspace:extensions/snapshot":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-snapshot@workspace:extensions/snapshot"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/testing": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/testing": ^2.3.1
+    "@harlem/utilities": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-storage@^2.3.0, @harlem/extension-storage@workspace:extensions/storage":
+"@harlem/extension-storage@^2.3.0, @harlem/extension-storage@^2.3.1, @harlem/extension-storage@workspace:extensions/storage":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-storage@workspace:extensions/storage"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/utilities": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-trace@^2.3.0, @harlem/extension-trace@workspace:extensions/trace":
+"@harlem/extension-trace@^2.3.1, @harlem/extension-trace@workspace:extensions/trace":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-trace@workspace:extensions/trace"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/testing": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/testing": ^2.3.1
+    "@harlem/utilities": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-transaction@^2.3.0, @harlem/extension-transaction@workspace:extensions/transaction":
+"@harlem/extension-transaction@^2.3.1, @harlem/extension-transaction@workspace:extensions/transaction":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-transaction@workspace:extensions/transaction"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/extension-snapshot": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/extension-snapshot": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/plugin-devtools@^2.2.3, @harlem/plugin-devtools@^2.3.0, @harlem/plugin-devtools@workspace:plugins/devtools":
+"@harlem/plugin-devtools@^2.2.3, @harlem/plugin-devtools@^2.3.0, @harlem/plugin-devtools@^2.3.1, @harlem/plugin-devtools@workspace:plugins/devtools":
   version: 0.0.0-use.local
   resolution: "@harlem/plugin-devtools@workspace:plugins/devtools"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/utilities": ^2.3.1
     "@vue/devtools-api": ^6.0.11
   peerDependencies:
     "@harlem/core": ^2.0.0
@@ -1010,20 +1010,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/plugin-ssr@workspace:plugins/ssr"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/utilities": ^2.3.0
+    "@harlem/core": ^2.3.1
+    "@harlem/utilities": ^2.3.1
   peerDependencies:
     "@harlem/core": ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@harlem/task@^2.3.0, @harlem/task@workspace:packages/task":
+"@harlem/task@^2.3.1, @harlem/task@workspace:packages/task":
   version: 0.0.0-use.local
   resolution: "@harlem/task@workspace:packages/task"
   languageName: unknown
   linkType: soft
 
-"@harlem/testing@^2.3.0, @harlem/testing@workspace:packages/testing":
+"@harlem/testing@^2.3.1, @harlem/testing@workspace:packages/testing":
   version: 0.0.0-use.local
   resolution: "@harlem/testing@workspace:packages/testing"
   dependencies:
@@ -1031,7 +1031,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/utilities@^2.3.0, @harlem/utilities@workspace:packages/utilities":
+"@harlem/utilities@^2.3.1, @harlem/utilities@workspace:packages/utilities":
   version: 0.0.0-use.local
   resolution: "@harlem/utilities@workspace:packages/utilities"
   dependencies:

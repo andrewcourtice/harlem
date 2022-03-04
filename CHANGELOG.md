@@ -1,3 +1,22 @@
+## [2.3.1](https://github.com/andrewcourtice/harlem/compare/v2.3.0...v2.3.1) (2022-03-04)
+
+
+### Bug Fixes
+
+* **action:** fixed action task usage ([1db4cdb](https://github.com/andrewcourtice/harlem/commit/1db4cdba0c981f5b25c1c7beb1e5c107ff612c36))
+* **examples:** fixed package.json reference tp workspace dep ([ae26455](https://github.com/andrewcourtice/harlem/commit/ae264556bebe6ad6ad2306ffdec32742ac28280b))
+* **task:** dispose of event listeners on all resolution branches ([f293123](https://github.com/andrewcourtice/harlem/commit/f29312314e7aea3f031ac0ac0c492d0e96f98dd4))
+* **task:** fixed task abort resolutions ([29e1005](https://github.com/andrewcourtice/harlem/commit/29e1005db3c742c129c88cbf3a262b44d431da80))
+
+
+### Features
+
+* **docs:** added google analytics ([6fb5122](https://github.com/andrewcourtice/harlem/commit/6fb5122c136505fafc8eebf98817eb60c45c251d))
+* **examples:** added actions example ([88ad09a](https://github.com/andrewcourtice/harlem/commit/88ad09a478131e922669c0f8f7ca9ca4639f74d1))
+* **examples:** added further examples ([5251cfe](https://github.com/andrewcourtice/harlem/commit/5251cfea2fa74f420648322acebd7f047ee7dd44))
+
+
+
 # [2.3.0](https://github.com/andrewcourtice/harlem/compare/v2.2.3...v2.3.0) (2022-02-27)
 
 
