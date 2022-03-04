@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@harlem/docs",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",

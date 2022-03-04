@@ -1,7 +1,7 @@
 {
     "name": "@harlem/core",
     "amdName": "harlem",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
@@ -37,7 +37,7 @@
         "prepublishOnly": "yarn build"
     },
     "dependencies": {
-        "@harlem/utilities": "^2.3.0"
+        "@harlem/utilities": "^2.3.1"
     },
     "peerDependencies": {
         "vue": "^3.2.0"
