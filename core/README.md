@@ -53,6 +53,51 @@ export const setFirstName = mutation('set-first-name', (state, payload) => state
 export const setLastName = mutation('set-last-name', (state, payload) => state.lastName = payload);
 ```
 
+Or if you're using actions:
+
+```typescript
+import actionExtension from '@harlem/extension-action';
+
+import {
+    createStore
+} from '@harlem/core';
+
+const STATE = {
+    firstName: 'John',
+    lastName: 'Smith'
+};
+
+export const {
+    state,
+    getter,
+    mutation,
+    action,
+    ...store
+} = createStore('user', STATE, {
+    extensions: [
+        actionExtension()
+    ]
+});
+
+export const fullName = getter('fullname', state => {
+    return `${state.firstName} ${state.lastName}`;
+});
+
+export const loadUserData = action('load-user-data', async (id: string, mutate, { signal }) => {
+    const response = await fetch(`/api/users/${id}`, { signal });
+
+    const {
+        firstName,
+        lastName,
+    } = await response.json();
+
+    mutate(state => {
+        state.firstName = firstName;
+        state.lastName = lastName;
+    });
+});
+```
+
 4. Use your store in your app:
 ```html
 <template>
