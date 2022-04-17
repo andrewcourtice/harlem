@@ -1,10 +1,11 @@
 module.exports = {
+    root: true,
     parserOptions: {
         parser: '@typescript-eslint/parser',
     },
     extends: [
         'eslint:recommended',
-        'plugin:@typescript-eslint/recommended'
+        'plugin:@typescript-eslint/recommended',
     ],
     env: {
         'es2021': true,
