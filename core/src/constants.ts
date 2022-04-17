@@ -28,6 +28,7 @@ export const EVENTS = {
     },
     devtools: {
         update: 'devtools:update',
+        reset: 'devtools:reset',
     },
 } as const;
 
