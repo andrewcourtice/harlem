@@ -1,9 +1,12 @@
 {
     "npm.packageManager": "yarn",
+    "typescript.tsdk": "node_modules/typescript/lib",
     "files.exclude": {
         "**/node_modules": true
     },
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
     "[vue]": {
         "editor.semanticHighlighting.enabled": false
     }
