@@ -196,7 +196,7 @@ function getMutationHook(api: DevtoolsPluginApi<unknown>, logType?: LogType): Ev
                 title: 'Mutation',
                 subtitle: store,
                 groupId: store,
-                time: Date.now(),
+                time: api.now(),
                 data: payload,
                 meta: {
                     store: store,
@@ -242,6 +242,18 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
                     id: DEVTOOLS_ID,
                     icon: 'source',
                     treeFilterPlaceholder: 'Search stores',
+                    stateFilterPlaceholder: 'Search state',
+                    nodeActions: [
+                        {
+                            icon: 'replay',
+                            tooltip: 'Reset store',
+                            action: nodeId => eventEmitter.emit(EVENTS.devtools.reset, {
+                                sender: SENDER,
+                                store: nodeId,
+                                data: nodeId,
+                            }),
+                        },
+                    ],
                 });
 
                 api.addTimelineLayer({
