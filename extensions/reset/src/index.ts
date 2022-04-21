@@ -41,6 +41,7 @@ export default function resetExtension<TState extends BaseState>() {
         }
 
         store.on(EVENTS.store.created, () => snapshot = clone(store.state) as TState);
+        store.on(EVENTS.devtools.reset, () => reset());
 
         return {
             reset,
