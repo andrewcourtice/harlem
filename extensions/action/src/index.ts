@@ -222,6 +222,10 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             return instances.size > 0 && (!predicate || payloads.some(payload => predicate(payload as TPayload)));
         }
 
+        function isActionFirstRun(name: string) {
+            return !hasActionRun(name) && isActionRunning(name);
+        }
+
         function whenActionIdle<TPayload = unknown>(name: string, predicate?: ActionPredicate<TPayload>, controller?: AbortController): Task<void> {
             return new Task((resolve, reject, controller, onAbort) => {
                 const isComplete = () => !isActionRunning(name, predicate);
@@ -306,20 +310,21 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
         const onActionError = getActionTrigger(EVENTS.action.error);
 
         return {
-            action,
-            hasActionRun,
-            isActionRunning,
-            whenActionIdle,
-            hasActionFailed,
-            getActionErrors,
-            isActionAbortError,
-            resetActionState,
             abortAction,
-            suppressAbortError,
-            onBeforeAction,
-            onAfterAction,
-            onActionSuccess,
+            action,
+            getActionErrors,
+            hasActionFailed,
+            hasActionRun,
+            isActionAbortError,
+            isActionFirstRun,
+            isActionRunning,
             onActionError,
+            onActionSuccess,
+            onAfterAction,
+            onBeforeAction,
+            resetActionState,
+            suppressAbortError,
+            whenActionIdle,
         };
     };
 }
