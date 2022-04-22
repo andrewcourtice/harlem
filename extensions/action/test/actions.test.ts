@@ -95,6 +95,7 @@ describe('Actions Extension', () => {
             state,
             hasActionRun,
             isActionRunning,
+            isActionFirstRun,
         } = instance.store;
 
         expect(hasActionRun(loadUserInfoName)).toBe(false);
@@ -103,6 +104,7 @@ describe('Actions Extension', () => {
         const promise = loadUserInfo();
 
         expect(isActionRunning(loadUserInfoName)).toBe(true);
+        expect(isActionFirstRun(loadUserInfoName)).toBe(true);
 
         await promise;
 
