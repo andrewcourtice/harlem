@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-reset",
     "amdName": "harlemReset",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official reset extension for Harlem",
@@ -42,10 +42,10 @@
         "@harlem/core": "^2.0.0"
     },
     "dependencies": {
-        "@harlem/utilities": "^2.3.2"
+        "@harlem/utilities": "^2.3.3"
     },
     "devDependencies": {
-        "@harlem/core": "^2.3.2",
-        "@harlem/testing": "^2.3.2"
+        "@harlem/core": "^2.3.3",
+        "@harlem/testing": "^2.3.3"
     }
 }
