@@ -9,8 +9,8 @@ import {
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 function getSimpleTypes(): Record<string, unknown> {

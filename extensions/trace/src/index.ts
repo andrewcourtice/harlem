@@ -3,8 +3,8 @@ import {
 } from './constants';
 
 import {
-    EVENTS,
     BaseState,
+    EVENTS,
     InternalStore,
 } from '@harlem/core';
 
@@ -59,7 +59,7 @@ function defaultCallback<TValue extends object>(
     paths: PropertyKey[],
     prop: PropertyKey,
     oldValue: unknown,
-    newValue?: unknown,
+    newValue?: unknown
 ) {
     try {
         const nodes = paths.slice();
@@ -126,6 +126,7 @@ function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
         `background-color: ${background}`,
     ].join(';');
 
+    // @ts-ignore - This is an intentional console statement
     console.log(`%c${gate}%c ${path}`, style, '');
 }
 

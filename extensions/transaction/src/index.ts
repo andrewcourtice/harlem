@@ -1,9 +1,9 @@
 import snapshotExtension from '@harlem/extension-snapshot';
 
 import {
-    SENDER,
     EVENTS,
     MUTATIONS,
+    SENDER,
 } from './constants';
 
 import {
@@ -14,10 +14,10 @@ import {
 } from '@harlem/core';
 
 import type {
-    Transactor,
     Transaction,
     TransactionEventData,
     TransactionHookHandler,
+    Transactor,
 } from './types';
 
 export * from './types';

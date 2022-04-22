@@ -17,14 +17,14 @@ import {
 import {
     getHourRotation,
     getMinuteRotation,
-    getSecondRotation
+    getSecondRotation,
 } from '../../utilities/time/get-rotation';
 
 const props = defineProps({
 
     time: {
         type: Date,
-        default: () => new Date()
+        default: () => new Date(),
     },
 
 });
@@ -36,14 +36,14 @@ const handStyles = computed(() => {
 
     return {
         hour: {
-            transform: `translateX(var(--clock__hand-offset)) rotate(${getHourRotation(hours, minutes)}deg)`
+            transform: `translateX(var(--clock__hand-offset)) rotate(${getHourRotation(hours, minutes)}deg)`,
         },
         minute: {
-            transform: `translateX(var(--clock__hand-offset)) rotate(${getMinuteRotation(minutes, seconds)}deg)`
+            transform: `translateX(var(--clock__hand-offset)) rotate(${getMinuteRotation(minutes, seconds)}deg)`,
         },
         second: {
-            transform: `translateX(var(--clock__hand-offset)) rotate(${getSecondRotation(seconds)}deg)`
-        }
+            transform: `translateX(var(--clock__hand-offset)) rotate(${getSecondRotation(seconds)}deg)`,
+        },
     };
 });
 </script>
@@ -52,7 +52,7 @@ const handStyles = computed(() => {
 
     .analogue-clock {
         --clock__hand-width: 2px;
-        
+
         width: 100%;
         aspect-ratio: 1 / 1;
         padding: 0.75rem;

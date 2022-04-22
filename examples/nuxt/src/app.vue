@@ -11,9 +11,9 @@
 
 <script lang="ts" setup>
 import {
-    reset,
-    fullName,
     computeState,
+    fullName,
+    reset,
 } from './store';
 
 const firstName = computeState(state => state.firstName);

@@ -12,10 +12,10 @@ import {
 } from 'vue';
 
 import {
-    describe,
-    test,
-    expect,
     afterEach,
+    describe,
+    expect,
+    test,
     vi,
 } from 'vitest';
 

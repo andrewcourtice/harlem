@@ -2,8 +2,8 @@ import toPath from '../../src/object/to-path';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

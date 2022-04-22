@@ -1,12 +1,12 @@
 <template>
     <div class="digital-clock">
-        <span class="digital-clock__time">{{ labels.time }}</span><span class="digital-clock__phase">{{ labels.phase }}</span>    
+        <span class="digital-clock__time">{{ labels.time }}</span><span class="digital-clock__phase">{{ labels.phase }}</span>
     </div>
 </template>
 
 <script lang="ts" setup>
 import {
-    computed
+    computed,
 } from 'vue';
 
 import {
@@ -17,22 +17,22 @@ const props = defineProps({
 
     time: {
         type: Date,
-        default: () => new Date()
+        default: () => new Date(),
     },
 
     timezone: {
-        type: String
-    }
+        type: String,
+    },
 
 });
 
 const labels = computed(() => ({
     time: format(props.time, 'h:mm', {
-        timeZone: props.timezone
+        timeZone: props.timezone,
     }),
     phase: format(props.time, 'a', {
-        timeZone: props.timezone
-    })
+        timeZone: props.timezone,
+    }),
 }));
 </script>
 

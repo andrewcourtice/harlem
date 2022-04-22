@@ -1,6 +1,6 @@
 import type {
-    CommandType,
     CommandTasks,
+    CommandType,
 } from './types';
 
 export const SENDER = 'extension:history';

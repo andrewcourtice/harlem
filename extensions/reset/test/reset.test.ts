@@ -5,17 +5,17 @@ import {
 } from '@harlem/core';
 
 import {
-    getStore,
     bootstrap,
+    getStore,
 } from '@harlem/testing';
 
 import {
-    describe,
-    test,
-    expect,
+    afterEach,
     beforeAll,
     beforeEach,
-    afterEach,
+    describe,
+    expect,
+    test,
 } from 'vitest';
 
 describe('Reset Extension', () => {
@@ -27,7 +27,6 @@ describe('Reset Extension', () => {
                 const key = `${INTERNAL.prefix}test`;
                 const value = 'value';
 
-                // @ts-ignore
                 store.write('$test', 'test', state => state[key] = value);
 
                 return {
@@ -121,7 +120,6 @@ describe('Reset Extension', () => {
 
         store.reset();
 
-        // @ts-ignore
         expect(store.state[store.key]).toBe(store.value);
         expect(store.state.id).toBe(0);
         expect(store.state.details.firstName).toBe('');

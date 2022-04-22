@@ -2,8 +2,8 @@ import lock from '../../src/object/lock';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

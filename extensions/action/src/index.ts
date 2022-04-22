@@ -1,10 +1,10 @@
 import Task from '@harlem/task';
 
 import {
-    SENDER,
     EVENTS,
-    STATE_PROP,
     MUTATIONS,
+    SENDER,
+    STATE_PROP,
 } from './constants';
 
 import {
@@ -38,9 +38,7 @@ import type {
     Options,
 } from './types';
 
-export {
-    ActionAbortError,
-} from './errors';
+export { ActionAbortError } from './errors';
 
 export * from './types';
 

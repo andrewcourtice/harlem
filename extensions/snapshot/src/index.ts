@@ -1,6 +1,6 @@
 import {
-    SENDER,
     MUTATIONS,
+    SENDER,
 } from './constants';
 
 import {
@@ -14,9 +14,9 @@ import {
 } from '@harlem/core';
 
 import type {
+    BranchCallback,
     Options,
     Snapshot,
-    BranchCallback,
 } from './types';
 
 export * from './types';

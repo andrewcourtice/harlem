@@ -6,10 +6,10 @@ import {
 } from '@harlem/testing';
 
 import {
-    describe,
-    test,
-    expect,
     beforeAll,
+    describe,
+    expect,
+    test,
 } from 'vitest';
 
 describe('Compose Extension', () => {

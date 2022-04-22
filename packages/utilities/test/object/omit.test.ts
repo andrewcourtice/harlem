@@ -2,8 +2,8 @@ import omit from '../../src/object/omit';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

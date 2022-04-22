@@ -2,8 +2,8 @@ import isObject from '../../src/type/is-object';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

@@ -2,8 +2,8 @@ import isNil from '../../src/type/is-nil';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 export default {
-    inheritAttrs: false
+    inheritAttrs: false,
 };
 </script>
 
@@ -36,7 +36,7 @@ const close = () => isShowing.value = false;
 
 defineExpose({
     open,
-    close
+    close,
 });
 </script>
 
@@ -66,11 +66,11 @@ defineExpose({
     .modal__header {
         padding: 0 0 1.5rem 0;
     }
-    
+
     .modal__body {
         overflow-y: auto;
     }
-    
+
     .modal__footer {
         padding: 1.5rem 0 0 0;
     }
