@@ -1,6 +1,6 @@
 import {
-    SENDER,
     MUTATIONS,
+    SENDER,
 } from './constants';
 
 import {
@@ -9,10 +9,10 @@ import {
 } from '@harlem/utilities';
 
 import {
-    INTERNAL,
-    InternalStore,
     BaseState,
     EVENTS,
+    INTERNAL,
+    InternalStore,
 } from '@harlem/core';
 
 import type {

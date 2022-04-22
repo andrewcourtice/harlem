@@ -2,17 +2,17 @@ import eventEmitter from './event-emitter';
 
 import {
     EVENTS,
-    SENDER,
     PROVIDERS,
+    SENDER,
 } from './constants';
 
 import {
-    reactive,
-    readonly,
     computed,
-    effectScope,
     ComputedRef,
     EffectScope,
+    effectScope,
+    reactive,
+    readonly,
 } from 'vue';
 
 import type {
@@ -27,13 +27,13 @@ import type {
     MutationEventData,
     Mutator,
     ReadState,
-    WriteState,
+    RegistrationType,
+    RegistrationValueProducer,
     StoreProvider,
     StoreProviders,
-    StoreRegistrations,
-    RegistrationValueProducer,
-    RegistrationType,
     StoreRegistration,
+    StoreRegistrations,
+    WriteState,
 } from './types';
 
 function localiseHandler(name: string, handler: EventHandler): EventHandler {

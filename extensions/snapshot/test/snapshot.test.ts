@@ -1,17 +1,17 @@
 import snapshotExtension from '../src';
 
 import {
-    getStore,
     bootstrap,
+    getStore,
 } from '@harlem/testing';
 
 import {
-    describe,
-    test,
-    expect,
+    afterEach,
     beforeAll,
     beforeEach,
-    afterEach,
+    describe,
+    expect,
+    test,
 } from 'vitest';
 
 describe('Snapshot Extension', () => {

@@ -12,35 +12,35 @@
 
 <script lang="ts" setup>
 import {
-    computed
+    computed,
 } from 'vue';
 
 const props = defineProps({
 
     id: {
         type: String,
-        default: `choice-${Math.round(Math.random() * 100000)}`
+        default: `choice-${Math.round(Math.random() * 100000)}`,
     },
 
     modelValue: {
-        type: null
+        type: null,
     },
 
     value: {
-        type: null
-    }
+        type: null,
+    },
 
 });
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
 const model = computed({
     get: () => props.modelValue,
-    set: value => emit('update:modelValue', value)
+    set: value => emit('update:modelValue', value),
 });
 
 const choiceClass = computed(() => ({
-    'choice--checked': props.modelValue === props.value
+    'choice--checked': props.modelValue === props.value,
 }));
 </script>
 

@@ -14,9 +14,9 @@ import {
 
 import {
     fromPath,
-    toPath,
-    isNil,
     isFunction,
+    isNil,
+    toPath,
 } from '@harlem/utilities';
 
 import type {

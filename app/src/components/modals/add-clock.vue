@@ -32,19 +32,19 @@ import getTimezoneLabel from '../../utilities/time/get-timezone-label';
 import {
     computed,
     reactive,
-    ref
+    ref,
 } from 'vue';
 
 import {
     addClocks,
-    timezones
+    timezones,
 } from '../../stores/app';
 
 const modal = ref();
 
 const model = reactive({
     filter: '',
-    selection: [] as string[]
+    selection: [] as string[],
 });
 
 const filteredTimezones = computed(() => {

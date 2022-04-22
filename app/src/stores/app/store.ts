@@ -5,8 +5,8 @@ import storageExtension from '@harlem/extension-storage';
 import resetExtension from '@harlem/extension-reset';
 
 import {
-    NAME,
     MUTATIONS,
+    NAME,
 } from './constants';
 
 import {

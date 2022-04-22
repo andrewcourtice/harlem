@@ -3,8 +3,8 @@ import {
 } from './constants';
 
 import {
-    EVENTS,
     BaseState,
+    EVENTS,
     InternalStore,
 } from '@harlem/core';
 
@@ -17,8 +17,8 @@ import {
 } from 'vue';
 
 import type {
-    ComputedAsyncResult,
     ComputedAsyncCallback,
+    ComputedAsyncResult,
     LazyBody,
 } from './types';
 

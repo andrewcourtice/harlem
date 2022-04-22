@@ -1,9 +1,9 @@
 import {
     ALL_STORES_ID,
     DEVTOOLS_ID,
+    MUTATIONS,
     OPTIONS,
     SENDER,
-    MUTATIONS,
 } from './constants';
 
 import {
@@ -29,11 +29,11 @@ import type {
 } from '@vue/devtools-api';
 
 import type {
+    EditHookHandler,
     LogType,
     Options,
     StateHookHandler,
     TreeHookHandler,
-    EditHookHandler,
 } from './types';
 
 import type {

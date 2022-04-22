@@ -1,11 +1,11 @@
 import {
-    SENDER,
     MUTATIONS,
+    SENDER,
 } from './constants';
 
 import {
-    EVENTS,
     EventPayload,
+    EVENTS,
     HarlemPlugin,
     InternalStore,
     InternalStores,

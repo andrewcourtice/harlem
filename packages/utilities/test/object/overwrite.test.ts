@@ -2,8 +2,8 @@ import overwrite from '../../src/object/overwrite';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

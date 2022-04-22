@@ -18,14 +18,14 @@
 
 <script lang="ts" setup>
 import {
-    ref
+    ref,
 } from 'vue';
 
 import {
-    reset,
-    fullName,
     computeState,
+    fullName,
     getNewName,
+    reset,
 } from './store';
 
 const timeout = ref(3000);

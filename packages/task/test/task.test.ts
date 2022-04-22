@@ -7,8 +7,8 @@ import Task, {
 
 import {
     describe,
-    test,
     expect,
+    test,
     vi,
 } from 'vitest';
 
@@ -18,7 +18,7 @@ describe('Task', () => {
         executer: TaskExecutor<void>,
         resolve: TaskResolve<void>,
         reject: TaskReject,
-        controller: AbortController,
+        controller: AbortController
     ) {
         return new Task(executer, controller)
             .then(() => resolve())

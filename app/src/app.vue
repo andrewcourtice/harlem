@@ -13,7 +13,7 @@
                     Each clock is synchronised by a single time value stored on <strong>state</strong>. A timer is set to run a <strong>mutation</strong> each second to update the stored time. A <strong>getter</strong> then recalculates each clock's time based on it's timezone. State is synchronised with localStorage using the <strong>storage extension</strong>. Open this URL in multiple tabs to see your changes synced across tabs.
                     <br>
                     <br>
-                    If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank">here</a>. 
+                    If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank">here</a>.
                 </p>
                 <choice-group class="app__theme">
                     <choice v-for="{ label, value } in state.themes" :key="value" :id="value" :value="value" v-model="theme">{{ label }}</choice>
@@ -54,7 +54,7 @@ import Choice from './components/core/choice.vue';
 import MetaText from './components/core/meta-text.vue';
 import AnalogueClock from './components/clocks/analogue-clock.vue';
 import DigitalClock from './components/clocks/digital-clock.vue';
-import AddClockModal from './components/modals/add-clock.vue'
+import AddClockModal from './components/modals/add-clock.vue';
 
 import getTimezoneLabel from './utilities/time/get-timezone-label';
 
@@ -69,11 +69,11 @@ import {
 } from 'date-fns-tz';
 
 import {
-    state,
     clocks,
-    removeClock,
-    loadTimezones,
     computeState,
+    loadTimezones,
+    removeClock,
+    state,
 } from './stores/app';
 
 loadTimezones();
@@ -92,7 +92,7 @@ const clockComponent = computed(() => state.clockType === 'analogue'
 
 function getClockDateLabel(time: Date, timezone: string) {
     return format(time, 'EEE, do MMM yyyy', {
-        timeZone: timezone
+        timeZone: timezone,
     });
 }
 
@@ -145,7 +145,7 @@ function openAddClockModal() {
         justify-items: stretch;
         align-items: stretch;
     }
-    
+
     .app__clock {
         position: relative;
         padding: 1.5rem;
@@ -166,7 +166,7 @@ function openAddClockModal() {
     .app__clock-label {
         margin-top: 1.5rem;
     }
-    
+
     .app__clock-timezone {
         font-weight: var(--font__weight--semi-bold);
     }
@@ -198,8 +198,8 @@ function openAddClockModal() {
     .clocks-leave-active {
         transition: opacity var(--animation__timing) var(--animation__easing),
                     transform var(--animation__timing) var(--animation__easing);
-                }
-                
+    }
+
     .clocks-move {
         transition: transform var(--animation__timing) var(--animation__easing);
     }

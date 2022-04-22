@@ -1,13 +1,13 @@
 import {
     COMMAND_MAP,
-    SENDER,
     MUTATION_FILTER,
+    SENDER,
 } from './constants';
 
 import {
-    EVENTS,
     BaseState,
     EventPayload,
+    EVENTS,
     InternalStore,
     MutationEventData,
 } from '@harlem/core';

@@ -2,8 +2,8 @@ import isArray from '../../src/type/is-array';
 
 import {
     describe,
-    test,
     expect,
+    test,
 } from 'vitest';
 
 describe('Utilities', () => {

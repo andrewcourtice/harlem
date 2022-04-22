@@ -5,17 +5,17 @@ import actionsExtension, {
 } from '../src';
 
 import {
-    getStore,
     bootstrap,
+    getStore,
 } from '@harlem/testing';
 
 import {
-    describe,
-    test,
-    expect,
+    afterEach,
     beforeAll,
     beforeEach,
-    afterEach,
+    describe,
+    expect,
+    test,
     vi,
 } from 'vitest';
 
@@ -95,6 +95,7 @@ describe('Actions Extension', () => {
             state,
             hasActionRun,
             isActionRunning,
+            isActionFirstRun,
         } = instance.store;
 
         expect(hasActionRun(loadUserInfoName)).toBe(false);
@@ -103,6 +104,7 @@ describe('Actions Extension', () => {
         const promise = loadUserInfo();
 
         expect(isActionRunning(loadUserInfoName)).toBe(true);
+        expect(isActionFirstRun(loadUserInfoName)).toBe(true);
 
         await promise;
 
@@ -110,6 +112,29 @@ describe('Actions Extension', () => {
         expect(state.details.lastName).toBe('Doe');
         expect(state.details.age).toBe(32);
         expect(hasActionRun(loadUserInfoName)).toBe(true);
+    });
+
+    test('Handles idle await', async () => {
+        const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
+            whenActionIdle,
+        } = instance.store;
+
+        let awaitCount = 0;
+
+        loadUserInfo();
+        await whenActionIdle(loadUserInfoName);
+        awaitCount += 1;
+
+        loadUserInfo();
+        await whenActionIdle(loadUserInfoName);
+        awaitCount += 1;
+
+        expect(awaitCount).toBe(2);
     });
 
     test('Handles direct cancellation', async () => {
