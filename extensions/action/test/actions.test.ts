@@ -112,6 +112,29 @@ describe('Actions Extension', () => {
         expect(hasActionRun(loadUserInfoName)).toBe(true);
     });
 
+    test('Handles idle await', async () => {
+        const {
+            loadUserInfo,
+            loadUserInfoName,
+        } = instance;
+
+        const {
+            whenActionIdle,
+        } = instance.store;
+
+        let awaitCount = 0;
+
+        loadUserInfo();
+        await whenActionIdle(loadUserInfoName);
+        awaitCount += 1;
+
+        loadUserInfo();
+        await whenActionIdle(loadUserInfoName);
+        awaitCount += 1;
+
+        expect(awaitCount).toBe(2);
+    });
+
     test('Handles direct cancellation', async () => {
         expect.assertions(5);
 
