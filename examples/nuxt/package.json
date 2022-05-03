@@ -7,12 +7,13 @@
         "start": "node .output/server/index.mjs"
     },
     "dependencies": {
+        "@harlem/extension-action": "^2.3.0",
         "@harlem/extension-compose": "^2.3.0",
         "@harlem/extension-reset": "^2.3.0",
         "@harlem/extension-storage": "^2.3.0",
-        "@nuxtjs/harlem": "^1.0.1"
+        "@nuxtjs/harlem": "^1.1.0"
     },
     "devDependencies": {
-        "nuxt3": "latest"
+        "nuxt": "^3.0.0-rc.2"
     }
 }

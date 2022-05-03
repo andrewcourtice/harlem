@@ -4,6 +4,7 @@
         <input type="text" placeholder="First name" v-model="firstName">
         <input type="text" placeholder="Last name" v-model="lastName">
         <div>
+            <button @click="loadDetails()">Load Details</button>
             <button @click="reset()">Reset</button>
         </div>
     </div>
@@ -13,6 +14,7 @@
 import {
     computeState,
     fullName,
+    loadDetails,
     reset,
 } from './store';
 
