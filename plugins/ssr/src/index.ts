@@ -7,11 +7,13 @@ import {
     EventPayload,
     EVENTS,
     HarlemPlugin,
+    INTERNAL,
     InternalStore,
     InternalStores,
 } from '@harlem/core';
 
 import {
+    omit,
     overwrite,
 } from '@harlem/utilities';
 
@@ -61,7 +63,7 @@ export function createServerSSRPlugin(): HarlemPlugin {
             stores.forEach(store => store.setFlag('ssr:server', true));
 
             eventEmitter.on(EVENTS.ssr.initServer, payload => onStoreEvent(stores, payload, store => {
-                snapshot[store.name] = store.state;
+                snapshot[store.name] = omit(store.state, INTERNAL.pattern);
             }));
         },
 
@@ -83,7 +85,7 @@ export function createClientSSRPlugin(): HarlemPlugin {
 
             eventEmitter.on(EVENTS.ssr.initClient, payload => onStoreEvent(stores, payload, store => {
                 if (store.name in data) {
-                    store.write(MUTATIONS.init, SENDER, state => overwrite(state, data[store.name]));
+                    store.write(MUTATIONS.init, SENDER, state => overwrite(state, data[store.name], INTERNAL.pattern));
                 }
             }));
         },
