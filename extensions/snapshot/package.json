@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-snapshot",
     "amdName": "harlemSnapshot",
-    "version": "2.3.3",
+    "version": "2.3.4",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official snapshot extension for Harlem",
@@ -42,10 +42,10 @@
         "@harlem/core": "^2.0.0"
     },
     "dependencies": {
-        "@harlem/utilities": "^2.3.3"
+        "@harlem/utilities": "^2.3.4"
     },
     "devDependencies": {
-        "@harlem/core": "^2.3.3",
-        "@harlem/testing": "^2.3.3"
+        "@harlem/core": "^2.3.4",
+        "@harlem/testing": "^2.3.4"
     }
 }
