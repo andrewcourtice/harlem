@@ -140,6 +140,10 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     }
 
     public register(group: string, name: string, producer: RegistrationValueProducer, type: RegistrationType = 'other'): void {
+        if (!name) {
+            throw new Error('Registration name cannot be empty');
+        }
+
         if (!(group in this.registrations)) {
             this.registrations[group] = new Map();
         }
