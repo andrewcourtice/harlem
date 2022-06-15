@@ -807,6 +807,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/docs@workspace:docs"
   dependencies:
+    "@vueuse/core": ^8.6.0
     dotenv: ^16.0.1
     vitepress: ^1.0.0-alpha.2
   languageName: unknown
@@ -3211,7 +3212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:^8.5.0":
+"@vueuse/core@npm:^8.5.0, @vueuse/core@npm:^8.6.0":
   version: 8.6.0
   resolution: "@vueuse/core@npm:8.6.0"
   dependencies:

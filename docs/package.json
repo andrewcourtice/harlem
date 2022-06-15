@@ -14,5 +14,8 @@
     "devDependencies": {
         "dotenv": "^16.0.1",
         "vitepress": "^1.0.0-alpha.2"
+    },
+    "dependencies": {
+        "@vueuse/core": "^8.6.0"
     }
 }
