@@ -4,7 +4,7 @@
     "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
-    "packageManager": "yarn@3.2.0",
+    "packageManager": "yarn@3.2.1",
     "license": "MIT",
     "private": true,
     "workspaces": [
