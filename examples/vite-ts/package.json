@@ -12,10 +12,10 @@
         "@harlem/extension-reset": "^2.3.0",
         "@harlem/extension-storage": "^2.3.0",
         "@harlem/plugin-devtools": "^2.3.0",
-        "vue": "^3.2.33"
+        "vue": "^3.2.37"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^2.3.3",
-        "vite": "^2.9.9"
+        "vite": "^2.9.12"
     }
 }

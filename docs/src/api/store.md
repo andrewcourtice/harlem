@@ -33,7 +33,7 @@ The `getter` function is used for defining computed values based on state
         - Arguments:
             - **state** `readonly object` - A readonly copy of state
         - Returns: `any`
-- Returns: A Vue [computed](https://v3.vuejs.org/api/computed-watch-api.html#computed) ref
+- Returns: A Vue [computed](https://v3.vuejs.org/api/computed-watch-api#computed) ref
 
 ### Example
 
@@ -89,9 +89,9 @@ This is a convenience method for subscribing to before mutation events on the cu
     - **mutationName** `string | string[]` - The name of the mutation(s) to trigger the handler on
     - **handler** `function` - A callback with mutation data as it's only argument
         - Arguments:
-            - **data** [MutationEventData](./types.html#mutationeventdata) - A mutation data object containing the mutation name, payload and result
+            - **data** [MutationEventData](./types#mutationeventdata) - A mutation data object containing the mutation name, payload and result
         - Returns: `void`
-- Returns: [EventListener](./types.html#eventlistener)
+- Returns: [EventListener](./types#eventlistener)
 
 ### Example
 

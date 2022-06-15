@@ -35,4 +35,4 @@ import {
 
 ## See Also
 
-[State](/api/store.html#state) API Reference
+[State](/api/store#state) API Reference

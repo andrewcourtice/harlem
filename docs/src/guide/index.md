@@ -17,7 +17,7 @@ Harlem core weighs in at around 1.5KB (minified & gzipped) which makes it the pe
 It's also worth noting that Harlem has **zero** dependencies.
 
 ### Extensible
-Harlem is architectured with extensibility in mind so you can extend it any way you want through [plugins](#plugins) and [extensions](#extensions). Some of the official plugins and extensions include Vue devtools integration, local/session storage sync, snapshots, history (undo/redo) and more.
+Harlem is architectured with extensibility in mind so you can extend it any way you want through [plugins](/extensibility/plugins/) and [extensions](/extensibility/extensions/). Some of the official plugins and extensions include Vue devtools integration, local/session storage sync, snapshots, history (undo/redo) and more.
 
 ### Great DX
 Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.

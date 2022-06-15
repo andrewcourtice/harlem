@@ -9,7 +9,7 @@ Install `@harlem/core` and any plugins you wish to include (I recommend installi
 <CodeGroup>
   <CodeGroupItem title="YARN" active>
 
-```bash:no-line-numbers
+```bash
 yarn add @harlem/core
 ```
 
@@ -17,7 +17,7 @@ yarn add @harlem/core
 
   <CodeGroupItem title="NPM">
 
-```bash:no-line-numbers
+```bash
 npm install @harlem/core
 ```
 

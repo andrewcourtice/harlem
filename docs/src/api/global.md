@@ -10,8 +10,8 @@ The `createStore` function is used for creating new instances of stores that hav
 - Arguments:
     - **name** `string` - The name of the store
     - **state** `object` - The initial state of the store
-    - **options** [StoreOptions](./types.html#storeoptions) - Options associated with this store
-- Returns: [Store](store.html)
+    - **options** [StoreOptions](./types#storeoptions) - Options associated with this store
+- Returns: [Store](store)
 
 ### Example
 
@@ -34,7 +34,7 @@ The `on` function is used for subscribing to global events. This is particularly
         - Arguments
             - **payload** `any?` - An optional payload provided when the event is published
         - Returns: `void`
-- Returns: [EventListener](./types.html#eventlistener)
+- Returns: [EventListener](./types#eventlistener)
 
 ### Example
 

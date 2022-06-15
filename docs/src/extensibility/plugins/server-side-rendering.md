@@ -11,7 +11,7 @@ Before installing the ssr plugin make sure you have installed `@harlem/core`.
 <CodeGroup>
   <CodeGroupItem title="YARN" active>
 
-```bash:no-line-numbers
+```bash
 yarn add @harlem/plugin-ssr
 ```
 
@@ -19,7 +19,7 @@ yarn add @harlem/plugin-ssr
 
   <CodeGroupItem title="NPM">
 
-```bash:no-line-numbers
+```bash
 npm install @harlem/plugin-ssr
 ```
 

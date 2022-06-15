@@ -15,7 +15,7 @@ Before installing the devtools plugin make sure you installed `@harlem/core`.
 <CodeGroup>
   <CodeGroupItem title="YARN" active>
 
-```bash:no-line-numbers
+```bash
 yarn add @harlem/plugin-devtools
 ```
 
@@ -23,7 +23,7 @@ yarn add @harlem/plugin-devtools
 
   <CodeGroupItem title="NPM">
 
-```bash:no-line-numbers
+```bash
 npm install @harlem/plugin-devtools
 ```
 

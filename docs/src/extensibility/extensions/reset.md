@@ -15,7 +15,7 @@ Before installing this extension make sure you have installed `@harlem/core`.
 <CodeGroup>
   <CodeGroupItem title="YARN" active>
 
-```bash:no-line-numbers
+```bash
 yarn add @harlem/extension-reset
 ```
 
@@ -23,7 +23,7 @@ yarn add @harlem/extension-reset
 
   <CodeGroupItem title="NPM">
 
-```bash:no-line-numbers
+```bash
 npm install @harlem/extension-reset
 ```
 

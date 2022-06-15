@@ -24,21 +24,21 @@
         "lint": "eslint . --ignore-path .gitignore --ext .js,.ts,.mjs,.vue --quiet"
     },
     "devDependencies": {
-        "@commitlint/cli": "^16.2.4",
-        "@commitlint/config-conventional": "^16.2.4",
-        "@typescript-eslint/eslint-plugin": "^5.23.0",
-        "@typescript-eslint/parser": "^5.23.0",
-        "c8": "^7.11.2",
-        "eslint": "^8.15.0",
-        "eslint-plugin-vue": "^8.7.1",
-        "happy-dom": "^3.2.0",
+        "@commitlint/cli": "^17.0.2",
+        "@commitlint/config-conventional": "^17.0.2",
+        "@typescript-eslint/eslint-plugin": "^5.28.0",
+        "@typescript-eslint/parser": "^5.28.0",
+        "c8": "^7.11.3",
+        "eslint": "^8.17.0",
+        "eslint-plugin-vue": "^9.1.1",
+        "happy-dom": "^5.3.1",
         "husky": "^8.0.1",
         "jsdom": "^19.0.0",
-        "lerna": "^4.0.0",
+        "lerna": "^5.1.2",
         "standard-changelog": "^2.0.27",
-        "tsup": "^5.12.7",
-        "typescript": "^4.6.4",
-        "vitest": "^0.12.4",
-        "vue-eslint-parser": "^9.0.1"
+        "tsup": "^6.1.2",
+        "typescript": "^4.7.3",
+        "vitest": "^0.15.0",
+        "vue-eslint-parser": "^9.0.2"
     }
 }
