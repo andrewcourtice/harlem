@@ -6,23 +6,11 @@ Getting started with Harlem is easy. Just follow the steps below and you'll be u
 
 Install `@harlem/core` and any plugins you wish to include (I recommend installing `@harlem/plugin-devtools` during development):
 
-<CodeGroup>
-  <CodeGroupItem title="YARN" active>
-
 ```bash
 yarn add @harlem/core
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="NPM">
-
-```bash
+# or
 npm install @harlem/core
 ```
-
-  </CodeGroupItem>
-</CodeGroup>
 
 **Note**: If you're using Nuxt, instead follow the instructions to [install the Nuxt module](https://github.com/nuxt-community/harlem-module) and then resume this guide below, at [Create your first store](#create-your-first-store).
 

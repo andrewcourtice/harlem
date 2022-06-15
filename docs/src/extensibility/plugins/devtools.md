@@ -12,23 +12,11 @@ This is the official Harlem devtools plugin for adding Vue devtools integration 
 
 Before installing the devtools plugin make sure you installed `@harlem/core`.
 
-<CodeGroup>
-  <CodeGroupItem title="YARN" active>
-
 ```bash
 yarn add @harlem/plugin-devtools
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="NPM">
-
-```bash
+# or
 npm install @harlem/plugin-devtools
 ```
-
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Usage
 

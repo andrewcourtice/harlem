@@ -12,23 +12,11 @@ Follow the steps below to get started using the trace extension.
 
 Before installing this extension make sure you have installed `@harlem/core`.
 
-<CodeGroup>
-  <CodeGroupItem title="YARN" active>
-
 ```bash
 yarn add @harlem/extension-trace
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="NPM">
-
-```bash
+# or
 npm install @harlem/extension-trace
 ```
-
-  </CodeGroupItem>
-</CodeGroup>
 
 ### Registration
 

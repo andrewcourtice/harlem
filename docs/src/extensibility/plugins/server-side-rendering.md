@@ -8,23 +8,11 @@ This is the official plugin for using Harlem in a Vue SSR application.
 
 Before installing the ssr plugin make sure you have installed `@harlem/core`.
 
-<CodeGroup>
-  <CodeGroupItem title="YARN" active>
-
 ```bash
 yarn add @harlem/plugin-ssr
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="NPM">
-
-```bash
+# or
 npm install @harlem/plugin-ssr
 ```
-
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Usage
 
