@@ -16,6 +16,6 @@
         "vitepress": "^1.0.0-alpha.2"
     },
     "dependencies": {
-        "@vueuse/core": "^8.6.0"
+        "@vueuse/core": "^8.7.4"
     }
 }
