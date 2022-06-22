@@ -1,11 +1,11 @@
 <template>
     <label class="choice" :class="choiceClass" :for="id">
-        <input class="choice__input"
+        <input v-model="model"
+            :id="id"
+            class="choice__input"
             type="radio"
             name="clock-type"
-            :id="id"
-            :value="value"
-            v-model="model">
+            :value="value">
         <slot></slot>
     </label>
 </template>

@@ -1,11 +1,15 @@
 <template>
-    <modal class="add-clock-modal" ref="modal">
+    <modal ref="modal" class="add-clock-modal">
         <template #header>
             <h2 class="add-clock-modal__title">Add Clock</h2>
         </template>
         <label class="form-label" for="">Timezone</label>
-        <input class="add-clock-modal__filter" v-model="model.filter" type="text" placeholder="Search for a timezone..." autofocus>
-        <select class="add-clock-modal__timezones" v-model="model.selection" multiple="true">
+        <input v-model="model.filter"
+            class="add-clock-modal__filter"
+            type="text"
+            placeholder="Search for a timezone..."
+            autofocus>
+        <select v-model="model.selection" class="add-clock-modal__timezones" multiple="true">
             <option v-for="timezone in filteredTimezones" :key="timezone" :value="timezone">{{ getTimezoneLabel(timezone) }}</option>
         </select>
         <div class="add-clock-modal__tip">
