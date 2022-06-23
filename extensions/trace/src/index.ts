@@ -130,24 +130,25 @@ function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
     console.log(`%c${gate}%c ${path}`, style, '');
 }
 
-export default function traceExtension<TState extends BaseState>(options?: Partial<Options>) {
-    const {
-        autoStart,
-        debug,
-    } = {
+function getOptions(options?: Partial<Options>): Options {
+    return {
         autoStart: false,
         debug: false,
         ...options,
-    } as Options;
+    };
+}
+
+export default function traceExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const _options = getOptions(options);
 
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'trace', () => options);
+        store.register('extensions', 'trace', () => _options);
 
         const traceCallbacks = new Set<TraceCallback<TState>>();
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
             store.provider('write', state => trace(state, gates, result => {
-                if (debug) {
+                if (_options.debug) {
                     logResult(result);
                 }
 
@@ -168,7 +169,7 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         }
 
         store.once(EVENTS.store.created, () => {
-            if (autoStart) {
+            if (_options.autoStart) {
                 startTrace();
             }
         });

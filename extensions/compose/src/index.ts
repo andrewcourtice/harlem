@@ -65,7 +65,7 @@ export function useListeners(listeners: ListenersAccessor) {
 export default function composeExtension<TState extends BaseState>() {
 
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'compose', () => ({}));
+        store.register('extensions', 'compose', () => 'No options specified');
 
         const {
             value,

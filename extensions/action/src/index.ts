@@ -52,10 +52,8 @@ export const ABORT_STRATEGY = {
     },
 } as ActionAbortStrategies;
 
-export default function actionsExtension<TState extends BaseState>(options?: Partial<Options>) {
-    const {
-        strategies: rootStrategies,
-    } = {
+function getOptions(options?: Partial<Options>): Options {
+    return {
         ...options,
 
         strategies: {
@@ -63,9 +61,13 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             ...options?.strategies,
         },
     };
+}
+
+export default function actionsExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const rootOptions = getOptions(options);
 
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'action', () => options);
+        store.register('extensions', 'action', () => rootOptions);
 
         const _store = store as unknown as InternalStore<TState & ActionStoreState>;
 
@@ -130,7 +132,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                 ...options,
 
                 strategies: {
-                    ...rootStrategies,
+                    ...rootOptions.strategies,
                     ...options?.strategies,
                 },
             } as ActionOptions;
