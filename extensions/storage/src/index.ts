@@ -23,16 +23,8 @@ import type {
 
 export * from './types';
 
-export default function storageExtension<TState extends BaseState>(options?: Partial<Options<TState>>) {
-    const {
-        type,
-        prefix,
-        sync,
-        restore,
-        exclude,
-        serialiser,
-        parser,
-    } = {
+function getOptions<TState extends BaseState>(options?: Partial<Options<TState>>): Options<TState> {
+    return {
         type: 'local',
         prefix: 'harlem',
         sync: true,
@@ -41,7 +33,20 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         serialiser: state => JSON.stringify(state),
         parser: value => JSON.parse(value),
         ...options,
-    } as Options<TState>;
+    };
+}
+
+export default function storageExtension<TState extends BaseState>(options?: Partial<Options<TState>>) {
+    const _options = getOptions(options);
+    const {
+        type,
+        prefix,
+        sync,
+        restore,
+        exclude,
+        serialiser,
+        parser,
+    } = _options;
 
     return (store: InternalStore<TState>) => {
         if (store.getFlag('ssr:server')) {
@@ -55,7 +60,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
             };
         }
 
-        store.register('extensions', 'storage', () => options);
+        store.register('extensions', 'storage', () => _options);
 
         const storage = type === 'session' ? sessionStorage : localStorage;
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;

@@ -28,23 +28,23 @@ import type {
 
 export * from './types';
 
-export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
-    const {
-        max,
-        mutations,
-    } = {
+function getOptions(options?: Partial<Options>): Options {
+    return {
         max: 50,
         mutations: [],
         ...options,
-    } as Options;
+    };
+}
 
-    const mutationLookup = new Map(mutations.map(({ name, description }) => [name, description]));
+export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const _options = getOptions(options);
+    const mutationLookup = new Map(_options.mutations.map(({ name, description }) => [name, description]));
     const createTraceExtension = traceExtension<TState>({
         autoStart: true,
     });
 
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'history', () => options);
+        store.register('extensions', 'history', () => _options);
 
         const {
             startTrace,
@@ -83,7 +83,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                 return;
             }
 
-            if (commands.length >= max) {
+            if (commands.length >= _options.max) {
                 commands.shift();
             }
 

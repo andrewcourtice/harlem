@@ -21,19 +21,21 @@ import type {
 
 export * from './types';
 
-export default function snapshotExtension<TState extends BaseState>(options?: Partial<Options>) {
-    const {
-        mutationName,
-    } = {
+function getOptions(options?: Partial<Options>): Options {
+    return {
         mutationName: MUTATIONS.snapshot,
         ...options,
-    } as Options;
+    };
+}
+
+export default function snapshotExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const _options = getOptions(options);
 
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'snapshot', () => options);
 
         function apply<TBranchState extends BaseState>(snapshotBranch: TBranchState, branchCallback: BranchCallback<TState, TBranchState>) {
-            store.write(mutationName, SENDER, state => {
+            store.write(_options.mutationName, SENDER, state => {
                 const stateBranch = branchCallback(state);
                 overwrite(stateBranch, clone(snapshotBranch));
             });

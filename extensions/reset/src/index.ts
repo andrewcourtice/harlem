@@ -23,7 +23,7 @@ export * from './types';
 
 export default function resetExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'reset', () => ({}));
+        store.register('extensions', 'reset', () => 'No options specified');
 
         let snapshot: TState | undefined;
 

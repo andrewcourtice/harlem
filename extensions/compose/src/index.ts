@@ -5,10 +5,12 @@ import {
 import {
     computed,
     DeepReadonly,
+    onUnmounted,
 } from 'vue';
 
 import {
     BaseState,
+    EventListener,
     InternalStore,
 } from '@harlem/core';
 
@@ -22,6 +24,7 @@ import {
 import type {
     Accessor,
     Getter,
+    ListenersAccessor,
     Setter,
 } from './types';
 
@@ -49,10 +52,20 @@ function getTraceObject<TValue extends object>() {
     };
 }
 
+export function useListeners(listeners: ListenersAccessor) {
+    const _listeners = ([] as EventListener[])
+        .concat(isFunction(listeners)
+            ? listeners()
+            : listeners
+        );
+
+    onUnmounted(() => _listeners.forEach(({ dispose }) => dispose()));
+}
+
 export default function composeExtension<TState extends BaseState>() {
 
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'compose', () => ({}));
+        store.register('extensions', 'compose', () => 'No options specified');
 
         const {
             value,
@@ -102,6 +115,7 @@ export default function composeExtension<TState extends BaseState>() {
         return {
             useState,
             computeState,
+            useListeners,
         };
     };
 }

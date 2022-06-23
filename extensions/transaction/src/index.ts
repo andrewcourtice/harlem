@@ -24,7 +24,7 @@ export * from './types';
 
 export default function transactionExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
-        store.register('extensions', 'transaction', () => ({}));
+        store.register('extensions', 'transaction', () => 'No options specified');
 
         const {
             snapshot,
