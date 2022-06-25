@@ -80,7 +80,7 @@ defineExpose({
         opacity: 0;
 
         & .modal__content {
-            transform: scale(0);
+            transform: scale(0.5);
         }
     }
 
