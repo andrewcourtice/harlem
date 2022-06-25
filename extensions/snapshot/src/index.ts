@@ -41,7 +41,7 @@ export default function snapshotExtension<TState extends BaseState>(options?: Pa
             });
         }
 
-        function snapshot<TBranchState extends BaseState = TState>(branchCallback: BranchCallback<TState, TBranchState> = ((state: TState) => state) as any): Snapshot<TBranchState> {
+        function snapshot<TBranchState extends BaseState = TState>(branchCallback: BranchCallback<TState, TBranchState> = (state: TState) => state): Snapshot<TBranchState> {
             const snapshotBranch = branchCallback(store.state);
             const state = Object.freeze(clone(snapshotBranch)) as TBranchState;
 
