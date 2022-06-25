@@ -1,7 +1,6 @@
 import Task from '@harlem/task';
 
 import {
-    EVENTS,
     MUTATIONS,
     SENDER,
     STATE_PROP,
@@ -19,9 +18,10 @@ import {
     getAbortMessage,
 } from './utilities';
 
-import type {
+import {
+    ActionEventData,
     BaseState,
-    EventPayload,
+    EVENTS,
     InternalStore,
     Mutator,
 } from '@harlem/core';
@@ -30,8 +30,6 @@ import type {
     Action,
     ActionAbortStrategies,
     ActionBody,
-    ActionEventData,
-    ActionHookHandler,
     ActionOptions,
     ActionPredicate,
     ActionStoreState,
@@ -154,7 +152,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                     const complete = () => (tasks.delete(task), removeInstance(name, id));
                     const fail = (reason?: unknown) => strategies.abort(name, id, resolve, reject, reason);
 
-                    let result: TResult | undefined;
+                    let result: TResult;
 
                     const emit = (event: string) => _store.emit(event, SENDER, {
                         action: name,
@@ -196,18 +194,6 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
 
                 return task;
             }) as Action<TPayload, TResult>;
-        }
-
-        function getActionTrigger(eventName: string) {
-            return <TPayload = any, TResult = any>(actionName: string | string[], handler: ActionHookHandler<TPayload, TResult>) => {
-                const actions = ([] as string[]).concat(actionName);
-
-                return _store.on(eventName, (event?: EventPayload<ActionEventData<TPayload, TResult>>) => {
-                    if (event && actions.includes(event.data.action)) {
-                        handler(event.data);
-                    }
-                });
-            };
         }
 
         function hasActionRun(name: string) {
@@ -306,24 +292,15 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             }) as Action<TPayload, TResult | undefined>;
         }
 
-        const onBeforeAction = getActionTrigger(EVENTS.action.before);
-        const onAfterAction = getActionTrigger(EVENTS.action.after);
-        const onActionSuccess = getActionTrigger(EVENTS.action.success);
-        const onActionError = getActionTrigger(EVENTS.action.error);
-
         return {
-            abortAction,
             action,
+            abortAction,
             getActionErrors,
             hasActionFailed,
             hasActionRun,
             isActionAbortError,
             isActionFirstRun,
             isActionRunning,
-            onActionError,
-            onActionSuccess,
-            onAfterAction,
-            onBeforeAction,
             resetActionState,
             suppressAbortError,
             whenActionIdle,
