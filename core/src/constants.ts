@@ -22,6 +22,12 @@ export const EVENTS = {
         success: 'mutation:success',
         error: 'mutation:error',
     },
+    action: {
+        before: 'action:before',
+        after: 'action:after',
+        success: 'action:success',
+        error: 'action:error',
+    },
     ssr: {
         initServer: 'ssr:init:server',
         initClient: 'ssr:init:client',

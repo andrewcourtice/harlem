@@ -4,9 +4,10 @@ import type {
     DeepReadonly,
 } from 'vue';
 
-type UnionToIntersection<U> = (U extends any ? (arg: U) => any : never) extends ((arg: infer I) => void) ? I : never;
+type UnionToIntersection<TValue> = (TValue extends any ? (arg: TValue) => any : never) extends ((arg: infer I) => void) ? I : never;
 
-export type BaseState = object;
+//export type BaseState = object;
+export type BaseState = Record<PropertyKey, any>;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
 export type ReadState<TState extends BaseState> = DeepReadonly<TState>;
 export type WriteState<TState extends BaseState> = TState;
@@ -16,11 +17,16 @@ export type RegistrationValueProducer = () => unknown;
 export type Getter<TState extends BaseState, TResult> = (state: ReadState<TState>) => TResult;
 export type Mutator<TState extends BaseState, TPayload, TResult = void> = (state: WriteState<TState>, payload: TPayload) => TResult;
 export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => TResult : (payload: TPayload) => TResult;
-export type InternalStores = Map<string, InternalStore<any>>;
+export type ActionBody<TState extends BaseState, TPayload = undefined, TResult = void> = (payload: TPayload, mutator: (mutate: Mutator<TState, undefined, void>) => void) => Promise<TResult>;
+export type Action<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => Promise<TResult> : (payload: TPayload) => Promise<TResult>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
-export type MutationTriggerHandler<TPayload, TResult> = (data: MutationEventData<TPayload, TResult>) => void;
+export type TriggerHandler<TEventData extends TriggerEventData> = (data: TEventData) => void;
+export type Trigger<TEventData extends TriggerEventData> = (name: string | string[], handler: TriggerHandler<TEventData>) => EventListener;
+export type InternalStores = Map<string, InternalStore<any>>;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
-export type ExtendedStore<TExtensions extends Extension<any>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
+export type ExtensionAPIs<TExtensions extends Extension<any>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
+export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Store<TState> & ExtensionAPIs<TExtensions>;
+// export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -39,10 +45,17 @@ export interface EventPayload<TData = any> {
     data: TData;
 }
 
-export interface MutationEventData<TPayload = any, TResult = any> {
-    mutation: string;
+export interface TriggerEventData<TPayload = any, TResult = any> {
     payload: TPayload;
     result?: TResult;
+}
+
+export interface MutationEventData<TPayload = any, TResult = any> extends TriggerEventData<TPayload, TResult> {
+    mutation: string;
+}
+
+export interface ActionEventData<TPayload = any, TResult = any> extends TriggerEventData<TPayload, TResult> {
+    action: string;
 }
 
 export interface StoreRegistration {
@@ -66,6 +79,14 @@ export interface StoreBase<TState extends BaseState> {
      * @param mutator - A function used to mutate state. This function receives state and a payload as it's parameters.
      */
     mutation<TPayload, TResult = void>(name: string, mutator: Mutator<TState, TPayload, TResult>): Mutation<TPayload, TResult>;
+
+    /**
+     * Register an action on this store
+     *
+     * @param name - The name of this action
+     * @param body - The function to execute as part of this action. This function receives a payload and mutator function as it's parameters.
+     */
+    action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>): Action<TPayload, TResult>;
 
     /**
      * Listen to an event on this store. This is useful for creating triggers.
@@ -257,37 +278,14 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      */
     state: ReadState<TState>;
 
-    /**
-     * A convenience method to register triggers for before mutation events
-     *
-     * @param mutationName - The name(s) of the mutation(s) to listen to
-     * @param handler - The handler that will be called when this event is triggered
-     */
-    onBeforeMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
-
-    /**
-     * A convenience method to register triggers for after mutation events
-     *
-     * @param mutationName - The name(s) of the mutation(s) to listen to
-     * @param handler - The handler that will be called when this event is triggered
-     */
-    onAfterMutation<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
-
-    /**
-     * A convenience method to register triggers for mutation success events
-     *
-     * @param mutationName - The name(s) of the mutation(s) to listen to
-     * @param handler - The handler that will be called when this event is triggered
-     */
-    onMutationSuccess<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
-
-    /**
-     * A convenience method to register triggers for mutation error events
-     *
-     * @param mutationName - The name(s) of the mutation(s) to listen to
-     * @param handler - The handler that will be called when this event is triggered
-     */
-    onMutationError<TPayload = any, TResult = any>(mutationName: string | string[], handler: MutationTriggerHandler<TPayload, TResult>): EventListener;
+    onBeforeMutation: Trigger<MutationEventData>;
+    onAfterMutation: Trigger<MutationEventData>;
+    onMutationSuccess: Trigger<MutationEventData>;
+    onMutationError: Trigger<MutationEventData>;
+    onBeforeAction: Trigger<ActionEventData>;
+    onAfterAction: Trigger<ActionEventData>;
+    onActionSuccess: Trigger<ActionEventData>;
+    onActionError: Trigger<ActionEventData>;
 }
 
 export interface HarlemPlugin {

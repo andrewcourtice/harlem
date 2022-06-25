@@ -16,6 +16,9 @@ import {
 } from 'vue';
 
 import type {
+    Action,
+    ActionBody,
+    ActionEventData,
     BaseState,
     EventHandler,
     EventListener,
@@ -229,10 +232,46 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         return mutation;
     }
 
+    public action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>): Action<TPayload, TResult> {
+        const mutate = (mutator: Mutator<TState, undefined, void>) => this.write(name, SENDER, mutator);
+
+        const action = (async (payload: TPayload) => {
+            let result: TResult;
+
+            const emit = (event: string) => this.emit(event, SENDER, {
+                action: name,
+                payload,
+                result,
+            } as ActionEventData);
+
+            emit(EVENTS.action.before);
+
+            try {
+                const providedPayload = this.providers.payload(payload) ?? payload;
+
+                result = await body(providedPayload, mutate);
+                emit(EVENTS.action.success);
+            } catch (error) {
+                emit(EVENTS.action.error);
+                throw error;
+            } finally {
+                emit(EVENTS.action.after);
+            }
+
+            return result;
+        }) as Action<TPayload, TResult>;
+
+        this.register('actions', name, () => action);
+
+        return action;
+    }
+
     public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>, suppress?: boolean): TResult {
         const mutation = () => this.mutate(name, sender, mutator, undefined);
 
-        return (suppress ? () => this.suppress(mutation) : mutation)();
+        return suppress
+            ? this.suppress(mutation)
+            : mutation();
     }
 
     public destroy(): void {

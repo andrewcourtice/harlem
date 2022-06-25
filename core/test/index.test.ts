@@ -19,11 +19,20 @@ import {
     vi,
 } from 'vitest';
 
+import {
+    sleep,
+} from '@harlem/testing';
+
+function getId() {
+    return Math.round(Math.random() * 100000);
+}
+
 function getStore() {
     const {
         state,
         getter,
         mutation,
+        action,
         ...store
     } = createStore('main', {
         id: 0,
@@ -31,12 +40,18 @@ function getStore() {
         lastName: 'Smith',
     }, {
         allowOverwrite: false,
+        // extensions: [
+        //     store => ({
+        //         blah: 5,
+        //         //action: () => 6
+        //     }),
+        // ],
     });
 
     const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
 
     const setId = mutation<undefined, number>('set-id', state => {
-        const id = Math.round(Math.random() * 100000);
+        const id = getId();
 
         state.id = id;
         return id;
@@ -54,6 +69,7 @@ function getStore() {
         state,
         getter,
         mutation,
+        action,
         fullName,
         setId,
         setFirstName,
@@ -144,10 +160,16 @@ describe('Harlem Core', () => {
                 state,
             } = store;
 
+            vi.spyOn(console, 'warn').getMockImplementation();
+
             // @ts-expect-error This is readonly
             state.firstName = 'Billy';
 
             expect(state.firstName).toBe('John');
+            expect(console.warn).toHaveBeenCalledWith(
+                expect.stringContaining('target is readonly'),
+                expect.anything()
+            );
         });
 
     });
@@ -203,6 +225,64 @@ describe('Harlem Core', () => {
             circularChild = mutation('circular-child', () => circularParent());
 
             expect(() => circularParent()).toThrow();
+        });
+
+    });
+
+    describe('Actions', () => {
+
+        test('Should run a basic action', async () => {
+            expect.assertions(3);
+
+            const {
+                state,
+                action,
+            } = store;
+
+            const loadDetails = action('load-details', async (id: number, mutate) => {
+                await sleep();
+
+                mutate(state => {
+                    state.id = id;
+                    state.firstName = 'Jane';
+                    state.lastName = 'Doe';
+                });
+            });
+
+            await loadDetails(51);
+
+            expect(state.id).toBe(51);
+            expect(state.firstName).toBe('Jane');
+            expect(state.lastName).toBe('Doe');
+        });
+
+        test('Should return a result from an action', async () => {
+            expect.assertions(3);
+
+            const {
+                state,
+                action,
+            } = store;
+
+            const loadDetails = action('load-details', async (_, mutate) => {
+                const id = getId();
+
+                await sleep();
+
+                mutate(state => {
+                    state.id = id;
+                    state.firstName = 'Jane';
+                    state.lastName = 'Doe';
+                });
+
+                return id;
+            });
+
+            const id = await loadDetails();
+
+            expect(id).toBeTypeOf('number');
+            expect(state.firstName).toBe('Jane');
+            expect(state.lastName).toBe('Doe');
         });
 
     });
