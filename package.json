@@ -21,7 +21,8 @@
         "test": "vitest",
         "build": "lerna run build --no-private",
         "release": "lerna publish --force-publish",
-        "lint": "eslint . --ignore-path .gitignore --ext .js,.ts,.mjs,.vue --quiet"
+        "lint": "eslint . --ignore-path .gitignore --ext .js,.ts,.mjs,.vue --quiet",
+        "version": "yarn install && git stage yarn.lock"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.0.2",

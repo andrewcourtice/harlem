@@ -13,7 +13,7 @@ export interface UserDetails {
 
 export interface State extends BaseState {
     id: number;
-    details: UserDetails
+    details: UserDetails;
 }
 
 const STATE = {
@@ -25,7 +25,7 @@ const STATE = {
     },
 };
 
-export function jsonClone<T>(value: T): T {
+export function jsonClone<TValue>(value: TValue): TValue {
     return JSON.parse(JSON.stringify(value));
 }
 

@@ -1,15 +1,15 @@
 <template>
     <teleport to="body">
         <transition-group name="modal">
-            <div class="modal" layout="row center-center" v-bind="$attrs" v-if="isShowing">
+            <div v-if="isShowing" class="modal" layout="row center-center" v-bind="$attrs">
                 <div class="modal__content" self="size-small">
-                    <div class="modal__header" v-if="$slots.header">
+                    <div v-if="$slots.header" class="modal__header">
                         <slot name="header" v-bind="{ open, close }"></slot>
                     </div>
                     <div class="modal__body">
                         <slot v-bind="{ open, close }"></slot>
                     </div>
-                    <div class="modal__footer" v-if="$slots.footer">
+                    <div v-if="$slots.footer" class="modal__footer">
                         <slot name="footer" v-bind="{ open, close }"></slot>
                     </div>
                 </div>
@@ -80,7 +80,7 @@ defineExpose({
         opacity: 0;
 
         & .modal__content {
-            transform: scale(0);
+            transform: scale(0.5);
         }
     }
 

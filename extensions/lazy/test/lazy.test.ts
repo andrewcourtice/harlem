@@ -48,7 +48,7 @@ describe('Lazy Extension', () => {
             fullname,
             isEvaluating,
         ] = store.lazy('lazy', async ({ details }) => new Promise<string>(resolve => {
-            setTimeout(() => resolve(`${details.firstName} ${details.lastName}`), 500);
+            setTimeout(() => resolve(`${details.firstName} ${details.lastName}`), 50);
         }));
 
         setUserDetails({
@@ -59,7 +59,7 @@ describe('Lazy Extension', () => {
         await nextTick();
 
         expect(isEvaluating.value).toBe(true);
-        await sleep(600);
+        await sleep(100);
         expect(isEvaluating.value).toBe(false);
         expect(fullname.value).toBe('Jane Doe');
     });

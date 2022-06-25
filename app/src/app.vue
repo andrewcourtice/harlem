@@ -2,7 +2,7 @@
     <div class="app">
         <container>
             <header class="app__header">
-                <a href="https://harlemjs.com" target="_blank">
+                <a href="https://harlemjs.com" target="_blank" rel="noopener noreferrer">
                     <img class="app__logo" src="/images/logo-192.svg" alt="Harlem">
                 </a>
                 <h1 class="app__title">Harlem</h1>
@@ -13,21 +13,33 @@
                     Each clock is synchronised by a single time value stored on <strong>state</strong>. A timer is set to run a <strong>mutation</strong> each second to update the stored time. A <strong>getter</strong> then recalculates each clock's time based on it's timezone. State is synchronised with localStorage using the <strong>storage extension</strong>. Open this URL in multiple tabs to see your changes synced across tabs.
                     <br>
                     <br>
-                    If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank">here</a>.
+                    If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank" rel="noopener noreferrer">here</a>.
                 </p>
                 <choice-group class="app__theme">
-                    <choice v-for="{ label, value } in state.themes" :key="value" :id="value" :value="value" v-model="theme">{{ label }}</choice>
+                    <choice v-for="{ label, value } in state.themes"
+                        :key="value"
+                        v-model="theme"
+                        :id="value"
+                        :value="value">
+                        {{ label }}
+                    </choice>
                 </choice-group>
             </header>
             <div class="app__options" layout="rows center-justify">
                 <choice-group self="sm-full">
-                    <choice v-for="{ label, value } in state.clockTypes" :key="value" :id="value" :value="value" v-model="clockType">{{ label }}</choice>
+                    <choice v-for="{ label, value } in state.clockTypes"
+                        :key="value"
+                        v-model="clockType"
+                        :id="value"
+                        :value="value">
+                        {{ label }}
+                    </choice>
                 </choice-group>
                 <button class="button button--primary" self="sm-full" @click="openAddClockModal()">Add Clock</button>
             </div>
             <div class="app__clocks">
                 <transition-group name="clocks">
-                    <div class="app__clock" v-for="{ time, timezone } in clocks" :key="timezone">
+                    <div v-for="{ time, timezone } in clocks" :key="timezone" class="app__clock">
                         <component :is="clockComponent" :time="time"></component>
                         <div class="app__clock-label">
                             <div class="app__clock-timezone">{{ getTimezoneLabel(timezone) }}</div>

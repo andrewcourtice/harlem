@@ -1,14 +1,6 @@
 export type Theme = 'light' | 'dark';
 export type ClockType = 'analogue' | 'digital';
-
-export interface Timezone {
-    value: string;
-    abbr: string;
-    offset: number;
-    isdst: boolean;
-    text: string;
-    utc: string[];
-}
+export type Timezone = typeof import('../../assets/data/timezones.json')[number];
 
 export interface State {
     version: number;

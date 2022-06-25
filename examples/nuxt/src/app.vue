@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1>Welcome {{ fullName }}</h1>
-        <input type="text" placeholder="First name" v-model="firstName">
-        <input type="text" placeholder="Last name" v-model="lastName">
+        <input v-model="firstName" type="text" placeholder="First name">
+        <input v-model="lastName" type="text" placeholder="Last name">
         <div>
             <button @click="loadDetails()">Load Details</button>
             <button @click="reset()">Reset</button>

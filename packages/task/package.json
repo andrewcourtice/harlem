@@ -1,20 +1,22 @@
 {
     "name": "@harlem/task",
     "amdName": "harlemTask",
-    "version": "2.3.6",
+    "version": "2.3.7",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Harlem task package",
     "homepage": "https://harlemjs.com",
     "source": "src/index.ts",
     "main": "dist/index.js",
-    "module": "dist/esm/index.js",
-    "unpkg": "dist/iife/index.js",
-    "jsdelivr": "dist/iife/index.js",
+    "module": "dist/index.mjs",
+    "unpkg": "dist/index.global.js",
+    "jsdelivr": "dist/index.global.js",
     "types": "dist/index.d.ts",
     "exports": {
+        "./package.json": "./package.json",
         ".": {
-            "import": "./dist/esm/index.js",
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
             "require": "./dist/index.js"
         }
     },

@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1>Welcome {{ fullName }}</h1>
-        <input type="text" placeholder="First name" v-model="firstName">
-        <input type="text" placeholder="Last name" v-model="lastName">
-        <input type="number" step="100" v-model.number="timeout">
+        <input v-model="firstName" type="text" placeholder="First name">
+        <input v-model="lastName" type="text" placeholder="Last name">
+        <input v-model.number="timeout" type="number" step="100">
         <p>
             Click the <strong>Get new name</strong> button with the <strong>{{ timeout }}ms</strong> period to have the action automatically cancel running instances.
             <br>
