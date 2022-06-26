@@ -70,7 +70,7 @@ function emitCreated(store: InternalStore, state: any): void {
     eventEmitter.once(EVENTS.core.installed, created);
 }
 
-function getExtendedStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(store: InternalStore, extensions: TExtensions): ReturnType<Extension<TState>> {
+function getExtendedStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(store: InternalStore<TState>, extensions: TExtensions): ReturnType<Extension<TState>> {
     return extensions.reduce((output, extension) => {
         let result = {};
 
@@ -185,6 +185,8 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         getter: store.getter.bind(store),
         mutation: store.mutation.bind(store),
         action: store.action.bind(store),
+        snapshot: store.snapshot.bind(store),
+        reset: store.reset.bind(store),
         suppress: store.suppress.bind(store),
         on: store.on.bind(store),
         once: store.once.bind(store),

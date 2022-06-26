@@ -38,6 +38,11 @@ export const EVENTS = {
     },
 } as const;
 
+export const MUTATIONS = {
+    snapshot: 'core:snapshot',
+    reset: 'core:reset',
+} as const;
+
 export const PROVIDERS = {
     read: value => value,
     write: value => value,
