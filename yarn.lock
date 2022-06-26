@@ -800,7 +800,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/core@npm:^2.3.0, @harlem/core@npm:^2.3.3":
+"@harlem/core@npm:^2.3.3":
   version: 2.3.7
   resolution: "@harlem/core@npm:2.3.7"
   dependencies:
@@ -829,9 +829,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/example-nuxt@workspace:examples/nuxt"
   dependencies:
-    "@harlem/extension-action": ^2.3.0
-    "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-storage": ^2.3.0
+    "@harlem/extension-action": ^2.4.0-beta.1
+    "@harlem/extension-compose": ^2.4.0-beta.1
+    "@harlem/extension-storage": ^2.4.0-beta.1
     "@nuxtjs/harlem": ^1.1.0
     nuxt: ^3.0.0-rc.4
   languageName: unknown
@@ -841,11 +841,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/example-vite-ts-actions@workspace:examples/vite-ts-actions"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/extension-action": ^2.3.0
-    "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-storage": ^2.3.0
-    "@harlem/plugin-devtools": ^2.3.0
+    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/extension-action": ^2.4.0-beta.1
+    "@harlem/extension-compose": ^2.4.0-beta.1
+    "@harlem/extension-storage": ^2.4.0-beta.1
+    "@harlem/plugin-devtools": ^2.4.0-beta.1
     "@vitejs/plugin-vue": ^2.3.3
     vite: ^2.9.9
     vue: ^3.2.33
@@ -856,10 +856,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/example-vite-ts@workspace:examples/vite-ts"
   dependencies:
-    "@harlem/core": ^2.3.0
-    "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-storage": ^2.3.0
-    "@harlem/plugin-devtools": ^2.3.0
+    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/extension-compose": ^2.4.0-beta.1
+    "@harlem/extension-storage": ^2.4.0-beta.1
+    "@harlem/plugin-devtools": ^2.4.0-beta.1
     "@vitejs/plugin-vue": ^2.3.3
     vite: ^2.9.9
     vue: ^3.2.33
@@ -880,18 +880,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-action@npm:^2.3.0":
-  version: 2.3.7
-  resolution: "@harlem/extension-action@npm:2.3.7"
-  dependencies:
-    "@harlem/task": ^2.3.7
-  peerDependencies:
-    "@harlem/core": ^2.0.0
-    vue: ^3.2.0
-  checksum: 8a94d1fe7e35128f18dcfea282cb9bfcbcce0128cab59f4ae1d1d4f682c921e9d2f6a7961a04caeb0cccbdb829aa52f3544b1c4dcae3d71fd7de08507d460b26
-  languageName: node
-  linkType: hard
-
 "@harlem/extension-compose@^2.4.0-beta.1, @harlem/extension-compose@workspace:extensions/compose":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-compose@workspace:extensions/compose"
@@ -904,18 +892,6 @@ __metadata:
     vue: ^3.2.0
   languageName: unknown
   linkType: soft
-
-"@harlem/extension-compose@npm:^2.3.0":
-  version: 2.3.7
-  resolution: "@harlem/extension-compose@npm:2.3.7"
-  dependencies:
-    "@harlem/utilities": ^2.3.7
-  peerDependencies:
-    "@harlem/core": ^2.0.0
-    vue: ^3.2.0
-  checksum: 00be0d5ae638cf9d9324c0830bc3c90ec66ca676c4d5dca415a7fe8697944b5bfd3bcb98c6b11939b587c73e170942916c15561b4dc01820469bb885927749b3
-  languageName: node
-  linkType: hard
 
 "@harlem/extension-history@^2.4.0-beta.1, @harlem/extension-history@workspace:extensions/history":
   version: 0.0.0-use.local
@@ -978,17 +954,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-storage@npm:^2.3.0":
-  version: 2.3.7
-  resolution: "@harlem/extension-storage@npm:2.3.7"
-  dependencies:
-    "@harlem/utilities": ^2.3.7
-  peerDependencies:
-    "@harlem/core": ^2.0.0
-  checksum: 2f64f290b61978ac1ca2eaefdc82eec2ecee4f6f6da4db479221d35edbbd4a2cf6cd2156f5305965d0acaf43472c92b7ae073315e3ad5430468da66c16c86eda
-  languageName: node
-  linkType: hard
-
 "@harlem/extension-trace@^2.4.0-beta.1, @harlem/extension-trace@workspace:extensions/trace":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-trace@workspace:extensions/trace"
@@ -1023,7 +988,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/plugin-devtools@npm:^2.3.0, @harlem/plugin-devtools@npm:^2.3.3":
+"@harlem/plugin-devtools@npm:^2.3.3":
   version: 2.3.7
   resolution: "@harlem/plugin-devtools@npm:2.3.7"
   dependencies:
@@ -1062,13 +1027,6 @@ __metadata:
   resolution: "@harlem/task@workspace:packages/task"
   languageName: unknown
   linkType: soft
-
-"@harlem/task@npm:^2.3.7":
-  version: 2.3.7
-  resolution: "@harlem/task@npm:2.3.7"
-  checksum: 6f90908ac0c3eb438438ecc0b1c696f08f860145f4e49dbbe0d337e209693a7a03b0cab1b88214c74ffbb72304d49c073621110624e0d0778df8a53c47060353
-  languageName: node
-  linkType: hard
 
 "@harlem/testing@^2.4.0-beta.1, @harlem/testing@workspace:packages/testing":
   version: 0.0.0-use.local
