@@ -14,6 +14,7 @@ export const EVENTS = {
     },
     store: {
         created: 'store:created',
+        ready: 'store:ready',
         destroyed: 'store:destroyed',
     },
     mutation: {

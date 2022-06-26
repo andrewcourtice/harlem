@@ -60,6 +60,7 @@ function emitCreated(store: InternalStore, state: any): void {
         store.emit(EVENTS.ssr.initClient, SENDER, state);
         store.emit(EVENTS.store.created, SENDER, state);
         store.emit(EVENTS.ssr.initServer, SENDER, state);
+        store.emit(EVENTS.store.ready, SENDER, state);
         store.emit(EVENTS.devtools.update, SENDER, state);
     };
 

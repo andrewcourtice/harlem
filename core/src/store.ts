@@ -91,7 +91,7 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
 
-        this.once(EVENTS.store.created, () => this.initialState = this.snapshot());
+        this.once(EVENTS.store.ready, () => this.initialState = this.snapshot());
         this.on(EVENTS.devtools.reset, () => this.reset());
     }
 
