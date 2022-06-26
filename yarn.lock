@@ -800,7 +800,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/core@npm:^2.0.0, @harlem/core@npm:^2.3.0, @harlem/core@npm:^2.3.3":
+"@harlem/core@npm:^2.3.0, @harlem/core@npm:^2.3.3":
   version: 2.3.7
   resolution: "@harlem/core@npm:2.3.7"
   dependencies:
@@ -875,7 +875,7 @@ __metadata:
     "@harlem/testing": ^2.4.0-beta.1
     vue: ^3.2.33
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
     vue: ^3.2.0
   languageName: unknown
   linkType: soft
@@ -900,7 +900,7 @@ __metadata:
     "@harlem/utilities": ^2.4.0-beta.1
     vue: ^3.2.33
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
     vue: ^3.2.0
   languageName: unknown
   linkType: soft
@@ -926,7 +926,7 @@ __metadata:
     "@harlem/testing": ^2.4.0-beta.1
     "@harlem/utilities": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -938,7 +938,7 @@ __metadata:
     "@harlem/testing": ^2.4.0-beta.1
     vue: ^3.2.33
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
     vue: ^3.2.0
   languageName: unknown
   linkType: soft
@@ -951,7 +951,7 @@ __metadata:
     "@harlem/testing": ^2.4.0-beta.1
     "@harlem/utilities": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -963,7 +963,7 @@ __metadata:
     "@harlem/testing": ^2.4.0-beta.1
     "@harlem/utilities": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -974,7 +974,7 @@ __metadata:
     "@harlem/core": ^2.4.0-beta.1
     "@harlem/utilities": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -997,7 +997,7 @@ __metadata:
     "@harlem/testing": ^2.4.0-beta.1
     "@harlem/utilities": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -1007,7 +1007,7 @@ __metadata:
   dependencies:
     "@harlem/core": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -1019,7 +1019,7 @@ __metadata:
     "@harlem/utilities": ^2.4.0-beta.1
     "@vue/devtools-api": ^6.1.4
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -1053,7 +1053,7 @@ __metadata:
     "@harlem/core": ^2.4.0-beta.1
     "@harlem/utilities": ^2.4.0-beta.1
   peerDependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
@@ -1074,7 +1074,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/testing@workspace:packages/testing"
   dependencies:
-    "@harlem/core": ^2.0.0
+    "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
