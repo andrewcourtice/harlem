@@ -1,5 +1,3 @@
-import snapshotExtension from '@harlem/extension-snapshot';
-
 import {
     EVENTS,
     MUTATIONS,
@@ -26,17 +24,11 @@ export default function transactionExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'transaction', () => 'No options specified');
 
-        const {
-            snapshot,
-        } = snapshotExtension({
-            mutationName: MUTATIONS.rollback,
-        })(store);
-
         function transaction<TPayload>(name: string, transactor: Transactor<TState, TPayload>): Transaction<TPayload> {
             const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, SENDER, mutator);
 
             return ((payload: TPayload) => {
-                const snap = snapshot();
+                const snap = store.snapshot();
 
                 const emit = (event: string) => store.emit(event, SENDER, {
                     transaction: name,

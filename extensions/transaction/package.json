@@ -40,9 +40,6 @@
         "build": "yarn run --top-level tsup",
         "prepublishOnly": "yarn build"
     },
-    "dependencies": {
-        "@harlem/extension-snapshot": "^2.4.0-beta.1"
-    },
     "peerDependencies": {
         "@harlem/core": "^2.0.0"
     },
