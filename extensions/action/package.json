@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-action",
     "amdName": "harlemAction",
-    "version": "2.3.7",
+    "version": "2.4.0-beta.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official action extension for Harlem",
@@ -41,15 +41,15 @@
         "prepublishOnly": "yarn build"
     },
     "dependencies": {
-        "@harlem/task": "^2.3.7"
+        "@harlem/task": "^2.4.0-beta.1"
     },
     "peerDependencies": {
         "@harlem/core": "^2.0.0",
         "vue": "^3.2.0"
     },
     "devDependencies": {
-        "@harlem/core": "^2.3.7",
-        "@harlem/testing": "^2.3.7",
+        "@harlem/core": "^2.4.0-beta.1",
+        "@harlem/testing": "^2.4.0-beta.1",
         "vue": "^3.2.33"
     }
 }

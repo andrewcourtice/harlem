@@ -1,7 +1,7 @@
 {
     "name": "@harlem/testing",
     "private": true,
-    "version": "2.3.7",
+    "version": "2.4.0-beta.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Harlem testing package",
@@ -10,7 +10,7 @@
         "build": "echo \"No Build Required\""
     },
     "dependencies": {
-        "@harlem/core": "^2.3.7"
+        "@harlem/core": "^2.4.0-beta.1"
     },
     "devDependencies": {
         "@harlem/core": "^2.0.0"
