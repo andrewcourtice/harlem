@@ -1,7 +1,6 @@
 import composeExtension from '@harlem/extension-compose';
 import actionExtension from '@harlem/extension-action';
 import storageExtension from '@harlem/extension-storage';
-import resetExtension from '@harlem/extension-reset';
 
 import {
     createStore,
@@ -14,6 +13,7 @@ export const {
     action,
     reset,
     computeState,
+    isActionRunning,
 } = createStore('app', {
     firstName: 'John',
     lastName: 'Smith',
@@ -25,7 +25,6 @@ export const {
             prefix: 'vite-ts-actions',
             restore: true,
         }),
-        resetExtension(), // order is important!
     ],
 });
 

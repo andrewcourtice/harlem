@@ -1,7 +1,6 @@
 import getState from './state';
 import composeExtension from '@harlem/extension-compose';
 import storageExtension from '@harlem/extension-storage';
-import resetExtension from '@harlem/extension-reset';
 
 import {
     MUTATIONS,
@@ -17,6 +16,7 @@ export const {
     getter,
     mutation,
     action,
+    reset,
     computeState,
 } = createStore(NAME, getState(), {
     extensions: [
@@ -26,6 +26,5 @@ export const {
                 MUTATIONS.updateTime,
             ],
         }),
-        resetExtension(),
     ],
 });

@@ -775,8 +775,6 @@ __metadata:
     "@harlem/extension-compose": ^2.3.7
     "@harlem/extension-history": ^2.3.7
     "@harlem/extension-lazy": ^2.3.7
-    "@harlem/extension-reset": ^2.3.7
-    "@harlem/extension-snapshot": ^2.3.7
     "@harlem/extension-storage": ^2.3.7
     "@harlem/extension-trace": ^2.3.7
     "@harlem/extension-transaction": ^2.3.7
@@ -822,10 +820,9 @@ __metadata:
   dependencies:
     "@harlem/extension-action": ^2.3.0
     "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-reset": ^2.3.0
     "@harlem/extension-storage": ^2.3.0
     "@nuxtjs/harlem": ^1.1.0
-    nuxt: ^3.0.0-rc.3
+    nuxt: ^3.0.0-rc.4
   languageName: unknown
   linkType: soft
 
@@ -836,7 +833,6 @@ __metadata:
     "@harlem/core": ^2.3.0
     "@harlem/extension-action": ^2.3.0
     "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-reset": ^2.3.0
     "@harlem/extension-storage": ^2.3.0
     "@harlem/plugin-devtools": ^2.3.0
     "@vitejs/plugin-vue": ^2.3.3
@@ -851,7 +847,6 @@ __metadata:
   dependencies:
     "@harlem/core": ^2.3.0
     "@harlem/extension-compose": ^2.3.0
-    "@harlem/extension-reset": ^2.3.0
     "@harlem/extension-storage": ^2.3.0
     "@harlem/plugin-devtools": ^2.3.0
     "@vitejs/plugin-vue": ^2.3.3
@@ -913,7 +908,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-reset@^2.3.0, @harlem/extension-reset@^2.3.7, @harlem/extension-reset@workspace:extensions/reset":
+"@harlem/extension-reset@workspace:extensions/reset":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-reset@workspace:extensions/reset"
   dependencies:
@@ -9517,7 +9512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt@npm:^3.0.0-rc.3":
+"nuxt@npm:^3.0.0-rc.4":
   version: 3.0.0-rc.4
   resolution: "nuxt@npm:3.0.0-rc.4"
   dependencies:

@@ -21,6 +21,9 @@ import type {
 
 export * from './types';
 
+/**
+ * @deprecated The reset extension is now deprecated. Reset functionaility is now part of the core store.
+ */
 export default function resetExtension<TState extends BaseState>() {
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'reset', () => 'No options specified');

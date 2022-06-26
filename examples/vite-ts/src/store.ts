@@ -1,6 +1,5 @@
 import composeExtension from '@harlem/extension-compose';
 import storageExtension from '@harlem/extension-storage';
-import resetExtension from '@harlem/extension-reset';
 
 import {
     createStore,
@@ -21,7 +20,6 @@ export const {
             prefix: 'vite-ts',
             restore: true,
         }),
-        resetExtension(), // order is important!
     ],
 });
 

@@ -18,8 +18,6 @@
         "@harlem/extension-compose": "^2.3.7",
         "@harlem/extension-history": "^2.3.7",
         "@harlem/extension-lazy": "^2.3.7",
-        "@harlem/extension-reset": "^2.3.7",
-        "@harlem/extension-snapshot": "^2.3.7",
         "@harlem/extension-storage": "^2.3.7",
         "@harlem/extension-trace": "^2.3.7",
         "@harlem/extension-transaction": "^2.3.7",

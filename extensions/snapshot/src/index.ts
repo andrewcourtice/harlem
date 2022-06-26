@@ -28,6 +28,9 @@ function getOptions(options?: Partial<Options>): Options {
     };
 }
 
+/**
+ * @deprecated The snapshot extension is now deprecated. Snapshot functionaility is now part of the core store.
+ */
 export default function snapshotExtension<TState extends BaseState>(options?: Partial<Options>) {
     const _options = getOptions(options);
 

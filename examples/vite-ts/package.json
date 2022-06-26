@@ -2,14 +2,13 @@
     "name": "@harlem/example-vite-ts",
     "private": true,
     "scripts": {
-        "dev": "vite",
+        "start": "vite",
         "build": "vite build",
         "preview": "vite preview"
     },
     "dependencies": {
         "@harlem/core": "^2.3.0",
         "@harlem/extension-compose": "^2.3.0",
-        "@harlem/extension-reset": "^2.3.0",
         "@harlem/extension-storage": "^2.3.0",
         "@harlem/plugin-devtools": "^2.3.0",
         "vue": "^3.2.33"
