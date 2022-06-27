@@ -12,7 +12,7 @@
         "@harlem/extension-compose": "^2.4.0-beta.1",
         "@harlem/extension-storage": "^2.4.0-beta.1",
         "@harlem/plugin-devtools": "^2.4.0-beta.1",
-        "vue": "^3.2.33"
+        "vue": "^3.2.37"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^2.3.3",

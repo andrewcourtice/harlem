@@ -513,7 +513,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^17.0.2":
+"@commitlint/cli@npm:^17.0.3":
   version: 17.0.3
   resolution: "@commitlint/cli@npm:17.0.3"
   dependencies:
@@ -533,7 +533,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^17.0.2":
+"@commitlint/config-conventional@npm:^17.0.3":
   version: 17.0.3
   resolution: "@commitlint/config-conventional@npm:17.0.3"
   dependencies:
@@ -790,11 +790,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/core@^2.4.0-beta.1, @harlem/core@workspace:core":
+"@harlem/core@^2.4.0-beta.1, @harlem/core@^2.4.0-beta.2, @harlem/core@workspace:core":
   version: 0.0.0-use.local
   resolution: "@harlem/core@workspace:core"
   dependencies:
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/utilities": ^2.4.0-beta.2
     vue: ^3.2.37
   peerDependencies:
     vue: ^3.2.0
@@ -845,7 +845,7 @@ __metadata:
     "@harlem/plugin-devtools": ^2.4.0-beta.1
     "@vitejs/plugin-vue": ^2.3.3
     vite: ^2.9.12
-    vue: ^3.2.33
+    vue: ^3.2.37
   languageName: unknown
   linkType: soft
 
@@ -859,7 +859,7 @@ __metadata:
     "@harlem/plugin-devtools": ^2.4.0-beta.1
     "@vitejs/plugin-vue": ^2.3.3
     vite: ^2.9.12
-    vue: ^3.2.33
+    vue: ^3.2.37
   languageName: unknown
   linkType: soft
 
@@ -867,10 +867,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-action@workspace:extensions/action"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
-    "@harlem/task": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
+    "@harlem/task": ^2.4.0-beta.2
     "@harlem/testing": ^2.4.0-beta.1
-    vue: ^3.2.33
+    vue: ^3.2.37
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
     vue: ^3.2.0
@@ -881,9 +881,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-compose@workspace:extensions/compose"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
-    vue: ^3.2.33
+    "@harlem/core": ^2.4.0-beta.2
+    "@harlem/utilities": ^2.4.0-beta.2
+    vue: ^3.2.37
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
     vue: ^3.2.0
@@ -894,10 +894,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-history@workspace:extensions/history"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
-    "@harlem/extension-trace": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
+    "@harlem/extension-trace": ^2.4.0-beta.2
     "@harlem/testing": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/utilities": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
@@ -907,9 +907,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-lazy@workspace:extensions/lazy"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
     "@harlem/testing": ^2.4.0-beta.1
-    vue: ^3.2.33
+    vue: ^3.2.37
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
     vue: ^3.2.0
@@ -920,9 +920,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-reset@workspace:extensions/reset"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
     "@harlem/testing": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/utilities": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
@@ -932,9 +932,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-snapshot@workspace:extensions/snapshot"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
     "@harlem/testing": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/utilities": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
@@ -944,20 +944,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-storage@workspace:extensions/storage"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
+    "@harlem/utilities": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-trace@^2.4.0-beta.1, @harlem/extension-trace@workspace:extensions/trace":
+"@harlem/extension-trace@^2.4.0-beta.1, @harlem/extension-trace@^2.4.0-beta.2, @harlem/extension-trace@workspace:extensions/trace":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-trace@workspace:extensions/trace"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
     "@harlem/testing": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/utilities": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
@@ -967,7 +967,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/extension-transaction@workspace:extensions/transaction"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
@@ -977,8 +977,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/plugin-devtools@workspace:plugins/devtools"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
+    "@harlem/utilities": ^2.4.0-beta.2
     "@vue/devtools-api": ^6.1.4
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
@@ -1012,14 +1012,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@harlem/plugin-ssr@workspace:plugins/ssr"
   dependencies:
-    "@harlem/core": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.1
+    "@harlem/core": ^2.4.0-beta.2
+    "@harlem/utilities": ^2.4.0-beta.2
   peerDependencies:
     "@harlem/core": ^2.4.0-beta.1
   languageName: unknown
   linkType: soft
 
-"@harlem/task@^2.4.0-beta.1, @harlem/task@workspace:packages/task":
+"@harlem/task@^2.4.0-beta.2, @harlem/task@workspace:packages/task":
   version: 0.0.0-use.local
   resolution: "@harlem/task@workspace:packages/task"
   languageName: unknown
@@ -1033,7 +1033,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/utilities@^2.4.0-beta.1, @harlem/utilities@workspace:packages/utilities":
+"@harlem/utilities@^2.4.0-beta.2, @harlem/utilities@workspace:packages/utilities":
   version: 0.0.0-use.local
   resolution: "@harlem/utilities@workspace:packages/utilities"
   dependencies:
@@ -6561,7 +6561,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:^5.3.1":
+"happy-dom@npm:^5.3.2":
   version: 5.3.2
   resolution: "happy-dom@npm:5.3.2"
   dependencies:
@@ -6587,23 +6587,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "harlem@workspace:."
   dependencies:
-    "@commitlint/cli": ^17.0.2
-    "@commitlint/config-conventional": ^17.0.2
+    "@commitlint/cli": ^17.0.3
+    "@commitlint/config-conventional": ^17.0.3
     "@typescript-eslint/eslint-plugin": ^5.29.0
     "@typescript-eslint/parser": ^5.29.0
     c8: ^7.11.3
     eslint: ^8.18.0
     eslint-plugin-vue: ^9.1.1
-    happy-dom: ^5.3.1
+    happy-dom: ^5.3.2
     husky: ^8.0.1
     jsdom: ^20.0.0
-    lerna: ^5.1.4
+    lerna: ^5.1.6
     standard-changelog: ^2.0.27
     tsup: ^6.1.2
-    typedoc: ^0.23.1
     typescript: ^4.7.4
-    vitest: ^0.15.2
-    vue-eslint-parser: ^9.0.2
+    vitest: ^0.16.0
+    vue-eslint-parser: ^9.0.3
   languageName: unknown
   linkType: soft
 
@@ -7548,7 +7547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lerna@npm:^5.1.4":
+"lerna@npm:^5.1.6":
   version: 5.1.6
   resolution: "lerna@npm:5.1.6"
   dependencies:
@@ -7882,13 +7881,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lunr@npm:^2.3.9":
-  version: 2.3.9
-  resolution: "lunr@npm:2.3.9"
-  checksum: 176719e24fcce7d3cf1baccce9dd5633cd8bdc1f41ebe6a180112e5ee99d80373fe2454f5d4624d437e5a8319698ca6837b9950566e15d2cae5f2a543a3db4b8
-  languageName: node
-  linkType: hard
-
 "magic-string@npm:^0.25.7":
   version: 0.25.9
   resolution: "magic-string@npm:0.25.9"
@@ -8018,15 +8010,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.0.16":
-  version: 4.0.17
-  resolution: "marked@npm:4.0.17"
-  bin:
-    marked: bin/marked.js
-  checksum: 33a3c43a20b47bddaf045a59bfc7c3d41cc321931cc663ed231ca3b5b3b195fb2ac2973e687c2afd65b79539c14619baa07d19793f70130160f0af80c06d9b3a
-  languageName: node
-  linkType: hard
-
 "mdn-data@npm:2.0.14":
   version: 2.0.14
   resolution: "mdn-data@npm:2.0.14"
@@ -8153,7 +8136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^5.0.1, minimatch@npm:^5.1.0":
+"minimatch@npm:^5.0.1":
   version: 5.1.0
   resolution: "minimatch@npm:5.1.0"
   dependencies:
@@ -11498,10 +11481,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinypool@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "tinypool@npm:0.1.3"
-  checksum: 13ac687a23c03b02c2bf0b9711a3bb191d2c37941775a001b9617aac541c11ba144fb08de74f3f9723ec2649410f5d4fa7f0398fedd462b39fe3b30d19615ad8
+"tinypool@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "tinypool@npm:0.2.1"
+  checksum: 677a4386df8986924e8361f84a1f14484add77883de5bd6acd5e55cedd892cb9cf81c76e11fa7480113198485d13c9a8fd0c7b4b474b440797adbf93ba1a36eb
   languageName: node
   linkType: hard
 
@@ -11805,22 +11788,6 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
-  languageName: node
-  linkType: hard
-
-"typedoc@npm:^0.23.1":
-  version: 0.23.1
-  resolution: "typedoc@npm:0.23.1"
-  dependencies:
-    lunr: ^2.3.9
-    marked: ^4.0.16
-    minimatch: ^5.1.0
-    shiki: ^0.10.1
-  peerDependencies:
-    typescript: 4.6.x || 4.7.x
-  bin:
-    typedoc: bin/typedoc
-  checksum: 8622847ffff85b4ca2fa4d95e7507aafe50b155fe37d7f3f9b2721f7a80effecbca4dda682f9f81bdf1ac230cefd6e6127715398146fc00205042f25da19373a
   languageName: node
   linkType: hard
 
@@ -12243,9 +12210,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^0.15.2":
-  version: 0.15.2
-  resolution: "vitest@npm:0.15.2"
+"vitest@npm:^0.16.0":
+  version: 0.16.0
+  resolution: "vitest@npm:0.16.0"
   dependencies:
     "@types/chai": ^4.3.1
     "@types/chai-subset": ^1.3.3
@@ -12253,7 +12220,7 @@ __metadata:
     chai: ^4.3.6
     debug: ^4.3.4
     local-pkg: ^0.4.1
-    tinypool: ^0.1.3
+    tinypool: ^0.2.1
     tinyspy: ^0.3.3
     vite: ^2.9.12
   peerDependencies:
@@ -12272,7 +12239,7 @@ __metadata:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 48b6f98ece8019c3ac7742e7a5324ada514c98025c34cef6c01ccd6d83c4f0a62af6d98f13c158313e9595d131506139211f924b71dd18b03036296e30974f6e
+  checksum: 501424cd65b8090306f8758600bed367da3a28dfbd693f17ad36d700b6c90065264d50740c545d86682981d150c805f08cbeab7ea31ca2fa847cdebdc544ec24
   languageName: node
   linkType: hard
 
@@ -12375,7 +12342,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-eslint-parser@npm:^9.0.1, vue-eslint-parser@npm:^9.0.2":
+"vue-eslint-parser@npm:^9.0.1, vue-eslint-parser@npm:^9.0.3":
   version: 9.0.3
   resolution: "vue-eslint-parser@npm:9.0.3"
   dependencies:
@@ -12416,7 +12383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.2.33, vue@npm:^3.2.37":
+"vue@npm:^3.2.37":
   version: 3.2.37
   resolution: "vue@npm:3.2.37"
   dependencies:
