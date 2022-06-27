@@ -8,7 +8,9 @@ import Harlem, {
 } from '../src';
 
 import {
+    App,
     isRef,
+    Plugin,
     ref,
 } from 'vue';
 
@@ -46,12 +48,6 @@ function getStore() {
         [internalKey]: 10,
     }, {
         allowOverwrite: false,
-        // extensions: [
-        //     store => ({
-        //         blah: 5,
-        //         //action: () => 6
-        //     }),
-        // ],
     });
 
     const fullName = getter('fullname', ({ details }) => `${details.firstName} ${details.lastName}`);
@@ -88,12 +84,12 @@ describe('Harlem Core', () => {
 
     beforeAll(() => {
         const app = {
-            use: (plugin: any, options?: any) => {
+            use: (plugin: Plugin, options?: any) => {
                 if (plugin && plugin.install){
                     plugin.install(app, options);
                 }
             },
-        };
+        } as App;
 
         app.use(Harlem);
     });
