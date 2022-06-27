@@ -5,7 +5,7 @@ import {
 export default defineConfig({
     test: {
         watch: false,
-        environment: 'happy-dom',
+        environment: 'jsdom',
         outputFile: 'test-results.xml',
         reporters: [
             'verbose',
