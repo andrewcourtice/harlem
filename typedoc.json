@@ -1,0 +1,11 @@
+{
+    "entryPointStrategy": "packages",
+    "entryPoints": [
+        "core",
+        "packages/*",
+        "extensions/*",
+        "plugins/*"
+    ],
+    "out": "docs/src/typedoc",
+    "excludeExternals": true
+}
