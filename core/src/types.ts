@@ -37,7 +37,7 @@ export interface Emittable {
 }
 
 export interface EventListener {
-    dispose(): void
+    dispose(): void;
 }
 
 export interface EventPayload<TData = any> {
