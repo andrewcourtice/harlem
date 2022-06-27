@@ -1,5 +1,5 @@
 {
-    "version": "2.4.0-beta.2",
+    "version": "0.0.0",
     "npmClient": "yarn",
     "useWorkspaces": true,
     "packages": [
@@ -10,7 +10,8 @@
     ],
     "command": {
         "publish": {
-            "graphType": "all"
+            "graphType": "all",
+            "conventionalCommits": true
         }
     }
 }
