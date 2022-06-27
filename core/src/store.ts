@@ -2,6 +2,8 @@ import eventEmitter from './event-emitter';
 
 import {
     EVENTS,
+    INTERNAL,
+    MUTATIONS,
     PROVIDERS,
     SENDER,
 } from './constants';
@@ -15,11 +17,18 @@ import {
     readonly,
 } from 'vue';
 
+import {
+    clone,
+    identity,
+    overwrite,
+} from '@harlem/utilities';
+
 import type {
     Action,
     ActionBody,
     ActionEventData,
     BaseState,
+    BranchAccessor,
     EventHandler,
     EventListener,
     EventPayload,
@@ -36,6 +45,7 @@ import type {
     StoreProviders,
     StoreRegistration,
     StoreRegistrations,
+    StoreSnapshot,
     WriteState,
 } from './types';
 
@@ -47,7 +57,7 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
     };
 }
 
-export default class Store<TState extends BaseState = any> implements InternalStore<TState> {
+export default class Store<TState extends BaseState = BaseState> implements InternalStore<TState> {
 
     private options: InternalStoreOptions<TState>;
     private flags: Map<string, unknown>;
@@ -56,6 +66,7 @@ export default class Store<TState extends BaseState = any> implements InternalSt
     private isSuppressing: boolean;
     private readState: ReadState<TState>;
     private writeState: WriteState<TState>;
+    private initialState?: StoreSnapshot<TState>;
 
     public name: string;
     public registrations: StoreRegistrations;
@@ -79,6 +90,9 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.scope = effectScope();
         this.writeState = reactive(state) as WriteState<TState>;
         this.readState = readonly(this.writeState) as ReadState<TState>;
+
+        this.once(EVENTS.store.ready, () => this.initialState = this.snapshot());
+        this.on(EVENTS.devtools.reset, () => this.reset());
     }
 
     public get allowsOverwrite(): boolean {
@@ -264,6 +278,36 @@ export default class Store<TState extends BaseState = any> implements InternalSt
         this.register('actions', name, () => action);
 
         return action;
+    }
+
+    public snapshot(): StoreSnapshot<TState> {
+        const snapshot = clone(this.state);
+
+        const apply = <TBranchState extends BaseState>(
+            branchAccessor: BranchAccessor<TState, TBranchState> = identity,
+            mutationName: string = MUTATIONS.snapshot) => {
+            this.write(mutationName, SENDER, state => {
+                if (!snapshot) {
+                    return console.warn('Couldn\'t find snapshot for this operation!');
+                }
+
+                const source = branchAccessor(snapshot);
+                const target = branchAccessor(state);
+
+                overwrite(target, clone(source), INTERNAL.pattern);
+            });
+        };
+
+        return {
+            apply,
+            get state() {
+                return clone(snapshot);
+            },
+        };
+    }
+
+    public reset<TBranchState extends BaseState>(branchAccessor: BranchAccessor<TState, TBranchState> = identity) {
+        this.initialState?.apply(branchAccessor, MUTATIONS.reset);
     }
 
     public write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>, suppress?: boolean): TResult {

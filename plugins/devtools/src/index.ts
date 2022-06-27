@@ -86,7 +86,7 @@ function getRegistrationValue(producer: RegistrationValueProducer): unknown {
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
     return Object.entries(store.registrations).reduce((output, [type, registrations]) => {
         output[type] = Array.from(registrations)
-            .sort(([a], [b]) => stringComparitor(a, b))
+            .sort(([valueA], [valueB]) => stringComparitor(valueA, valueB))
             .map(([key, { type, producer }]) => ({
                 key,
                 value: getRegistrationValue(producer),

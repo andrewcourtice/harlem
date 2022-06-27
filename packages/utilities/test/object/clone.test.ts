@@ -18,9 +18,10 @@ function getSimpleTypes(): Record<string, unknown> {
         num: 1,
         und: undefined,
         str: 'hello world',
+        // eslint-disable-next-line no-console
         func1: () => console.log('test'),
-        func2: function (a: number, b: number) {
-            return a + b;
+        func2: function (valueA: number, valueB: number) {
+            return valueA + valueB;
         },
     };
 }
@@ -35,7 +36,7 @@ function getComplexTypes(): Record<string, unknown> {
 
     return {
         obj: {
-            a: 'test',
+            propA: 'test',
         },
         arr: [1, 2, 3],
         map,
@@ -75,20 +76,20 @@ describe('Utilities', () => {
 
         test('Should unwrap reactive objects', () => {
             const source = {
-                a: ref(4),
-                b: ref([1, 2, 3]),
-                c: {
-                    d: reactive({
-                        e: 1,
+                propA: ref(4),
+                propB: ref([1, 2, 3]),
+                propC: {
+                    propD: reactive({
+                        propE: 1,
                     }),
                 },
             };
 
             const copy = clone(source);
 
-            expect(isRef(copy.a)).toBe(false);
-            expect(isRef(copy.b)).toBe(false);
-            expect(isReactive(copy.c.d)).toBe(false);
+            expect(isRef(copy.propA)).toBe(false);
+            expect(isRef(copy.propB)).toBe(false);
+            expect(isReactive(copy.propC.propD)).toBe(false);
         });
 
     });

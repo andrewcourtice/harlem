@@ -12,15 +12,15 @@ describe('Utilities', () => {
 
         test('Should omit top-level properties from an object', () => {
             const source = {
-                a: 1,
-                b: 'foo',
-                c: 'bar',
-                d: [1, 2, 3],
+                propA: 1,
+                propB: 'foo',
+                propC: 'bar',
+                propD: [1, 2, 3],
             };
 
-            const output = omit(source, /^c/);
+            const output = omit(source, /^propC/);
 
-            expect(output).not.toHaveProperty('c');
+            expect(output).not.toHaveProperty('propC');
         });
 
     });

@@ -304,7 +304,7 @@ describe('Actions Extension', () => {
         const name = 'strategy-action';
         const strategyFn = vi.fn();
 
-        const task = action(name, async (p, m, controller) => fetchUserInfo(controller), {
+        const task = action(name, async (_, __, controller) => fetchUserInfo(controller), {
             strategies: {
                 abort: (name, id, resolve) => (strategyFn(), resolve()),
             },

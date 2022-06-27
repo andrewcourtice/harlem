@@ -2,9 +2,10 @@ import {
     EventEmitter,
 } from '../src/event-emitter';
 
-import {
+import Harlem, {
     createStore,
-} from '../src/index';
+    INTERNAL,
+} from '../src';
 
 import {
     isRef,
@@ -13,6 +14,7 @@ import {
 
 import {
     afterEach,
+    beforeAll,
     describe,
     expect,
     test,
@@ -28,16 +30,20 @@ function getId() {
 }
 
 function getStore() {
+    const internalKey = `${INTERNAL.prefix}-test`;
+
     const {
-        state,
         getter,
         mutation,
         action,
         ...store
     } = createStore('main', {
         id: 0,
-        firstName: 'John',
-        lastName: 'Smith',
+        details: {
+            firstName: 'John',
+            lastName: 'Smith',
+        },
+        [internalKey]: 10,
     }, {
         allowOverwrite: false,
         // extensions: [
@@ -48,32 +54,30 @@ function getStore() {
         // ],
     });
 
-    const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
+    const fullName = getter('fullname', ({ details }) => `${details.firstName} ${details.lastName}`);
 
-    const setId = mutation<undefined, number>('set-id', state => {
-        const id = getId();
+    const setId = mutation('set-id', (state, payload?: number) => {
+        const id = payload || getId();
 
         state.id = id;
         return id;
     });
 
-    const setFirstName = mutation<string>('set-firstname', (state, payload) => {
-        state.firstName = payload;
-    });
-
-    const setLastName = mutation<string>('set-lastname', (state, payload) => {
-        state.lastName = payload;
+    const setDetails = mutation('set-details', (state, payload: Partial<typeof state.details>) => {
+        state.details = {
+            ...state.details,
+            ...payload,
+        };
     });
 
     return {
-        state,
         getter,
         mutation,
         action,
         fullName,
         setId,
-        setFirstName,
-        setLastName,
+        setDetails,
+        internalKey,
         ...store,
     };
 }
@@ -81,6 +85,18 @@ function getStore() {
 describe('Harlem Core', () => {
 
     let store = getStore();
+
+    beforeAll(() => {
+        const app = {
+            use: (plugin: any, options?: any) => {
+                if (plugin && plugin.install){
+                    plugin.install(app, options);
+                }
+            },
+        };
+
+        app.use(Harlem);
+    });
 
     afterEach(() => {
         store?.destroy();
@@ -123,7 +139,7 @@ describe('Harlem Core', () => {
             const duplicates = [
                 () => createStore('main', {}),
                 () => getter('fullname', () => {}),
-                () => mutation('set-firstname', () => {}),
+                () => mutation('set-details', () => {}),
             ];
 
             duplicates.forEach(invokee => {
@@ -151,8 +167,10 @@ describe('Harlem Core', () => {
                 state,
             } = store;
 
-            expect(state).toHaveProperty('firstName');
-            expect(state).toHaveProperty('lastName');
+            expect(state).toHaveProperty('id');
+            expect(state).toHaveProperty('details');
+            expect(state.details).toHaveProperty('firstName');
+            expect(state.details).toHaveProperty('lastName');
         });
 
         test('Should be readonly', () => {
@@ -163,9 +181,9 @@ describe('Harlem Core', () => {
             vi.spyOn(console, 'warn').getMockImplementation();
 
             // @ts-expect-error This is readonly
-            state.firstName = 'Billy';
+            state.details.firstName = 'Billy';
 
-            expect(state.firstName).toBe('John');
+            expect(state.details.firstName).toBe('John');
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('target is readonly'),
                 expect.anything()
@@ -191,15 +209,16 @@ describe('Harlem Core', () => {
         test('Should correctly mutate state', () => {
             const {
                 state,
-                setFirstName,
-                setLastName,
+                setDetails,
             } = store;
 
-            setFirstName('Jane');
-            setLastName('Doe');
+            setDetails({
+                firstName: 'Jane',
+                lastName: 'Doe',
+            });
 
-            expect(state.firstName).toBe('Jane');
-            expect(state.lastName).toBe('Doe');
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
         });
 
         test('Should return a result from a mutation', () => {
@@ -244,16 +263,18 @@ describe('Harlem Core', () => {
 
                 mutate(state => {
                     state.id = id;
-                    state.firstName = 'Jane';
-                    state.lastName = 'Doe';
+                    state.details = {
+                        firstName: 'Jane',
+                        lastName: 'Doe',
+                    };
                 });
             });
 
             await loadDetails(51);
 
             expect(state.id).toBe(51);
-            expect(state.firstName).toBe('Jane');
-            expect(state.lastName).toBe('Doe');
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
         });
 
         test('Should return a result from an action', async () => {
@@ -271,8 +292,10 @@ describe('Harlem Core', () => {
 
                 mutate(state => {
                     state.id = id;
-                    state.firstName = 'Jane';
-                    state.lastName = 'Doe';
+                    state.details = {
+                        firstName: 'Jane',
+                        lastName: 'Doe',
+                    };
                 });
 
                 return id;
@@ -281,8 +304,8 @@ describe('Harlem Core', () => {
             const id = await loadDetails();
 
             expect(id).toBeTypeOf('number');
-            expect(state.firstName).toBe('Jane');
-            expect(state.lastName).toBe('Doe');
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
         });
 
     });
@@ -370,13 +393,164 @@ describe('Harlem Core', () => {
             };
 
             const setRefToState = mutation<typeof payload>('set-ref-to-state', (state, { firstName }) => {
-                state.firstName = firstName as unknown as string;
+                state.details.firstName = firstName as unknown as string;
             });
 
             setRefToState(payload);
 
-            expect(isRef(state.firstName)).toBe(false);
-            expect(state.firstName).toBe('Jim');
+            expect(isRef(state.details.firstName)).toBe(false);
+            expect(state.details.firstName).toBe('Jim');
+        });
+
+    });
+
+    describe('Snapshots', () => {
+
+        test('Should apply a snapshot', () => {
+            const {
+                state,
+                snapshot,
+                setId,
+                setDetails,
+            } = store;
+
+            setId(5);
+            setDetails({
+                firstName: 'Jane',
+                lastName: 'Doe',
+            });
+
+            const snap = snapshot();
+
+            setId(7);
+            setDetails({
+                firstName: 'James',
+                lastName: 'Halpert',
+            });
+
+            expect(state.id).toBe(7);
+            expect(state.details.firstName).toBe('James');
+            expect(state.details.lastName).toBe('Halpert');
+
+            snap.apply();
+
+            expect(state.id).toBe(5);
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
+        });
+
+        test('Should apply a partial snapshot', () => {
+            const {
+                state,
+                setId,
+                setDetails,
+                snapshot,
+            } = store;
+
+            setId(5);
+            setDetails({
+                firstName: 'Jane',
+                lastName: 'Doe',
+            });
+
+            const snap = snapshot();
+
+            setId(7);
+            setDetails({
+                firstName: 'James',
+                lastName: 'Halpert',
+            });
+
+            expect(state.id).toBe(7);
+            expect(state.details.firstName).toBe('James');
+            expect(state.details.lastName).toBe('Halpert');
+
+            snap.apply(state => state.details);
+
+            expect(state.id).toBe(7);
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
+        });
+
+    });
+
+    describe('Resets', () => {
+
+        test('Should perform a basic reset', async () => {
+            const {
+                state,
+                reset,
+                setId,
+                setDetails,
+            } = store;
+
+            setId(5);
+            setDetails({
+                firstName: 'Jane',
+                lastName: 'Doe',
+            });
+
+            expect(state.id).toBe(5);
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
+
+            reset();
+
+            expect(state.id).toBe(0);
+            expect(state.details.firstName).toBe('John');
+            expect(state.details.lastName).toBe('Smith');
+        });
+
+        test('Should perform a partial reset', () => {
+            const {
+                reset,
+                state,
+                setId,
+                setDetails,
+            } = store;
+
+            setId(7);
+            setDetails({
+                firstName: 'Jane',
+                lastName: 'Doe',
+            });
+
+            expect(state.id).toBe(7);
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
+
+            reset(state => state.details);
+
+            expect(state.id).toBe(7);
+            expect(state.details.firstName).toBe('John');
+            expect(state.details.lastName).toBe('Smith');
+        });
+
+        test('Should ignore internal properties', () => {
+            const {
+                reset,
+                state,
+                setId,
+                setDetails,
+                internalKey,
+            } = store;
+
+            setId(7);
+            setDetails({
+                firstName: 'Jane',
+                lastName: 'Doe',
+            });
+
+            expect(state.id).toBe(7);
+            expect(state.details.firstName).toBe('Jane');
+            expect(state.details.lastName).toBe('Doe');
+
+            reset();
+
+            expect(state[internalKey]).toBe(10);
+            expect(state.id).toBe(0);
+            expect(state.details.firstName).toBe('John');
+            expect(state.details.lastName).toBe('Smith');
         });
 
     });

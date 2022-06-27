@@ -1,3 +1,5 @@
+export { default as identity } from './function/identity';
+
 export { default as clone } from './object/clone';
 export { default as lock } from './object/lock';
 export { default as overwrite } from './object/overwrite';

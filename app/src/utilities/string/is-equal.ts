@@ -1,3 +1,3 @@
-export default function isEqual(a: string, b: string): boolean {
-    return a.toLocaleLowerCase().includes(b.toLocaleLowerCase());
+export default function isEqual(valueA: string, valueB: string): boolean {
+    return valueA.toLocaleLowerCase().includes(valueB.toLocaleLowerCase());
 }

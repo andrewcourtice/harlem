@@ -14,6 +14,7 @@ export const EVENTS = {
     },
     store: {
         created: 'store:created',
+        ready: 'store:ready',
         destroyed: 'store:destroyed',
     },
     mutation: {
@@ -36,6 +37,11 @@ export const EVENTS = {
         update: 'devtools:update',
         reset: 'devtools:reset',
     },
+} as const;
+
+export const MUTATIONS = {
+    snapshot: 'core:snapshot',
+    reset: 'core:reset',
 } as const;
 
 export const PROVIDERS = {
