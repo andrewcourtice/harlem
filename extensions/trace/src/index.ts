@@ -126,7 +126,7 @@ function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
         `background-color: ${background}`,
     ].join(';');
 
-    // @ts-ignore - This is an intentional console statement
+    // eslint-disable-next-line no-console
     console.log(`%c${gate}%c ${path}`, style, '');
 }
 

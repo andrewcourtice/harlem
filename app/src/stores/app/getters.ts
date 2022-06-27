@@ -14,7 +14,7 @@ export const timezones = getter(GETTERS.timezones, ({ timezones, clocks }) => {
     const output = timezones
         .flatMap(({ utc }) => utc)
         .filter(timezone => !clocks.includes(timezone))
-        .sort((a, b) => a.localeCompare(b));
+        .sort((valueA, valueB) => valueA.localeCompare(valueB));
 
     return Array.from(new Set(output));
 });
