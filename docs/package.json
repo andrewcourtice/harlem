@@ -19,7 +19,7 @@
     },
     "devDependencies": {
         "dotenv": "^16.0.1",
-        "postcss": "^8.4.13",
-        "postcss-loader": "^6.2.1"
+        "postcss": "^8.4.14",
+        "postcss-loader": "^7.0.0"
     }
 }
