@@ -90,12 +90,6 @@ module.exports = {
             ],
         }],
 
-        'no-magic-numbers': ['warn', {
-            'enforceConst': true,
-            'ignoreArrayIndexes': true,
-            'ignoreDefaultValues': true,
-        }],
-
         'object-curly-newline': ['error', {
             'ObjectExpression': {
                 'minProperties': 2,
