@@ -6,7 +6,6 @@ import type {
 
 type UnionToIntersection<TValue> = (TValue extends any ? (arg: TValue) => any : never) extends ((arg: infer I) => void) ? I : never;
 
-//export type BaseState = object;
 export type BaseState = Record<PropertyKey, any>;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
 export type ReadState<TState extends BaseState> = DeepReadonly<TState>;
@@ -23,11 +22,10 @@ export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
 export type TriggerHandler<TEventData extends TriggerEventData> = (data: TEventData) => void;
 export type Trigger<TEventData extends TriggerEventData> = (name: string | string[], handler: TriggerHandler<TEventData>) => EventListener;
 export type BranchAccessor<TState extends BaseState, TBranchState extends BaseState> = (state: ReadState<TState> | WriteState<TState>) => TBranchState;
-export type InternalStores = Map<string, InternalStore<any>>;
+export type InternalStores = Map<string, InternalStore<BaseState>>;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
-export type ExtensionAPIs<TExtensions extends Extension<any>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
-export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Store<TState> & ExtensionAPIs<TExtensions>;
-// export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>
+export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
+export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -37,7 +35,7 @@ export interface Emittable {
 }
 
 export interface EventListener {
-    dispose(): void
+    dispose(): void;
 }
 
 export interface EventPayload<TData = any> {
@@ -158,7 +156,7 @@ export interface StoreProviders<TState extends BaseState> {
     payload<TPayload>(payload: TPayload): TPayload;
 }
 
-export interface InternalStore<TState extends BaseState = any> extends StoreBase<TState> {
+export interface InternalStore<TState extends BaseState = BaseState> extends StoreBase<TState> {
     /**
      * A boolean indicating whether this store allows overwriting duplicate registrations
      */

@@ -71,7 +71,10 @@ function emitCreated(store: InternalStore, state: any): void {
     eventEmitter.once(EVENTS.core.installed, created);
 }
 
-function getExtendedStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(store: InternalStore<TState>, extensions: TExtensions): ReturnType<Extension<TState>> {
+function getExtendedStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
+    store: InternalStore<TState>,
+    extensions: TExtensions
+): ReturnType<Extension<TState>> {
     return extensions.reduce((output, extension) => {
         let result = {};
 
@@ -114,7 +117,7 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
-export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
+export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[] = []>(
     name: string,
     state: TState,
     options?: Partial<StoreOptions<TState, TExtensions>>
