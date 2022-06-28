@@ -1,3 +1,21 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [2.4.0-beta.3](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.2...v2.4.0-beta.3) (2022-06-28)
+
+
+### Bug Fixes
+
+* **core:** fixed extension typing ([c66c0bf](https://github.com/andrewcourtice/harlem/commit/c66c0bf2e9a728c499028a64412640bc3ddb9c9e))
+* fix failing tests ([9474631](https://github.com/andrewcourtice/harlem/commit/9474631f9e9443e134289e400d8ff8513c235a6e))
+* fixed lerna config ([5ad0606](https://github.com/andrewcourtice/harlem/commit/5ad060602a292b3b572bd282f1200fddcf5098ed))
+
+
+
+
+
 ## [2.3.1](https://github.com/andrewcourtice/harlem/compare/v2.3.0...v2.3.1) (2022-03-04)
 
 
@@ -518,6 +536,3 @@
 
 
 ## 1.0.1 (2020-10-05)
-
-
-
