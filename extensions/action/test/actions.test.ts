@@ -7,6 +7,7 @@ import actionsExtension, {
 import {
     bootstrap,
     getStore,
+    sleep,
 } from '@harlem/testing';
 
 import {
@@ -138,7 +139,7 @@ describe('Actions Extension', () => {
     });
 
     test('Handles direct cancellation', async () => {
-        expect.assertions(5);
+        expect.assertions(6);
 
         const {
             loadUserInfo,
@@ -148,6 +149,7 @@ describe('Actions Extension', () => {
         const {
             state,
             hasActionRun,
+            hasActionFailed,
         } = instance.store;
 
         const task = loadUserInfo();
@@ -163,11 +165,12 @@ describe('Actions Extension', () => {
             expect(state.details.lastName).toBe('');
             expect(state.details.age).toBe(0);
             expect(hasActionRun(loadUserInfoName)).toBe(false);
+            expect(hasActionFailed(loadUserInfoName)).toBe(false);
         }
     });
 
     test('Handles indirect cancellation', async () => {
-        expect.assertions(5);
+        expect.assertions(6);
 
         const {
             loadUserInfo,
@@ -177,6 +180,7 @@ describe('Actions Extension', () => {
         const {
             state,
             hasActionRun,
+            hasActionFailed,
             abortAction,
         } = instance.store;
 
@@ -193,6 +197,7 @@ describe('Actions Extension', () => {
             expect(state.details.lastName).toBe('');
             expect(state.details.age).toBe(0);
             expect(hasActionRun(loadUserInfoName)).toBe(false);
+            expect(hasActionFailed(loadUserInfoName)).toBe(false);
         }
     });
 
@@ -231,6 +236,42 @@ describe('Actions Extension', () => {
         expect(hasConcurrentFailed).toBe(false);
     });
 
+    test('Handles nested cancellation', async () => {
+        expect.assertions(7);
+
+        const {
+            action,
+            hasActionRun,
+            hasActionFailed,
+        } = instance.store;
+
+        const catchAssertion = vi.fn();
+
+        const childAction1 = action('child1', () => sleep(1000));
+        const childAction2 = action('child2', () => sleep(1000));
+        const parentAction = action('parent', (_, __, controller) => Promise.all([
+            childAction1(_, controller),
+            childAction2(_, controller),
+        ]));
+
+        try {
+            await Promise.all([
+                parentAction(),
+                parentAction(),
+            ]);
+        } catch (error) {
+            catchAssertion();
+        }
+
+        expect(catchAssertion).toHaveBeenCalled();
+        expect(hasActionRun('child1')).toBe(false);
+        expect(hasActionRun('child2')).toBe(false);
+        expect(hasActionRun('parent')).toBe(false);
+        expect(hasActionFailed('child1')).toBe(false);
+        expect(hasActionFailed('child2')).toBe(false);
+        expect(hasActionFailed('parent')).toBe(false);
+    });
+
     test('Handles errors', async () => {
         expect.assertions(4);
 
@@ -262,7 +303,7 @@ describe('Actions Extension', () => {
     });
 
     test('Handles suppressing abort errors', async () => {
-        expect.assertions(5);
+        expect.assertions(6);
 
         const {
             loadUserInfo,
@@ -272,6 +313,7 @@ describe('Actions Extension', () => {
         const {
             state,
             hasActionRun,
+            hasActionFailed,
             suppressAbortError,
         } = instance.store;
 
@@ -290,6 +332,7 @@ describe('Actions Extension', () => {
             expect(state.details.lastName).toBe('');
             expect(state.details.age).toBe(0);
             expect(hasActionRun(loadUserInfoName)).toBe(false);
+            expect(hasActionFailed(loadUserInfoName)).toBe(false);
         }
     });
 

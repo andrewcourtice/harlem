@@ -177,6 +177,10 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                         incrementRunCount(name);
                         resolve(result);
                     } catch (error) {
+                        if (isActionAbortError(error)) {
+                            return fail(error.message);
+                        }
+
                         if (error instanceof DOMException) {
                             return fail('Network request cancelled'); // Fetch has been cancelled
                         }
@@ -260,7 +264,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                 }));
         }
 
-        function isActionAbortError(value: unknown) {
+        function isActionAbortError(value: unknown): value is ActionAbortError {
             return value instanceof ActionAbortError;
         }
 
