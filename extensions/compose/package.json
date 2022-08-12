@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-compose",
     "amdName": "harlemCompose",
-    "version": "2.3.8",
+    "version": "2.3.9",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official compose extension for Harlem",
@@ -39,14 +39,14 @@
         "prepublishOnly": "yarn build"
     },
     "dependencies": {
-        "@harlem/utilities": "^2.3.8"
+        "@harlem/utilities": "^2.3.9"
     },
     "peerDependencies": {
         "@harlem/core": "^2.0.0",
         "vue": "^3.2.0"
     },
     "devDependencies": {
-        "@harlem/core": "^2.3.8",
+        "@harlem/core": "^2.3.9",
         "vue": "^3.2.37"
     }
 }
