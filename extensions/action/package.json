@@ -48,6 +48,6 @@
     "devDependencies": {
         "@harlem/core": "^2.3.9",
         "@harlem/testing": "^2.3.9",
-        "vue": "^3.2.37"
+        "vue": "^3.2.39"
     }
 }
