@@ -6,7 +6,7 @@ import {
 } from 'vitepress';
 
 dotenv.config({
-    path: path.resolve(__dirname, '../../../.env'),
+    path: path.resolve(__dirname, '../../../.vercel/.env.development.local'),
 });
 
 export default defineConfig({
@@ -40,7 +40,9 @@ export default defineConfig({
             }
         ],
         editLink: {
-            pattern: 'https://github.com/andrewcourtice/harlem/edit/main/docs/src/:path',
+            repo: 'andrewcourtice/harlem',
+            branch: 'main',
+            dir: 'docs/src',
             text: 'Edit this page on Github'
         },
         nav: [
