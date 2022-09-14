@@ -12,10 +12,10 @@
         "build": "vitepress build src"
     },
     "devDependencies": {
-        "dotenv": "^16.0.1",
-        "vitepress": "^1.0.0-alpha.4"
+        "dotenv": "^16.0.2",
+        "vitepress": "^1.0.0-alpha.13"
     },
     "dependencies": {
-        "@vueuse/core": "^8.7.4"
+        "@vueuse/core": "^9.2.0"
     }
 }

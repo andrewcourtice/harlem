@@ -9,9 +9,9 @@
         "@harlem/extension-action": "^2.4.0-beta.1",
         "@harlem/extension-compose": "^2.4.0-beta.1",
         "@harlem/extension-storage": "^2.4.0-beta.1",
-        "@nuxtjs/harlem": "^1.1.0"
+        "@nuxtjs/harlem": "^1.1.1"
     },
     "devDependencies": {
-        "nuxt": "^3.0.0-rc.4"
+        "nuxt": "^3.0.0-rc.9"
     }
 }
