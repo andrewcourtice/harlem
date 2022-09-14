@@ -49,6 +49,13 @@ import type {
     WriteState,
 } from './types';
 
+// This is required as Vue removed the public `active` property from the EffectScope type
+declare module 'vue' {
+    interface EffectScope {
+        active: boolean;
+    }
+}
+
 function localiseHandler(name: string, handler: EventHandler): EventHandler {
     return payload => {
         if (payload && payload.store === name) {

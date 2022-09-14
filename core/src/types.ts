@@ -25,7 +25,7 @@ export type BranchAccessor<TState extends BaseState, TBranchState extends BaseSt
 export type InternalStores = Map<string, InternalStore<BaseState>>;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
 export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
-export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>
+export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>;
 
 export interface Emittable {
     on(event: string, handler: EventHandler): EventListener;
@@ -62,7 +62,7 @@ export interface StoreRegistration {
     producer: RegistrationValueProducer;
 }
 
-export interface StoreSnapshot<TState> {
+export interface StoreSnapshot<TState extends BaseState> {
     get state(): TState;
     apply<TBranchState extends BaseState>(branchCallback?: BranchAccessor<TState, TBranchState>, mutationName?: string): void;
 }

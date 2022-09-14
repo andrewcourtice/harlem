@@ -18,8 +18,8 @@
         "vuepress-vite": "2.0.0-beta.39"
     },
     "devDependencies": {
-        "dotenv": "^16.0.1",
-        "postcss": "^8.4.14",
-        "postcss-loader": "^7.0.0"
+        "dotenv": "^16.0.2",
+        "postcss": "^8.4.16",
+        "postcss-loader": "^7.0.1"
     }
 }
