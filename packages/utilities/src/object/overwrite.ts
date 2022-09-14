@@ -9,7 +9,9 @@ export default function overwrite<TTarget extends object, TSource extends object
             continue;
         }
 
-        delete target[prop];
+        if (!(prop in source)) {
+            delete target[prop];
+        }
     }
 
     return Object.assign(target, source);
