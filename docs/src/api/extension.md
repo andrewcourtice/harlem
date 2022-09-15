@@ -64,7 +64,7 @@ This method is exactly the same as [on](#on) except that it only executes once a
 
 
 ### track
-Register a reactive effect with this store so that it is disposed when the store is destroyed. This is a wrapper for Vue's [effectScope](https://v3.vuejs.org/api/effect-scope.html) API.
+Register a reactive effect with this store so that it is disposed when the store is destroyed. This is a wrapper for Vue's [effectScope](https://v3.vuejs.org/api/effect-scope) API.
 
 - Type: `function`
 - Arguments:

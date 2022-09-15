@@ -1,14 +1,18 @@
 ---
-home: true
-heroImage: /assets/images/logo-192.svg
-heroText: Harlem
-tagline: Simple, unopinionated, lightweight and extensible state management for Vue 3
-actions:
-- text: Get Started →
-  link: /guide/introduction/getting-started.html
-- text: View Demo
-  link: https://andrewcourtice.github.io/harlem
-  type: Secondary
+layout: home
+
+hero:
+    name: Harlem
+    text: Global State Management
+    tagline: Simple, unopinionated, lightweight and extensible state management for Vue 3
+    actions:
+    - theme: brand
+      text: Get Started →
+      link: /guide/introduction/getting-started.html
+    - theme: alt
+      text: View Demo
+      link: https://andrewcourtice.github.io/harlem
+
 features:
 - title: Simple 
   details: Harlem has a simple functional API for creating, reading and mutating state. At it's heart, Harlem just uses Vue reactive objects and computeds which means if you know how to use Vue, you'll know how to use Harlem.
@@ -22,5 +26,4 @@ features:
   details: Harlem is architectured with extensibility in mind so you can extend it any way you want through extensions and plugins. Some of the official plugins and extensions include Vue devtools integration, local/session storage sync, snapshots, history (undo/redo) and more.
 - title: Great DX
   details: Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
-footer: MIT Licensed | Copyright © 2020-present Andrew Courtice
 ---

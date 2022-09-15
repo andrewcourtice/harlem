@@ -45,4 +45,4 @@ import {
 
 ## See also
 
-[Getter](/api/store.html#getter) API Reference
+[Getter](/api/store#getter) API Reference

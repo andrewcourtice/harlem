@@ -1,11 +1,11 @@
-# Introduction
+# Plugins
 At it's heart, Harlem uses a plugin system to extend functionality and create powerful additions to your stores.
 
 ## Official plugins
 Here is a list of officially supported Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
 
-- [Devtools](devtools.html) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
-- [SSR](server-side-rendering.html) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
+- [Devtools](./devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
+- [SSR](./server-side-rendering) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
 
 If you require functionality to suit a specific use-case you can write your own plugin. See [Writing your own plugin](#writing-your-own-plugin) below.
 

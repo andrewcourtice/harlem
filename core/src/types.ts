@@ -220,8 +220,6 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
      * Get a flag value on this store
      *
      * @param {string} key
-     * @return {*}  {unknown}
-     * @memberof InternalStore
      */
     getFlag(key: string): unknown;
 
@@ -230,7 +228,6 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
      *
      * @param {string} key
      * @param {unknown} value
-     * @memberof InternalStore
      */
     setFlag(key: string, value: unknown): void;
 

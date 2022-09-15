@@ -1,23 +1,23 @@
-# Introduction
+# Extensions
 
 Extensions are per-store additions to Harlem's core functionaility. Extensions are often used for adding store features, changing store behaviour and various other low-level tasks. This is the primary method in which Harlem stores are extended.
 
-Feel free to choose from some of the official extensions or write your own. See the [extensions documentation](extensions) from more information on the official set of extensions or how to author your own plugin.
+Feel free to choose from some of the official extensions or write your own.
 
 
 ## Official Extensions
 
 Here is a list of officially supported Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
 
-- [Action](action.html) (`@harlem/extension-action`) - Extends a store to support cancellable async actions.
-- [Compose](compose.html) (`@harlem/extension-compose`) - Extends a store to to add simple read/write convenience methods.
-- [History (Preview)](history.html) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
-- [Lazy](lazy.html) (`@harlem/extension-lazy`) - Extends a store to support lazy async getters.
-- [Reset](reset.html) (`@harlem/extension-reset`) - Extends a store to support resetting a store back to it's original state.
-- [Snapshot](snapshot.html) (`@harlem/extension-snapshot`) - Extends a store to support taking snapshots of state and applying it at a later stage.
-- [Storage](storage.html) (`@harlem/extension-storage`) - Extends a store to support synchronising state to/from `localStorage` or `sessionStorage`.
-- [Trace](trace.html) (`@harlem/extension-trace`) - Extends a store to support tracing granular changes to state during mutations. Useful for auditing during development.
-- [Transaction](transaction.html) (`@harlem/extension-transaction`) - Extends a store to support rolling back multiple mutations if one fails.
+- [Action](./action) (`@harlem/extension-action`) - Extends a store to support cancellable async actions.
+- [Compose](./compose) (`@harlem/extension-compose`) - Extends a store to to add simple read/write convenience methods.
+- [History (Preview)](./history) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
+- [Lazy](./lazy) (`@harlem/extension-lazy`) - Extends a store to support lazy async getters.
+- [Reset](./reset) (`@harlem/extension-reset`) - Extends a store to support resetting a store back to it's original state.
+- [Snapshot](./snapshot) (`@harlem/extension-snapshot`) - Extends a store to support taking snapshots of state and applying it at a later stage.
+- [Storage](./storage) (`@harlem/extension-storage`) - Extends a store to support synchronising state to/from `localStorage` or `sessionStorage`.
+- [Trace](./trace) (`@harlem/extension-trace`) - Extends a store to support tracing granular changes to state during mutations. Useful for auditing during development.
+- [Transaction](./transaction) (`@harlem/extension-transaction`) - Extends a store to support rolling back multiple mutations if one fails.
 
 If you require functionality to suit a specific use-case you can write your own extension. See [Writing your own extension](#writing-your-own-extension) below.
 
