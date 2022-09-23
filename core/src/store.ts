@@ -18,9 +18,11 @@ import {
 } from 'vue';
 
 import {
-    clone,
-    identity,
-    overwrite,
+    functionIdentity,
+    objectClone,
+    objectFromPath,
+    objectSet,
+    objectTrace,
 } from '@harlem/utilities';
 
 import type {
@@ -288,32 +290,41 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
     }
 
     public snapshot(): StoreSnapshot<TState> {
-        const snapshot = clone(this.state);
+        const snapshot = objectClone(this.state);
 
-        const apply = <TBranchState extends BaseState>(
-            branchAccessor: BranchAccessor<TState, TBranchState> = identity,
+        const {
+            value: stateTrace,
+            getNodes,
+            resetNodes,
+        } = objectTrace<TState>();
+
+        const apply = <TValue>(
+            branchAccessor: BranchAccessor<TState, TValue> = functionIdentity,
             mutationName: string = MUTATIONS.snapshot) => {
             this.write(mutationName, SENDER, state => {
                 if (!snapshot) {
                     return console.warn('Couldn\'t find snapshot for this operation!');
                 }
 
-                const source = branchAccessor(snapshot);
-                const target = branchAccessor(state);
+                resetNodes();
+                branchAccessor(stateTrace);
 
-                overwrite(target, clone(source), INTERNAL.pattern);
+                const nodes = getNodes();
+                const source = objectFromPath(snapshot, nodes);
+
+                objectSet(state, nodes, objectClone(source), INTERNAL.pattern);
             });
         };
 
         return {
             apply,
             get state() {
-                return clone(snapshot);
+                return objectClone(snapshot);
             },
         };
     }
 
-    public reset<TBranchState extends BaseState>(branchAccessor: BranchAccessor<TState, TBranchState> = identity) {
+    public reset<TBranchState extends BaseState>(branchAccessor: BranchAccessor<TState, TBranchState> = functionIdentity) {
         this.initialState?.apply(branchAccessor, MUTATIONS.reset);
     }
 

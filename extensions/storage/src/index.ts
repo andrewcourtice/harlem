@@ -13,8 +13,8 @@ import {
 } from '@harlem/core';
 
 import {
-    isNil,
-    omit,
+    objectOmit,
+    typeIsNil,
 } from '@harlem/utilities';
 
 import type {
@@ -72,7 +72,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
                 }
 
                 try {
-                    const state = omit(store.state, INTERNAL.pattern);
+                    const state = objectOmit(store.state, INTERNAL.pattern);
                     storage.setItem(storageKey, serialiser(state));
                 } catch {
                     console.warn('Failed to write to storage');
@@ -105,7 +105,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         function restoreStorage() {
             const value = storage.getItem(storageKey);
 
-            if (!isNil(value)) {
+            if (!typeIsNil(value)) {
                 syncStorage(value);
             }
         }

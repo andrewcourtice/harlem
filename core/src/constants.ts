@@ -1,5 +1,5 @@
 import {
-    clone,
+    objectClone,
 } from '@harlem/utilities';
 
 import type {
@@ -47,7 +47,7 @@ export const MUTATIONS = {
 export const PROVIDERS = {
     read: value => value,
     write: value => value,
-    payload: value => clone(value),
+    payload: value => objectClone(value),
 } as StoreProviders<any>;
 
 export const INTERNAL = {

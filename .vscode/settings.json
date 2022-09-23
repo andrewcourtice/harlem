@@ -9,5 +9,6 @@
     },
     "[vue]": {
         "editor.semanticHighlighting.enabled": false
-    }
+    },
+    "vitest.commandLine": "yarn test --watch"
 }

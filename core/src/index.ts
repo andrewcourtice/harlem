@@ -8,7 +8,7 @@ import {
 } from './constants';
 
 import {
-    lock,
+    objectLock,
 } from '@harlem/utilities';
 
 import type {
@@ -101,7 +101,7 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
         install,
     } = plugin;
 
-    const lockedStores = lock(stores, [
+    const lockedStores = objectLock(stores, [
         'set',
         'delete',
         'clear',

@@ -4,8 +4,8 @@ import {
 } from './constants';
 
 import {
-    clone,
-    overwrite,
+    objectClone,
+    objectOverwrite,
 } from '@harlem/utilities';
 
 import {
@@ -40,13 +40,13 @@ export default function snapshotExtension<TState extends BaseState>(options?: Pa
         function apply<TBranchState extends BaseState>(snapshotBranch: TBranchState, branchCallback: BranchCallback<TState, TBranchState>) {
             store.write(_options.mutationName, SENDER, state => {
                 const stateBranch = branchCallback(state);
-                overwrite(stateBranch, clone(snapshotBranch));
+                objectOverwrite(stateBranch, objectClone(snapshotBranch));
             });
         }
 
         function snapshot<TBranchState extends BaseState = TState>(branchCallback: BranchCallback<TState, TBranchState> = (state: TState) => state): Snapshot<TBranchState> {
             const snapshotBranch = branchCallback(store.state);
-            const state = Object.freeze(clone(snapshotBranch)) as TBranchState;
+            const state = Object.freeze(objectClone(snapshotBranch)) as TBranchState;
 
             return {
                 state,

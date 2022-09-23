@@ -21,7 +21,7 @@ export type Action<TPayload, TResult = void> = undefined extends TPayload ? (pay
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
 export type TriggerHandler<TEventData extends TriggerEventData> = (data: TEventData) => void;
 export type Trigger<TEventData extends TriggerEventData> = (name: string | string[], handler: TriggerHandler<TEventData>) => EventListener;
-export type BranchAccessor<TState extends BaseState, TBranchState extends BaseState> = (state: ReadState<TState> | WriteState<TState>) => TBranchState;
+export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState> | WriteState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
 export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
@@ -64,7 +64,7 @@ export interface StoreRegistration {
 
 export interface StoreSnapshot<TState extends BaseState> {
     get state(): TState;
-    apply<TBranchState extends BaseState>(branchCallback?: BranchAccessor<TState, TBranchState>, mutationName?: string): void;
+    apply<TValue>(branchCallback?: BranchAccessor<TState, TValue>, mutationName?: string): void;
 }
 
 export interface StoreBase<TState extends BaseState> {
@@ -125,7 +125,7 @@ export interface StoreBase<TState extends BaseState> {
      *
      * @param branchAccessor - An optional function that returns a sub-branch of state to reset
      */
-    reset<TBranchState extends BaseState>(branchAccessor?: BranchAccessor<TState, TBranchState>): void;
+    reset<TValue>(branchAccessor?: BranchAccessor<TState, TValue>): void;
 
     /**
      * Destroy this store

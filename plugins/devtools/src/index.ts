@@ -13,7 +13,7 @@ import {
 } from '@harlem/core';
 
 import {
-    omit,
+    objectOmit,
 } from '@harlem/utilities';
 
 import {
@@ -99,7 +99,7 @@ function getStoreSnapshot(store: InternalStore): CustomInspectorState {
         state: [
             {
                 key: store.name,
-                value: omit(store.state, INTERNAL.pattern),
+                value: objectOmit(store.state, INTERNAL.pattern),
                 editable: true,
                 objectType: 'reactive',
             },

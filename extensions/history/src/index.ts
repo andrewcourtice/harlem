@@ -17,7 +17,7 @@ import traceExtension, {
 } from '@harlem/extension-trace';
 
 import {
-    fromPath,
+    objectFromPath,
 } from '@harlem/utilities';
 
 import type {
@@ -69,7 +69,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                 }
 
                 results.forEach(({ gate, nodes, prop, newValue, oldValue }) => {
-                    const target = fromPath(state, nodes);
+                    const target = objectFromPath(state, nodes);
 
                     if (target && prop) {
                         tasks[gate]?.(target, prop, newValue, oldValue);

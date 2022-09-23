@@ -9,10 +9,10 @@ import {
 } from '@harlem/core';
 
 import {
-    clone,
-    isArray,
-    isObject,
-    toPath,
+    objectClone,
+    objectToPath,
+    typeIsArray,
+    typeIsObject,
 } from '@harlem/utilities';
 
 import type {
@@ -69,9 +69,9 @@ function defaultCallback<TValue extends object>(
             nodes,
             prop,
             newValue,
-            oldValue: newValue === oldValue ? oldValue : clone(oldValue),
+            oldValue: newValue === oldValue ? oldValue : objectClone(oldValue),
             get path() {
-                return toPath(nodes.concat(prop));
+                return objectToPath(nodes.concat(prop));
             },
         });
     } catch {
@@ -80,7 +80,7 @@ function defaultCallback<TValue extends object>(
 }
 
 function deepTrace<TValue extends object>(value: TValue, callback: TraceCallback<TValue>, options: TraceOptions<TValue>): TValue {
-    if (!isObject(value) && !isArray(value)) {
+    if (!typeIsObject(value) && !typeIsArray(value)) {
         return value;
     }
 

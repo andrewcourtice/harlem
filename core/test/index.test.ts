@@ -45,6 +45,7 @@ function getStore() {
             firstName: 'John',
             lastName: 'Smith',
         },
+        traits: null,
         [internalKey]: 10,
     }, {
         allowOverwrite: false,
@@ -52,7 +53,7 @@ function getStore() {
 
     const fullName = getter('fullname', ({ details }) => `${details.firstName} ${details.lastName}`);
 
-    const setId = mutation('set-id', (state, payload?: number) => {
+    const setId = mutation('set-id', (state, payload: number | undefined) => {
         const id = payload || getId();
 
         state.id = id;
@@ -515,8 +516,10 @@ describe('Harlem Core', () => {
             expect(state.details.firstName).toBe('Jane');
             expect(state.details.lastName).toBe('Doe');
 
-            reset(state => state.details);
+            reset(state => state.details.firstName);
+            expect(state.details.firstName).toBe('John');
 
+            reset(state => state.details);
             expect(state.id).toBe(7);
             expect(state.details.firstName).toBe('John');
             expect(state.details.lastName).toBe('Smith');
@@ -547,6 +550,20 @@ describe('Harlem Core', () => {
             expect(state.id).toBe(0);
             expect(state.details.firstName).toBe('John');
             expect(state.details.lastName).toBe('Smith');
+        });
+
+        test('Should fail on null values', () => {
+            const {
+                reset,
+                mutation,
+            } = store;
+
+            const thing = mutation('thing', state => state.traits = {
+                hair: 'brown',
+            });
+
+            thing();
+            expect(() => reset(state => state.traits.hair)).toThrow();
         });
 
     });

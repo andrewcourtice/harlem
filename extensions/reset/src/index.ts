@@ -4,8 +4,8 @@ import {
 } from './constants';
 
 import {
-    clone,
-    overwrite,
+    objectClone,
+    objectOverwrite,
 } from '@harlem/utilities';
 
 import {
@@ -39,11 +39,11 @@ export default function resetExtension<TState extends BaseState>() {
                 const source = branchCallback(snapshot);
                 const target = branchCallback(state);
 
-                overwrite(target, clone(source), INTERNAL.pattern);
+                objectOverwrite(target, objectClone(source), INTERNAL.pattern);
             });
         }
 
-        store.on(EVENTS.store.created, () => snapshot = clone(store.state) as TState);
+        store.on(EVENTS.store.created, () => snapshot = objectClone(store.state) as TState);
         store.on(EVENTS.devtools.reset, () => reset());
 
         return {
