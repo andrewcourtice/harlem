@@ -32,11 +32,11 @@ export interface ActionTaskState {
 }
 
 export interface ActionStoreState {
-    '$harlem:actions': Record<string, ActionTaskState>;
+    '$harlem:actions': Record<string, ActionTaskState | undefined>;
 }
 
-export interface ActionOptions {
-    parallel: boolean;
+export interface ActionOptions<TPayload> {
+    concurrent: boolean | ((payload: TPayload, runningPayloads: TPayload[]) => boolean);
     autoClearErrors: boolean;
     suppressAbortErrors: boolean;
     strategies: ActionStrategies;

@@ -208,7 +208,7 @@ describe('Actions Extension', () => {
 
         const singleAction = action('single-action', async () => {});
         const concurrentAction = action('concurrent-action', async () => {}, {
-            parallel: true,
+            concurrent: true,
         });
 
         let hasSingleFailed = false;
