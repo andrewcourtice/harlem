@@ -3,6 +3,75 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.3.9...v2.4.0-beta.4) (2022-11-16)
+
+
+### Bug Fixes
+
+* **docs:** fixed vercel config ([4716d44](https://github.com/andrewcourtice/harlem/commit/4716d44b3ee54592ffa2db04f855418dc3a88133))
+* fixed missed package ([6cbe88f](https://github.com/andrewcourtice/harlem/commit/6cbe88fa78610419420f61faa388db0f163835c6))
+* fixed tsup target ([ec7b867](https://github.com/andrewcourtice/harlem/commit/ec7b86779f3d27b46b8fa822f206ee876b78b287))
+* updated workflow and build targets ([a41e2aa](https://github.com/andrewcourtice/harlem/commit/a41e2aab17ceabc4a2095b9ae8432637c424e36e))
+
+
+### Features
+
+* **utilities:** added util to set object value at path ([fe419d4](https://github.com/andrewcourtice/harlem/commit/fe419d4c0770d828782c64ec61402af2835451bd))
+
+
+
+# [2.4.0-beta.3](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.2...v2.4.0-beta.3) (2022-06-28)
+
+
+### Bug Fixes
+
+* **core:** fixed extension typing ([c66c0bf](https://github.com/andrewcourtice/harlem/commit/c66c0bf2e9a728c499028a64412640bc3ddb9c9e))
+* fix failing tests ([9474631](https://github.com/andrewcourtice/harlem/commit/9474631f9e9443e134289e400d8ff8513c235a6e))
+* fixed lerna config ([5ad0606](https://github.com/andrewcourtice/harlem/commit/5ad060602a292b3b572bd282f1200fddcf5098ed))
+
+
+### Features
+
+* added typedoc ([aaebb84](https://github.com/andrewcourtice/harlem/commit/aaebb84ca4e6bdc487cda3492656b69a18068389))
+
+
+
+# [2.4.0-beta.2](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.1...v2.4.0-beta.2) (2022-06-27)
+
+
+### Bug Fixes
+
+* package references ([eef79c3](https://github.com/andrewcourtice/harlem/commit/eef79c3f3cca5a50a36d56a218f22f2d45b42c7a))
+* yarn.lock ([4ecba61](https://github.com/andrewcourtice/harlem/commit/4ecba61a7dda58c3f7752cf32c61b038d8dc3625))
+
+
+### Features
+
+* added typedoc ([be348c2](https://github.com/andrewcourtice/harlem/commit/be348c217ba195a0f2d468ddc8ffb61032396f37))
+
+
+
+# [2.4.0-beta.1](https://github.com/andrewcourtice/harlem/compare/v2.3.7...v2.4.0-beta.1) (2022-06-26)
+
+
+### Bug Fixes
+
+* **core:** fixed event order for resetting ([6da77c0](https://github.com/andrewcourtice/harlem/commit/6da77c0cd88c380f22c5d2fd497640df5f93ee52))
+* **docs:** attempt to fix build error on vercel ([a0b23d8](https://github.com/andrewcourtice/harlem/commit/a0b23d811340e87bd0bce4be031260adec86942b))
+* **docs:** fixed broken build ([913df0a](https://github.com/andrewcourtice/harlem/commit/913df0a8e989d12745a923d7657100f43715c649))
+* missing dependency update ([e28e89c](https://github.com/andrewcourtice/harlem/commit/e28e89c8600fd20cc04856c4bad6343a21137c26))
+
+
+### Features
+
+* **core:** added basic action implementation ([ede3d69](https://github.com/andrewcourtice/harlem/commit/ede3d693a00c3be5df227489ec1f81348106bf8c))
+* **core:** added snapshot and reset to store ([483b5f0](https://github.com/andrewcourtice/harlem/commit/483b5f0fff9012348cfb39104885e4b9bd6760dd))
+* **utilities:** added identity function ([a452eb4](https://github.com/andrewcourtice/harlem/commit/a452eb4f0c6fcdbbaa96fae4a09397e1349ed688))
+
+
+
+
+
 # [2.4.0-beta.3](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.2...v2.4.0-beta.3) (2022-06-28)
 
 
