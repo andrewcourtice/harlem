@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.4...v2.4.0-beta.5) (2022-11-17)
+
+
+### Features
+
+* **core:** added matcher option for trigger event name ([7ca96fa](https://github.com/andrewcourtice/harlem/commit/7ca96fa2c153d078dfb99934c0f15b5846392ed7))
+
+
+
+
+
 # [2.4.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.3.9...v2.4.0-beta.4) (2022-11-16)
 
 

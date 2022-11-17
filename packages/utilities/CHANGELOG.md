@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.4...v2.4.0-beta.5) (2022-11-17)
+
+
+### Features
+
+* **utilities:** added match and isString utilities ([8c9849b](https://github.com/andrewcourtice/harlem/commit/8c9849b849e94f4420a0f19802560fc99999ef0d))
+
+
+
+
+
 # [2.4.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.3.9...v2.4.0-beta.4) (2022-11-16)
 
 

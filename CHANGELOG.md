@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.4...v2.4.0-beta.5) (2022-11-17)
+
+
+### Bug Fixes
+
+* **nuxt:** fixed nuxt config ([3a6a9b3](https://github.com/andrewcourtice/harlem/commit/3a6a9b3ebea1a83dc08d39eab73ac73ba2004a06))
+
+
+### Features
+
+* **core:** added matcher option for trigger event name ([7ca96fa](https://github.com/andrewcourtice/harlem/commit/7ca96fa2c153d078dfb99934c0f15b5846392ed7))
+* **storage:** added include and exclude matchers ([4afe572](https://github.com/andrewcourtice/harlem/commit/4afe5729b5e2be43ed5a4ba03ff863f924508b42))
+* **utilities:** added match and isString utilities ([8c9849b](https://github.com/andrewcourtice/harlem/commit/8c9849b849e94f4420a0f19802560fc99999ef0d))
+
+
+
+
+
 # [2.4.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.3.9...v2.4.0-beta.4) (2022-11-16)
 
 

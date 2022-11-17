@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.4...v2.4.0-beta.5) (2022-11-17)
+
+
+### Features
+
+* **storage:** added include and exclude matchers ([4afe572](https://github.com/andrewcourtice/harlem/commit/4afe5729b5e2be43ed5a4ba03ff863f924508b42))
+
+
+
+
+
 # [2.4.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.3.9...v2.4.0-beta.4) (2022-11-16)
 
 

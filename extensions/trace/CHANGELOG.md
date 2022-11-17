@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.4...v2.4.0-beta.5) (2022-11-17)
+
+**Note:** Version bump only for package @harlem/extension-trace
+
+
+
+
+
 # [2.4.0-beta.4](https://github.com/andrewcourtice/harlem/compare/v2.3.9...v2.4.0-beta.4) (2022-11-16)
 
 
