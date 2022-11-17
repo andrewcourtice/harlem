@@ -8,7 +8,11 @@ import {
 } from './constants';
 
 import {
+    Matchable,
+    Matcher,
+    matchGetFilter,
     objectLock,
+    typeIsMatchable,
 } from '@harlem/utilities';
 
 import type {
@@ -147,11 +151,18 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
     };
 
     const getTrigger = <TEventData extends TriggerEventData>(eventName: string, prop: keyof TEventData): Trigger<TEventData> => {
-        return (name: string | string[], handler: TriggerHandler<TEventData>) => {
-            const mutations = ([] as string[]).concat(name);
+        return (matcher: Matcher | Matchable, handler: TriggerHandler<TEventData>) => {
+            const filter = matchGetFilter(
+                typeIsMatchable(matcher)
+                    ? matcher
+                    : {
+                        include: matcher,
+                        exclude: [],
+                    }
+            );
 
             return store.on(eventName, (event?: EventPayload<TEventData>) => {
-                if (event && mutations.includes(event.data[prop] as unknown as string)) {
+                if (event && !filter(event.data[prop] as unknown as string)) {
                     handler(event.data);
                 }
             });

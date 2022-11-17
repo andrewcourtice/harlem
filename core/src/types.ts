@@ -4,7 +4,11 @@ import type {
     DeepReadonly,
 } from 'vue';
 
-type UnionToIntersection<TValue> = (TValue extends any ? (arg: TValue) => any : never) extends ((arg: infer I) => void) ? I : never;
+import type {
+    Matchable,
+    Matcher,
+    UnionToIntersection,
+} from '@harlem/utilities';
 
 export type BaseState = Record<PropertyKey, any>;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
@@ -20,8 +24,8 @@ export type ActionBody<TState extends BaseState, TPayload = undefined, TResult =
 export type Action<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => Promise<TResult> : (payload: TPayload) => Promise<TResult>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
 export type TriggerHandler<TEventData extends TriggerEventData> = (data: TEventData) => void;
-export type Trigger<TEventData extends TriggerEventData> = (name: string | string[], handler: TriggerHandler<TEventData>) => EventListener;
-export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState> | WriteState<TState>) => TValue;
+export type Trigger<TEventData extends TriggerEventData> = (matcher: Matcher | Matchable, handler: TriggerHandler<TEventData>) => EventListener;
+export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
 export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;

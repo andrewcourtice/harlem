@@ -293,10 +293,10 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
         const snapshot = objectClone(this.state);
 
         const {
-            value: stateTrace,
+            value,
             getNodes,
             resetNodes,
-        } = objectTrace<TState>();
+        } = objectTrace<ReadState<TState>>();
 
         const apply = <TValue>(
             branchAccessor: BranchAccessor<TState, TValue> = functionIdentity,
@@ -307,7 +307,7 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
                 }
 
                 resetNodes();
-                branchAccessor(stateTrace);
+                branchAccessor(value);
 
                 const nodes = getNodes();
                 const source = objectFromPath(snapshot, nodes);
