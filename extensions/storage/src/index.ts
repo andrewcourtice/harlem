@@ -10,10 +10,16 @@ import {
     INTERNAL,
     InternalStore,
     MutationEventData,
+    ReadState,
 } from '@harlem/core';
 
 import {
+    functionIdentity,
+    matchGetFilter,
+    objectFromPath,
     objectOmit,
+    objectSet,
+    objectTrace,
     typeIsNil,
 } from '@harlem/utilities';
 
@@ -29,9 +35,11 @@ function getOptions<TState extends BaseState>(options?: Partial<Options<TState>>
         prefix: 'harlem',
         sync: true,
         restore: false,
+        include: '*',
         exclude: [],
         serialiser: state => JSON.stringify(state),
         parser: value => JSON.parse(value),
+        branch: functionIdentity,
         ...options,
     };
 }
@@ -43,9 +51,11 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         prefix,
         sync,
         restore,
+        include,
         exclude,
         serialiser,
         parser,
+        branch,
     } = _options;
 
     return (store: InternalStore<TState>) => {
@@ -62,18 +72,33 @@ export default function storageExtension<TState extends BaseState>(options?: Par
 
         store.register('extensions', 'storage', () => _options);
 
+        const {
+            value,
+            getNodes,
+            resetNodes,
+        } = objectTrace<ReadState<TState>>();
+
         const storage = type === 'session' ? sessionStorage : localStorage;
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;
+        const mutationFilter = matchGetFilter({
+            include,
+            exclude,
+        });
+
+        resetNodes();
+        branch(value);
 
         function startStorageWrite() {
             store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
-                if (!event || event.data.mutation === MUTATIONS.sync || exclude.includes(event.data.mutation)) {
+                if (!event || event.data.mutation === MUTATIONS.sync || mutationFilter(event.data.mutation)) {
                     return;
                 }
 
                 try {
                     const state = objectOmit(store.state, INTERNAL.pattern);
-                    storage.setItem(storageKey, serialiser(state));
+                    const subState = objectFromPath(state, getNodes());
+
+                    storage.setItem(storageKey, serialiser(subState as typeof state));
                 } catch {
                     console.warn('Failed to write to storage');
                 }
@@ -81,7 +106,9 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         }
 
         function syncStorage(value: string) {
-            store.write(MUTATIONS.sync, SENDER, state => Object.assign(state, parser(value)));
+            store.write(MUTATIONS.sync, SENDER, state => {
+                objectSet(state, getNodes(), parser(value), INTERNAL.pattern);
+            });
         }
 
         function listener({ key, storageArea, newValue }: StorageEvent) {
