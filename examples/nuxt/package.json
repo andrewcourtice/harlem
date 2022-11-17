@@ -2,16 +2,18 @@
     "name": "@harlem/example-nuxt",
     "private": true,
     "scripts": {
-        "start": "node .output/server/index.mjs",
-        "build": "nuxi build"
+        "generate": "nuxt generate",
+        "start": "nuxt dev",
+        "build": "nuxt build",
+        "postinstall": "nuxt prepare"
     },
     "dependencies": {
         "@harlem/extension-action": "^2.4.0-beta.1",
         "@harlem/extension-compose": "^2.4.0-beta.1",
         "@harlem/extension-storage": "^2.4.0-beta.1",
-        "@nuxtjs/harlem": "^1.1.1"
+        "@nuxtjs/harlem": "^1.2.0"
     },
     "devDependencies": {
-        "nuxt": "^3.0.0-rc.13"
+        "nuxt": "^3.0.0"
     }
 }
