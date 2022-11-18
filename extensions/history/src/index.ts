@@ -9,7 +9,7 @@ import {
     EventPayload,
     EVENTS,
     InternalStore,
-    MutationEventData,
+    TriggerEventData,
 } from '@harlem/core';
 
 import traceExtension, {
@@ -96,8 +96,8 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             position = commands.length - 1;
         }
 
-        store.on(EVENTS.mutation.before, (event?: EventPayload<MutationEventData>) => {
-            if (!event || MUTATION_FILTER.test(event.data.mutation) || (mutationLookup.size > 0 && !mutationLookup.has(event.data.mutation))) {
+        store.on(EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
+            if (!event || MUTATION_FILTER.test(event.data.name) || (mutationLookup.size > 0 && !mutationLookup.has(event.data.name))) {
                 return;
             }
 
@@ -110,7 +110,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
 
             store.once(EVENTS.mutation.after, () => {
                 stopTrace();
-                processResults(event.data.mutation);
+                processResults(event.data.name);
 
                 listener.dispose();
             });
