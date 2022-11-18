@@ -10,6 +10,7 @@ import {
     EVENTS,
     INTERNAL,
     RegistrationValueProducer,
+    TriggerEventData,
 } from '@harlem/core';
 
 import {
@@ -178,7 +179,7 @@ function getInspectorEditHook(application: App, stores: InternalStores): EditHoo
     };
 }
 
-function getMutationHook(api: DevtoolsPluginApi<unknown>, logType?: LogType): EventHandler {
+function getMutationHook(api: DevtoolsPluginApi<unknown>, logType?: LogType): EventHandler<TriggerEventData> {
     return payload => {
         if (!payload) {
             return;
