@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.6](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.5...v2.4.0-beta.6) (2022-11-18)
+
+
+### Bug Fixes
+
+* **core:** fixed typing for extension options ([ef05d38](https://github.com/andrewcourtice/harlem/commit/ef05d38b45e954519b56c2e65bb0c246d29297dc))
+
+
+
+
+
 # [2.4.0-beta.5](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.4...v2.4.0-beta.5) (2022-11-17)
 
 
