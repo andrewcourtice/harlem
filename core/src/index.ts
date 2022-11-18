@@ -12,6 +12,7 @@ import {
     Matcher,
     matchGetFilter,
     objectLock,
+    typeIsFunction,
     typeIsMatchable,
 } from '@harlem/utilities';
 
@@ -21,17 +22,14 @@ import type {
 } from 'vue';
 
 import type {
-    ActionEventData,
     BaseState,
     EventPayload,
     Extension,
     HarlemPlugin,
     InternalStores,
-    MutationEventData,
     PluginOptions,
     PublicStore,
     StoreOptions,
-    Trigger,
     TriggerEventData,
     TriggerHandler,
 } from './types';
@@ -96,7 +94,7 @@ function getExtendedStore<TState extends BaseState, TExtensions extends Extensio
 }
 
 function installPlugin(plugin: HarlemPlugin, app: App): void {
-    if (!plugin || typeof plugin.install !== 'function') {
+    if (!plugin || !typeIsFunction(plugin.install)) {
         return;
     }
 
@@ -150,8 +148,8 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         store.emit(EVENTS.devtools.update, SENDER, state);
     };
 
-    const getTrigger = <TEventData extends TriggerEventData>(eventName: string, prop: keyof TEventData): Trigger<TEventData> => {
-        return (matcher: Matcher | Matchable, handler: TriggerHandler<TEventData>) => {
+    const getTrigger = (eventName: string) => {
+        return (matcher: Matcher | Matchable, handler: TriggerHandler) => {
             const filter = matchGetFilter(
                 typeIsMatchable(matcher)
                     ? matcher
@@ -161,25 +159,22 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
                     }
             );
 
-            return store.on(eventName, (event?: EventPayload<TEventData>) => {
-                if (event && !filter(event.data[prop] as unknown as string)) {
+            return store.on(eventName, (event?: EventPayload<TriggerEventData>) => {
+                if (event && !filter(event.data.name)) {
                     handler(event.data);
                 }
             });
         };
     };
 
-    const getMutationTrigger = (name: string) => getTrigger<MutationEventData>(name, 'mutation');
-    const getActionTrigger = (name: string) => getTrigger<ActionEventData>(name, 'action');
-
-    const onBeforeMutation = getMutationTrigger(EVENTS.mutation.before);
-    const onAfterMutation = getMutationTrigger(EVENTS.mutation.after);
-    const onMutationSuccess = getMutationTrigger(EVENTS.mutation.success);
-    const onMutationError = getMutationTrigger(EVENTS.mutation.error);
-    const onBeforeAction = getActionTrigger(EVENTS.action.before);
-    const onAfterAction = getActionTrigger(EVENTS.action.after);
-    const onActionSuccess = getActionTrigger(EVENTS.action.success);
-    const onActionError = getActionTrigger(EVENTS.action.error);
+    const onBeforeMutation = getTrigger(EVENTS.mutation.before);
+    const onAfterMutation = getTrigger(EVENTS.mutation.after);
+    const onMutationSuccess = getTrigger(EVENTS.mutation.success);
+    const onMutationError = getTrigger(EVENTS.mutation.error);
+    const onBeforeAction = getTrigger(EVENTS.action.before);
+    const onAfterAction = getTrigger(EVENTS.action.after);
+    const onActionSuccess = getTrigger(EVENTS.action.success);
+    const onActionError = getTrigger(EVENTS.action.error);
 
     const extendedStore = getExtendedStore<TState, TExtensions>(store, extensions);
 

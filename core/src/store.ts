@@ -28,7 +28,6 @@ import {
 import type {
     Action,
     ActionBody,
-    ActionEventData,
     BaseState,
     BranchAccessor,
     EventHandler,
@@ -38,7 +37,6 @@ import type {
     InternalStore,
     InternalStoreOptions,
     Mutation,
-    MutationEventData,
     Mutator,
     ReadState,
     RegistrationType,
@@ -48,6 +46,7 @@ import type {
     StoreRegistration,
     StoreRegistrations,
     StoreSnapshot,
+    TriggerEventData,
     WriteState,
 } from './types';
 
@@ -219,13 +218,13 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
 
         let result: TResult;
 
-        const emit = (event: string) => this.emit(event, sender, {
-            mutation: name,
+        const trigger = (event: string) => this.emit(event, sender, {
+            name,
             payload,
             result,
-        } as MutationEventData<TPayload, TResult>);
+        } as TriggerEventData<TPayload, TResult>);
 
-        emit(EVENTS.mutation.before);
+        trigger(EVENTS.mutation.before);
 
         try {
             const providedState = this.providers.write(this.writeState) ?? this.writeState;
@@ -233,13 +232,13 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
 
             result = mutator(providedState, providedPayload);
 
-            emit(EVENTS.mutation.success);
+            trigger(EVENTS.mutation.success);
         } catch (error) {
-            emit(EVENTS.mutation.error);
+            trigger(EVENTS.mutation.error);
             throw error;
         } finally {
             this.stack.delete(name);
-            emit(EVENTS.mutation.after);
+            trigger(EVENTS.mutation.after);
         }
 
         return result;
@@ -261,24 +260,24 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
         const action = (async (payload: TPayload) => {
             let result: TResult;
 
-            const emit = (event: string) => this.emit(event, SENDER, {
-                action: name,
+            const trigger = (event: string) => this.emit(event, SENDER, {
+                name,
                 payload,
                 result,
-            } as ActionEventData);
+            } as TriggerEventData);
 
-            emit(EVENTS.action.before);
+            trigger(EVENTS.action.before);
 
             try {
                 const providedPayload = this.providers.payload(payload) ?? payload;
 
                 result = await body(providedPayload, mutate);
-                emit(EVENTS.action.success);
+                trigger(EVENTS.action.success);
             } catch (error) {
-                emit(EVENTS.action.error);
+                trigger(EVENTS.action.error);
                 throw error;
             } finally {
-                emit(EVENTS.action.after);
+                trigger(EVENTS.action.after);
             }
 
             return result;
