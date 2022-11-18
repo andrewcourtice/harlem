@@ -159,7 +159,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
 
             return ((payload: TPayload, controller?: AbortController) => {
                 if (!concurrent || (typeIsFunction(concurrent) && !concurrent(payload, getPayloads()))) {
-                    abortAction(name, `New instance started on non-concurrent action: ${name}`);
+                    abortAction(name, 'New instance started on non-concurrent action');
                 }
 
                 if (autoClearErrors) {
