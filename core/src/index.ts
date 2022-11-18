@@ -8,8 +8,6 @@ import {
 } from './constants';
 
 import {
-    Matchable,
-    Matcher,
     matchGetFilter,
     objectLock,
     typeIsFunction,
@@ -30,8 +28,8 @@ import type {
     PluginOptions,
     PublicStore,
     StoreOptions,
+    Trigger,
     TriggerEventData,
-    TriggerHandler,
 } from './types';
 
 export {
@@ -148,8 +146,8 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         store.emit(EVENTS.devtools.update, SENDER, state);
     };
 
-    const getTrigger = (eventName: string) => {
-        return (matcher: Matcher | Matchable, handler: TriggerHandler) => {
+    const getTrigger = (eventName: string): Trigger => {
+        return (matcher, handler) => {
             const filter = matchGetFilter(
                 typeIsMatchable(matcher)
                     ? matcher

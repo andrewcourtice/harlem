@@ -23,6 +23,7 @@ export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (p
 export type ActionBody<TState extends BaseState, TPayload = undefined, TResult = void> = (payload: TPayload, mutator: (mutate: Mutator<TState, undefined, void>) => void) => Promise<TResult>;
 export type Action<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => Promise<TResult> : (payload: TPayload) => Promise<TResult>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
+export type Trigger = <TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>) => EventListener;
 export type TriggerHandler<TPayload = any, TResult = any> = (data: TriggerEventData<TPayload, TResult>) => void;
 export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
@@ -287,14 +288,14 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      */
     state: ReadState<TState>;
 
-    onBeforeMutation<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onAfterMutation<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onMutationSuccess<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onMutationError<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onBeforeAction<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onAfterAction<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onActionSuccess<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
-    onActionError<TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>): EventListener;
+    onBeforeMutation: Trigger;
+    onAfterMutation: Trigger;
+    onMutationSuccess: Trigger;
+    onMutationError: Trigger;
+    onBeforeAction: Trigger;
+    onAfterAction: Trigger;
+    onActionSuccess: Trigger;
+    onActionError: Trigger;
 }
 
 export interface HarlemPlugin {
