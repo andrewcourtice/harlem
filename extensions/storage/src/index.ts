@@ -9,8 +9,8 @@ import {
     EVENTS,
     INTERNAL,
     InternalStore,
-    MutationEventData,
     ReadState,
+    TriggerEventData,
 } from '@harlem/core';
 
 import {
@@ -89,8 +89,8 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         branch(value);
 
         function startStorageWrite() {
-            store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
-                if (!event || event.data.mutation === MUTATIONS.sync || mutationFilter(event.data.mutation)) {
+            store.on(EVENTS.mutation.success, (event?: EventPayload<TriggerEventData>) => {
+                if (!event || event.data.name === MUTATIONS.sync || mutationFilter(event.data.name)) {
                     return;
                 }
 
