@@ -23,7 +23,7 @@ export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (p
 export type ActionBody<TState extends BaseState, TPayload = undefined, TResult = void> = (payload: TPayload, mutator: (mutate: Mutator<TState, undefined, void>) => void) => Promise<TResult>;
 export type Action<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => Promise<TResult> : (payload: TPayload) => Promise<TResult>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
-export type Trigger = <TPayload, TResult>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>) => EventListener;
+export type Trigger = <TPayload = any, TResult = any>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>) => EventListener;
 export type TriggerHandler<TPayload = any, TResult = any> = (data: TriggerEventData<TPayload, TResult>) => void;
 export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
@@ -42,25 +42,56 @@ export interface EventListener {
     dispose(): void;
 }
 
-export interface EventPayload<TData = any> {
-    sender: string;
-    store: string;
-    data: TData;
-}
-
-export interface TriggerEventData<TPayload = any, TResult = any> {
-    name: string;
-    payload: TPayload;
-    result?: TResult;
-}
-
 export interface StoreRegistration {
     type: RegistrationType;
     producer: RegistrationValueProducer;
 }
 
+export interface EventPayload<TData = any> {
+    /**
+     * The name of the event sender. This could be the core library, any registered extension/plugin, or user-emitted events.
+     */
+    sender: string;
+
+    /**
+     * The store on which this event took place.
+     */
+    store: string;
+
+    /**
+     * A payload sent along with the event.
+     */
+    data: TData;
+}
+
+export interface TriggerEventData<TPayload = any, TResult = any> {
+    /**
+     * The name of the mutation/action that fired this trigger.
+     */
+    name: string;
+
+    /**
+     * The payload provided to the mutation/action that fired this trigger.
+     */
+    payload: TPayload;
+
+    /**
+     * The result returned from the mutation/action that fired this trigger. This is only populated for after and success triggers.
+     */
+    result?: TResult;
+}
+
 export interface StoreSnapshot<TState extends BaseState> {
+    /**
+     * A readonly copy of state in the snapshot
+    */
     get state(): TState;
+
+    /**
+     * Apply the current snapshot's state to the store. This will essentially overwrite any changes to state since this snapshot was taken.
+     * @param branchAccessor - An optional branch accessor to apply a partial part of this snapshot to the store.
+     * @param mutationName - An optional mutation name to use when applying the snapshot. This is useful for identifying snapshot applications in the Harlem devtools.
+     */
     apply<TValue>(branchAccessor?: BranchAccessor<TState, TValue>, mutationName?: string): void;
 }
 
@@ -288,13 +319,44 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
      */
     state: ReadState<TState>;
 
+    /**
+     * The trigger called before a mutation runs
+     */
     onBeforeMutation: Trigger;
+
+    /**
+     * The trigger called after a mutation runs, regardless of it was successful or not
+     */
     onAfterMutation: Trigger;
+
+    /**
+     * The trigger called upon successful completion of a mutation
+     */
     onMutationSuccess: Trigger;
+
+    /**
+     * The trigger called when a mutation fails
+     */
     onMutationError: Trigger;
+
+    /**
+     * The trigger called before an action runs
+     */
     onBeforeAction: Trigger;
+
+    /**
+     * The trigger called after an action runs, regardless of it was successful or not
+     */
     onAfterAction: Trigger;
+
+    /**
+     * The trigger called upon successful completion of an action
+     */
     onActionSuccess: Trigger;
+
+    /**
+     * The trigger called when an action fails
+     */
     onActionError: Trigger;
 }
 
