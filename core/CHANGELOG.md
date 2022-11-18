@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.7](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.6...v2.4.0-beta.7) (2022-11-18)
+
+
+### Features
+
+* **core:** improve typing and jsdoc comments ([fb45370](https://github.com/andrewcourtice/harlem/commit/fb4537007ea0951f0f3bb6e308d63edc691458da))
+
+
+
+
+
 # [2.4.0-beta.6](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.5...v2.4.0-beta.6) (2022-11-18)
 
 

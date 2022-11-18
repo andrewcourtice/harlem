@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.7](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.6...v2.4.0-beta.7) (2022-11-18)
+
+
+### Bug Fixes
+
+* **action:** fixed duplicate action name in abort error message ([5fa08cc](https://github.com/andrewcourtice/harlem/commit/5fa08cc95de4adc1c1a6969cbceb0f76c4ab85ce))
+
+
+### Features
+
+* **core:** improve typing and jsdoc comments ([fb45370](https://github.com/andrewcourtice/harlem/commit/fb4537007ea0951f0f3bb6e308d63edc691458da))
+
+
+
+
+
 # [2.4.0-beta.6](https://github.com/andrewcourtice/harlem/compare/v2.4.0-beta.5...v2.4.0-beta.6) (2022-11-18)
 
 
