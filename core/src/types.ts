@@ -28,7 +28,7 @@ export type Trigger<TEventData extends TriggerEventData> = (matcher: Matcher | M
 export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
-export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = UnionToIntersection<ReturnType<TExtensions[number]>>;
+export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = Record<string, any> extends UnionToIntersection<ReturnType<TExtensions[number]>> ? unknown : UnionToIntersection<ReturnType<TExtensions[number]>>;
 export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>;
 
 export interface Emittable {
@@ -68,7 +68,7 @@ export interface StoreRegistration {
 
 export interface StoreSnapshot<TState extends BaseState> {
     get state(): TState;
-    apply<TValue>(branchCallback?: BranchAccessor<TState, TValue>, mutationName?: string): void;
+    apply<TValue>(branchAccessor?: BranchAccessor<TState, TValue>, mutationName?: string): void;
 }
 
 export interface StoreBase<TState extends BaseState> {

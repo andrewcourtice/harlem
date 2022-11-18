@@ -121,7 +121,7 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
-export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[] = []>(
+export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
     name: string,
     state: TState,
     options?: Partial<StoreOptions<TState, TExtensions>>
@@ -132,7 +132,7 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         extensions,
     } = {
         allowOverwrite: true,
-        extensions: [store => ({})] as TExtensions,
+        extensions: [] as unknown as TExtensions,
         ...options,
     };
 
