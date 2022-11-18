@@ -19,12 +19,12 @@ import {
 } from './utilities';
 
 import {
-    ActionEventData,
     BaseState,
     EVENTS,
     InternalStore,
     Mutator,
     ReadState,
+    TriggerEventData,
 } from '@harlem/core';
 
 import {
@@ -94,8 +94,8 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             };
         }
 
-        function registerAction(name: string) {
-            _store.register('actions', name, () => () => {});
+        function registerAction(name: string, options: Partial<ActionOptions<any>> = {}) {
+            _store.register('actions', name, () => options);
             _store.write(MUTATIONS.register, SENDER, state => setActionState(state, name), true);
 
             const tasks = new Set<Task<unknown>>();
@@ -136,7 +136,7 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions<TPayload>>): Action<TPayload, TResult> {
             const {
                 tasks,
-            } = registerAction(name);
+            } = registerAction(name, options);
 
             const {
                 concurrent,
@@ -174,23 +174,23 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
 
                     let result: TResult;
 
-                    const emit = (event: string) => _store.emit(event, SENDER, {
-                        action: name,
+                    const trigger = (event: string) => _store.emit(event, SENDER, {
+                        name,
                         payload,
                         result,
-                    } as ActionEventData);
+                    } as TriggerEventData);
 
                     onAbort(reason => (complete(), fail(reason)));
                     addInstance(name, id, payload);
 
-                    emit(EVENTS.action.before);
+                    trigger(EVENTS.action.before);
 
                     try {
                         const providedPayload = _store.providers.payload(payload) ?? payload;
 
                         result = await body(providedPayload, mutate, controller, onAbort);
 
-                        emit(EVENTS.action.success);
+                        trigger(EVENTS.action.success);
 
                         incrementRunCount(name);
                         resolve(result);
@@ -203,13 +203,13 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                             return fail('Network request cancelled'); // Fetch has been cancelled
                         }
 
-                        emit(EVENTS.action.error);
+                        trigger(EVENTS.action.error);
 
                         incrementRunCount(name);
                         addError(name, id, error);
                         reject(error);
                     } finally {
-                        emit(EVENTS.action.after);
+                        trigger(EVENTS.action.after);
                         complete();
                     }
                 }, controller);
@@ -264,7 +264,8 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
         }
 
         function getActionErrors(name: string) {
-            const errors = Array.from(getActionState(_store.state, name)?.errors?.entries() || []);
+            const actionState = getActionState(_store.state, name);
+            const errors = Array.from(actionState?.errors?.entries() || []);
 
             return errors.map(([id, error]) => ({
                 id,
