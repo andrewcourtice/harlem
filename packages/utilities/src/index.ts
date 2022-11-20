@@ -1,5 +1,6 @@
 export { default as functionIdentity } from './function/identity';
 
+export { default as matchNormalise } from './match/normalise';
 export { default as matchGetFilter } from './match/get-filter';
 
 export { default as objectClone } from './object/clone';

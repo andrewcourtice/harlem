@@ -30,9 +30,6 @@ describe('Utilities', () => {
             set(source, 'propE/propEA', 10);
             expect(source.propE.propEA).toBe(10);
 
-            set(source, 'propC', 'bingo', /^propC/);
-            expect(source.propC).toBe('bar');
-
             set(source, '', {
                 thing: 'hello',
             });

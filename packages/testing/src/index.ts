@@ -1,11 +1,10 @@
-import Harlem from '@harlem/core';
-
-import type {
+import {
+    createHarlem,
     HarlemPlugin,
 } from '@harlem/core';
 
 const app = {
-    use: (plugin: any, options: any) => {
+    use: (plugin: any, options?: any) => {
         if (plugin && plugin.install){
             plugin.install(app, options);
         }
@@ -18,7 +17,9 @@ export {
 } from './store';
 
 export function bootstrap(plugins?: HarlemPlugin[]): void {
-    app.use(Harlem, { plugins });
+    app.use(createHarlem({
+        plugins,
+    }));
 }
 
 export function sleep(timeout: number = 0) {

@@ -206,22 +206,13 @@ describe('Actions Extension', () => {
             action,
         } = instance.store;
 
-        const singleAction = action('single-action', async () => {});
-        const concurrentAction = action('concurrent-action', async () => {}, {
-            concurrent: true,
+        const concurrentAction = action('concurrent-action', async () => {});
+        const nonConcurrentAction = action('non-concurrent-action', async () => {}, {
+            concurrent: false,
         });
 
-        let hasSingleFailed = false;
+        let hasNonConcurrentFailed = false;
         let hasConcurrentFailed = false;
-
-        try {
-            await Promise.all([
-                singleAction(),
-                singleAction(),
-            ]);
-        } catch {
-            hasSingleFailed = true;
-        }
 
         try {
             await Promise.all([
@@ -232,8 +223,17 @@ describe('Actions Extension', () => {
             hasConcurrentFailed = true;
         }
 
-        expect(hasSingleFailed).toBe(true);
+        try {
+            await Promise.all([
+                nonConcurrentAction(),
+                nonConcurrentAction(),
+            ]);
+        } catch {
+            hasNonConcurrentFailed = true;
+        }
+
         expect(hasConcurrentFailed).toBe(false);
+        expect(hasNonConcurrentFailed).toBe(true);
     });
 
     test('Handles nested cancellation', async () => {
@@ -252,7 +252,9 @@ describe('Actions Extension', () => {
         const parentAction = action('parent', (_, __, controller) => Promise.all([
             childAction1(_, controller),
             childAction2(_, controller),
-        ]));
+        ]), {
+            concurrent: false,
+        });
 
         try {
             await Promise.all([

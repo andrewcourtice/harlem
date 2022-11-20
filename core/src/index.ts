@@ -117,6 +117,73 @@ function installPlugin(plugin: HarlemPlugin, app: App): void {
 export const on = eventEmitter.on.bind(eventEmitter);
 export const once = eventEmitter.once.bind(eventEmitter);
 
+/**
+ * Create the Harlem plugin to be registered with a Vue application
+ *
+ * @param options - Options used to globally configure Harlem
+ *
+ * @example
+ * // Create the plugin
+ * const harlem = createHarlem({
+ *     plugins: [
+ *         createSSRPlugin(),
+ *         createDevtoolsPlugin()
+ *     ]
+ * });
+ *
+ * // Register with Vue
+ * app.use(harlem);
+ */
+export function createHarlem(options?: PluginOptions): Plugin {
+    if (installed) {
+        throw new Error('Only a single instance of Harlem can be created');
+    }
+
+    return {
+        install(app) {
+            const {
+                plugins,
+            } = {
+                plugins: [],
+                ...options,
+            };
+
+            if (plugins) {
+                plugins.forEach(plugin => installPlugin(plugin, app));
+            }
+
+            installed = true;
+            eventEmitter.emit(EVENTS.core.installed);
+        },
+    };
+}
+
+/**
+ * Create a new Harlem store.
+ *
+ * @param name - The name of this store.
+ * @param state - The initial state of this store.
+ * @param options - Additional options used to configure this store.
+ *
+ * @example
+ * // Define the initial state of this store
+ * const STATE = {
+ *     firstName: 'John',
+ *     lastName: 'Smith'
+ * };
+ *
+ * // Create the store with the initial state and any options/extensions
+ * const {
+ *     state,
+ *     getter,
+ *     mutation,
+ *     action
+ * } = createStore('app', STATE, {
+ *     extensions: [
+ *         actionExtension()
+ *     ]
+ * })
+ */
 export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
     name: string,
     state: TState,
@@ -201,23 +268,3 @@ export function createStore<TState extends BaseState, TExtensions extends Extens
         ...extendedStore,
     } as any;
 }
-
-export default {
-
-    install(app, options?: PluginOptions) {
-        const {
-            plugins,
-        } = {
-            plugins: [],
-            ...options,
-        };
-
-        if (plugins) {
-            plugins.forEach(plugin => installPlugin(plugin, app));
-        }
-
-        installed = true;
-        eventEmitter.emit(EVENTS.core.installed);
-    },
-
-} as Plugin;

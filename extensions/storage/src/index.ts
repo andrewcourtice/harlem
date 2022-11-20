@@ -7,7 +7,6 @@ import {
     BaseState,
     EventPayload,
     EVENTS,
-    INTERNAL,
     InternalStore,
     ReadState,
     TriggerEventData,
@@ -17,7 +16,6 @@ import {
     functionIdentity,
     matchGetFilter,
     objectFromPath,
-    objectOmit,
     objectSet,
     objectTrace,
     typeIsNil,
@@ -95,10 +93,8 @@ export default function storageExtension<TState extends BaseState>(options?: Par
                 }
 
                 try {
-                    const state = objectOmit(store.state, INTERNAL.pattern);
-                    const subState = objectFromPath(state, getNodes());
-
-                    storage.setItem(storageKey, serialiser(subState as typeof state));
+                    const state = objectFromPath(store.state, getNodes());
+                    storage.setItem(storageKey, serialiser(state as typeof store.state));
                 } catch {
                     console.warn('Failed to write to storage');
                 }
@@ -106,9 +102,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         }
 
         function syncStorage(value: string) {
-            store.write(MUTATIONS.sync, SENDER, state => {
-                objectSet(state, getNodes(), parser(value), INTERNAL.pattern);
-            });
+            store.write(MUTATIONS.sync, SENDER, state => objectSet(state, getNodes(), parser(value)));
         }
 
         function listener({ key, storageArea, newValue }: StorageEvent) {

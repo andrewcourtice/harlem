@@ -14,6 +14,7 @@ export type ActionAbortStrategy = (name: string, id: symbol, resolve: (value?: a
 
 export interface Options {
     strategies: ActionStrategies;
+    concurrent: boolean | ((payload: unknown, runningPayloads: unknown[]) => boolean);
 }
 
 export interface ActionStrategies {
@@ -25,14 +26,11 @@ export interface ActionAbortStrategies {
     warn: ActionAbortStrategy;
 }
 
-export interface ActionTaskState {
+export interface ActionState<TPayload = unknown, TResult = unknown> {
     runCount: number;
-    instances: Map<symbol, unknown>;
+    tasks: Set<Task<TResult>>;
+    instances: Map<symbol, TPayload>;
     errors: Map<symbol, unknown>;
-}
-
-export interface ActionStoreState {
-    '$harlem:actions': Record<string, ActionTaskState | undefined>;
 }
 
 export interface ActionOptions<TPayload> {

@@ -2,9 +2,9 @@ import {
     EventEmitter,
 } from '../src/event-emitter';
 
-import Harlem, {
+import {
+    createHarlem,
     createStore,
-    INTERNAL,
 } from '../src';
 
 import {
@@ -32,8 +32,6 @@ function getId() {
 }
 
 function getStore() {
-    const internalKey = `${INTERNAL.prefix}-test`;
-
     const {
         getter,
         mutation,
@@ -46,7 +44,6 @@ function getStore() {
             lastName: 'Smith',
         },
         traits: null,
-        [internalKey]: 10,
     }, {
         allowOverwrite: false,
     });
@@ -74,7 +71,6 @@ function getStore() {
         fullName,
         setId,
         setDetails,
-        internalKey,
         ...store,
     };
 }
@@ -92,7 +88,7 @@ describe('Harlem Core', () => {
             },
         } as App;
 
-        app.use(Harlem);
+        app.use(createHarlem());
     });
 
     afterEach(() => {
@@ -521,33 +517,6 @@ describe('Harlem Core', () => {
 
             reset(state => state.details);
             expect(state.id).toBe(7);
-            expect(state.details.firstName).toBe('John');
-            expect(state.details.lastName).toBe('Smith');
-        });
-
-        test('Should ignore internal properties', () => {
-            const {
-                reset,
-                state,
-                setId,
-                setDetails,
-                internalKey,
-            } = store;
-
-            setId(7);
-            setDetails({
-                firstName: 'Jane',
-                lastName: 'Doe',
-            });
-
-            expect(state.id).toBe(7);
-            expect(state.details.firstName).toBe('Jane');
-            expect(state.details.lastName).toBe('Doe');
-
-            reset();
-
-            expect(state[internalKey]).toBe(10);
-            expect(state.id).toBe(0);
             expect(state.details.firstName).toBe('John');
             expect(state.details.lastName).toBe('Smith');
         });

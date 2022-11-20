@@ -11,7 +11,6 @@ import {
 import {
     BaseState,
     EVENTS,
-    INTERNAL,
     InternalStore,
 } from '@harlem/core';
 
@@ -39,7 +38,7 @@ export default function resetExtension<TState extends BaseState>() {
                 const source = branchCallback(snapshot);
                 const target = branchCallback(state);
 
-                objectOverwrite(target, objectClone(source), INTERNAL.pattern);
+                objectOverwrite(target, objectClone(source));
             });
         }
 

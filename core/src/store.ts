@@ -311,7 +311,7 @@ export default class Store<TState extends BaseState = BaseState> implements Inte
                 const nodes = getNodes();
                 const source = objectFromPath(snapshot, nodes);
 
-                objectSet(state, nodes, objectClone(source), INTERNAL.pattern);
+                objectSet(state, nodes, objectClone(source));
             });
         };
 
