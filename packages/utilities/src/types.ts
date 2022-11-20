@@ -8,6 +8,10 @@ export interface Constructable<TValue = unknown> {
     constructor: new (...args: unknown[]) => TValue;
 }
 
+export interface Disposable {
+    dispose(): void;
+}
+
 export interface Matchable {
     include: Matcher;
     exclude: Matcher;

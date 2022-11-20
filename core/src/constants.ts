@@ -45,7 +45,6 @@ export const MUTATIONS = {
 } as const;
 
 export const PROVIDERS = {
-    read: value => value,
     write: value => value,
     payload: value => objectClone(value),
 } as StoreProviders<any>;

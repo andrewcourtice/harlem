@@ -1,6 +1,5 @@
-import InternalStore from './store';
-
-import eventEmitter from './event-emitter';
+import createEventBus from './event-emitter';
+import createInternalStore from './store';
 
 import {
     EVENTS,
@@ -16,16 +15,17 @@ import {
 
 import type {
     App,
-    Plugin,
 } from 'vue';
 
 import type {
     BaseState,
     EventPayload,
     Extension,
+    HarlemInstance,
+    HarlemOptions,
     HarlemPlugin,
+    InternalStore,
     InternalStores,
-    PluginOptions,
     PublicStore,
     StoreOptions,
     Trigger,
@@ -39,232 +39,245 @@ export {
 
 export * from './types';
 
-const stores: InternalStores = new Map();
+/**
+ * Create a new instance of Harlem. This is useful in multi-app scenarios.
+ */
+export function createInstance() {
+    const eventBus = createEventBus();
+    const stores: InternalStores = new Map();
 
-let installed = false;
+    let installed = false;
 
-function validateStoreCreation(name: string): void {
-    const store = stores.get(name);
+    function validateStoreCreation(name: string) {
+        const store = stores.get(name);
 
-    if (store && !store.allowsOverwrite) {
-        throw new Error(`A store named ${name} has already been registered.`);
+        if (store && !store.allowsOverwrite) {
+            throw new Error(`A store named ${name} has already been registered.`);
+        }
     }
-}
 
-function emitCreated(store: InternalStore, state: any): void {
+    function emitCreated(store: InternalStore, state: any) {
     /*
     This is necessary because the stores may be
     created before the plugin has been installed.
     */
-    const created = () => {
-        store.emit(EVENTS.ssr.initClient, SENDER, state);
-        store.emit(EVENTS.store.created, SENDER, state);
-        store.emit(EVENTS.ssr.initServer, SENDER, state);
-        store.emit(EVENTS.store.ready, SENDER, state);
-        store.emit(EVENTS.devtools.update, SENDER, state);
-    };
+        const created = () => {
+            store.emit(EVENTS.ssr.initClient, SENDER, state);
+            store.emit(EVENTS.store.created, SENDER, state);
+            store.emit(EVENTS.ssr.initServer, SENDER, state);
+            store.emit(EVENTS.store.ready, SENDER, state);
+            store.emit(EVENTS.devtools.update, SENDER, state);
+        };
 
-    if (installed) {
-        return created();
-    }
-
-    eventEmitter.once(EVENTS.core.installed, created);
-}
-
-function getExtendedStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
-    store: InternalStore<TState>,
-    extensions: TExtensions
-): ReturnType<Extension<TState>> {
-    return extensions.reduce((output, extension) => {
-        let result = {};
-
-        try {
-            result = extension(store) || {};
-        } catch {
-            result = {};
+        if (installed) {
+            return created();
         }
 
-        return {
-            ...output,
-            ...result,
-        };
-    }, {});
-}
-
-function installPlugin(plugin: HarlemPlugin, app: App): void {
-    if (!plugin || !typeIsFunction(plugin.install)) {
-        return;
+        eventBus.once(EVENTS.core.installed, created);
     }
 
-    const {
-        name,
-        install,
-    } = plugin;
+    function getExtensionApis<TState extends BaseState, TExtensions extends Extension<TState>[]>(
+        store: InternalStore<TState>,
+        extensions: TExtensions
+    ) {
+        return extensions.reduce((output, extension) => {
+            let result = {};
 
-    const lockedStores = objectLock(stores, [
-        'set',
-        'delete',
-        'clear',
-    ]);
-
-    try {
-        install(app, eventEmitter, lockedStores);
-    } catch (error) {
-        console.warn(`Failed to install Harlem plugin: ${name}. Skipping.`);
-    }
-}
-
-export const on = eventEmitter.on.bind(eventEmitter);
-export const once = eventEmitter.once.bind(eventEmitter);
-
-/**
- * Create the Harlem plugin to be registered with a Vue application
- *
- * @param options - Options used to globally configure Harlem
- *
- * @example
- * // Create the plugin
- * const harlem = createHarlem({
- *     plugins: [
- *         createSSRPlugin(),
- *         createDevtoolsPlugin()
- *     ]
- * });
- *
- * // Register with Vue
- * app.use(harlem);
- */
-export function createHarlem(options?: PluginOptions): Plugin {
-    if (installed) {
-        throw new Error('Only a single instance of Harlem can be created');
-    }
-
-    return {
-        install(app) {
-            const {
-                plugins,
-            } = {
-                plugins: [],
-                ...options,
-            };
-
-            if (plugins) {
-                plugins.forEach(plugin => installPlugin(plugin, app));
+            try {
+                result = extension(store) || {};
+            } catch {
+                result = {};
             }
 
-            installed = true;
-            eventEmitter.emit(EVENTS.core.installed);
-        },
-    };
-}
+            return {
+                ...output,
+                ...result,
+            };
+        }, {});
+    }
 
-/**
- * Create a new Harlem store.
- *
- * @param name - The name of this store.
- * @param state - The initial state of this store.
- * @param options - Additional options used to configure this store.
- *
- * @example
- * // Define the initial state of this store
- * const STATE = {
- *     firstName: 'John',
- *     lastName: 'Smith'
- * };
- *
- * // Create the store with the initial state and any options/extensions
- * const {
- *     state,
- *     getter,
- *     mutation,
- *     action
- * } = createStore('app', STATE, {
- *     extensions: [
- *         actionExtension()
- *     ]
- * })
- */
-export function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
-    name: string,
-    state: TState,
-    options?: Partial<StoreOptions<TState, TExtensions>>
-): PublicStore<TState, TExtensions> {
-    const {
-        allowOverwrite,
-        providers,
-        extensions,
-    } = {
-        allowOverwrite: true,
-        extensions: [] as unknown as TExtensions,
-        ...options,
-    };
+    function installPlugin(plugin: HarlemPlugin, app: App) {
+        if (!plugin || !typeIsFunction(plugin.install)) {
+            return;
+        }
 
-    validateStoreCreation(name);
+        const {
+            name,
+            install,
+        } = plugin;
 
-    const store = new InternalStore(name, state, {
-        allowOverwrite,
-        providers,
-    });
+        const lockedStores = objectLock(stores, [
+            'set',
+            'delete',
+            'clear',
+        ]);
 
-    const destroy = () => {
-        stores.delete(name);
-        store.destroy();
-        store.emit(EVENTS.store.destroyed, SENDER, state);
-        store.emit(EVENTS.devtools.update, SENDER, state);
-    };
+        try {
+            install(app, eventBus, lockedStores);
+        } catch (error) {
+            console.warn(`Failed to install Harlem plugin: ${name}. Skipping.`);
+        }
+    }
 
-    const getTrigger = (eventName: string): Trigger => {
-        return (matcher, handler) => {
-            const filter = matchGetFilter(
-                typeIsMatchable(matcher)
-                    ? matcher
-                    : {
-                        include: matcher,
-                        exclude: [],
-                    }
-            );
-
-            return store.on(eventName, (event?: EventPayload<TriggerEventData>) => {
-                if (event && !filter(event.data.name)) {
-                    handler(event.data);
-                }
-            });
+    /**
+     * Create a new Harlem store.
+     *
+     * @param name - The name of this store.
+     * @param state - The initial state of this store.
+     * @param options - Additional options used to configure this store.
+     *
+     * @example
+     * // Define the initial state of this store
+     * const STATE = {
+     *     firstName: 'John',
+     *     lastName: 'Smith'
+     * };
+     *
+     * // Create the store with the initial state and any options/extensions
+     * const {
+     *     state,
+     *     getter,
+     *     mutation,
+     *     action
+     * } = createStore('app', STATE, {
+     *     extensions: [
+     *         actionExtension()
+     *     ]
+     * })
+     */
+    function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
+        name: string,
+        state: TState,
+        options?: Partial<StoreOptions<TState, TExtensions>>
+    ) {
+        const {
+            allowsOverwrite,
+            providers,
+            extensions,
+        } = {
+            allowsOverwrite: true,
+            extensions: [] as unknown as TExtensions,
+            ...options,
         };
-    };
 
-    const onBeforeMutation = getTrigger(EVENTS.mutation.before);
-    const onAfterMutation = getTrigger(EVENTS.mutation.after);
-    const onMutationSuccess = getTrigger(EVENTS.mutation.success);
-    const onMutationError = getTrigger(EVENTS.mutation.error);
-    const onBeforeAction = getTrigger(EVENTS.action.before);
-    const onAfterAction = getTrigger(EVENTS.action.after);
-    const onActionSuccess = getTrigger(EVENTS.action.success);
-    const onActionError = getTrigger(EVENTS.action.error);
+        validateStoreCreation(name);
 
-    const extendedStore = getExtendedStore<TState, TExtensions>(store, extensions);
+        const store = createInternalStore(name, state, eventBus, {
+            allowsOverwrite,
+            providers,
+        });
 
-    stores.set(name, store);
-    emitCreated(store, state);
+        const destroy = () => {
+            stores.delete(name);
+            store.destroy();
+            store.emit(EVENTS.store.destroyed, SENDER, state);
+            store.emit(EVENTS.devtools.update, SENDER, state);
+        };
+
+        const getTrigger = (eventName: string): Trigger => {
+            return (matcher, handler) => {
+                const filter = matchGetFilter(
+                    typeIsMatchable(matcher)
+                        ? matcher
+                        : {
+                            include: matcher,
+                            exclude: [],
+                        }
+                );
+
+                return store.on(eventName, (event?: EventPayload<TriggerEventData>) => {
+                    if (event && !filter(event.data.name)) {
+                        handler(event.data);
+                    }
+                });
+            };
+        };
+
+        const onBeforeMutation = getTrigger(EVENTS.mutation.before);
+        const onAfterMutation = getTrigger(EVENTS.mutation.after);
+        const onMutationSuccess = getTrigger(EVENTS.mutation.success);
+        const onMutationError = getTrigger(EVENTS.mutation.error);
+        const onBeforeAction = getTrigger(EVENTS.action.before);
+        const onAfterAction = getTrigger(EVENTS.action.after);
+        const onActionSuccess = getTrigger(EVENTS.action.success);
+        const onActionError = getTrigger(EVENTS.action.error);
+
+        const extensionApis = getExtensionApis<TState, TExtensions>(store, extensions);
+
+        stores.set(name, store);
+        emitCreated(store, state);
+
+        return {
+            destroy,
+            onBeforeMutation,
+            onAfterMutation,
+            onMutationSuccess,
+            onMutationError,
+            onBeforeAction,
+            onAfterAction,
+            onActionSuccess,
+            onActionError,
+            state: store.state,
+            getter: store.getter.bind(store),
+            mutation: store.mutation.bind(store),
+            action: store.action.bind(store),
+            snapshot: store.snapshot.bind(store),
+            reset: store.reset.bind(store),
+            suppress: store.suppress.bind(store),
+            on: store.on.bind(store),
+            once: store.once.bind(store),
+            ...extensionApis,
+        } as unknown as PublicStore<TState, TExtensions>;
+    }
+
+    function attach(app: App, options?: HarlemOptions) {
+        return app.use({
+            install(app) {
+                const {
+                    plugins,
+                } = {
+                    plugins: [],
+                    ...options,
+                };
+
+                if (plugins) {
+                    plugins.forEach(plugin => installPlugin(plugin, app));
+                }
+
+                installed = true;
+                eventBus.emit(EVENTS.core.installed);
+            },
+        });
+    }
 
     return {
-        destroy,
-        onBeforeMutation,
-        onAfterMutation,
-        onMutationSuccess,
-        onMutationError,
-        onBeforeAction,
-        onAfterAction,
-        onActionSuccess,
-        onActionError,
-        state: store.state,
-        getter: store.getter.bind(store),
-        mutation: store.mutation.bind(store),
-        action: store.action.bind(store),
-        snapshot: store.snapshot.bind(store),
-        reset: store.reset.bind(store),
-        suppress: store.suppress.bind(store),
-        on: store.on.bind(store),
-        once: store.once.bind(store),
-        ...extendedStore,
-    } as any;
+        attach,
+        createStore,
+        on: eventBus.on,
+        once: eventBus.once,
+        off: eventBus.off,
+    } as HarlemInstance;
 }
+
+export function createExtension<TOptions, TResult extends Record<string, any>>(name: string, body: (store: InternalStore, options?: TOptions) => TResult) {
+    return (options?: TOptions) => {
+        return <TState extends BaseState>(store: InternalStore<TState>) => {
+            store.register('extensions', name, () => options);
+            return body(store, options);
+        };
+    };
+}
+
+// Export the global instance
+export const {
+    on,
+    off,
+    once,
+    attach,
+    createStore,
+} = createInstance();
+
+// Attach instance creation to the global object
+window.$harlem = {
+    createInstance,
+};

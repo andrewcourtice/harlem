@@ -171,7 +171,8 @@ export default function actionExtension<TState extends BaseState>(options?: Part
                     trigger(EVENTS.action.before);
 
                     try {
-                        const providedPayload = store.providers.payload(payload) ?? payload;
+                        const provider = store.getProvider('payload');
+                        const providedPayload = provider(payload) ?? payload;
 
                         result = await body(providedPayload, mutate, controller, onAbort);
 

@@ -10,11 +10,11 @@ import {
 
 import {
     BaseState,
-    EventListener,
     InternalStore,
 } from '@harlem/core';
 
 import {
+    Disposable,
     objectFromPath,
     objectToPath,
     objectTrace,
@@ -32,7 +32,7 @@ import type {
 export * from './types';
 
 export function useListeners(listeners: ListenersAccessor) {
-    const _listeners = ([] as EventListener[])
+    const _listeners = ([] as Disposable[])
         .concat(typeIsFunction(listeners)
             ? listeners()
             : listeners

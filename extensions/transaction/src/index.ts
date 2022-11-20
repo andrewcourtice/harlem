@@ -38,7 +38,8 @@ export default function transactionExtension<TState extends BaseState>() {
                 emit(EVENTS.transaction.before);
 
                 try {
-                    const providedPayload = store.providers.payload(payload) ?? payload;
+                    const provider = store.getProvider('payload');
+                    const providedPayload = provider(payload) ?? payload;
 
                     transactor(providedPayload, mutate);
                     emit(EVENTS.transaction.success);

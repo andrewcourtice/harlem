@@ -5,59 +5,56 @@ import type {
     EventPayload,
 } from './types';
 
-export class EventEmitter implements Emittable {
+export default function createEventBus(): Emittable {
 
-    private listeners: Record<string, EventHandler[]>;
+    const listeners = new Map<string, Set<EventHandler>>();
 
-    constructor() {
-        this.listeners = {};
-    }
+    function on(event: string, handler: EventHandler): EventListener {
+        const handlers = listeners.get(event) || new Set();
 
-    public on(event: string, handler: EventHandler): EventListener {
-        if (!this.listeners[event]) {
-            this.listeners[event] = [];
-        }
-
-        this.listeners[event].push(handler);
+        handlers.add(handler);
+        listeners.set(event, handlers);
 
         return {
-            dispose: () => this.off(event, handler),
+            dispose: () => off(event, handler),
         };
     }
 
-    public off(event: string, handler: EventHandler): void {
-        const listeners = this.listeners[event];
-
-        if (!listeners) {
-            return;
-        }
-
-        this.listeners[event] = listeners.filter(listener => listener !== handler);
-
-        if (this.listeners[event].length === 0) {
-            delete this.listeners[event];
-        }
-    }
-
-    public once(event: string, handler: EventHandler): EventListener {
-        const callback = (payload?: EventPayload) => {
-            handler(payload);
-            this.off(event, callback);
-        };
-
-        return this.on(event, callback);
-    }
-
-    public emit(event: string, payload?: EventPayload): void {
-        const handlers = this.listeners[event];
+    function off(event: string, handler: EventHandler): void {
+        const handlers = listeners.get(event);
 
         if (!handlers) {
             return;
         }
 
-        handlers.forEach(handler => handler(payload));
+        handlers.delete(handler);
+
+        if (!handlers.size) {
+            listeners.delete(event);
+        }
     }
 
-}
+    function once(event: string, handler: EventHandler): EventListener {
+        const callback = (payload?: EventPayload) => {
+            handler(payload);
+            off(event, callback);
+        };
 
-export default new EventEmitter();
+        return on(event, callback);
+    }
+
+    function emit(event: string, payload?: EventPayload): void {
+        const handlers = listeners.get(event);
+
+        if (handlers) {
+            handlers.forEach(handler => handler(payload));
+        }
+    }
+
+    return {
+        on,
+        off,
+        once,
+        emit,
+    };
+}

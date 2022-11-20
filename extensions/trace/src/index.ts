@@ -147,7 +147,7 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         const traceCallbacks = new Set<TraceCallback<TState>>();
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
-            store.provider('write', state => trace(state, gates, result => {
+            store.setProvider('write', state => trace(state, gates, result => {
                 if (_options.debug) {
                     logResult(result);
                 }
@@ -157,7 +157,7 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         }
 
         function stopTrace() {
-            store.provider('write', state => state);
+            store.setProvider('write', state => state);
         }
 
         function onTraceResult(callback: TraceCallback<TState>): TraceListener {

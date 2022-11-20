@@ -1,14 +1,23 @@
-import type {
+import {
     App,
     ComputedRef,
     DeepReadonly,
 } from 'vue';
 
 import type {
+    Disposable,
     Matchable,
     Matcher,
     UnionToIntersection,
 } from '@harlem/utilities';
+
+declare global {
+    interface Window {
+        $harlem: {
+            createInstance(): HarlemInstance;
+        };
+    }
+}
 
 export type BaseState = Record<PropertyKey, any>;
 export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
@@ -23,7 +32,7 @@ export type Mutation<TPayload, TResult = void> = undefined extends TPayload ? (p
 export type ActionBody<TState extends BaseState, TPayload = undefined, TResult = void> = (payload: TPayload, mutator: (mutate: Mutator<TState, undefined, void>) => void) => Promise<TResult>;
 export type Action<TPayload, TResult = void> = undefined extends TPayload ? (payload?: TPayload) => Promise<TResult> : (payload: TPayload) => Promise<TResult>;
 export type EventHandler<TData = any> = (payload?: EventPayload<TData>) => void;
-export type Trigger = <TPayload = any, TResult = any>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>) => EventListener;
+export type Trigger = <TPayload = any, TResult = any>(matcher: Matcher | Matchable, handler: TriggerHandler<TPayload, TResult>) => Disposable;
 export type TriggerHandler<TPayload = any, TResult = any> = (data: TriggerEventData<TPayload, TResult>) => void;
 export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
@@ -31,20 +40,43 @@ export type Extension<TState extends BaseState> = (store: InternalStore<TState>)
 export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = Record<string, any> extends UnionToIntersection<ReturnType<TExtensions[number]>> ? unknown : UnionToIntersection<ReturnType<TExtensions[number]>>;
 export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>;
 
-export interface Emittable {
-    on(event: string, handler: EventHandler): EventListener;
-    once(event: string, handler: EventHandler): EventListener;
-    off(event: string, handler: EventHandler): void;
-    emit(event: string, payload?: EventPayload): void;
-}
-
-export interface EventListener {
-    dispose(): void;
-}
-
 export interface StoreRegistration {
     type: RegistrationType;
     producer: RegistrationValueProducer;
+}
+
+export interface Emittable {
+    /**
+     * Subscribe to an event.
+     *
+     * @param event - The name of the event to subscribe to
+     * @param handler - A handler called when the event is fired
+     */
+    on(event: string, handler: EventHandler): Disposable;
+
+    /**
+     * Subscribe to an event. Once the event is fired once, this listener is automatically detached.
+     *
+     * @param event - The name of the event to subscribe to
+     * @param handler - A handler called when the event is fired
+     */
+    once(event: string, handler: EventHandler): Disposable;
+
+    /**
+     * Unsubscribe from an event.
+     *
+     * @param event - The name of the event to unsubscribe from
+     * @param handler - The handler the was registered to the event
+     */
+    off(event: string, handler: EventHandler): void;
+
+    /**
+     * Publish an event.
+     *
+     * @param event - The name of the event to publish
+     * @param payload - An optional payload to publish with the event
+     */
+    emit(event: string, payload?: EventPayload): void;
 }
 
 export interface EventPayload<TData = any> {
@@ -126,7 +158,7 @@ export interface StoreBase<TState extends BaseState> {
      * @param event - The name of the event to listen to
      * @param handler - The handler that will be called when the event is triggered
      */
-    on(event: string, handler: EventHandler): EventListener;
+    on(event: string, handler: EventHandler): Disposable;
 
     /**
      * Listen to an event on this store (only executed once)
@@ -134,7 +166,7 @@ export interface StoreBase<TState extends BaseState> {
      * @param event - The name of the event to listen to
      * @param handler - The handler that will be called when the event is triggered
      */
-    once(event: string, handler: EventHandler): EventListener;
+    once(event: string, handler: EventHandler): Disposable;
 
     /**
      * Suppress events emitted from this store for the duration of the function callback
@@ -163,13 +195,6 @@ export interface StoreBase<TState extends BaseState> {
 
 export interface StoreProviders<TState extends BaseState> {
     /**
-     * The provider used when exposing readonly state
-     *
-     * @param state - The readonly state object
-     */
-    read(state: ReadState<TState>): ReadState<TState>;
-
-    /**
      * The provider used when exposing writable state
      *
      * @param state - The writable state object
@@ -186,14 +211,14 @@ export interface StoreProviders<TState extends BaseState> {
 
 export interface InternalStore<TState extends BaseState = BaseState> extends StoreBase<TState> {
     /**
+     * The name of this store
+     */
+    readonly name: string;
+
+    /**
      * A boolean indicating whether this store allows overwriting duplicate registrations
      */
     readonly allowsOverwrite: boolean;
-
-    /**
-     * A set of providers used by this store
-     */
-    readonly providers: StoreProviders<TState>;
 
     /**
      * The current (readonly) state object
@@ -201,14 +226,9 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
     readonly state: ReadState<TState>;
 
     /**
-     * The name of this store
+     * Get a list of items registered on this store
      */
-    name: string;
-
-    /**
-     * A list of items registered on this store
-     */
-    registrations: StoreRegistrations;
+    getRegistrations(): StoreRegistrations;
 
     /**
      * Checks whether an item with the specified name is registered under the specified group on this store
@@ -276,12 +296,19 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
     track<TResult>(callback: () => TResult): TResult;
 
     /**
-     * Override the provider for the given key
+     * Get the specified provider for this store
      *
-     * @param key - The key of the provider to override
+     * @param key - The type of provider to get
+     */
+    getProvider<TKey extends StoreProvider<TState>>(key: TKey): StoreProviders<TState>[TKey];
+
+    /**
+     * Set the specified provider for this store
+     *
+     * @param key - The type of provider to set
      * @param value - The value of this provider
      */
-    provider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void;
+    setProvider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void;
 
     /**
      * Perform a write operation on this store
@@ -298,7 +325,7 @@ export interface InternalStoreOptions<TState extends BaseState> {
     /**
      * A boolean indicating whether this store allows overwriting duplicate registrations
      */
-    allowOverwrite: boolean;
+    allowsOverwrite: boolean;
 
     /**
      * A set of providers used by this store
@@ -376,9 +403,51 @@ export interface HarlemPlugin {
     install(app: App, eventEmitter: Emittable, stores: InternalStores): void;
 }
 
-export interface PluginOptions {
+export interface HarlemOptions {
     /**
      * An optional array of plugins to register with Harlem
      */
     plugins?: HarlemPlugin[];
+}
+
+export interface HarlemInstance extends Omit<Emittable, 'emit'> {
+    /**
+     * Attach Harlem to a Vue application. This is required for Harlem plugins to be usable.
+     *
+     * @param app - The Vue application instance to attach to
+     * @param options - Harlem options
+     */
+    attach(app: App, options?: HarlemOptions): App;
+
+    /**
+     * Create a new Harlem store.
+     *
+     * @param name - The name of this store.
+     * @param state - The initial state of this store.
+     * @param options - Additional options used to configure this store.
+     *
+     * @example
+     * // Define the initial state of this store
+     * const STATE = {
+     *     firstName: 'John',
+     *     lastName: 'Smith'
+     * };
+     *
+     * // Create the store with the initial state and any options/extensions
+     * const {
+     *     state,
+     *     getter,
+     *     mutation,
+     *     action
+     * } = createStore('app', STATE, {
+     *     extensions: [
+     *         actionExtension()
+     *     ]
+     * })
+     */
+    createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
+        name: string,
+        state: TState,
+        options?: Partial<StoreOptions<TState, TExtensions>>
+    ): PublicStore<TState, TExtensions>;
 }

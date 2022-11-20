@@ -1,9 +1,7 @@
-import {
-    EventEmitter,
-} from '../src/event-emitter';
+import createEventBus from '../src/event-emitter';
 
 import {
-    createHarlem,
+    attach,
     createStore,
 } from '../src';
 
@@ -45,7 +43,7 @@ function getStore() {
         },
         traits: null,
     }, {
-        allowOverwrite: false,
+        allowsOverwrite: false,
     });
 
     const fullName = getter('fullname', ({ details }) => `${details.firstName} ${details.lastName}`);
@@ -88,7 +86,7 @@ describe('Harlem Core', () => {
             },
         } as App;
 
-        app.use(createHarlem());
+        attach(app);
     });
 
     afterEach(() => {
@@ -99,19 +97,19 @@ describe('Harlem Core', () => {
     describe('Event Emitter', () => {
 
         test('Should handle on, once and emit', () => {
-            const eventEmitter = new EventEmitter();
+            const eventBus = createEventBus();
 
             const eventName = 'test-event';
             const onListener = vi.fn();
             const onceListener = vi.fn();
 
             const listeners = [
-                eventEmitter.on(eventName, onListener),
-                eventEmitter.once(eventName, onceListener),
+                eventBus.on(eventName, onListener),
+                eventBus.once(eventName, onceListener),
             ];
 
-            eventEmitter.emit(eventName);
-            eventEmitter.emit(eventName);
+            eventBus.emit(eventName);
+            eventBus.emit(eventName);
 
             expect(onListener).toHaveBeenCalledTimes(2);
             expect(onceListener).toHaveBeenCalledTimes(1);
