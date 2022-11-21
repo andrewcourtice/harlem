@@ -1,11 +1,11 @@
 import type {
-    Emittable,
+    EventBus,
     EventHandler,
     EventListener,
     EventPayload,
 } from './types';
 
-export default function createEventBus(): Emittable {
+export default function createEventBus(): EventBus {
 
     const listeners = new Map<string, Set<EventHandler>>();
 

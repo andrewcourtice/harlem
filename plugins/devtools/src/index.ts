@@ -80,7 +80,7 @@ function getRegistrationValue(producer: RegistrationValueProducer): unknown {
 }
 
 function getStoreSnapshot(store: InternalStore): CustomInspectorState {
-    return Object.entries(store.getRegistrations()).reduce((output, [type, registrations]) => {
+    return Object.entries(store.registrations).reduce((output, [type, registrations]) => {
         output[type] = Array.from(registrations)
             .sort(([valueA], [valueB]) => stringComparitor(valueA, valueB))
             .map(([key, { type, producer }]) => ({
@@ -202,7 +202,7 @@ function getMutationHook(api: DevtoolsPluginApi<unknown>, logType?: LogType): Ev
     };
 }
 
-export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS): HarlemPlugin {
+export default function createDevtoolsPlugin(options?: Partial<Options>): HarlemPlugin {
     const {
         label,
         color,
@@ -211,67 +211,61 @@ export default function createDevtoolsPlugin(options: Partial<Options> = OPTIONS
         ...options,
     };
 
-    return {
+    return (app, eventBus, stores) => {
+        const inspectorTreeHook = getInspectorTreeHook(app, stores);
+        const inspectorStateHook = getInspectorStateHook(app, stores);
+        const inspectorEditHook = getInspectorEditHook(app, stores);
 
-        name: 'devtools',
+        const descriptor = {
+            app,
+            label,
+            id: DEVTOOLS_ID,
+            logo: 'https://harlemjs.com/assets/images/favicon.png',
+            homepage: 'https://harlemjs.com',
+            packageName: '@harlem/plugin-devtools',
+        } as PluginDescriptor;
 
-        install(app, eventEmitter, stores) {
-            const inspectorTreeHook = getInspectorTreeHook(app, stores);
-            const inspectorStateHook = getInspectorStateHook(app, stores);
-            const inspectorEditHook = getInspectorEditHook(app, stores);
+        setupDevtoolsPlugin(descriptor, api => {
+            const successMutationHook = getMutationHook(api);
+            const errorMutationHook = getMutationHook(api, 'error');
 
-            const descriptor = {
-                app,
+            api.addInspector({
                 label,
                 id: DEVTOOLS_ID,
-                logo: 'https://harlemjs.com/assets/images/favicon.png',
-                homepage: 'https://harlemjs.com',
-                packageName: '@harlem/plugin-devtools',
-            } as PluginDescriptor;
-
-            setupDevtoolsPlugin(descriptor, api => {
-                const successMutationHook = getMutationHook(api);
-                const errorMutationHook = getMutationHook(api, 'error');
-
-                api.addInspector({
-                    label,
-                    id: DEVTOOLS_ID,
-                    icon: 'source',
-                    treeFilterPlaceholder: 'Search stores',
-                    stateFilterPlaceholder: 'Search state',
-                    nodeActions: [
-                        {
-                            icon: 'replay',
-                            tooltip: 'Reset store',
-                            action: nodeId => eventEmitter.emit(EVENTS.devtools.reset, {
-                                sender: SENDER,
-                                store: nodeId,
-                                data: nodeId,
-                            }),
-                        },
-                    ],
-                });
-
-                api.addTimelineLayer({
-                    label,
-                    color,
-                    id: DEVTOOLS_ID,
-                    skipScreenshots: true,
-                });
-
-                api.on.getInspectorTree(inspectorTreeHook);
-                api.on.getInspectorState(inspectorStateHook);
-                api.on.editInspectorState(inspectorEditHook);
-
-                eventEmitter.on(EVENTS.mutation.success, successMutationHook);
-                eventEmitter.on(EVENTS.mutation.error, errorMutationHook);
-
-                eventEmitter.on(EVENTS.devtools.update, () => {
-                    api.sendInspectorTree(DEVTOOLS_ID);
-                    api.sendInspectorState(DEVTOOLS_ID);
-                });
+                icon: 'source',
+                treeFilterPlaceholder: 'Search stores',
+                stateFilterPlaceholder: 'Search state',
+                nodeActions: [
+                    {
+                        icon: 'replay',
+                        tooltip: 'Reset store',
+                        action: nodeId => eventBus.emit(EVENTS.devtools.reset, {
+                            sender: SENDER,
+                            store: nodeId,
+                            data: nodeId,
+                        }),
+                    },
+                ],
             });
-        },
 
+            api.addTimelineLayer({
+                label,
+                color,
+                id: DEVTOOLS_ID,
+                skipScreenshots: true,
+            });
+
+            api.on.getInspectorTree(inspectorTreeHook);
+            api.on.getInspectorState(inspectorStateHook);
+            api.on.editInspectorState(inspectorEditHook);
+
+            eventBus.on(EVENTS.mutation.success, successMutationHook);
+            eventBus.on(EVENTS.mutation.error, errorMutationHook);
+
+            eventBus.on(EVENTS.devtools.update, () => {
+                api.sendInspectorTree(DEVTOOLS_ID);
+                api.sendInspectorState(DEVTOOLS_ID);
+            });
+        });
     };
 }

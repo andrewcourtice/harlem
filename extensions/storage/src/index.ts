@@ -57,7 +57,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
     } = _options;
 
     return (store: InternalStore<TState>) => {
-        if (store.getFlag('ssr:server')) {
+        if (store.flags.has('ssr:server')) {
             const noop = () => {};
 
             return {

@@ -6,6 +6,7 @@ import {
     BaseState,
     EVENTS,
     InternalStore,
+    PRODUCERS,
 } from '@harlem/core';
 
 import {
@@ -147,17 +148,17 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         const traceCallbacks = new Set<TraceCallback<TState>>();
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
-            store.setProvider('write', state => trace(state, gates, result => {
+            store.producers.write = state => trace(state, gates, result => {
                 if (_options.debug) {
                     logResult(result);
                 }
 
                 traceCallbacks.forEach(callback => callback(result));
-            }));
+            });
         }
 
         function stopTrace() {
-            store.setProvider('write', state => state);
+            store.producers.write = PRODUCERS.write;
         }
 
         function onTraceResult(callback: TraceCallback<TState>): TraceListener {

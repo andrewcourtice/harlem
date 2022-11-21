@@ -53,18 +53,12 @@ export function getBridgingScriptBlock(): string {
  * Create a new instance of the server-side SSR plugin
 */
 export function createServerSSRPlugin(): HarlemPlugin {
-    return {
+    return (app, eventEmitter, stores) => {
+        stores.forEach(store => store.flags.set('ssr:server', true));
 
-        name: 'server-ssr',
-
-        install(app, eventEmitter, stores) {
-            stores.forEach(store => store.setFlag('ssr:server', true));
-
-            eventEmitter.on(EVENTS.ssr.initServer, payload => onStoreEvent(stores, payload, store => {
-                snapshot[store.name] = store.state;
-            }));
-        },
-
+        eventEmitter.on(EVENTS.ssr.initServer, payload => onStoreEvent(stores, payload, store => {
+            snapshot[store.name] = store.state;
+        }));
     };
 }
 
@@ -72,21 +66,15 @@ export function createServerSSRPlugin(): HarlemPlugin {
  * Create a new instance of the client-side SSR plugin
  */
 export function createClientSSRPlugin(): HarlemPlugin {
-    return {
+    return (app, eventEmitter, stores) => {
+        const data = window.__harlemState;
 
-        name: 'client-ssr',
+        stores.forEach(store => store.flags.set('ssr:client', true));
 
-        install(app, eventEmitter, stores) {
-            const data = window.__harlemState;
-
-            stores.forEach(store => store.setFlag('ssr:client', true));
-
-            eventEmitter.on(EVENTS.ssr.initClient, payload => onStoreEvent(stores, payload, store => {
-                if (store.name in data) {
-                    store.write(MUTATIONS.init, SENDER, state => objectOverwrite(state, data[store.name]));
-                }
-            }));
-        },
-
+        eventEmitter.on(EVENTS.ssr.initClient, payload => onStoreEvent(stores, payload, store => {
+            if (store.name in data) {
+                store.write(MUTATIONS.init, SENDER, state => objectOverwrite(state, data[store.name]));
+            }
+        }));
     };
 }

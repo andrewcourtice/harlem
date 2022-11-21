@@ -4,7 +4,7 @@ import './assets/styles/index.scss';
 import App from './app.vue';
 
 import {
-    attach,
+    createVuePlugin,
 } from '@harlem/core';
 
 import devtoolsPlugin from '@harlem/plugin-devtools';
@@ -14,15 +14,13 @@ import {
 } from 'vue';
 
 function start() {
-    const app = createApp(App);
-
-    attach(app, {
-        plugins: [
-            devtoolsPlugin(),
-        ],
-    });
-
-    app.mount('body');
+    return createApp(App)
+        .use(createVuePlugin({
+            plugins: [
+                devtoolsPlugin(),
+            ],
+        }))
+        .mount('body');
 }
 
 start();

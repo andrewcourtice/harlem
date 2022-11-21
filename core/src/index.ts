@@ -15,6 +15,7 @@ import {
 
 import type {
     App,
+    Plugin,
 } from 'vue';
 
 import type {
@@ -35,6 +36,7 @@ import type {
 export {
     EVENTS,
     INTERNAL,
+    PRODUCERS,
 } from './constants';
 
 export * from './types';
@@ -57,10 +59,10 @@ export function createInstance() {
     }
 
     function emitCreated(store: InternalStore, state: any) {
-    /*
-    This is necessary because the stores may be
-    created before the plugin has been installed.
-    */
+        /*
+        This is necessary because the stores may be
+        created before the plugin has been installed.
+        */
         const created = () => {
             store.emit(EVENTS.ssr.initClient, SENDER, state);
             store.emit(EVENTS.store.created, SENDER, state);
@@ -97,14 +99,9 @@ export function createInstance() {
     }
 
     function installPlugin(plugin: HarlemPlugin, app: App) {
-        if (!plugin || !typeIsFunction(plugin.install)) {
+        if (!typeIsFunction(plugin)) {
             return;
         }
-
-        const {
-            name,
-            install,
-        } = plugin;
 
         const lockedStores = objectLock(stores, [
             'set',
@@ -113,38 +110,12 @@ export function createInstance() {
         ]);
 
         try {
-            install(app, eventBus, lockedStores);
+            plugin(app, eventBus, lockedStores);
         } catch (error) {
-            console.warn(`Failed to install Harlem plugin: ${name}. Skipping.`);
+            console.warn('Failed to install Harlem plugin. Skipping.');
         }
     }
 
-    /**
-     * Create a new Harlem store.
-     *
-     * @param name - The name of this store.
-     * @param state - The initial state of this store.
-     * @param options - Additional options used to configure this store.
-     *
-     * @example
-     * // Define the initial state of this store
-     * const STATE = {
-     *     firstName: 'John',
-     *     lastName: 'Smith'
-     * };
-     *
-     * // Create the store with the initial state and any options/extensions
-     * const {
-     *     state,
-     *     getter,
-     *     mutation,
-     *     action
-     * } = createStore('app', STATE, {
-     *     extensions: [
-     *         actionExtension()
-     *     ]
-     * })
-     */
     function createStore<TState extends BaseState, TExtensions extends Extension<TState>[]>(
         name: string,
         state: TState,
@@ -152,7 +123,7 @@ export function createInstance() {
     ) {
         const {
             allowsOverwrite,
-            providers,
+            producers: providers,
             extensions,
         } = {
             allowsOverwrite: true,
@@ -164,7 +135,7 @@ export function createInstance() {
 
         const store = createInternalStore(name, state, eventBus, {
             allowsOverwrite,
-            providers,
+            producers: providers,
         });
 
         const destroy = () => {
@@ -230,8 +201,8 @@ export function createInstance() {
         } as unknown as PublicStore<TState, TExtensions>;
     }
 
-    function attach(app: App, options?: HarlemOptions) {
-        return app.use({
+    function createVuePlugin(options?: HarlemOptions) {
+        return {
             install(app) {
                 const {
                     plugins,
@@ -247,11 +218,11 @@ export function createInstance() {
                 installed = true;
                 eventBus.emit(EVENTS.core.installed);
             },
-        });
+        } as Plugin;
     }
 
     return {
-        attach,
+        createVuePlugin,
         createStore,
         on: eventBus.on,
         once: eventBus.once,
@@ -259,21 +230,12 @@ export function createInstance() {
     } as HarlemInstance;
 }
 
-export function createExtension<TOptions, TResult extends Record<string, any>>(name: string, body: (store: InternalStore, options?: TOptions) => TResult) {
-    return (options?: TOptions) => {
-        return <TState extends BaseState>(store: InternalStore<TState>) => {
-            store.register('extensions', name, () => options);
-            return body(store, options);
-        };
-    };
-}
-
 // Export the global instance
 export const {
     on,
     off,
     once,
-    attach,
+    createVuePlugin,
     createStore,
 } = createInstance();
 

@@ -1,6 +1,5 @@
 import {
     EVENTS,
-    MUTATIONS,
     SENDER,
 } from './constants';
 
@@ -38,10 +37,9 @@ export default function transactionExtension<TState extends BaseState>() {
                 emit(EVENTS.transaction.before);
 
                 try {
-                    const provider = store.getProvider('payload');
-                    const providedPayload = provider(payload) ?? payload;
+                    const producedPayload = store.producers.payload(payload) ?? payload;
 
-                    transactor(providedPayload, mutate);
+                    transactor(producedPayload, mutate);
                     emit(EVENTS.transaction.success);
                 } catch (error) {
                     snap.apply();

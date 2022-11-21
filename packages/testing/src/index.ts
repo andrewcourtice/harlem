@@ -1,5 +1,5 @@
 import {
-    attach,
+    createVuePlugin,
     HarlemPlugin,
 } from '@harlem/core';
 
@@ -21,9 +21,9 @@ export {
 } from './store';
 
 export function bootstrap(plugins?: HarlemPlugin[]) {
-    return attach(app, {
+    app.use(createVuePlugin({
         plugins,
-    });
+    }));
 }
 
 export function sleep(timeout: number = 0) {

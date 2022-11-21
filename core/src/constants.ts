@@ -3,7 +3,7 @@ import {
 } from '@harlem/utilities';
 
 import type {
-    StoreProviders,
+    StoreProducers,
 } from './types';
 
 export const SENDER = 'core';
@@ -44,10 +44,11 @@ export const MUTATIONS = {
     reset: 'core:reset',
 } as const;
 
-export const PROVIDERS = {
+export const PRODUCERS = {
+    read: value => value,
     write: value => value,
     payload: value => objectClone(value),
-} as StoreProviders<any>;
+} as StoreProducers<any>;
 
 export const INTERNAL = {
     prefix: '$harlem:',

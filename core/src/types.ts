@@ -2,6 +2,7 @@ import {
     App,
     ComputedRef,
     DeepReadonly,
+    Plugin,
 } from 'vue';
 
 import type {
@@ -20,7 +21,7 @@ declare global {
 }
 
 export type BaseState = Record<PropertyKey, any>;
-export type StoreProvider<TState extends BaseState> = keyof StoreProviders<TState>;
+export type StoreProducer<TState extends BaseState> = keyof StoreProducers<TState>;
 export type ReadState<TState extends BaseState> = DeepReadonly<TState>;
 export type WriteState<TState extends BaseState> = TState;
 export type StoreRegistrations = Record<string, Map<string, StoreRegistration>>;
@@ -36,6 +37,7 @@ export type Trigger = <TPayload = any, TResult = any>(matcher: Matcher | Matchab
 export type TriggerHandler<TPayload = any, TResult = any> = (data: TriggerEventData<TPayload, TResult>) => void;
 export type BranchAccessor<TState extends BaseState, TValue> = (state: ReadState<TState>) => TValue;
 export type InternalStores = Map<string, InternalStore<BaseState>>;
+export type HarlemPlugin = (app: App, eventBus: EventBus, stores: InternalStores) => void;
 export type Extension<TState extends BaseState> = (store: InternalStore<TState>) => Record<string, any>;
 export type ExtensionAPIs<TExtensions extends Extension<BaseState>[]> = Record<string, any> extends UnionToIntersection<ReturnType<TExtensions[number]>> ? unknown : UnionToIntersection<ReturnType<TExtensions[number]>>;
 export type PublicStore<TState extends BaseState, TExtensions extends Extension<TState>[]> = Omit<Store<TState>, keyof ExtensionAPIs<TExtensions>> & ExtensionAPIs<TExtensions>;
@@ -45,7 +47,7 @@ export interface StoreRegistration {
     producer: RegistrationValueProducer;
 }
 
-export interface Emittable {
+export interface EventBus {
     /**
      * Subscribe to an event.
      *
@@ -193,7 +195,14 @@ export interface StoreBase<TState extends BaseState> {
     destroy(): void;
 }
 
-export interface StoreProviders<TState extends BaseState> {
+export interface StoreProducers<TState extends BaseState> {
+    /**
+     * The provider used when exposing writable state
+     *
+     * @param state - The writable state object
+     */
+    read(state: ReadState<TState>): ReadState<TState>;
+
     /**
      * The provider used when exposing writable state
      *
@@ -226,9 +235,19 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
     readonly state: ReadState<TState>;
 
     /**
-     * Get a list of items registered on this store
+     * Flags defined on this store
      */
-    getRegistrations(): StoreRegistrations;
+    readonly flags: Map<string, unknown>;
+
+    /**
+     * The producers for this store
+     */
+    readonly producers: StoreProducers<TState>;
+
+    /**
+     * The items registered with this store
+     */
+    readonly registrations: StoreRegistrations;
 
     /**
      * Checks whether an item with the specified name is registered under the specified group on this store
@@ -265,21 +284,6 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
     unregister(group: string, name: string): void;
 
     /**
-     * Get a flag value on this store
-     *
-     * @param {string} key
-     */
-    getFlag(key: string): unknown;
-
-    /**
-     * Set a flag value on this store
-     *
-     * @param {string} key
-     * @param {unknown} value
-     */
-    setFlag(key: string, value: unknown): void;
-
-    /**
      * Emit an event from this store
      *
      * @param event - The name of the event to emit
@@ -294,21 +298,6 @@ export interface InternalStore<TState extends BaseState = BaseState> extends Sto
      * @param callback - A function during which reactive effects will be tracked
      */
     track<TResult>(callback: () => TResult): TResult;
-
-    /**
-     * Get the specified provider for this store
-     *
-     * @param key - The type of provider to get
-     */
-    getProvider<TKey extends StoreProvider<TState>>(key: TKey): StoreProviders<TState>[TKey];
-
-    /**
-     * Set the specified provider for this store
-     *
-     * @param key - The type of provider to set
-     * @param value - The value of this provider
-     */
-    setProvider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void;
 
     /**
      * Perform a write operation on this store
@@ -330,7 +319,7 @@ export interface InternalStoreOptions<TState extends BaseState> {
     /**
      * A set of providers used by this store
      */
-    providers: Partial<StoreProviders<TState>>;
+    producers: Partial<StoreProducers<TState>>;
 }
 
 export interface StoreOptions<TState extends BaseState, TExtensions extends Extension<TState>[]> extends InternalStoreOptions<TState> {
@@ -387,22 +376,6 @@ export interface Store<TState extends BaseState> extends StoreBase<TState> {
     onActionError: Trigger;
 }
 
-export interface HarlemPlugin {
-    /**
-     * The name of this plugin
-     */
-    name: string;
-
-    /**
-     * The install function that will be called when this plugin is registered with Harlem
-     *
-     * @param app - The current Vue app instance
-     * @param eventEmitter - The event emitter used by Harlem for dispatching events
-     * @param stores - A map of registered store
-     */
-    install(app: App, eventEmitter: Emittable, stores: InternalStores): void;
-}
-
 export interface HarlemOptions {
     /**
      * An optional array of plugins to register with Harlem
@@ -410,14 +383,14 @@ export interface HarlemOptions {
     plugins?: HarlemPlugin[];
 }
 
-export interface HarlemInstance extends Omit<Emittable, 'emit'> {
+export interface HarlemInstance extends Omit<EventBus, 'emit'> {
     /**
      * Attach Harlem to a Vue application. This is required for Harlem plugins to be usable.
      *
      * @param app - The Vue application instance to attach to
      * @param options - Harlem options
      */
-    attach(app: App, options?: HarlemOptions): App;
+    createVuePlugin(options?: HarlemOptions): Plugin;
 
     /**
      * Create a new Harlem store.

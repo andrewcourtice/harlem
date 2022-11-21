@@ -1,8 +1,8 @@
 import createEventBus from '../src/event-emitter';
 
 import {
-    attach,
     createStore,
+    createVuePlugin,
 } from '../src';
 
 import {
@@ -86,7 +86,7 @@ describe('Harlem Core', () => {
             },
         } as App;
 
-        attach(app);
+        app.use(createVuePlugin());
     });
 
     afterEach(() => {

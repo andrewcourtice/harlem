@@ -1,7 +1,7 @@
 import {
     EVENTS,
     MUTATIONS,
-    PROVIDERS,
+    PRODUCERS,
     SENDER,
 } from './constants';
 
@@ -26,7 +26,7 @@ import type {
     ActionBody,
     BaseState,
     BranchAccessor,
-    Emittable,
+    EventBus,
     EventHandler,
     EventPayload,
     Getter,
@@ -37,8 +37,6 @@ import type {
     ReadState,
     RegistrationType,
     RegistrationValueProducer,
-    StoreProvider,
-    StoreProviders,
     StoreRegistration,
     StoreRegistrations,
     StoreSnapshot,
@@ -61,17 +59,22 @@ function localiseHandler(name: string, handler: EventHandler): EventHandler {
     };
 }
 
-export default function createInternalStore<TState extends BaseState = BaseState>(name: string, state: TState, eventBus: Emittable, options?: Partial<InternalStoreOptions<TState>>): InternalStore<TState> {
+export default function createInternalStore<TState extends BaseState = BaseState>(
+    name: string,
+    initialState: TState,
+    eventBus: EventBus,
+    options?: Partial<InternalStoreOptions<TState>>
+): InternalStore<TState> {
     const {
         allowsOverwrite,
-        providers,
+        producers,
     } = {
         allowsOverwrite: true,
         ...options,
 
-        providers: {
-            ...PROVIDERS,
-            ...options?.providers,
+        producers: {
+            ...PRODUCERS,
+            ...options?.producers,
         },
     };
 
@@ -79,10 +82,10 @@ export default function createInternalStore<TState extends BaseState = BaseState
     const flags = new Map<string, unknown>();
     const scope = effectScope();
     const stack = new Set<string>();let isSuppressing = false;
-    const writeState = reactive(state) as WriteState<TState>;
+    const writeState = reactive(initialState) as WriteState<TState>;
     const readState = readonly(writeState) as ReadState<TState>;
 
-    let initialState: StoreSnapshot<TState> | undefined;
+    let resetSnapshot: StoreSnapshot<TState> | undefined;
 
     function emit(event: string, sender: string, data: any) {
         if (!scope.active || isSuppressing) {
@@ -106,32 +109,12 @@ export default function createInternalStore<TState extends BaseState = BaseState
         return eventBus.once(event, localiseHandler(name, handler));
     }
 
-    function getFlag(key: string): unknown {
-        return flags.get(key);
-    }
-
-    function setFlag(key: string, value: unknown) {
-        flags.set(key, value);
-    }
-
-    function getProvider<TKey extends StoreProvider<TState>>(key: TKey): StoreProviders<TState>[TKey] {
-        return providers[key];
-    }
-
-    function setProvider<TKey extends StoreProvider<TState>>(key: TKey, value: StoreProviders<TState>[TKey]): void {
-        providers[key] = value;
-    }
-
     function track<TResult>(callback: () => TResult): TResult {
         return scope.run(callback)!;
     }
 
     function hasRegistration(group: string, name: string): boolean {
         return !!registrations[group]?.has(name);
-    }
-
-    function getRegistrations() {
-        return registrations;
     }
 
     function getRegistration(group: string, name: string): StoreRegistration | undefined {
@@ -201,10 +184,10 @@ export default function createInternalStore<TState extends BaseState = BaseState
         trigger(EVENTS.mutation.before);
 
         try {
-            const providedState = providers.write(writeState) ?? writeState;
-            const providedPayload = providers.payload(payload) ?? payload;
+            const producedState = producers.write(writeState) ?? writeState;
+            const producedPayload = producers.payload(payload) ?? payload;
 
-            result = mutator(providedState, providedPayload);
+            result = mutator(producedState, producedPayload);
 
             trigger(EVENTS.mutation.success);
         } catch (error) {
@@ -243,9 +226,9 @@ export default function createInternalStore<TState extends BaseState = BaseState
             trigger(EVENTS.action.before);
 
             try {
-                const providedPayload = providers.payload(payload) ?? payload;
+                const producedPayload = producers.payload(payload) ?? payload;
 
-                result = await body(providedPayload, mutate);
+                result = await body(producedPayload, mutate);
                 trigger(EVENTS.action.success);
             } catch (error) {
                 trigger(EVENTS.action.error);
@@ -263,7 +246,7 @@ export default function createInternalStore<TState extends BaseState = BaseState
     }
 
     function snapshot(): StoreSnapshot<TState> {
-        const snapshot = objectClone(state);
+        const snapshot = objectClone(initialState);
 
         const {
             value,
@@ -298,7 +281,7 @@ export default function createInternalStore<TState extends BaseState = BaseState
     }
 
     function reset<TBranchState extends BaseState>(branchAccessor: BranchAccessor<TState, TBranchState> = functionIdentity) {
-        initialState?.apply(branchAccessor, MUTATIONS.reset);
+        resetSnapshot?.apply(branchAccessor, MUTATIONS.reset);
     }
 
     function write<TResult = void>(name: string, sender: string, mutator: Mutator<TState, undefined, TResult>, suppressEvent?: boolean): TResult {
@@ -313,16 +296,23 @@ export default function createInternalStore<TState extends BaseState = BaseState
         scope.stop();
     }
 
-    once(EVENTS.store.ready, () => initialState = snapshot());
+    once(EVENTS.store.ready, () => resetSnapshot = snapshot());
     on(EVENTS.devtools.reset, () => reset());
+
+    const state = producers.read(readState) ?? readState;
 
     return {
         name,
         allowsOverwrite,
+        flags,
+        producers,
+        registrations,
 
         on,
         once,
         emit,
+
+        state,
         getter,
         mutation,
         action,
@@ -330,19 +320,13 @@ export default function createInternalStore<TState extends BaseState = BaseState
         snapshot,
         reset,
 
-        getFlag,
-        setFlag,
-        getProvider,
-        setProvider,
         register,
         unregister,
         hasRegistration,
         getRegistration,
-        getRegistrations,
         track,
         suppress,
-        destroy,
 
-        state: readState,
+        destroy,
     };
 }
