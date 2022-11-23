@@ -48,17 +48,26 @@ export default defineConfig({
         nav: [
             {
                 text: 'Guide',
-                link: '/guide/introduction/about',
+                link: '/guide/',
                 activeMatch: '^/guide/',
             },
             {
                 text: 'Extensibility',
-                link: '/extensibility/',
-                activeMatch: '^/extensibility/',
+                activeMatch: '^/(extensions|plugins)/',
+                items: [
+                    {
+                        text: 'Extensions',
+                        link: '/extensions/',
+                    },
+                    {
+                        text: 'Plugins',
+                        link: '/plugins/',
+                    },
+                ]
             },
             {
                 text: 'API Reference',
-                link: '/api/global',
+                link: '/api/',
                 activeMatch: '^/api/',
             },
         ],
@@ -69,7 +78,7 @@ export default defineConfig({
                     items: [
                         {
                             text: 'About',
-                            link: '/guide/introduction/about',
+                            link: '/guide/',
                         },
                         {
                             text: 'Getting Started',
@@ -107,6 +116,35 @@ export default defineConfig({
                     ],
                 },
                 {
+                    text: 'Advanced',
+                    items: [
+                        {
+                            text: 'Plugins & Extensions',
+                            link: '/guide/advanced/plugins-extensions',
+                        },
+                        {
+                            text: 'Compositions',
+                            link: '/guide/usage/resetting'
+                        },
+                        {
+                            text: 'Taking snapshots',
+                            link: '/guide/usage/resetting'
+                        },
+                        {
+                            text: 'Resetting stores',
+                            link: '/guide/usage/resetting'
+                        },
+                        {
+                            text: 'Auditing',
+                            link: '/guide/usage/resetting'
+                        },
+                        {
+                            text: 'Multi-app instances',
+                            link: '/guide/usage/resetting'
+                        }
+                    ]
+                },
+                {
                     text: 'Support',
                     items: [
                         {
@@ -120,93 +158,92 @@ export default defineConfig({
                     ],
                 },
             ],
-            '/extensibility/': [
+            '/extensions/': [
                 {
-                    text: 'Extensions',
+                    text: 'Introduction',
                     items: [
                         {
-                            text: 'Introduction',
-                            link: '/extensibility/extensions/',
-                        },
+                            text: 'About',
+                            link: '/extensions/',
+                        }
+                    ]
+                },
+                {
+                    text: 'Official Extensions',
+                    items: [
                         {
                             text: 'Action',
-                            link: '/extensibility/extensions/action',
+                            link: '/extensions/official/action',
                         },
                         {
                             text: 'Compose',
-                            link: '/extensibility/extensions/compose',
+                            link: '/extensions/official/compose',
                         },
                         {
                             text: 'History',
-                            link: '/extensibility/extensions/history',
+                            link: '/extensions/official/history',
                         },
                         {
                             text: 'Lazy',
-                            link: '/extensibility/extensions/lazy',
-                        },
-                        {
-                            text: 'Reset',
-                            link: '/extensibility/extensions/reset',
-                        },
-                        {
-                            text: 'Snapshot',
-                            link: '/extensibility/extensions/snapshot',
+                            link: '/extensions/official/lazy',
                         },
                         {
                             text: 'Storage',
-                            link: '/extensibility/extensions/storage',
+                            link: '/extensions/official/storage',
                         },
                         {
                             text: 'Trace',
-                            link: '/extensibility/extensions/trace',
+                            link: '/extensions/official/trace',
                         },
                         {
                             text: 'Transaction',
-                            link: '/extensibility/extensions/transaction',
+                            link: '/extensions/official/transaction',
                         },
                     ],
                 },
                 {
-                    text: 'Plugins',
+                    text: 'Advanced',
                     items: [
                         {
-                            text: 'Introduction',
-                            link: '/extensibility/plugins/',
-                        },
+                            text: 'Extension authoring',
+                            link: '/extensions/advanced/authoring'
+                        }
+                    ]
+                }
+            ],
+            '/plugins/': [
+                {
+                    text: 'Introduction',
+                    items: [
+                        {
+                            text: 'About',
+                            link: '/plugins/',
+                        }
+                    ]
+                },
+                {
+                    text: 'Official Plugins',
+                    items: [
                         {
                             text: 'Devtools',
-                            link: '/extensibility/plugins/devtools',
+                            link: '/plugins/official/devtools',
                         },
                         {
                             text: 'Server-Side Rendering',
-                            link: '/extensibility/plugins/server-side-rendering',
+                            link: '/plugins/official/server-side-rendering',
                         },
                     ],
                 },
-            ],
-            '/api/': [
                 {
-                    text: 'API Reference',
+                    text: 'Advanced',
                     items: [
                         {
-                            text: 'Global',
-                            link: '/api/global',
-                        },
-                        {
-                            text: 'Store',
-                            link: '/api/store',
-                        },
-                        {
-                            text: 'Extension',
-                            link: '/api/extension',
-                        },
-                        {
-                            text: 'Types',
-                            link: '/api/types',
-                        },
-                    ],
-                },
-            ],
+                            text: 'Plugin authoring',
+                            link: '/plugins/advanced/authoring'
+                        }
+                    ]
+                }
+            ]
         },
         footer: {
             message: 'MIT Licensed',

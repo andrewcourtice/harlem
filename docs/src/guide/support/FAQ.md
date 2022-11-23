@@ -1,13 +1,7 @@
 # FAQ
 
-## Why aren't actions included by default?
-The decision to not include actions in the core package by default is to remain faithful to the philosophy of keeping Harlem lightweight, simple and unopinionated. Different projects have different needs for actions. Some larger projects may require nested actions and cancellation while smaller projects may not need all of those features but instead just need simple direct mutations. 
-
-To ship a full action implementation as part of the core package would force every project (especially the small projects) to incur that cost (size, performance etc.) even if not all of the action features are being used. For this reason Harlem provides a [full-featured action implementation](/extensibility/extensions/action) as an optional extension and leaves your action implementation up to you should you wish to keep things simple or get really complex.
-
-
 ## Why does Harlem still have Mutations?
-Mutations are a key concept of Harlem. They are foundational in providing functionality for triggers, devtools, tracing, and extension/plugin integration. That being said, although they are a core *concept*, they are not *mandatory*. With the [action extension](/extensibility/extensions/action), you can author your stores entirely without explicitly defining mutations and still have all the benefits of triggers, devtools etc.
+Mutations are a key concept of Harlem. They are foundational in providing functionality for actions, triggers, devtools, tracing, and extension/plugin integration. That being said, although they are a core *concept*, they are not *mandatory*. You can author your stores entirely using actions without explicitly defining mutations and still have all the benefits of triggers, devtools etc.
 
 
 ## Can I share state between stores?

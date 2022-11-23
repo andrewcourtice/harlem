@@ -1,20 +1,20 @@
 # Actions
 
-Actions are asynchronous methods that often batch network requests with one or more state mutations. Becuase action implementations vary widely Harlem doesn't include actions by default in the core package but instead through an optional [extension](/extensibility/extensions/action) (`@harlem/extension-action`).
+Actions are asynchronous methods that often (but not always) fetch network requests with one or more state mutations. Because action implementations can vary widely Harlem only includes a very basic actions implementation by default in the core package. A more advanced action implementation is available through the [action extension](/extensions/action) (@harlem/extension-action).
 
-The action implementation in the Harlem action extension includes features like cancellation, nested actions and indirect status checks. See that [action extension](/extensibility/extensions/action) documentation for more information.
-
-## Defining an Action
+Similar to a mutation, an action is a simple asynchronous function that takes a payload in, mutates state, and (optionally) returns a result. 
 
 ```typescript
-export default action('load-user-data', async (id: number, mutate, controller) => {
-    const userData = await fetch(`/api/user-data/${id}`, {
-        signal: controller.signal
+export default action('load-details', async (id: string, mutate) => {
+    const response = await fetch(`/api/details/${id}`);
+    const details = await response.json();
+
+    mutate(state => {
+        state.details = details;
     });
 
-    mutate(state => Object.assign(state.details.user, userData));
+    return details;
 });
 ```
 
-## See also
-[Action Extension Documentation](/extensibility/extensions/action)
+The advanced action implementation in the Harlem action extension includes features like cancellation, deduplication, nested actions and indirect status checks. See the [action extension](/extensions/action) documentation for more information.

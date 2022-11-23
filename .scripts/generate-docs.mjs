@@ -24,16 +24,18 @@ async function main() {
         excludePrivate: true,
         excludeInternal: true,
         excludeProtected: true,
-        // entryDocument: 'index.md',
-        // plugin: [
-        //     'typedoc-plugin-markdown'
-        // ]
+        //excludeNotDocumented: true,
+        githubPages: false,
+        entryDocument: 'index.md',
+        plugin: [
+            'typedoc-plugin-markdown'
+        ]
     });
 
     const project = app.converter.convert(app.getEntryPoints() ?? []);
 
     if (project) {
-        await app.generateDocs(project, 'docs/src/typedoc');
+        await app.generateDocs(project, 'docs/src/api');
     }
 }
 

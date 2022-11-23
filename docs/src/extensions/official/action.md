@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/@harlem/extension-action)
 
-This is the official action extension for Harlem. This extension adds asynchronous action capabilities to your store. Some of the features of this extension are:
+This is the official action extension for Harlem. This extension adds advanced action capabilities to your store. Some of the features of this extension are:
 
 - Cancellable (incl. nested actions)
 - Direct mutations within the action body - no need to specify a separate mutation

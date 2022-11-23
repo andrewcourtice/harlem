@@ -1,7 +1,7 @@
 {
     "name": "harlem",
     "version": "1.0.0",
-    "description": "Simple, unopinionated, lightweight and extensible state management for Vue 3",
+    "description": "Powerfully simple global state management for Vue 3",
     "repository": "https://github.com/andrewcourtice/harlem.git",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "packageManager": "yarn@3.2.4",
@@ -40,6 +40,7 @@
         "standard-changelog": "^2.0.27",
         "tsup": "^6.5.0",
         "typedoc": "^0.23.21",
+        "typedoc-plugin-markdown": "^3.13.6",
         "typescript": "^4.9.3",
         "vitest": "^0.25.2",
         "vue-eslint-parser": "^9.1.0"

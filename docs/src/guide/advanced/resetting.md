@@ -1,0 +1,1 @@
+# Resetting a store

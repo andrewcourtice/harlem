@@ -1,22 +1,8 @@
-# Plugins
-At it's heart, Harlem uses a plugin system to extend functionality and create powerful additions to your stores.
-
-## Official plugins
-Here is a list of officially supported Harlem plugins. These plugins are not designed to suit every use-case but instead add basic functionality for common use-cases.
-
-- [Devtools](./devtools) (`@harlem/plugin-devtools`) - The devtools plugin adds Vue devtools integration with your stores to show updates to your state in realtime.
-- [SSR](./server-side-rendering) (`@harlem/plugin-ssr`) - The SSR plugin enables support for using Harlem stores in a server-side rendered application.
-
-If you require functionality to suit a specific use-case you can write your own plugin. See [Writing your own plugin](#writing-your-own-plugin) below.
-
-If you feel that there is a piece of common functionality that should be included as an official Harlem plugin please open an issue providing a description of the plugin, the intended API and, if possible, a working example in a codesandbox.
-
-
-## Writing your own plugin
+# Writing your own plugin
 Writing your own plugin for Harlem is very straightforward. The plugin architecture mimics Vue's plugin system except for a few minor differences.
 
 
-### Basic example
+## Basic example
 Here is an example of a Harlem plugin in it's most basic form:
 
 ```typescript
@@ -43,7 +29,7 @@ The `eventEmitter` arg allows you to listen and react to store events such as mu
 
 The `stores` arg is a `Map` of all the registered store instances. In your plugin you have complete control to read it's state, enumerate getters/mutations, listen to events, and even reset or mutate state. Because plugins have so much control over the store be very careful not to cause unexpected side-effects to stores.
 
-### Providing options
+## Providing options
 
 As you can see in the example above there is no obvious mechanism to accept options to your plugin. To accept options you can just export a function taking an `options` arg that returns your plugin instance. In fact, this is how the official Harlem plugins are designed.
 

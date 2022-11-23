@@ -29,39 +29,44 @@ Simple, unopinionated, lightweight and extensible state management for Vue 3. He
 Harlem has a simple functional API for creating, reading and mutating state. At it's heart, Harlem just uses Vue reactive objects and computeds which means if you know how to use Vue, you'll know how to use Harlem.
 
 ### Unopinionated
-Harlem doesn't impose any standards or conventions on your codebase. Because of it's simple functional API you can structure your code anyway you want and Harlem will just work.
+Harlem doesn't impose any standards or conventions on your codebase. Because of it's simple functional API you can structure your code any way you want and Harlem will just work.
 
 ### Immutable
-All state provided from a Harlem store is immutable by default. The only write access to state is through mutations. This ensures all updates to your store are tracable, thereby reducing the amount of bugs produced by code unpredictably mutating state.
+All state provided from a Harlem store is immutable by default. The only write access to state is through actions and mutations. This ensures all updates to your store are tracable, thereby reducing the amount of bugs produced by code unpredictably mutating state.
 
 ### Lightweight
-Harlem core weighs in at around 1.5KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. It is also designed to be tree-shakable - unused stores, getters, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking). 
+Harlem core weighs in at around 1.5KB (minified & gzipped) which makes it the perfect solution for codebases of all sizes. It is also designed to be tree-shakable - unused stores, getters, actions, or mutations will be removed from your code at build time (provided you are using a build tool that supports tree-shaking). 
 
 It's also worth noting that Harlem has **zero** dependencies.
 
 ### Extensible
-Harlem is architectured with extensibility in mind so you can extend it any way you want through [extensions](#extensions) and [plugins](#plugins). Some of the official plugins and extensions include Vue devtools integration, local/session storage sync, snapshots, history (undo/redo) and more.
+Harlem is architectured with extensibility in mind so you can extend it any way you want through [extensions](/extensibility/extensions/) and [plugins](/extensibility/plugins/). Some of the official plugins and extensions include Vue devtools integration, advanced actions, local/session storage sync, history (undo/redo) and more.
 
 ### Great DX
-Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
+Harlem has a great developer experience. It's built using TypeScript so all of your state, getters, actions and mutations are strongly typed. Harlem also has devtools integration so you can explore your stores and see mutation events on the timeline in realtime.
 
 
 ## Features
 
 ### Powerfully simple
 
-Harlem boasts a simple yet powerful API. The core package comes with everything you need to get started with state management such as state, getters and mutations.
+Harlem boasts a simple yet powerful API. The core package comes with everything you need to get started with state management such as state, getters, actions and mutations.
 
 By keeping the core feature set lightweight it means even the simplest project can use Harlem without incurring the cost of unneeded features.
 
-Need more than the core set? Check out the great range of official [extensions](/extensibility/extensions/introduction.html) and [plugins](/extensibility/plugins/introduction.html) for adding features such as cancellable actions, resetting, lazy getters, devtools, ssr and more.
+Need more than the core set? Check out the great range of official [extensions](/extensibility/extensions/introduction.html) and [plugins](/extensibility/plugins/introduction.html) for adding features such as advanced actions, lazy getters, devtools, ssr and more.
 
 ### TypeScript support
 Harlem is built on TypeScript which means you get rich TypeScript support out of the box. Types can be automatically inferred nearly everywhere state is used, the only place you will have to explicitly define types is for payload objects.
 
 ```typescript
-export const setFirstName = mutation<string>('setFirstName', (state, payload) => {
-    state.firstName = payload;
+export const loadDetails = action('load-details', async (id: string, mutate) => {
+    const response = await fetch(`/api/details/${id}`);
+    const details = await response.json();
+
+    mutate(state => {
+        state.details = details;
+    });
 });
 ```
 
@@ -103,10 +108,6 @@ start();
 
 See the [devtools plugin docs](/extensibility/plugins/devtools.html) for more information on the options available. 
 
-![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
-
-*At the time of writing this you will need to use the Beta version of the Vue devtools.*
-
 
 ### Server-side rendering
 
@@ -146,7 +147,7 @@ const STATE = {
 
 const {
     getter,
-    mutation,
+    action,
     ...store
 } = createStore('user', STATE);
 
@@ -154,6 +155,15 @@ export const state = store.state;
 export const fullName = getter('fullname', state => `${state.firstName} ${state.lastName}`);
 export const setFirstName = mutation('set-first-name', (state, payload) => state.firstName = payload);
 export const setLastName = mutation('set-last-name', (state, payload) => state.lastName = payload);
+
+export const loadDetails = action('load-details', async (id: string, mutate) => {
+    const response = await fetch(`/api/details/${id}`);
+    const details = await response.json();
+
+    mutate(state => {
+        state.details = details;
+    });
+});
 ```
 
 4. Use your store in your app:
@@ -161,6 +171,7 @@ export const setLastName = mutation('set-last-name', (state, payload) => state.l
 <template>
     <div class="app">
         <h1>Hello {{ fullName }}</h1>
+        <button @click="loadDetails()">Load Details</button>
         <input type="text" v-model="firstName" placeholder="First name">
         <input type="text" v-model="lastName" placeholder="Last name">
     </div>
@@ -176,7 +187,8 @@ import {
     state,
     fullName,
     setFirstName,
-    setLastName
+    setLastName,
+    loadDetails
 } from './stores/user';
 
 const firstName = computed({
@@ -197,7 +209,7 @@ Harlem, much like Vuex, follows a Redux-like state management pattern. Harlem's 
 - State - The single source of truth for your data (read-only).
 - Getters - Computed side-effects of mutations to state (read-only).
 - Mutations - The means by which state is changed (read/write).
-- Actions (available via `@harlem/extension-action`) - Cancellable async methods for batching mutations, api requests etc (async read/write). Refer to this FAQ to see why actions aren't included in the core package by default.
+- Actions - Async methods for batching mutations, api requests etc (async read/write). Advanced actions are available with the [action extension](extensions/action) (@harlem/extension-action).
 
 Where Harlem differs from Vuex is that as opposed to having one monolithic state tree, Harlem uses the concept of stores to create logical boundaries between disparate data.
 
@@ -284,19 +296,28 @@ const traitId = addTrait('funny');
 
 ### Actions
 
-Actions are asynchronous methods that often batch network requests with one or more state mutations. Becuase action implementations vary widely Harlem doesn't include actions by default in the core package but instead through an optional extension (@harlem/extension-action).
-
-The action implementation in the Harlem action extension includes features like cancellation, nested actions and indirect status checks. See that [action extension](extensions/action) documentation for more information.
+Actions are asynchronous methods that often batch network requests with one or more state mutations. Because action implementations can vary widely Harlem only includes a very basic actions implementation by default in the core package. A more advanced action implementation is available through the [action extension](extensions/action) (@harlem/extension-action).
 
 ```typescript
-export default action('load-user-data', async (id: number, mutate, controller) => {
-    const userData = await fetch(`/api/user-data/${id}`, {
-        signal: controller.signal
+export default action('load-details', async (id: string, mutate) => {
+    const response = await fetch(`/api/details/${id}`);
+    const details = await response.json();
+
+    mutate(state => {
+        state.details = details;
     });
 
-    mutate(state => Object.assign(state.details.user, userData));
+    return details;
 });
+
+/*
+Usage
+
+const details = await loadDetails('user-id');
+*/
 ```
+
+The advanced action implementation in the Harlem action extension includes features like cancellation, nested actions and indirect status checks. See that [action extension](extensions/action) documentation for more information.
 
 ### Triggers
 
@@ -312,6 +333,10 @@ const {
     onAfterMutation,
     onMutationSuccess,
     onMutationError,
+    onBeforeAction,
+    onAfterAction,
+    onActionSuccess,
+    onActionError,
 } = createStore('user', STATE);
 
 onMutationSuccess('my-mutation-name', event => {
@@ -330,11 +355,10 @@ Extensions are per-store additions to Harlem's core functionaility. Extensions a
 
 The official extensions include:
 
-- [Action](extensions/action) (`@harlem/extension-action`) - Extends a store to support cancellable async actions.
+- [Action](extensions/action) (`@harlem/extension-action`) - Extends a store to support advanced actions (cancellation, status & error tracking etc.).
+- [Compose](extensions/compose) (`@harlem/extension-compose`) - Extends a store to to add simple read/write convenience methods.
 - [History (preview)](extensions/history) (`@harlem/extension-history`) - Extends a store to support undo and redo capabilities.
 - [Lazy](extensions/lazy) (`@harlem/extension-lazy`) - Extends a store to support lazy async getters.
-- [Reset](extensions/reset) (`@harlem/extension-reset`) - Extends a store to support resetting a store back to it's original state.
-- [Snapshot](extensions/snapshot) (`@harlem/extension-snapshot`) - Extends a store to support taking snapshots of state and applying it at a later stage.
 - [Storage](extensions/storage) (`@harlem/extension-storage`) - Extends a store to support synchronising state to/from `localStorage` or `sessionStorage`.
 - [Trace](extensions/trace) (`@harlem/extension-trace`) - Extends a store to support tracing granular changes to state during mutations. Useful for auditing during development.
 - [Transaction](extensions/transaction) (`@harlem/extension-transaction`) - Extends a store to support rolling back multiple mutations if one fails. 
@@ -350,12 +374,6 @@ The official plugins include:
 
 
 ## FAQ
-
-### Why aren't actions included by default?
-The decision to not include actions in the core package by default is to remain faithful to the philosophy of keeping Harlem lightweight, simple and unopinionated. Different projects have different needs for actions. Some larger projects may require nested actions and cancellation while smaller projects may not need all of those features but instead just need simple direct mutations. 
-
-To ship a full action implementation as part of the core package would force every project (especially the small projects) to incur that cost (size, performance etc.) even if not all of the action features are being used. For this reason Harlem provides a [full-featured action implementation](extensions/action) as an optional extension and leaves your action implementation up to you should you wish to keep things simple or get really complex.
-
 
 ### Can I share state between stores?
 Certainly - just import the state or getter from one store into the getter you are authoring on another store. For example:
@@ -486,6 +504,7 @@ export { default as mutation2 } from './mutations/mutation-2';
 Absolutely! Harlem is currently being used by [Fathom](https://www.fathomhq.com/) to power their extensive financial intelligence product. The Fathom implementation consists of several stores with hundreds of getters, mutations and actions.
 
 If you are using Harlem in a large project and would be comfortable in sharing your experience, please let me know.
+
 
 ## Credits
 

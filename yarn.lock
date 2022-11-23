@@ -6944,6 +6944,7 @@ __metadata:
     standard-changelog: ^2.0.27
     tsup: ^6.5.0
     typedoc: ^0.23.21
+    typedoc-plugin-markdown: ^3.13.6
     typescript: ^4.9.3
     vitest: ^0.25.2
     vue-eslint-parser: ^9.1.0
@@ -12023,6 +12024,17 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
+  languageName: node
+  linkType: hard
+
+"typedoc-plugin-markdown@npm:^3.13.6":
+  version: 3.13.6
+  resolution: "typedoc-plugin-markdown@npm:3.13.6"
+  dependencies:
+    handlebars: ^4.7.7
+  peerDependencies:
+    typedoc: ">=0.23.0"
+  checksum: eae59997759f485b2a6f2c306dc6de47dc0b008acc4651d66a24b8ba31fc7fd7729b69ba0b1235aaab268931701510ef5af88588f9b3ea124166a2ca7b63f954
   languageName: node
   linkType: hard
 

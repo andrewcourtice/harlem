@@ -14,6 +14,10 @@ const {
     onAfterMutation,
     onMutationSuccess,
     onMutationError,
+    onBeforeAction,
+    onAfterAction,
+    onActionSuccess,
+    onActionError,
 } = createStore('user', STATE);
 
 onMutationSuccess('my-mutation-name', event => {
@@ -33,17 +37,17 @@ interface EventPayload<TData> {
 }
 ```
 
-The `data` property varies between events however for all mutation events the `data` object has the following definition:
+The `data` property varies between events however for all mutation/action events the `data` object has the following definition:
 
 ```typescript
-interface MutationEventData<TPayload, TResult> {
-    mutation: string; // The name of the mutation that occurred
-    payload: TPayload; // The payload sent to the mutation
-    result?: TResult; // The result returned from the mutation.
+interface TriggerEventData<TPayload, TResult> {
+    name: string; // The name of the mutation/action that occurred
+    payload: TPayload; // The payload sent to the mutation/action
+    result?: TResult; // The result returned from the mutation/action (if any).
 }
 ```
 
-The `result` property will be `undefined` for the `mutation:before` event or if the mutation does not return a result.
+The `result` property will be `undefined` for all `:before` events or if the mutation/action does not return a result.
 
 
 ## Global Triggers
