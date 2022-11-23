@@ -34,7 +34,7 @@ Publish an event.
 
 #### Defined in
 
-[core/src/types.ts:81](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L81)
+[core/src/types.ts:81](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L81)
 
 ___
 
@@ -57,7 +57,7 @@ Unsubscribe from an event.
 
 #### Defined in
 
-[core/src/types.ts:73](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L73)
+[core/src/types.ts:73](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L73)
 
 ___
 
@@ -80,7 +80,7 @@ Subscribe to an event.
 
 #### Defined in
 
-[core/src/types.ts:57](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L57)
+[core/src/types.ts:57](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L57)
 
 ___
 
@@ -103,4 +103,4 @@ Subscribe to an event. Once the event is fired once, this listener is automatica
 
 #### Defined in
 
-[core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L65)
+[core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L65)

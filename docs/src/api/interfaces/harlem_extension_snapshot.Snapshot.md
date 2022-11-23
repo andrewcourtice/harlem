@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[extensions/snapshot/src/types.ts:14](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/snapshot/src/types.ts#L14)
+[extensions/snapshot/src/types.ts:14](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/snapshot/src/types.ts#L14)
 
 ## Methods
 
@@ -42,4 +42,4 @@
 
 #### Defined in
 
-[extensions/snapshot/src/types.ts:15](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/snapshot/src/types.ts#L15)
+[extensions/snapshot/src/types.ts:15](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/snapshot/src/types.ts#L15)

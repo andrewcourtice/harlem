@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[extensions/snapshot/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/snapshot/src/types.ts#L10)
+[extensions/snapshot/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/snapshot/src/types.ts#L10)

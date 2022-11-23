@@ -29,7 +29,7 @@ The name of the mutation/action that fired this trigger.
 
 #### Defined in
 
-[core/src/types.ts:105](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L105)
+[core/src/types.ts:105](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L105)
 
 ___
 
@@ -41,7 +41,7 @@ The payload provided to the mutation/action that fired this trigger.
 
 #### Defined in
 
-[core/src/types.ts:110](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L110)
+[core/src/types.ts:110](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L110)
 
 ___
 
@@ -53,4 +53,4 @@ The result returned from the mutation/action that fired this trigger. This is on
 
 #### Defined in
 
-[core/src/types.ts:115](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L115)
+[core/src/types.ts:115](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L115)

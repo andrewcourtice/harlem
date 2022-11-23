@@ -38,7 +38,7 @@ Error.constructor
 
 #### Defined in
 
-[packages/task/src/errors.ts:5](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/errors.ts#L5)
+[packages/task/src/errors.ts:5](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/errors.ts#L5)
 
 ## Properties
 
@@ -48,4 +48,4 @@ Error.constructor
 
 #### Defined in
 
-[packages/task/src/errors.ts:3](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/errors.ts#L3)
+[packages/task/src/errors.ts:3](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/errors.ts#L3)

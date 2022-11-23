@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[extensions/history/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/history/src/types.ts#L12)
+[extensions/history/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/history/src/types.ts#L12)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[extensions/history/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/history/src/types.ts#L11)
+[extensions/history/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/history/src/types.ts#L11)

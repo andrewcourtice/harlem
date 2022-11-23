@@ -42,7 +42,3 @@ import {
 } from './stores/user';
 </script>
 ```
-
-## See also
-
-[Getter](/api/store#getter) API Reference

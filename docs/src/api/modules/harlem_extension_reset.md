@@ -41,7 +41,7 @@
 
 #### Defined in
 
-[extensions/reset/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/reset/src/types.ts#L7)
+[extensions/reset/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/reset/src/types.ts#L7)
 
 ## Functions
 
@@ -81,4 +81,4 @@ The reset extension is now deprecated. Reset functionaility is now part of the c
 
 #### Defined in
 
-[extensions/reset/src/index.ts:26](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/reset/src/index.ts#L26)
+[extensions/reset/src/index.ts:26](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/reset/src/index.ts#L26)

@@ -4,8 +4,6 @@
 
 This is the official Harlem devtools plugin for adding Vue devtools integration to Harlem.
 
-**Note:** The Vue 3 compatible devtools are currently in beta and subject to change. Please ensure you have the beta version of the Vue devtools installed in your browser and disable the stable Vue devtools to prevent conflict.
-
 ![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
 
 ## Installation

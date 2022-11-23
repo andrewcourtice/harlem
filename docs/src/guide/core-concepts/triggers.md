@@ -73,7 +73,3 @@ on(EVENTS.mutation.before, event => console.log(event));
 on(EVENTS.mutation.after, event => console.log(event));
 on(EVENTS.mutation.error, event => console.log(event));
 ```
-
-## See also
-
-[On](/api/global#on) API Reference

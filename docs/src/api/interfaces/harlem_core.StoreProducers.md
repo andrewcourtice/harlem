@@ -44,7 +44,7 @@ The provider used when exposing payloads to mutators
 
 #### Defined in
 
-[core/src/types.ts:218](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L218)
+[core/src/types.ts:218](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L218)
 
 ___
 
@@ -66,7 +66,7 @@ The provider used when exposing writable state
 
 #### Defined in
 
-[core/src/types.ts:204](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L204)
+[core/src/types.ts:204](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L204)
 
 ___
 
@@ -88,4 +88,4 @@ The provider used when exposing writable state
 
 #### Defined in
 
-[core/src/types.ts:211](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L211)
+[core/src/types.ts:211](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L211)

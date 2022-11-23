@@ -167,7 +167,6 @@ Please keep the following points in mind when using this extension:
 // This will work
 computeState(state => state.details.name);
 
-
 // This will not
 computeState(state => state.details.name.split(' '));
 ```

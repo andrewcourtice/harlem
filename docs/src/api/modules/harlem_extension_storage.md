@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[extensions/storage/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L11)
+[extensions/storage/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L11)
 
 ## Functions
 
@@ -69,4 +69,4 @@
 
 #### Defined in
 
-[extensions/storage/src/index.ts:45](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/index.ts#L45)
+[extensions/storage/src/index.ts:45](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/index.ts#L45)

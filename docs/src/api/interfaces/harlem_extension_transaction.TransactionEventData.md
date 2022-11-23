@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[extensions/transaction/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/transaction/src/types.ts#L12)
+[extensions/transaction/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/transaction/src/types.ts#L12)
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
 #### Defined in
 
-[extensions/transaction/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/transaction/src/types.ts#L11)
+[extensions/transaction/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/transaction/src/types.ts#L11)

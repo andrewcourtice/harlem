@@ -26,4 +26,4 @@
 
 #### Defined in
 
-[plugins/devtools/src/index.ts:205](https://github.com/andrewcourtice/harlem/blob/1dcd57c/plugins/devtools/src/index.ts#L205)
+[plugins/devtools/src/index.ts:205](https://github.com/andrewcourtice/harlem/blob/ca8d117/plugins/devtools/src/index.ts#L205)

@@ -39,7 +39,7 @@ A boolean indicating whether this store allows overwriting duplicate registratio
 
 #### Defined in
 
-[core/src/types.ts:317](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L317)
+[core/src/types.ts:317](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L317)
 
 ___
 
@@ -51,7 +51,7 @@ An optional array of extensions to extend this store with
 
 #### Defined in
 
-[core/src/types.ts:329](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L329)
+[core/src/types.ts:329](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L329)
 
 ___
 
@@ -67,4 +67,4 @@ A set of providers used by this store
 
 #### Defined in
 
-[core/src/types.ts:322](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L322)
+[core/src/types.ts:322](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L322)

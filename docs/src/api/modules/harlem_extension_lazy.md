@@ -43,7 +43,7 @@
 
 #### Defined in
 
-[extensions/lazy/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/lazy/src/types.ts#L11)
+[extensions/lazy/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/lazy/src/types.ts#L11)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[extensions/lazy/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/lazy/src/types.ts#L12)
+[extensions/lazy/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/lazy/src/types.ts#L12)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[extensions/lazy/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/lazy/src/types.ts#L10)
+[extensions/lazy/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/lazy/src/types.ts#L10)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[extensions/lazy/src/types.ts:13](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/lazy/src/types.ts#L13)
+[extensions/lazy/src/types.ts:13](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/lazy/src/types.ts#L13)
 
 ## Functions
 
@@ -151,4 +151,4 @@ ___
 
 #### Defined in
 
-[extensions/lazy/src/index.ts:27](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/lazy/src/index.ts#L27)
+[extensions/lazy/src/index.ts:27](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/lazy/src/index.ts#L27)

@@ -46,7 +46,7 @@
 
 #### Defined in
 
-[extensions/snapshot/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/snapshot/src/types.ts#L7)
+[extensions/snapshot/src/types.ts:7](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/snapshot/src/types.ts#L7)
 
 ## Functions
 
@@ -92,4 +92,4 @@ The snapshot extension is now deprecated. Snapshot functionaility is now part of
 
 #### Defined in
 
-[extensions/snapshot/src/index.ts:34](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/snapshot/src/index.ts#L34)
+[extensions/snapshot/src/index.ts:34](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/snapshot/src/index.ts#L34)

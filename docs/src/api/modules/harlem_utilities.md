@@ -47,7 +47,7 @@
 
 #### Defined in
 
-[packages/utilities/src/types.ts:5](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/types.ts#L5)
+[packages/utilities/src/types.ts:5](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/types.ts#L5)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/types.ts:3](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/types.ts#L3)
+[packages/utilities/src/types.ts:3](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/types.ts#L3)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/types.ts:4](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/types.ts#L4)
+[packages/utilities/src/types.ts:4](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/types.ts#L4)
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/types.ts:20](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/types.ts#L20)
+[packages/utilities/src/types.ts:20](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/types.ts#L20)
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/types.ts:1](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/types.ts#L1)
+[packages/utilities/src/types.ts:1](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/types.ts#L1)
 
 ## Functions
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/function/identity.ts:1](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/function/identity.ts#L1)
+[packages/utilities/src/function/identity.ts:1](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/function/identity.ts#L1)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/match/get-filter.ts:8](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/match/get-filter.ts#L8)
+[packages/utilities/src/match/get-filter.ts:8](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/match/get-filter.ts#L8)
 
 ___
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/match/normalise.ts:9](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/match/normalise.ts#L9)
+[packages/utilities/src/match/normalise.ts:9](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/match/normalise.ts#L9)
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/clone.ts:88](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/clone.ts#L88)
+[packages/utilities/src/object/clone.ts:88](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/clone.ts#L88)
 
 ___
 
@@ -238,7 +238,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/from-path.ts:3](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/from-path.ts#L3)
+[packages/utilities/src/object/from-path.ts:3](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/from-path.ts#L3)
 
 ___
 
@@ -265,7 +265,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/lock.ts:1](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/lock.ts#L1)
+[packages/utilities/src/object/lock.ts:1](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/lock.ts#L1)
 
 ___
 
@@ -292,7 +292,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/omit.ts:7](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/omit.ts#L7)
+[packages/utilities/src/object/omit.ts:7](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/omit.ts#L7)
 
 ___
 
@@ -320,7 +320,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/overwrite.ts:1](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/overwrite.ts#L1)
+[packages/utilities/src/object/overwrite.ts:1](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/overwrite.ts#L1)
 
 ___
 
@@ -348,7 +348,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/set.ts:6](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/set.ts#L6)
+[packages/utilities/src/object/set.ts:6](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/set.ts#L6)
 
 ___
 
@@ -368,7 +368,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/to-path.ts:1](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/to-path.ts#L1)
+[packages/utilities/src/object/to-path.ts:1](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/to-path.ts#L1)
 
 ___
 
@@ -394,7 +394,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/object/trace.ts:10](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/object/trace.ts#L10)
+[packages/utilities/src/object/trace.ts:10](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/object/trace.ts#L10)
 
 ___
 
@@ -414,7 +414,7 @@ ___
 
 #### Defined in
 
-[packages/utilities/src/type/get-type.ts:5](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/get-type.ts#L5)
+[packages/utilities/src/type/get-type.ts:5](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/get-type.ts#L5)
 
 ___
 
@@ -434,7 +434,7 @@ value is unknown[]
 
 #### Defined in
 
-[packages/utilities/src/type/is-array.ts:3](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/is-array.ts#L3)
+[packages/utilities/src/type/is-array.ts:3](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/is-array.ts#L3)
 
 ___
 
@@ -454,7 +454,7 @@ value is Function
 
 #### Defined in
 
-[packages/utilities/src/type/is-function.ts:4](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/is-function.ts#L4)
+[packages/utilities/src/type/is-function.ts:4](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/is-function.ts#L4)
 
 ___
 
@@ -474,7 +474,7 @@ value is Matchable
 
 #### Defined in
 
-[packages/utilities/src/type/is-matchable.ts:7](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/is-matchable.ts#L7)
+[packages/utilities/src/type/is-matchable.ts:7](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/is-matchable.ts#L7)
 
 ___
 
@@ -494,7 +494,7 @@ value is undefined \| null
 
 #### Defined in
 
-[packages/utilities/src/type/is-nil.ts:2](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/is-nil.ts#L2)
+[packages/utilities/src/type/is-nil.ts:2](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/is-nil.ts#L2)
 
 ___
 
@@ -514,7 +514,7 @@ value is object
 
 #### Defined in
 
-[packages/utilities/src/type/is-object.ts:3](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/is-object.ts#L3)
+[packages/utilities/src/type/is-object.ts:3](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/is-object.ts#L3)
 
 ___
 
@@ -534,4 +534,4 @@ value is string
 
 #### Defined in
 
-[packages/utilities/src/type/is-string.ts:3](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/type/is-string.ts#L3)
+[packages/utilities/src/type/is-string.ts:3](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/type/is-string.ts#L3)

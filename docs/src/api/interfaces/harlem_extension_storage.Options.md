@@ -41,7 +41,7 @@
 
 #### Defined in
 
-[extensions/storage/src/types.ts:20](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L20)
+[extensions/storage/src/types.ts:20](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L20)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[extensions/storage/src/types.ts:15](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L15)
+[extensions/storage/src/types.ts:15](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L15)
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 #### Defined in
 
-[extensions/storage/src/types.ts:17](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L17)
+[extensions/storage/src/types.ts:17](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L17)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[extensions/storage/src/types.ts:16](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L16)
+[extensions/storage/src/types.ts:16](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L16)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[extensions/storage/src/types.ts:14](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L14)
+[extensions/storage/src/types.ts:14](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L14)
 
 ## Methods
 
@@ -129,7 +129,7 @@ ___
 
 #### Defined in
 
-[extensions/storage/src/types.ts:19](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L19)
+[extensions/storage/src/types.ts:19](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L19)
 
 ___
 
@@ -149,4 +149,4 @@ ___
 
 #### Defined in
 
-[extensions/storage/src/types.ts:18](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/storage/src/types.ts#L18)
+[extensions/storage/src/types.ts:18](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/storage/src/types.ts#L18)

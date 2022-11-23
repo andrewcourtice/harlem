@@ -71,7 +71,7 @@ const {
 
 #### Defined in
 
-[core/src/types.ts:421](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L421)
+[core/src/types.ts:421](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L421)
 
 ___
 
@@ -93,7 +93,7 @@ Attach Harlem to a Vue application. This is required for Harlem plugins to be us
 
 #### Defined in
 
-[core/src/types.ts:393](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L393)
+[core/src/types.ts:393](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L393)
 
 ___
 
@@ -120,7 +120,7 @@ Omit.off
 
 #### Defined in
 
-[core/src/types.ts:73](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L73)
+[core/src/types.ts:73](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L73)
 
 ___
 
@@ -147,7 +147,7 @@ Omit.on
 
 #### Defined in
 
-[core/src/types.ts:57](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L57)
+[core/src/types.ts:57](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L57)
 
 ___
 
@@ -174,4 +174,4 @@ Omit.once
 
 #### Defined in
 
-[core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L65)
+[core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L65)

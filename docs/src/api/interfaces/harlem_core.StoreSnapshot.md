@@ -34,7 +34,7 @@ A readonly copy of state in the snapshot
 
 #### Defined in
 
-[core/src/types.ts:122](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L122)
+[core/src/types.ts:122](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L122)
 
 ## Methods
 
@@ -63,4 +63,4 @@ Apply the current snapshot's state to the store. This will essentially overwrite
 
 #### Defined in
 
-[core/src/types.ts:129](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L129)
+[core/src/types.ts:129](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L129)

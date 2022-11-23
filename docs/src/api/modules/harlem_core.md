@@ -74,7 +74,7 @@
 
 #### Defined in
 
-[core/src/types.ts:34](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L34)
+[core/src/types.ts:34](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L34)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:33](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L33)
+[core/src/types.ts:33](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L33)
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:23](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L23)
+[core/src/types.ts:23](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L23)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:38](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L38)
+[core/src/types.ts:38](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L38)
 
 ___
 
@@ -178,7 +178,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:35](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L35)
+[core/src/types.ts:35](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L35)
 
 ___
 
@@ -208,7 +208,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:41](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L41)
+[core/src/types.ts:41](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L41)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:42](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L42)
+[core/src/types.ts:42](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L42)
 
 ___
 
@@ -255,7 +255,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:30](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L30)
+[core/src/types.ts:30](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L30)
 
 ___
 
@@ -281,7 +281,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:40](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L40)
+[core/src/types.ts:40](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L40)
 
 ___
 
@@ -291,7 +291,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:39](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L39)
+[core/src/types.ts:39](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L39)
 
 ___
 
@@ -308,7 +308,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:32](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L32)
+[core/src/types.ts:32](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L32)
 
 ___
 
@@ -341,7 +341,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:31](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L31)
+[core/src/types.ts:31](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L31)
 
 ___
 
@@ -358,7 +358,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:43](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L43)
+[core/src/types.ts:43](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L43)
 
 ___
 
@@ -374,7 +374,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:25](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L25)
+[core/src/types.ts:25](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L25)
 
 ___
 
@@ -384,7 +384,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:28](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L28)
+[core/src/types.ts:28](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L28)
 
 ___
 
@@ -402,7 +402,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:29](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L29)
+[core/src/types.ts:29](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L29)
 
 ___
 
@@ -418,7 +418,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:24](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L24)
+[core/src/types.ts:24](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L24)
 
 ___
 
@@ -428,7 +428,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:27](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L27)
+[core/src/types.ts:27](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L27)
 
 ___
 
@@ -460,7 +460,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:36](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L36)
+[core/src/types.ts:36](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L36)
 
 ___
 
@@ -491,7 +491,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:37](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L37)
+[core/src/types.ts:37](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L37)
 
 ___
 
@@ -507,7 +507,7 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:26](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L26)
+[core/src/types.ts:26](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L26)
 
 ## Variables
 
@@ -544,7 +544,7 @@ ___
 
 #### Defined in
 
-[core/src/constants.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/constants.ts#L11)
+[core/src/constants.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/constants.ts#L11)
 
 ___
 
@@ -561,7 +561,7 @@ ___
 
 #### Defined in
 
-[core/src/constants.ts:53](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/constants.ts#L53)
+[core/src/constants.ts:53](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/constants.ts#L53)
 
 ___
 
@@ -571,7 +571,7 @@ ___
 
 #### Defined in
 
-[core/src/constants.ts:47](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/constants.ts#L47)
+[core/src/constants.ts:47](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/constants.ts#L47)
 
 ## Functions
 
@@ -587,7 +587,7 @@ Create a new instance of Harlem. This is useful in multi-app scenarios.
 
 #### Defined in
 
-[core/src/index.ts:47](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/index.ts#L47)
+[core/src/index.ts:47](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/index.ts#L47)
 
 ___
 
@@ -640,7 +640,7 @@ const {
 
 #### Defined in
 
-[core/src/types.ts:421](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L421)
+[core/src/types.ts:421](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L421)
 
 ___
 
@@ -662,7 +662,7 @@ Attach Harlem to a Vue application. This is required for Harlem plugins to be us
 
 #### Defined in
 
-[core/src/types.ts:393](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L393)
+[core/src/types.ts:393](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L393)
 
 ___
 
@@ -685,7 +685,7 @@ Unsubscribe from an event.
 
 #### Defined in
 
-[core/src/types.ts:73](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L73)
+[core/src/types.ts:73](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L73)
 
 ___
 
@@ -708,7 +708,7 @@ Subscribe to an event.
 
 #### Defined in
 
-[core/src/types.ts:57](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L57)
+[core/src/types.ts:57](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L57)
 
 ___
 
@@ -731,4 +731,4 @@ Subscribe to an event. Once the event is fired once, this listener is automatica
 
 #### Defined in
 
-[core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L65)
+[core/src/types.ts:65](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L65)

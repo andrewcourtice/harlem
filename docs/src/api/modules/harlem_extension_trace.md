@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[extensions/trace/src/types.ts:4](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L4)
+[extensions/trace/src/types.ts:4](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L4)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[extensions/trace/src/types.ts:2](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L2)
+[extensions/trace/src/types.ts:2](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L2)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[extensions/trace/src/types.ts:1](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L1)
+[extensions/trace/src/types.ts:1](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L1)
 
 ## Functions
 
@@ -125,4 +125,4 @@ ___
 
 #### Defined in
 
-[extensions/trace/src/index.ts:142](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/index.ts#L142)
+[extensions/trace/src/index.ts:142](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/index.ts#L142)

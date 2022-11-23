@@ -25,7 +25,7 @@ Create a new instance of the client-side SSR plugin
 
 #### Defined in
 
-[plugins/ssr/src/index.ts:68](https://github.com/andrewcourtice/harlem/blob/1dcd57c/plugins/ssr/src/index.ts#L68)
+[plugins/ssr/src/index.ts:68](https://github.com/andrewcourtice/harlem/blob/ca8d117/plugins/ssr/src/index.ts#L68)
 
 ___
 
@@ -41,7 +41,7 @@ Create a new instance of the server-side SSR plugin
 
 #### Defined in
 
-[plugins/ssr/src/index.ts:55](https://github.com/andrewcourtice/harlem/blob/1dcd57c/plugins/ssr/src/index.ts#L55)
+[plugins/ssr/src/index.ts:55](https://github.com/andrewcourtice/harlem/blob/ca8d117/plugins/ssr/src/index.ts#L55)
 
 ___
 
@@ -57,7 +57,7 @@ Generate a script required to transfer state from server to client
 
 #### Defined in
 
-[plugins/ssr/src/index.ts:41](https://github.com/andrewcourtice/harlem/blob/1dcd57c/plugins/ssr/src/index.ts#L41)
+[plugins/ssr/src/index.ts:41](https://github.com/andrewcourtice/harlem/blob/ca8d117/plugins/ssr/src/index.ts#L41)
 
 ___
 
@@ -73,4 +73,4 @@ Generate a script block required to transfer state from server to client
 
 #### Defined in
 
-[plugins/ssr/src/index.ts:48](https://github.com/andrewcourtice/harlem/blob/1dcd57c/plugins/ssr/src/index.ts#L48)
+[plugins/ssr/src/index.ts:48](https://github.com/andrewcourtice/harlem/blob/ca8d117/plugins/ssr/src/index.ts#L48)

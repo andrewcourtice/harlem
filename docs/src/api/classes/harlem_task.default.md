@@ -57,7 +57,7 @@ Promise&lt;TResult\&gt;.constructor
 
 #### Defined in
 
-[packages/task/src/index.ts:19](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/index.ts#L19)
+[packages/task/src/index.ts:19](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/index.ts#L19)
 
 ## Accessors
 
@@ -71,7 +71,7 @@ Promise&lt;TResult\&gt;.constructor
 
 #### Defined in
 
-[packages/task/src/index.ts:79](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/index.ts#L79)
+[packages/task/src/index.ts:79](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/index.ts#L79)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[packages/task/src/index.ts:75](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/index.ts#L75)
+[packages/task/src/index.ts:75](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/index.ts#L75)
 
 ## Methods
 
@@ -105,7 +105,7 @@ ___
 
 #### Defined in
 
-[packages/task/src/index.ts:83](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/index.ts#L83)
+[packages/task/src/index.ts:83](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/index.ts#L83)
 
 ___
 
@@ -125,4 +125,4 @@ value is default<void\>
 
 #### Defined in
 
-[packages/task/src/index.ts:71](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/task/src/index.ts#L71)
+[packages/task/src/index.ts:71](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/task/src/index.ts#L71)

@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[extensions/trace/src/types.ts:9](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L9)
+[extensions/trace/src/types.ts:9](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L9)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[extensions/trace/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L11)
+[extensions/trace/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L11)
 
 ___
 
@@ -46,4 +46,4 @@ ___
 
 #### Defined in
 
-[extensions/trace/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L10)
+[extensions/trace/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L10)

@@ -20,4 +20,4 @@ An optional array of plugins to register with Harlem
 
 #### Defined in
 
-[core/src/types.ts:383](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L383)
+[core/src/types.ts:383](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L383)

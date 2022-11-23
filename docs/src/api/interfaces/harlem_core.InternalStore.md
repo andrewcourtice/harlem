@@ -56,7 +56,7 @@ A boolean indicating whether this store allows overwriting duplicate registratio
 
 #### Defined in
 
-[core/src/types.ts:230](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L230)
+[core/src/types.ts:230](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L230)
 
 ___
 
@@ -68,7 +68,7 @@ Flags defined on this store
 
 #### Defined in
 
-[core/src/types.ts:240](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L240)
+[core/src/types.ts:240](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L240)
 
 ___
 
@@ -80,7 +80,7 @@ The name of this store
 
 #### Defined in
 
-[core/src/types.ts:225](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L225)
+[core/src/types.ts:225](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L225)
 
 ___
 
@@ -92,7 +92,7 @@ The producers for this store
 
 #### Defined in
 
-[core/src/types.ts:245](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L245)
+[core/src/types.ts:245](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L245)
 
 ___
 
@@ -104,7 +104,7 @@ The items registered with this store
 
 #### Defined in
 
-[core/src/types.ts:250](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L250)
+[core/src/types.ts:250](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L250)
 
 ___
 
@@ -116,7 +116,7 @@ The current (readonly) state object
 
 #### Defined in
 
-[core/src/types.ts:235](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L235)
+[core/src/types.ts:235](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L235)
 
 ## Methods
 
@@ -150,7 +150,7 @@ Register an action on this store
 
 #### Defined in
 
-[core/src/types.ts:155](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L155)
+[core/src/types.ts:155](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L155)
 
 ___
 
@@ -170,7 +170,7 @@ Destroy this store
 
 #### Defined in
 
-[core/src/types.ts:195](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L195)
+[core/src/types.ts:195](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L195)
 
 ___
 
@@ -194,7 +194,7 @@ Emit an event from this store
 
 #### Defined in
 
-[core/src/types.ts:293](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L293)
+[core/src/types.ts:293](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L293)
 
 ___
 
@@ -217,7 +217,7 @@ Gets a registered item with the specified name
 
 #### Defined in
 
-[core/src/types.ts:266](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L266)
+[core/src/types.ts:266](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L266)
 
 ___
 
@@ -250,7 +250,7 @@ Register a getter on this store
 
 #### Defined in
 
-[core/src/types.ts:139](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L139)
+[core/src/types.ts:139](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L139)
 
 ___
 
@@ -273,7 +273,7 @@ Checks whether an item with the specified name is registered under the specified
 
 #### Defined in
 
-[core/src/types.ts:258](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L258)
+[core/src/types.ts:258](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L258)
 
 ___
 
@@ -307,7 +307,7 @@ Register a mutation on this store
 
 #### Defined in
 
-[core/src/types.ts:147](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L147)
+[core/src/types.ts:147](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L147)
 
 ___
 
@@ -334,7 +334,7 @@ Listen to an event on this store. This is useful for creating triggers.
 
 #### Defined in
 
-[core/src/types.ts:163](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L163)
+[core/src/types.ts:163](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L163)
 
 ___
 
@@ -361,7 +361,7 @@ Listen to an event on this store (only executed once)
 
 #### Defined in
 
-[core/src/types.ts:171](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L171)
+[core/src/types.ts:171](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L171)
 
 ___
 
@@ -386,7 +386,7 @@ Register a new item on this store
 
 #### Defined in
 
-[core/src/types.ts:276](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L276)
+[core/src/types.ts:276](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L276)
 
 ___
 
@@ -418,7 +418,7 @@ Reset this store back to it's intial state
 
 #### Defined in
 
-[core/src/types.ts:190](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L190)
+[core/src/types.ts:190](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L190)
 
 ___
 
@@ -438,7 +438,7 @@ Take a snapshot of this store's current state
 
 #### Defined in
 
-[core/src/types.ts:183](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L183)
+[core/src/types.ts:183](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L183)
 
 ___
 
@@ -470,7 +470,7 @@ Suppress events emitted from this store for the duration of the function callbac
 
 #### Defined in
 
-[core/src/types.ts:178](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L178)
+[core/src/types.ts:178](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L178)
 
 ___
 
@@ -498,7 +498,7 @@ Register reactive effects with this store to be disposed when the store is destr
 
 #### Defined in
 
-[core/src/types.ts:300](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L300)
+[core/src/types.ts:300](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L300)
 
 ___
 
@@ -521,7 +521,7 @@ Remove a registration from this store
 
 #### Defined in
 
-[core/src/types.ts:284](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L284)
+[core/src/types.ts:284](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L284)
 
 ___
 
@@ -552,4 +552,4 @@ Perform a write operation on this store
 
 #### Defined in
 
-[core/src/types.ts:310](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L310)
+[core/src/types.ts:310](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L310)

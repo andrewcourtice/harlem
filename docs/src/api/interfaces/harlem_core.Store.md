@@ -52,7 +52,7 @@ The trigger called when an action fails
 
 #### Defined in
 
-[core/src/types.ts:376](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L376)
+[core/src/types.ts:376](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L376)
 
 ___
 
@@ -64,7 +64,7 @@ The trigger called upon successful completion of an action
 
 #### Defined in
 
-[core/src/types.ts:371](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L371)
+[core/src/types.ts:371](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L371)
 
 ___
 
@@ -76,7 +76,7 @@ The trigger called after an action runs, regardless of it was successful or not
 
 #### Defined in
 
-[core/src/types.ts:366](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L366)
+[core/src/types.ts:366](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L366)
 
 ___
 
@@ -88,7 +88,7 @@ The trigger called after a mutation runs, regardless of it was successful or not
 
 #### Defined in
 
-[core/src/types.ts:346](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L346)
+[core/src/types.ts:346](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L346)
 
 ___
 
@@ -100,7 +100,7 @@ The trigger called before an action runs
 
 #### Defined in
 
-[core/src/types.ts:361](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L361)
+[core/src/types.ts:361](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L361)
 
 ___
 
@@ -112,7 +112,7 @@ The trigger called before a mutation runs
 
 #### Defined in
 
-[core/src/types.ts:341](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L341)
+[core/src/types.ts:341](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L341)
 
 ___
 
@@ -124,7 +124,7 @@ The trigger called when a mutation fails
 
 #### Defined in
 
-[core/src/types.ts:356](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L356)
+[core/src/types.ts:356](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L356)
 
 ___
 
@@ -136,7 +136,7 @@ The trigger called upon successful completion of a mutation
 
 #### Defined in
 
-[core/src/types.ts:351](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L351)
+[core/src/types.ts:351](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L351)
 
 ___
 
@@ -148,7 +148,7 @@ The current (readonly) state object
 
 #### Defined in
 
-[core/src/types.ts:336](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L336)
+[core/src/types.ts:336](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L336)
 
 ## Methods
 
@@ -182,7 +182,7 @@ Register an action on this store
 
 #### Defined in
 
-[core/src/types.ts:155](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L155)
+[core/src/types.ts:155](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L155)
 
 ___
 
@@ -202,7 +202,7 @@ Destroy this store
 
 #### Defined in
 
-[core/src/types.ts:195](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L195)
+[core/src/types.ts:195](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L195)
 
 ___
 
@@ -235,7 +235,7 @@ Register a getter on this store
 
 #### Defined in
 
-[core/src/types.ts:139](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L139)
+[core/src/types.ts:139](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L139)
 
 ___
 
@@ -269,7 +269,7 @@ Register a mutation on this store
 
 #### Defined in
 
-[core/src/types.ts:147](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L147)
+[core/src/types.ts:147](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L147)
 
 ___
 
@@ -296,7 +296,7 @@ Listen to an event on this store. This is useful for creating triggers.
 
 #### Defined in
 
-[core/src/types.ts:163](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L163)
+[core/src/types.ts:163](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L163)
 
 ___
 
@@ -323,7 +323,7 @@ Listen to an event on this store (only executed once)
 
 #### Defined in
 
-[core/src/types.ts:171](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L171)
+[core/src/types.ts:171](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L171)
 
 ___
 
@@ -355,7 +355,7 @@ Reset this store back to it's intial state
 
 #### Defined in
 
-[core/src/types.ts:190](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L190)
+[core/src/types.ts:190](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L190)
 
 ___
 
@@ -375,7 +375,7 @@ Take a snapshot of this store's current state
 
 #### Defined in
 
-[core/src/types.ts:183](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L183)
+[core/src/types.ts:183](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L183)
 
 ___
 
@@ -407,4 +407,4 @@ Suppress events emitted from this store for the duration of the function callbac
 
 #### Defined in
 
-[core/src/types.ts:178](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L178)
+[core/src/types.ts:178](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L178)

@@ -34,4 +34,4 @@
 
 #### Defined in
 
-[packages/utilities/src/types.ts:8](https://github.com/andrewcourtice/harlem/blob/1dcd57c/packages/utilities/src/types.ts#L8)
+[packages/utilities/src/types.ts:8](https://github.com/andrewcourtice/harlem/blob/ca8d117/packages/utilities/src/types.ts#L8)

@@ -84,6 +84,10 @@ export default defineConfig({
                             text: 'Getting Started',
                             link: '/guide/introduction/getting-started',
                         },
+                        {
+                            text: 'Developer Experience',
+                            link: '/guide/introduction/developer-experience',
+                        },
                     ],
                 },
                 {
@@ -123,24 +127,20 @@ export default defineConfig({
                             link: '/guide/advanced/plugins-extensions',
                         },
                         {
-                            text: 'Compositions',
-                            link: '/guide/usage/resetting'
+                            text: 'Resetting Stores',
+                            link: '/guide/advanced/resetting'
                         },
                         {
-                            text: 'Taking snapshots',
-                            link: '/guide/usage/resetting'
+                            text: 'Taking Snapshots',
+                            link: '/guide/advanced/snapshots'
                         },
                         {
-                            text: 'Resetting stores',
-                            link: '/guide/usage/resetting'
+                            text: 'Server-Side Rendering',
+                            link: '/guide/advanced/ssr'
                         },
                         {
-                            text: 'Auditing',
-                            link: '/guide/usage/resetting'
-                        },
-                        {
-                            text: 'Multi-app instances',
-                            link: '/guide/usage/resetting'
+                            text: 'Multiple App Instances',
+                            link: '/guide/advanced/multi-app'
                         }
                     ]
                 },

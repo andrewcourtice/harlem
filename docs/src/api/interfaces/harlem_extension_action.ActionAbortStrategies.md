@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[extensions/action/src/types.ts:25](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/action/src/types.ts#L25)
+[extensions/action/src/types.ts:25](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/action/src/types.ts#L25)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[extensions/action/src/types.ts:26](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/action/src/types.ts#L26)
+[extensions/action/src/types.ts:26](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/action/src/types.ts#L26)

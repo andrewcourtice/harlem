@@ -12,7 +12,8 @@ yarn add @harlem/core
 npm install @harlem/core
 ```
 
-**Note**: If you're using Nuxt, instead follow the instructions to [install the Nuxt module](https://github.com/nuxt-community/harlem-module) and then resume this guide below, at [Create your first store](#create-your-first-store).
+If you're using Nuxt, instead follow the instructions to [install the Nuxt module](https://github.com/nuxt-community/harlem-module) and then resume this guide below, at [Create your first store](#create-your-first-store).
+
 
 ## Register the Harlem Vue plugin
 
@@ -28,23 +29,10 @@ createApp(App)
     .use(createVuePlugin())
     .mount('#app');
 ```
-If you're using the Harlem devtools plugin be sure to register it when creating the Vue plugin:
-```typescript
-import App from './app.vue';
-import devtoolsPlugin from '@harlem/plugin-devtools';
+::: tip
+If you're using plugins such as the [devtools plugin](/plugins/official/devtools) be sure to register it when creating the Vue plugin. Refer to the [plugins & extensions](/guide/advanced/plugins-extensions) documentation for details on registering plugins and extensions.
+:::
 
-import {
-    createVuePlugin
-} from '@harlem/core';
-
-createApp(App)
-    .use(createVuePlugin({
-        plugins: [
-            devtoolsPlugin()
-        ]
-    }))
-    .mount('#app');
-```
 
 ## Create your first store
 

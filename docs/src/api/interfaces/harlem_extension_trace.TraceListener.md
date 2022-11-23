@@ -22,4 +22,4 @@
 
 #### Defined in
 
-[extensions/trace/src/types.ts:24](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/trace/src/types.ts#L24)
+[extensions/trace/src/types.ts:24](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/trace/src/types.ts#L24)

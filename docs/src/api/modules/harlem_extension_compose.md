@@ -46,7 +46,7 @@
 
 #### Defined in
 
-[extensions/compose/src/types.ts:9](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/types.ts#L9)
+[extensions/compose/src/types.ts:9](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/types.ts#L9)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[extensions/compose/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/types.ts#L11)
+[extensions/compose/src/types.ts:11](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/types.ts#L11)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[extensions/compose/src/types.ts:13](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/types.ts#L13)
+[extensions/compose/src/types.ts:13](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/types.ts#L13)
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 #### Defined in
 
-[extensions/compose/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/types.ts#L10)
+[extensions/compose/src/types.ts:10](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/types.ts#L10)
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 #### Defined in
 
-[extensions/compose/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/types.ts#L12)
+[extensions/compose/src/types.ts:12](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/types.ts#L12)
 
 ## Functions
 
@@ -179,7 +179,7 @@ ___
 
 #### Defined in
 
-[extensions/compose/src/index.ts:44](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/index.ts#L44)
+[extensions/compose/src/index.ts:44](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/index.ts#L44)
 
 ___
 
@@ -199,4 +199,4 @@ ___
 
 #### Defined in
 
-[extensions/compose/src/index.ts:34](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/compose/src/index.ts#L34)
+[extensions/compose/src/index.ts:34](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/compose/src/index.ts#L34)

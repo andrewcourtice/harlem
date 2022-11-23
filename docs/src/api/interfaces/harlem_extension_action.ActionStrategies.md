@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[extensions/action/src/types.ts:21](https://github.com/andrewcourtice/harlem/blob/1dcd57c/extensions/action/src/types.ts#L21)
+[extensions/action/src/types.ts:21](https://github.com/andrewcourtice/harlem/blob/ca8d117/extensions/action/src/types.ts#L21)

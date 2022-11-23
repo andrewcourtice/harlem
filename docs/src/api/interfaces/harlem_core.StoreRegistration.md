@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[core/src/types.ts:47](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L47)
+[core/src/types.ts:47](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L47)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[core/src/types.ts:46](https://github.com/andrewcourtice/harlem/blob/1dcd57c/core/src/types.ts#L46)
+[core/src/types.ts:46](https://github.com/andrewcourtice/harlem/blob/ca8d117/core/src/types.ts#L46)

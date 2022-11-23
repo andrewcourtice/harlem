@@ -20,11 +20,9 @@ Extensions are a fantasic and convenient way to add functionality to your store.
 
 | Extension | Size Impact | Performance Impact (intialisation) | Performance Impact (runtime) |
 | --------- | :---------: | :--------------------------------: | :--------------------------: |
-| Action | Medium | Medium | Medium |
+| Action | Medium | Low | Medium |
 | History | Medium | Low | Medium |
 | Lazy | Low | Low | Low |
-| Reset | Low | Medium | Low |
-| Snapshot | Low | Low | Low |
 | Storage | Low | Low | Medium |
 | Trace | Medium | Low | Medium |
 | Transaction | Low | Low | Medium |
