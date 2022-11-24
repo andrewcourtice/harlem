@@ -12,7 +12,7 @@ dotenv.config({
 export default defineConfig({
     lang: 'en-US',
     title: 'Harlem',
-    description: 'Simple, unopinionated, lightweight and extensible state management for Vue 3',
+    description: 'Powerfully simple global state management for Vue 3',
     lastUpdated: true,
     outDir: '../public',
     vite: {

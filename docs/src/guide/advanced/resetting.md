@@ -4,7 +4,7 @@ Sometimes it is necessary to reset a store back to it's intial state. Thankfully
 
 At the time the store is created, a [snapshot](/guide/advanced/snapshots) of the initial state is taken and stored. The store exposes a `reset` method which, when called, overwrites the store's current state with the intial state snapshot.
 
-```typescript{10,16}
+```typescript{6,12}
 const {
     state,
     getter,
@@ -21,7 +21,7 @@ reset(); // Reset the state
 
 If instead of resetting the whole state tree you only wish to reset a specific part of state you can provide a function argument to the `reset` method that returns the part of state you wish to reset.
 
-```typescript
+```typescript{6,12}
 const {
     state,
     getter,
