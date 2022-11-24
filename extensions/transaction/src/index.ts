@@ -27,7 +27,7 @@ export default function transactionExtension<TState extends BaseState>() {
             const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, SENDER, mutator);
 
             return ((payload: TPayload) => {
-                const snap = store.snapshot();
+                const snapshot = store.snapshot();
 
                 const emit = (event: string) => store.emit(event, SENDER, {
                     transaction: name,
@@ -42,7 +42,7 @@ export default function transactionExtension<TState extends BaseState>() {
                     transactor(producedPayload, mutate);
                     emit(EVENTS.transaction.success);
                 } catch (error) {
-                    snap.apply();
+                    snapshot.apply();
                     emit(EVENTS.transaction.error);
 
                     throw error;
