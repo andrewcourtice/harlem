@@ -4,6 +4,7 @@
     "useWorkspaces": true,
     "packages": [
         "core",
+        "harlem",
         "packages/*",
         "extensions/*",
         "plugins/*"

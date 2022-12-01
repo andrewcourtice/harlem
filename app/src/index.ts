@@ -5,9 +5,7 @@ import App from './app.vue';
 
 import {
     createVuePlugin,
-} from '@harlem/core';
-
-import devtoolsPlugin from '@harlem/plugin-devtools';
+} from 'harlem';
 
 import {
     createApp,
@@ -15,11 +13,7 @@ import {
 
 function start() {
     return createApp(App)
-        .use(createVuePlugin({
-            plugins: [
-                devtoolsPlugin(),
-            ],
-        }))
+        .use(createVuePlugin())
         .mount('body');
 }
 

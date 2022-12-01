@@ -9,7 +9,7 @@ import {
 
 import {
     createStore,
-} from '@harlem/core';
+} from 'harlem';
 
 export const {
     state,

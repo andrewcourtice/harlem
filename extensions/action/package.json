@@ -6,19 +6,28 @@
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official action extension for Harlem",
     "homepage": "https://harlemjs.com",
-    "source": "src/index.ts",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
+    "main": "index.js",
+    "module": "dist/index.esm-bundler.js",
+    "types": "dist/index.d.ts",
     "unpkg": "dist/index.global.js",
     "jsdelivr": "dist/index.global.js",
-    "types": "dist/index.d.ts",
+    "sideEffects": false,
+    "files": [
+        "dist",
+        "index.js",
+        "index.mjs"
+    ],
     "exports": {
-        "./package.json": "./package.json",
         ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
-        }
+            "import": {
+                "node": "./index.mjs",
+                "default": "./dist/index.esm-bundler.js"
+            },
+            "require": "./index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
     },
     "keywords": [
         "vue",
@@ -36,8 +45,7 @@
         "url": "https://github.com/andrewcourtice/harlem/issues"
     },
     "scripts": {
-        "dev": "yarn run --top-level tsup --watch src",
-        "build": "yarn run --top-level tsup",
+        "build": "node ./build.mjs",
         "prepublishOnly": "yarn build"
     },
     "dependencies": {
