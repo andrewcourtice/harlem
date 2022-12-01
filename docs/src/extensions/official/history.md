@@ -1,6 +1,4 @@
-# History Extension (Preview)
-
-![npm](https://img.shields.io/npm/v/@harlem/extension-history)
+# History Extension <Badge type="warning" text="preview" />
 
 This is the official history extension for Harlem. The history extension adds undo and redo capabilities to your store for easily integrating history features into your application. 
 

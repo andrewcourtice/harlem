@@ -230,7 +230,7 @@ export default defineConfig({
                         },
                         {
                             text: 'Server-Side Rendering',
-                            link: '/plugins/official/server-side-rendering',
+                            link: '/plugins/official/ssr',
                         },
                     ],
                 },

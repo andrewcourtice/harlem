@@ -1,7 +1,5 @@
 # Snapshot Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-snapshot)
-
 This is the official snapshot extension for Harlem. The snapshot extension adds the ability to snapshot a store's state at a particular point in time and reapply it later. 
 
 ## Getting Started

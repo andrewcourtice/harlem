@@ -1,7 +1,5 @@
 # Lazy Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-lazy)
-
 This is the official lazy extension for Harlem. The lazy extension adds the ability to define asynchronous getters that are automatically re-evaluated when the referenced state (or other reactive objects) change.
 
 ## Getting Started

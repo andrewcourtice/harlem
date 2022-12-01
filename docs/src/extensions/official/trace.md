@@ -1,7 +1,5 @@
 # Trace Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-trace)
-
 This is the official trace extension for Harlem. The trace extension adds the ability to trace granular changes to state. It is useful for detailed auditing of state changes or as a building block of undo/redo functionality.
 
 ## Getting Started

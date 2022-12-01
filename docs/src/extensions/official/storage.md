@@ -1,7 +1,5 @@
 # Storage Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-storage)
-
 This is the official storage extension for Harlem. The storage extension adds the ability to sync store state to/from `localStorage` or `sessionStorage`.
 
 ## Getting Started
@@ -72,6 +70,12 @@ The storage extension method accepts an options object with the following proper
 - **serialiser**: `unknown => string` - A function to serialise the store to string. The default behaviour is `JSON.stringify`.
 - **parser**: `string => unknown` - A function to serialise the storage string to a state structure. The default behaviour is `JSON.parse`.
 
+::: warning
+The default behaviour for serialising/parsing only supports JSON-compatible types. For non-JSON-compatible types please specify a custom serialiser/parser.
+
+See the MDN documentation on JSON serialisation for more information: [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
+:::
+
 ### Manually starting/stopping sync
 The `startStorageSync` and `stopStorageSync` methods can be used to start or stop sync behaviour.
 
@@ -81,8 +85,3 @@ Use the `clearStorage` method to clear all stored data relating to this store.
 
 ### Restoring storage
 Use the `restoreStorage` method to manually restore the state from storage.
-
-## Considerations
-Please keep the following points in mind when using this extension:
-
-- The default behaviour for serialising/parsing only supports JSON-compatible types. For non-JSON-compatible types please specify a custom serialiser/parser. See [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#description) for a list of JSON-compatible types.

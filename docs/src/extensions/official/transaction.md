@@ -1,7 +1,5 @@
 # Transaction Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-transaction)
-
 This is the official transaction extension for Harlem. The transaction extension adds the ability to rollback a set of mutations in the event of an error.
 
 ## Getting Started
