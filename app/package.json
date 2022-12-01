@@ -11,7 +11,7 @@
         "start": "vite",
         "build": "vite build",
         "insights": "vite build --mode insights",
-        "serve": "vite build && vite preview"
+        "preview": "vite build && vite preview"
     },
     "dependencies": {
         "@harlem/extension-action": "^2.4.0-beta.1",

@@ -16,6 +16,14 @@ import {
  */
 
 /**
+ * Shims used to replace global constants
+ */
+const SHIMS = {
+    devEnv: 'process.env.NODE_ENV === "development"',
+    prodDevtools: '(typeof __VUE_PROD_DEVTOOLS__ !== \'undefined\' && __VUE_PROD_DEVTOOLS__)',
+};
+
+/**
  * @type import('tsup').Options
  */
 const baseOptions = {
@@ -27,20 +35,20 @@ const baseOptions = {
 /**
  * @type Configuration[]
  */
-const configurations = [
+const builds = [
     {
         name: 'commonjs',
         options: isProd => ({
             format: ['cjs'],
             minify: isProd,
             outExtension: () => ({
-                js: isProd ? '.cjs.prod.js' : '.cjs.js',
+                js: isProd ? '.prod.cjs' : '.cjs',
             }),
             esbuildPlugins: [
                 replace({
                     values: {
-                        '__DEV__': isProd ? 'false' : 'process.env.NODE_ENV === "development"',
-                        '__VUE_PROD_DEVTOOLS__': isProd ? 'false' : '(typeof __VUE_PROD_DEVTOOLS__ !== \'undefined\' && __VUE_PROD_DEVTOOLS__)',
+                        '__DEV__': isProd ? 'false' : SHIMS.devEnv,
+                        '__VUE_PROD_DEVTOOLS__': isProd ? 'false' : SHIMS.prodDevtools,
                     },
                 }),
             ],
@@ -51,13 +59,13 @@ const configurations = [
         options: {
             format: ['esm'],
             outExtension: () => ({
-                js: '.esm-bundler.js',
+                js: '.bundler.mjs',
             }),
             esbuildPlugins: [
                 replace({
                     values: {
-                        '__DEV__': 'process.env.NODE_ENV === "development"',
-                        '__VUE_PROD_DEVTOOLS__': '(typeof __VUE_PROD_DEVTOOLS__ !== \'undefined\' && __VUE_PROD_DEVTOOLS__)',
+                        '__DEV__': SHIMS.devEnv,
+                        '__VUE_PROD_DEVTOOLS__': SHIMS.prodDevtools,
                     },
                 }),
             ],
@@ -69,7 +77,7 @@ const configurations = [
             format: ['esm'],
             minify: isProd,
             outExtension: () => ({
-                js: isProd ? '.esm-browser.prod.js' : '.esm-browser.js',
+                js: isProd ? '.browser.prod.mjs' : '.browser.mjs',
             }),
             esbuildPlugins: [
                 replace({
@@ -82,12 +90,12 @@ const configurations = [
         }),
     },
     {
-        name: 'global',
+        name: 'iife',
         options: isProd => ({
             format: ['iife'],
             minify: isProd,
             outExtension: () => ({
-                js: isProd ? '.global.prod.js' : '.global.js',
+                js: isProd ? '.iife.prod.js' : '.iife.js',
             }),
             esbuildPlugins: [
                 replace({
@@ -121,15 +129,15 @@ export default async function(cwd, entry, options) {
 
     await fse.emptyDir(outDir);
 
-    for (const { options: configuration } of configurations) {
-        const cfgOptions = typeof configuration === 'function'
-            ? [configuration(false), configuration(true)]
-            : [configuration];
+    for (const { options: buildOptions } of builds) {
+        const resolvedOptionSets = typeof buildOptions === 'function'
+            ? [buildOptions(false), buildOptions(true)]
+            : [buildOptions];
 
-        for (const configOptions of cfgOptions) {
+        for (const resolvedOptions of resolvedOptionSets) {
             await build({
                 ...baseOptions,
-                ...configOptions,
+                ...resolvedOptions,
                 ...options,
                 outDir,
                 entry: [

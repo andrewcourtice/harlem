@@ -7,22 +7,18 @@
     "description": "The official compose extension for Harlem",
     "homepage": "https://harlemjs.com",
     "main": "index.js",
-    "module": "dist/index.esm-bundler.js",
+    "module": "dist/index.bundler.mjs",
     "types": "dist/index.d.ts",
-    "unpkg": "dist/index.global.js",
-    "jsdelivr": "dist/index.global.js",
+    "unpkg": "dist/index.iife.js",
+    "jsdelivr": "dist/index.iife.js",
     "sideEffects": false,
     "files": [
         "dist",
-        "index.js",
-        "index.mjs"
+        "index.js"
     ],
     "exports": {
         ".": {
-            "import": {
-                "node": "./index.mjs",
-                "default": "./dist/index.esm-bundler.js"
-            },
+            "import": "./dist/index.bundler.mjs",
             "require": "./index.js",
             "types": "./dist/index.d.ts"
         },
