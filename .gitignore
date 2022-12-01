@@ -75,3 +75,5 @@ test-results.xml
 .vercel
 
 .reports
+
+*.insights.html
