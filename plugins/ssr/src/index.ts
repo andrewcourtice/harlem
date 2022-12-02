@@ -1,6 +1,7 @@
 import {
     MUTATIONS,
     SENDER,
+    SERIALIZER,
 } from './constants';
 
 import {
@@ -15,13 +16,14 @@ import {
     objectOverwrite,
 } from '@harlem/utilities';
 
-declare global {
-    interface Window {
-        __harlemState: Record<string, any>;
-    }
-}
+import type {
+    SSRData,
+    SSRSerializer,
+} from './types';
 
-const snapshot: Record<string, any> = {};
+export * from './types';
+
+const snapshot: SSRData = {};
 
 function onStoreEvent(stores: InternalStores, payload: EventPayload | undefined, callback: (store: InternalStore) => void): void {
     if (!payload) {
@@ -38,15 +40,15 @@ function onStoreEvent(stores: InternalStores, payload: EventPayload | undefined,
 /**
  * Generate a script required to transfer state from server to client
 */
-export function getBridgingScript(): string {
-    return `window.__harlemState = ${JSON.stringify(snapshot)};`;
+export function getBridgingScript(serializer: SSRSerializer = SERIALIZER): string {
+    return `window.__harlemState = ${serializer(snapshot)};`;
 }
 
 /**
  * Generate a script block required to transfer state from server to client
 */
-export function getBridgingScriptBlock(): string {
-    return `<script>${getBridgingScript()}</script>`;
+export function getBridgingScriptBlock(serializer: SSRSerializer = SERIALIZER): string {
+    return `<script>${getBridgingScript(serializer)}</script>`;
 }
 
 /**
@@ -74,6 +76,7 @@ export function createClientSSRPlugin(): HarlemPlugin {
         eventEmitter.on(EVENTS.ssr.initClient, payload => onStoreEvent(stores, payload, store => {
             if (store.name in data) {
                 store.write(MUTATIONS.init, SENDER, state => objectOverwrite(state, data[store.name]));
+                delete data[store.name];
             }
         }));
     };
