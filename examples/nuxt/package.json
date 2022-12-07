@@ -8,9 +8,9 @@
         "postinstall": "nuxt prepare"
     },
     "dependencies": {
-        "@harlem/extension-action": "^2.4.0-beta.1",
-        "@harlem/extension-compose": "^2.4.0-beta.1",
-        "@harlem/extension-storage": "^2.4.0-beta.1",
+        "@harlem/extension-action": "^3.0.0-beta.0",
+        "@harlem/extension-compose": "^3.0.0-beta.0",
+        "@harlem/extension-storage": "^3.0.0-beta.0",
         "@nuxtjs/harlem": "^1.2.0"
     },
     "devDependencies": {

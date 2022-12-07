@@ -49,12 +49,12 @@
         "@harlem/utilities": "^3.0.0-beta.0"
     },
     "peerDependencies": {
-        "@harlem/core": "^2.4.0-beta.1",
+        "@harlem/core": "^3.0.0-beta.0",
         "vue": "^3.2.0"
     },
     "devDependencies": {
         "@harlem/core": "^3.0.0-beta.0",
-        "@harlem/testing": "^2.4.0-beta.1",
+        "@harlem/testing": "^3.0.0-beta.0",
         "vue": "^3.2.45"
     }
 }
