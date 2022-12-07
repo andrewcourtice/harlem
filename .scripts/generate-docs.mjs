@@ -19,12 +19,11 @@ async function main() {
         entryPointStrategy: 'packages',
         cleanOutputDir: true,
         hideGenerator: true,
-        includeVersion: true,
         excludeExternals: true,
         excludePrivate: true,
         excludeInternal: true,
         excludeProtected: true,
-        //excludeNotDocumented: true,
+        includeVersion: false,
         githubPages: false,
         entryDocument: 'index.md',
         plugin: [

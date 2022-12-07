@@ -964,30 +964,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@harlem/extension-reset@workspace:extensions/reset":
-  version: 0.0.0-use.local
-  resolution: "@harlem/extension-reset@workspace:extensions/reset"
-  dependencies:
-    "@harlem/core": ^2.4.0-beta.11
-    "@harlem/testing": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.11
-  peerDependencies:
-    "@harlem/core": ^2.4.0-beta.1
-  languageName: unknown
-  linkType: soft
-
-"@harlem/extension-snapshot@workspace:extensions/snapshot":
-  version: 0.0.0-use.local
-  resolution: "@harlem/extension-snapshot@workspace:extensions/snapshot"
-  dependencies:
-    "@harlem/core": ^2.4.0-beta.11
-    "@harlem/testing": ^2.4.0-beta.1
-    "@harlem/utilities": ^2.4.0-beta.11
-  peerDependencies:
-    "@harlem/core": ^2.4.0-beta.1
-  languageName: unknown
-  linkType: soft
-
 "@harlem/extension-storage@^2.4.0-beta.1, @harlem/extension-storage@workspace:extensions/storage":
   version: 0.0.0-use.local
   resolution: "@harlem/extension-storage@workspace:extensions/storage"
