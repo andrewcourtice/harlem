@@ -8,7 +8,7 @@ This is the official Harlem devtools plugin for adding Vue devtools integration 
 
 ## Installation
 
-Before installing the devtools plugin make sure you installed `@harlem/core`.
+Before installing the devtools plugin make sure you installed `harlem`.
 
 ```bash
 yarn add @harlem/plugin-devtools
@@ -22,7 +22,7 @@ Create an instance of the plugin and register it with Harlem:
 ```typescript
 import App from './app.vue';
 
-import harlem from '@harlem/core';
+import harlem from 'harlem';
 import devtoolsPlugin from '@harlem/plugin-devtools';
 
 createApp(App)

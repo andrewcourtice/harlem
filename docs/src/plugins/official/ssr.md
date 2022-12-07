@@ -4,7 +4,7 @@ This is the official plugin for using Harlem in a Vue server-side rendered appli
 
 ## Installation
 
-Before installing the ssr plugin make sure you have installed `@harlem/core`.
+Before installing the ssr plugin make sure you have installed `harlem`.
 
 ```bash
 yarn add @harlem/plugin-ssr
@@ -22,7 +22,7 @@ import App from './app.vue';
 
 import {
     createVuePlugin
-} from '@harlem/core';
+} from 'harlem';
 
 import {
     createServerSSRPlugin
@@ -58,7 +58,7 @@ import App from './app.vue';
 
 import {
     createVuePlugin
-} from '@harlem/core';
+} from 'harlem';
 
 import {
     createClientSSRPlugin

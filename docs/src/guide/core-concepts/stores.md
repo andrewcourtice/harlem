@@ -4,7 +4,7 @@ In a nutshell a store is just a mechanism for storing, retrieving and mutating r
 
 Harlem, much like Vuex, follows a Redux-like state management pattern. Harlem's functionality can be divided into 4 main concepts:
 - **State** - The single source of truth for your data (read-only). See [State](/guide/core-concepts/state).
-- **Getters** - Computed side-effects of mutations to state (read-only). See [Getters](/guide/core-concepts/getters).
+- **Getters** - Computed derivation of mutations to state (read-only). See [Getters](/guide/core-concepts/getters).
 - **Mutations** - The means by which state is changed (read/write). See [Mutations](/guide/core-concepts/mutations).
 - **Actions** - Async methods for batching mutations, api requests etc (async read/write). [Actions](/guide/core-concepts/actions).
 
@@ -26,7 +26,7 @@ To define a store all you need is a name and some initial state.
 ```typescript
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 export default createStore('user', {
     firstName: 'John',
@@ -41,7 +41,7 @@ You can specifiy a range of options when creating a store. This is most useful f
 ```typescript
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 export default createStore('user', STATE, {
     allowOverwrite: true,

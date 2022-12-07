@@ -52,7 +52,7 @@ The `result` property will be `undefined` for all `:before` events or if the mut
 
 ## Global Triggers
 
-The same trigger logic above can be used for global triggers using the `on` event from `@harlem/core` as opposed to from a specific store.
+The same trigger logic above can be used for global triggers using the `on` event from the `harlem` package as opposed to from a specific store.
 
 ```typescript
 import {
@@ -60,7 +60,7 @@ import {
     createStore,
     on,
     once
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'John',

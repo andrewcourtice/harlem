@@ -8,7 +8,7 @@ Follow the steps below to get started using the history extension.
 
 ### Installation
 
-Before installing this extension make sure you have installed `@harlem/core`.
+Before installing this extension make sure you have installed `harlem`.
 
 ```bash
 yarn add @harlem/extension-history
@@ -25,7 +25,7 @@ import historyExtension from '@harlem/extension-history';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',

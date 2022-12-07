@@ -4,13 +4,19 @@ Getting started with Harlem is easy. Just follow the steps below and you'll be u
 
 ## Installation
 
-Install `@harlem/core` and any plugins you wish to include (it is recommended to also install `@harlem/plugin-devtools` during development):
+Install `harlem` and any [plugins](/plugins/)/[extensions](/extensions/) you wish to include.
 
 ```bash
-yarn add @harlem/core
-# or
-npm install @harlem/core
+# yarn
+yarn add harlem
+
+# npm
+npm install harlem
 ```
+
+::: tip
+The [devtools plugin](/plugins/official/devtools) is enabled by default during development and tree-shaken out of production builds. If you don't need devtools during develpment, you can instead install harlem from `@harlem/core`
+:::
 
 If you're using Nuxt, instead follow the instructions to [install the Nuxt module](https://github.com/nuxt-community/harlem-module) and then resume this guide below, at [Create your first store](#create-your-first-store).
 
@@ -23,25 +29,22 @@ import App from './app.vue';
 
 import {
     createVuePLugin
-} from '@harlem/core';
+} from 'harlem';
 
 createApp(App)
     .use(createVuePlugin())
     .mount('#app');
 ```
-::: tip
-If you're using plugins such as the [devtools plugin](/plugins/official/devtools) be sure to register it when creating the Vue plugin. Refer to the [plugins & extensions](/guide/advanced/plugins-extensions) documentation for details on registering plugins and extensions.
-:::
 
 
 ## Create your first store
 
-Create your store and define any getters/mutations:
+Create your store and define any getters, actions or mutations:
 
 ```typescript
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 // The initial state for this store
 const STATE = {

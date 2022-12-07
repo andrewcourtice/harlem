@@ -8,7 +8,7 @@ Follow the steps below to get started using the trace extension.
 
 ### Installation
 
-Before installing this extension make sure you have installed `@harlem/core`.
+Before installing this extension make sure you have installed `harlem`.
 
 ```bash
 yarn add @harlem/extension-trace
@@ -25,7 +25,7 @@ import traceExtension from '@harlem/extension-trace';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',

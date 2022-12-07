@@ -11,16 +11,16 @@ An **extension** is *registered per store*. Extensions extend the functionality 
 Plugins are registered at the time of attaching Harlem to the Vue instance:
 ```typescript
 import App from './app.vue';
-import devtoolsPlugin from '@harlem/plugin-devtools';
+import ssrPlugin from '@harlem/plugin-ssr';
 
 import {
     createVuePlugin
-} from '@harlem/core';
+} from 'harlem';
 
 createApp(App)
     .use(createVuePlugin({
         plugins: [
-            devtoolsPlugin()
+            ssrPlugin()
         ]
     }))
     .mount('#app');
@@ -39,7 +39,7 @@ import storageExtension from '@harlem/extension-storage';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',

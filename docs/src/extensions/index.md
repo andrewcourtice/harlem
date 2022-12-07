@@ -18,7 +18,7 @@ import storageExtension from '@harlem/extension-storage';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',

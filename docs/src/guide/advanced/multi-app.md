@@ -9,7 +9,7 @@ import {
     once,
     createStore,
     createVuePlugin,
-} from '@harlem/core';
+} from 'harlem';
 ```
 
 However, if you have multiple Vue apps running at the same time you can create more instances of Harlem using the `createInstance` method:
@@ -17,7 +17,7 @@ However, if you have multiple Vue apps running at the same time you can create m
 ```typescript
 import {
     createInstance
-} from '@harlem/core';
+} from 'harlem';
 
 export const {
     on,

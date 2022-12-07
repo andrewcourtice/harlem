@@ -65,11 +65,11 @@ export default defineConfig({
                     },
                 ]
             },
-            {
-                text: 'API Reference',
-                link: '/api/',
-                activeMatch: '^/api/',
-            },
+            // {
+            //     text: 'API Reference',
+            //     link: '/api/',
+            //     activeMatch: '^/api/',
+            // },
         ],
         sidebar: {
             '/guide/': [

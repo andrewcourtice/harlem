@@ -8,7 +8,7 @@ Here is an example of a Harlem plugin in it's most basic form:
 ```typescript
 import type {
     HarlemPlugin
-} from '@harlem/core';
+} from 'harlem';
 
 export default {
 
@@ -21,7 +21,7 @@ export default {
 } as HarlemPlugin;
 ```
 
-**Note:** If you're using TypeScript it is recommended that you add `@harlem/core` as a devDependency and export your plugin object cast as a `HarlemPlugin` (as shown in the example above). This will give you full typing support when authoring your plugin.
+**Note:** If you're using TypeScript it is recommended that you add `harlem` or `@harlem/core` as a devDependency and export your plugin object cast as a `HarlemPlugin` (as shown in the example above). This will give you full typing support when authoring your plugin.
 
 As you can see the plugin is similar to Vue in that it has a single `install` method. Note however that Harlem plugins require a name field to identify your plugin and the install method has `eventEmitter` and `stores` args as opposed to `options`. 
 
@@ -36,7 +36,7 @@ As you can see in the example above there is no obvious mechanism to accept opti
 ```typescript
 import type {
     HarlemPlugin
-} from '@harlem/core';
+} from 'harlem';
 
 interface Options {
     someOption: string;
