@@ -209,4 +209,4 @@ Full documentation for Harlem is available at https://harlemjs.com.
 
 ## Credits
 
-- Logo design by [Ethan Roxburgh](https://github.com/ethanroxburgh)
+Logo design by [Ethan Roxburgh](https://github.com/ethanroxburgh)
