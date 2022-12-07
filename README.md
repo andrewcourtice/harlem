@@ -71,9 +71,7 @@ yarn add harlem
 npm install harlem
 ```
 
-::: tip
 The [devtools plugin](/plugins/official/devtools) is enabled by default during development and tree-shaken out of production builds. If you don't need devtools during develpment, you can instead install harlem from `@harlem/core`
-:::
 
 If you're using Nuxt, instead follow the instructions to [install the Nuxt module](https://github.com/nuxt-community/harlem-module) and then resume this guide below, at [Create your first store](#create-your-first-store).
 
