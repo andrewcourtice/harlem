@@ -88,7 +88,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
 
         function startStorageWrite() {
             store.on(EVENTS.mutation.success, (event?: EventPayload<TriggerEventData>) => {
-                if (!event || event.data.name === MUTATIONS.sync || mutationFilter(event.data.name)) {
+                if (!event || event.data.name === MUTATIONS.sync || !mutationFilter(event.data.name)) {
                     return;
                 }
 

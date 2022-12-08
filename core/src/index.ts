@@ -152,12 +152,11 @@ export function createInstance() {
                         ? matcher
                         : {
                             include: matcher,
-                            exclude: [],
                         }
                 );
 
                 return store.on(eventName, (event?: EventPayload<TriggerEventData>) => {
-                    if (event && !filter(event.data.name)) {
+                    if (event && filter(event.data.name)) {
                         handler(event.data);
                     }
                 });
