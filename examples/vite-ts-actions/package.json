@@ -7,11 +7,11 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@harlem/core": "^3.0.0-beta.0",
-        "@harlem/extension-action": "^3.0.0-beta.0",
-        "@harlem/extension-compose": "^3.0.0-beta.0",
-        "@harlem/extension-storage": "^3.0.0-beta.0",
-        "@harlem/plugin-devtools": "^3.0.0-beta.0",
+        "@harlem/core": "^3.0.0",
+        "@harlem/extension-action": "^3.0.0",
+        "@harlem/extension-compose": "^3.0.0",
+        "@harlem/extension-storage": "^3.0.0",
+        "@harlem/plugin-devtools": "^3.0.0",
         "vue": "^3.2.45"
     },
     "devDependencies": {
