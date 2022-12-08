@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-lazy",
     "amdName": "harlemLazy",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official lazy extension for Harlem",
@@ -49,7 +49,7 @@
         "vue": "^3.2.0"
     },
     "devDependencies": {
-        "@harlem/core": "^3.0.0",
+        "@harlem/core": "^3.0.1",
         "@harlem/testing": "^3.0.0",
         "vue": "^3.2.45"
     }
