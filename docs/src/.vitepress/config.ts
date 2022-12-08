@@ -65,11 +65,10 @@ export default defineConfig({
                     },
                 ]
             },
-            // {
-            //     text: 'API Reference',
-            //     link: '/api/',
-            //     activeMatch: '^/api/',
-            // },
+            {
+                text: 'API Reference',
+                link: 'https://paka.dev/npm/@harlem/core/api',
+            },
         ],
         sidebar: {
             '/guide/': [
@@ -180,7 +179,7 @@ export default defineConfig({
                             link: '/extensions/official/compose',
                         },
                         {
-                            text: 'History',
+                            text: 'History (preview)',
                             link: '/extensions/official/history',
                         },
                         {

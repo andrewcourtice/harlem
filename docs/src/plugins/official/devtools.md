@@ -1,14 +1,17 @@
 # Devtools
 
-![npm](https://img.shields.io/npm/v/@harlem/plugin-devtools)
+The devtools plugin integrates Harlem into the Vue developer tools allowing you to see and edit your stores in real-time.
 
-This is the official Harlem devtools plugin for adding Vue devtools integration to Harlem.
-
-![Harlem Devtools](https://user-images.githubusercontent.com/11718453/95668309-aa5ade00-0bb5-11eb-99f5-1fea4d2061ff.gif)
+<video src="/assets/videos/harlem-devtools.mp4" autoplay controls></video>
 
 ## Installation
 
-Before installing the devtools plugin make sure you installed `harlem`.
+To get started make sure you have the Vue developer tools installed in your browser. The Vue devtools can be installed here:
+- [Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+- [Edge](https://microsoftedge.microsoft.com/addons/detail/vuejs-devtools/olofadcdnkkjdfgjcmjaadnlehnnihnl)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools)
+
+Before installing the devtools plugin make sure you have installed `@harlem/core`.
 
 ```bash
 yarn add @harlem/plugin-devtools
@@ -16,23 +19,30 @@ yarn add @harlem/plugin-devtools
 npm install @harlem/plugin-devtools
 ```
 
+::: tip
+The devtools extension is already included with Harlem when using the `harlem` package.
+:::
+
+
 ## Usage
 
 Create an instance of the plugin and register it with Harlem:
 ```typescript
 import App from './app.vue';
-
-import harlem from 'harlem';
 import devtoolsPlugin from '@harlem/plugin-devtools';
 
+import {
+    createVuePlugin
+} from 'harlem';
+
 createApp(App)
-    .use(harlem, {
+    .use(createVuePlugin({
         plugins: [
             devtoolsPlugin({
                 label: 'My State'
             })
         ]
-    })
+    }))
     .mount('#app');
 ```
 

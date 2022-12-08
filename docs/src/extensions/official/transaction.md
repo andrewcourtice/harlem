@@ -1,6 +1,6 @@
 # Transaction Extension
 
-This is the official transaction extension for Harlem. The transaction extension adds the ability to rollback a set of mutations in the event of an error.
+The transaction extension adds the ability to rollback a set of mutations in the event of an error.
 
 ## Getting Started
 
@@ -65,6 +65,7 @@ export default transaction('my-transaction', (payload, mutate) => {
 });
 ```
 
-## Considerations
+::: warning
 - This extension comes with a performance cost. The entire state tree is cloned and stored before a transaction is run in order to rollback in the event of an error.
 - This extension does not protect against issues attempting to roll back state in async scenarios
+:::

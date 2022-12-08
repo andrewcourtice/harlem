@@ -1,6 +1,6 @@
 # Storage Extension
 
-This is the official storage extension for Harlem. The storage extension adds the ability to sync store state to/from `localStorage` or `sessionStorage`.
+The storage extension adds the ability to sync store state to/from `localStorage` or `sessionStorage`.
 
 ## Getting Started
 
@@ -20,7 +20,7 @@ npm install @harlem/extension-storage
 
 To get started simply register this extension with the store you wish to extend.
 
-```typescript{16-19,22-29}
+```typescript{16-19,22-32}
 import storageExtension from '@harlem/extension-storage';
 
 import {
@@ -47,7 +47,9 @@ const {
             prefix: 'harlem',
             sync: true,
             restore: false,
+            include: '*',
             exclude: [],
+            branch: state => state.firstName,
             serialiser: state => JSON.stringify(state),
             parser: value => JSON.parse(value)
         })
@@ -66,7 +68,9 @@ The storage extension method accepts an options object with the following proper
 - **prefix**: `string` - The prefix to use on the storage key. The storage value will be in the form `${prefix}:${storeName}`. Default value is `harlem`.
 - **sync**: `boolean` - Whether to automatically sync changes from the storage interface back to the store. Default value is `true`.
 - **restore**: `boolean` - Whether to automatically restore the state back from the storage on load. Default is `false`.
-- **exclude**: `string[]` - A list of mutation names to exclude from triggering a storage sync event.
+- **include**: `(string | regex)[]` - A matcher to specify which mutations trigger a storage sync event
+- **exclude**: `(string | regex)[]` - A matcher to specify mutation names to exclude from triggering a storage sync event.
+- **branch**: `state => any` - A function to a specific sub-branch of state to store as opposed to the whole state tree.
 - **serialiser**: `unknown => string` - A function to serialise the store to string. The default behaviour is `JSON.stringify`.
 - **parser**: `string => unknown` - A function to serialise the storage string to a state structure. The default behaviour is `JSON.parse`.
 

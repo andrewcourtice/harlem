@@ -1,11 +1,12 @@
 # Action Extension
 
-This is the official action extension for Harlem. This extension adds advanced action capabilities to your store. Some of the features of this extension are:
+The action extension adds advanced action capabilities to your store. Some features of this extension are:
 
 - Cancellable (incl. nested actions)
-- Action instance deduplication
+- Customizable action instance deduplication
 - Direct mutations within the action body - no need to specify a separate mutation
-- Decoupled status checks through helper functions (`isActionRunning` and `hasActionRun`)
+- Decoupled status checks through helper functions (`isActionRunning`, `hasActionRun`, and `whenActionIdle`)
+- Automatic error capturing and error status checking through helper functions (`hasActionFailed`, `getActionErrors`)
 
 ## Getting Started
 
@@ -73,6 +74,7 @@ The action extension adds several new methods to the store instance (highlighted
 
 ### Options
 The action extension method accepts an options object with the following properties:
+- **concurrent**: `boolean | function` - Whether to apply concurrency to all actions on this store. This can also be a function to customize how concurrent instances are handled.
 - **strategies**: `object` - A set of custom strategies to apply globally to all actions. See [Changing action strategies](#changing-action-strategies).
 
 ### Defining an action
@@ -108,12 +110,12 @@ The third argument to the action body is an options object.
 export default action('load-user-data', async (id: number, mutate, controller) => {
     ...
 }, {
-    parallel: true,
+    concurrent: true,
     autoClearErrors: true
 });
 ```
 
-- **parallel**: `boolean` - indicates whether this action allows multiple instances running in parallel. This is set to `false` by default meaning any instance of this action that starts while another is running will cause the already running action to abort.
+- **concurrent**: `boolean | function` - indicates whether this action allows multiple instances running in parallel. Default is `true`.
 - **autoClearErrors**: `boolean` - indicates whether any currently stored errors for this action should be cleared upon a new instance starting. Default is `true`.
 
 
@@ -169,13 +171,18 @@ import {
     childAction2,
 } from './child-actions';
 
-export default action('parent-action', async (id: number, mutate, controller) => {
+export default action('parent-action', async (id: number, mutate, controller, onAbort) => {
     await Promise.all([
         childAction1('payload', controller),
         childAction2('payload', controller),
     ]);
 });
 ```
+
+::: warning
+Cancelling nested actions with a shared controller will cause all other actions sharing that controller to also abort. If this behaviour is not intended, use the `onAbort` method in the action body to manually cancel actions when necessary.
+:::
+
 
 ### Checking action status
 This extension provides a set of helper methods for checking the status of actions. Similar to cancelling an action, there are 2 ways to check whether an action is running:
@@ -239,7 +246,35 @@ const errors = getActionErrors('load-user-data');
 The list of errors is an array of objects with an **id**: `symbol` property and a **error**: `unknown` property. The id is the unique identifier for the instance this error occurred on.
 
 
-### Changing action strategies
+### Customizing action concurrency
+
+The default behaviour for action concurrency is to allow any instance of an action to run in parallel. This behaviour can be customized at a store level or per action. Here is the action behaviour based on the value of the `concurrent` option:
+
+- `true`: Allow all instances of actions of the same name to run in parallel.
+- `false`: Whenever a new instance of an action of the same name starts, cancel any currently running actions of the same name. This is useful for eliminating duplicate workloads and cancelling unnecessary network requests.
+- `function`: A custom function that returns a `boolean` indicating whether this action should cancel all running instances. This is useful for pseudo-memoizing actions called with identical payloads.
+
+#### Cancelling actions with duplicate payload inputs
+As mentioned above the function value of the `concurrent` option is useful for cancelling any instance of an action that has been called with the same payload as an already running instance:
+
+```typescript
+export default action('load-user-data', async (id: number, mutate, controller) => {
+    const userData = await fetch(`/api/user-data/${id}`, {
+        signal: controller.signal
+    });
+
+    mutate(state => Object.assign(state.details.user, userData));
+}, {
+    concurrent: (currentPayload, runningPayloads) => !runningPayloads.includes(currentPayload)
+});
+```
+
+::: tip
+For a deeper payload equality check (especially on object payload types) use a deep equality method like [Lodash's isEqual function](https://lodash.com/docs/4.17.15#isEqual). 
+:::
+
+
+### Customizing action strategies
 Each action has a set of strategies it executes in order to complete a set workload. The most common strategy is the abort strategy. The abort strategy indicates how the action should handle cancellation. By default, when an action is cancelled (or new instance started on a non-parallel action) an `ActionAbortError` is thrown.
 
 The abort strategy can be overridden either per-action (via action options) or globally for all actions (via the extension options).

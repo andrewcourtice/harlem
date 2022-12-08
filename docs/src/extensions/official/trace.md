@@ -1,6 +1,6 @@
 # Trace Extension
 
-This is the official trace extension for Harlem. The trace extension adds the ability to trace granular changes to state. It is useful for detailed auditing of state changes or as a building block of undo/redo functionality.
+The trace extension adds the ability to trace granular changes to state. It is useful for detailed auditing of state changes or as a building block of undo/redo functionality.
 
 ## Getting Started
 
@@ -65,7 +65,7 @@ Tracing can be manually started or stopped at any time using the `startTrace` an
 
 See [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy#handler_functions) for a full list of proxy gates available.
 
-::: tip Note
+::: tip
 The only gates currently available for tracing are `get`, `set` and `deleteProperty`.
 :::
 

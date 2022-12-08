@@ -1,6 +1,6 @@
 # Compose Extension
 
-This is the official compose extension for Harlem. The compose extension adds the ability to create simple read/write operations without having to explicitly define a mutation. This extension also helps to reduce boilerplate code in components when definining writable computeds that simply change a single state value.
+The compose extension adds the ability to create simple read/write operations without having to explicitly define a mutation. This extension also helps to reduce boilerplate code in components when definining writable computeds that simply change a single state value.
 
 ## Getting Started
 

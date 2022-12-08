@@ -1,6 +1,6 @@
 # Lazy Extension
 
-This is the official lazy extension for Harlem. The lazy extension adds the ability to define asynchronous getters that are automatically re-evaluated when the referenced state (or other reactive objects) change.
+The lazy extension adds the ability to define asynchronous getters that are automatically re-evaluated when the referenced state (or other reactive objects) change.
 
 ## Getting Started
 
@@ -58,6 +58,10 @@ export default lazy('mapped-data', async (state, onInvalidate) => {
 });
 ```
 
+::: warning
+In order for this extension to function correctly you must access any reactive values you want to trigger the getter's re-evaluation **before** the first `await` statement. This is because the lazy getter uses `watchEffect` internally which does not wait for async methods to finish in order to track dependencies. For more information read [this article](https://antfu.me/posts/async-with-composition-api) by Anthony Fu.
+:::
+
 #### onInvalidate
 The `onInvalidate` method supplied to the getter body is used to handle when the getter's evaluation is cancelled. The `onInvalidate` is forwarded directly from Vue's `watchEffect`.
 
@@ -82,9 +86,3 @@ export default lazy('mapped-data', async (state, onInvalidate) => {
     return doSomethingAsync(state.details);
 }, 'some default value');
 ```
-
-
-## Considerations
-Please keep the following points in mind when using this extension:
-
-- In order for this extension to function correctly you must access any reactive values you want to trigger the getter's re-evaluation **before** the first `await` statement. This is because the lazy getter uses `watchEffect` internally which does not wait for async methods to finish in order to track dependencies. For more information read [this article](https://antfu.me/posts/async-with-composition-api) by Anthony Fu.
