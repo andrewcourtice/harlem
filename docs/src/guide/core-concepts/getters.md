@@ -1,6 +1,6 @@
 # Getters
 
-If you have used Vuex before you will likely be familiar with the concept of a `getter`. A `getter` is a computed store property that is automatically updated when state changes.
+If you have used Vue's [computed properties](https://vuejs.org/api/reactivity-core.html#computed) before you will likely be familiar with the workings of a `getter`. A `getter` is a computed store property that is automatically updated when state changes.
 
 Getters are particularly useful for joining different parts of state together or mapping data. In Harlem getters are always **readonly**.
 
@@ -42,7 +42,3 @@ import {
 } from './stores/user';
 </script>
 ```
-
-## See also
-
-[Getter](/api/store.html#getter) API Reference

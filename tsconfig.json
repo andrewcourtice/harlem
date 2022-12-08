@@ -9,7 +9,7 @@
         "removeComments": false,
         "skipLibCheck": true,
         "declaration": true,
-        "allowSyntheticDefaultImports": true,
+        "allowSyntheticDefaultImports": false,
         "forceConsistentCasingInFileNames": true,
         "lib": [
             "ESNext",

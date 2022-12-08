@@ -7,14 +7,18 @@ import {
     BaseState,
     EventPayload,
     EVENTS,
-    INTERNAL,
     InternalStore,
-    MutationEventData,
+    ReadState,
+    TriggerEventData,
 } from '@harlem/core';
 
 import {
-    isNil,
-    omit,
+    functionIdentity,
+    matchGetFilter,
+    objectFromPath,
+    objectSet,
+    objectTrace,
+    typeIsNil,
 } from '@harlem/utilities';
 
 import type {
@@ -29,9 +33,11 @@ function getOptions<TState extends BaseState>(options?: Partial<Options<TState>>
         prefix: 'harlem',
         sync: true,
         restore: false,
+        include: '*',
         exclude: [],
         serialiser: state => JSON.stringify(state),
         parser: value => JSON.parse(value),
+        branch: functionIdentity,
         ...options,
     };
 }
@@ -43,13 +49,15 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         prefix,
         sync,
         restore,
+        include,
         exclude,
         serialiser,
         parser,
+        branch,
     } = _options;
 
     return (store: InternalStore<TState>) => {
-        if (store.getFlag('ssr:server')) {
+        if (store.flags.has('ssr:server')) {
             const noop = () => {};
 
             return {
@@ -62,18 +70,31 @@ export default function storageExtension<TState extends BaseState>(options?: Par
 
         store.register('extensions', 'storage', () => _options);
 
+        const {
+            value,
+            getNodes,
+            resetNodes,
+        } = objectTrace<ReadState<TState>>();
+
         const storage = type === 'session' ? sessionStorage : localStorage;
         const storageKey = prefix ? `${prefix}:${store.name}` : store.name;
+        const mutationFilter = matchGetFilter({
+            include,
+            exclude,
+        });
+
+        resetNodes();
+        branch(value);
 
         function startStorageWrite() {
-            store.on(EVENTS.mutation.success, (event?: EventPayload<MutationEventData>) => {
-                if (!event || event.data.mutation === MUTATIONS.sync || exclude.includes(event.data.mutation)) {
+            store.on(EVENTS.mutation.success, (event?: EventPayload<TriggerEventData>) => {
+                if (!event || event.data.name === MUTATIONS.sync || !mutationFilter(event.data.name)) {
                     return;
                 }
 
                 try {
-                    const state = omit(store.state, INTERNAL.pattern);
-                    storage.setItem(storageKey, serialiser(state));
+                    const state = objectFromPath(store.state, getNodes());
+                    storage.setItem(storageKey, serialiser(state as typeof store.state));
                 } catch {
                     console.warn('Failed to write to storage');
                 }
@@ -81,7 +102,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         }
 
         function syncStorage(value: string) {
-            store.write(MUTATIONS.sync, SENDER, state => Object.assign(state, parser(value)));
+            store.write(MUTATIONS.sync, SENDER, state => objectSet(state, getNodes(), parser(value)));
         }
 
         function listener({ key, storageArea, newValue }: StorageEvent) {
@@ -105,7 +126,7 @@ export default function storageExtension<TState extends BaseState>(options?: Par
         function restoreStorage() {
             const value = storage.getItem(storageKey);
 
-            if (!isNil(value)) {
+            if (!typeIsNil(value)) {
                 syncStorage(value);
             }
         }

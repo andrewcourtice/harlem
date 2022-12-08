@@ -4,6 +4,7 @@ import {
 
 export default defineConfig({
     test: {
+        cache: false,
         watch: false,
         environment: 'jsdom',
         outputFile: 'test-results.xml',

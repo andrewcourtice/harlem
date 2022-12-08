@@ -4,7 +4,6 @@ import {
 
 export {
     state,
-    isActionRunning,
     computeState,
 } from './store';
 

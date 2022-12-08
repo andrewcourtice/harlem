@@ -15,7 +15,7 @@ yarn install
 Start the development server on http://localhost:3000
 
 ```bash
-yarn dev
+yarn start
 ```
 
 ## Production

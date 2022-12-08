@@ -3,9 +3,9 @@ import './assets/styles/index.scss';
 
 import App from './app.vue';
 
-import Harlem from '@harlem/core';
-
-import devtoolsPlugin from '@harlem/plugin-devtools';
+import {
+    createVuePlugin,
+} from 'harlem';
 
 import {
     createApp,
@@ -13,11 +13,7 @@ import {
 
 function start() {
     return createApp(App)
-        .use(Harlem, {
-            plugins: [
-                devtoolsPlugin(),
-            ],
-        })
+        .use(createVuePlugin())
         .mount('body');
 }
 

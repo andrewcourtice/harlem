@@ -1,22 +1,29 @@
 {
     "name": "@harlem/plugin-devtools",
     "amdName": "harlemDevtools",
-    "version": "2.3.9",
+    "version": "3.0.0-beta.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official Vue devtools plugin for Harlem",
     "homepage": "https://harlemjs.com",
-    "source": "src/index.ts",
-    "main": "dist/index.js",
-    "module": "dist/esm/index.js",
-    "unpkg": "dist/iife/index.js",
-    "jsdelivr": "dist/iife/index.js",
+    "main": "index.js",
+    "module": "dist/index.bundler.mjs",
     "types": "dist/index.d.ts",
+    "unpkg": "dist/index.iife.js",
+    "jsdelivr": "dist/index.iife.js",
+    "sideEffects": false,
+    "files": [
+        "dist",
+        "index.js"
+    ],
     "exports": {
         ".": {
-            "import": "./dist/esm/index.js",
-            "require": "./dist/index.js"
-        }
+            "import": "./dist/index.bundler.mjs",
+            "require": "./index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
     },
     "keywords": [
         "vue",
@@ -34,18 +41,17 @@
         "url": "https://github.com/andrewcourtice/harlem/issues"
     },
     "scripts": {
-        "dev": "yarn run --top-level tsup --watch src",
-        "build": "yarn run --top-level tsup",
+        "build": "node ./build.mjs",
         "prepublishOnly": "yarn build"
     },
     "peerDependencies": {
-        "@harlem/core": "^2.0.0"
+        "@harlem/core": "^3.0.0-beta.0"
     },
     "dependencies": {
-        "@harlem/utilities": "^2.3.9",
-        "@vue/devtools-api": "^6.2.1"
+        "@harlem/utilities": "^3.0.0-beta.1",
+        "@vue/devtools-api": "^6.4.5"
     },
     "devDependencies": {
-        "@harlem/core": "^2.3.9"
+        "@harlem/core": "^3.0.0-beta.1"
     }
 }

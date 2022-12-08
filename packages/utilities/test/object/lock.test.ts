@@ -12,11 +12,11 @@ describe('Utilities', () => {
 
         test('Should prevent access to the specified properties', () => {
             const locked = lock({
-                a: 1,
-                b: 'foo',
-            }, ['a']);
+                propA: 1,
+                propB: 'foo',
+            }, ['propA']);
 
-            expect(() => locked.a).toThrow();
+            expect(() => locked.propA).toThrow();
         });
 
     });

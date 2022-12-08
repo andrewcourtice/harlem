@@ -6,13 +6,14 @@ import {
     BaseState,
     EVENTS,
     InternalStore,
+    PRODUCERS,
 } from '@harlem/core';
 
 import {
-    clone,
-    isArray,
-    isObject,
-    toPath,
+    objectClone,
+    objectToPath,
+    typeIsArray,
+    typeIsObject,
 } from '@harlem/utilities';
 
 import type {
@@ -69,9 +70,9 @@ function defaultCallback<TValue extends object>(
             nodes,
             prop,
             newValue,
-            oldValue: newValue === oldValue ? oldValue : clone(oldValue),
+            oldValue: newValue === oldValue ? oldValue : objectClone(oldValue),
             get path() {
-                return toPath(nodes.concat(prop));
+                return objectToPath(nodes.concat(prop));
             },
         });
     } catch {
@@ -80,7 +81,7 @@ function defaultCallback<TValue extends object>(
 }
 
 function deepTrace<TValue extends object>(value: TValue, callback: TraceCallback<TValue>, options: TraceOptions<TValue>): TValue {
-    if (!isObject(value) && !isArray(value)) {
+    if (!typeIsObject(value) && !typeIsArray(value)) {
         return value;
     }
 
@@ -126,7 +127,7 @@ function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
         `background-color: ${background}`,
     ].join(';');
 
-    // @ts-ignore - This is an intentional console statement
+    // eslint-disable-next-line no-console
     console.log(`%c${gate}%c ${path}`, style, '');
 }
 
@@ -147,17 +148,17 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         const traceCallbacks = new Set<TraceCallback<TState>>();
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
-            store.provider('write', state => trace(state, gates, result => {
+            store.producers.write = state => trace(state, gates, result => {
                 if (_options.debug) {
                     logResult(result);
                 }
 
                 traceCallbacks.forEach(callback => callback(result));
-            }));
+            });
         }
 
         function stopTrace() {
-            store.provider('write', state => state);
+            store.producers.write = PRODUCERS.write;
         }
 
         function onTraceResult(callback: TraceCallback<TState>): TraceListener {

@@ -1,8 +1,6 @@
 # Harlem Compose Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-compose)
-
-This is the official compose extension for Harlem. The compose extension adds the ability to create simple read/write operations without having to explicitly define a mutation. This extension also helps to reduce boilerplate code in components when definining writable computeds that simply change a single state value.
+The compose extension adds the ability to create simple read/write operations without having to explicitly define a mutation. This extension also helps to reduce boilerplate code in components when definining writable computeds that simply change a single state value.
 
 ## Getting Started
 
@@ -10,12 +8,12 @@ Follow the steps below to get started using the compose extension.
 
 ### Installation
 
-Before installing this extension make sure you have installed `@harlem/core`.
+Before installing this extension make sure you have installed `harlem`.
 
 ```bash
-yarn add @harlem/extension-action
+yarn add @harlem/extension-compose
 # or
-npm install @harlem/extension-action
+npm install @harlem/extension-compose
 ```
 
 ### Registration
@@ -27,7 +25,7 @@ import composeExtension from '@harlem/extension-compose';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',
@@ -166,7 +164,6 @@ Please keep the following points in mind when using this extension:
 ```typescript
 // This will work
 computeState(state => state.details.name);
-
 
 // This will not
 computeState(state => state.details.name.split(' '));

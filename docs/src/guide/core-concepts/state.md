@@ -1,6 +1,8 @@
 # State
 
-The state tree is the single source of truth for any given store. Once a store has been created, the state tree is strictly **readonly**. The initial state for a store is defined upon store creation.
+The state tree is the single source of truth for any given store. Once a store has been created, the state tree is strictly [**readonly**](https://vuejs.org/api/reactivity-core.html#readonly). The initial state for a store is defined upon store creation.
+
+Exposing state as readonly ensures that changes to your store are predictable, safe and auditable.
 
 ## Defining State
 
@@ -32,7 +34,3 @@ import {
 } from './stores/user';
 </script>
 ```
-
-## See Also
-
-[State](/api/store.html#state) API Reference

@@ -1,13 +1,11 @@
 import Task from '@harlem/task';
 
 import {
-    EVENTS,
-    MUTATIONS,
     SENDER,
-    STATE_PROP,
 } from './constants';
 
 import {
+    reactive,
     watchEffect,
 } from 'vue';
 
@@ -19,22 +17,25 @@ import {
     getAbortMessage,
 } from './utilities';
 
-import type {
+import {
     BaseState,
-    EventPayload,
+    EVENTS,
     InternalStore,
     Mutator,
+    TriggerEventData,
 } from '@harlem/core';
+
+import {
+    typeIsFunction,
+} from '@harlem/utilities';
 
 import type {
     Action,
     ActionAbortStrategies,
     ActionBody,
-    ActionEventData,
-    ActionHookHandler,
     ActionOptions,
     ActionPredicate,
-    ActionStoreState,
+    ActionState,
     Options,
 } from './types';
 
@@ -54,6 +55,7 @@ export const ABORT_STRATEGY = {
 
 function getOptions(options?: Partial<Options>): Options {
     return {
+        concurrent: true,
         ...options,
 
         strategies: {
@@ -63,118 +65,119 @@ function getOptions(options?: Partial<Options>): Options {
     };
 }
 
-export default function actionsExtension<TState extends BaseState>(options?: Partial<Options>) {
+export default function actionExtension<TState extends BaseState>(options?: Partial<Options>) {
     const rootOptions = getOptions(options);
 
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'action', () => rootOptions);
 
-        const _store = store as unknown as InternalStore<TState & ActionStoreState>;
+        const actionState = reactive(new Map<string, ActionState>());
 
-        const actionTasks = new Map<string, Set<Task<unknown>>>();
-
-        _store.write(MUTATIONS.init, SENDER, state => state[STATE_PROP] = {}, true);
-
-        function setActionState(state: TState & ActionStoreState, name: string) {
-            state[STATE_PROP][name] = {
+        function setActionState<TPayload = unknown, TResult = unknown>(name: string) {
+            const state = {
                 runCount: 0,
+                tasks: new Set(),
                 instances: new Map(),
                 errors: new Map(),
-            };
+            } as ActionState<TPayload, TResult>;
+
+            actionState.set(name, state);
+
+            return state;
         }
 
-        function registerAction(name: string) {
-            _store.register('actions', name, () => () => {});
-            _store.write(MUTATIONS.register, SENDER, state => setActionState(state, name), true);
-
-            const tasks = new Set<Task<unknown>>();
-
-            actionTasks.set(name, tasks);
-
-            return {
-                tasks,
-            };
+        function getActionState<TPayload = unknown, TResult = unknown>(name: string) {
+            return (actionState.get(name) || setActionState(name)) as ActionState<TPayload, TResult>;
         }
 
-        function incrementRunCount(name: string) {
-            _store.write(MUTATIONS.incrementRunCount, SENDER, state => state[STATE_PROP][name].runCount += 1);
+        function updateActionState(name: string, producer: (currentState: ActionState) => Partial<ActionState>) {
+            const currentState = actionState.get(name);
+
+            if (!currentState) {
+                return;
+            }
+
+            const newState = producer(currentState);
+
+            if (newState !== currentState) {
+                actionState.set(name, {
+                    ...currentState,
+                    ...newState,
+                });
+            }
         }
 
-        function addInstance(name: string, instanceId: symbol, payload: unknown) {
-            _store.write(MUTATIONS.addInstance, SENDER, state => state[STATE_PROP][name]?.instances.set(instanceId, payload));
+        function registerAction(name: string, options: Partial<ActionOptions<any>> = {}) {
+            store.register('actions', name, () => options);
+            return setActionState(name);
         }
 
-        function removeInstance(name: string, instanceId: symbol) {
-            _store.write(MUTATIONS.removeInstance, SENDER, state => state[STATE_PROP][name]?.instances.delete(instanceId));
-        }
-
-        function addError(name: string, instanceId: symbol, error: unknown) {
-            _store.write(MUTATIONS.addError, SENDER, state => state[STATE_PROP][name]?.errors.set(instanceId, error));
-        }
-
-        function clearErrors(name: string) {
-            _store.write(MUTATIONS.clearErrors, SENDER, state => state[STATE_PROP][name]?.errors.clear());
-        }
-
-        function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions>): Action<TPayload, TResult> {
-            const {
-                tasks,
-            } = registerAction(name);
+        function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions<TPayload>>): Action<TPayload, TResult> {
+            registerAction(name, options);
 
             const {
-                parallel,
+                concurrent,
                 autoClearErrors,
                 strategies,
             } = {
-                parallel: false,
                 autoClearErrors: true,
 
+                ...rootOptions,
                 ...options,
 
                 strategies: {
                     ...rootOptions.strategies,
                     ...options?.strategies,
                 },
-            } as ActionOptions;
+            } as ActionOptions<TPayload>;
 
-            const mutate = (mutator: Mutator<TState, undefined, void>) => _store.write(name, SENDER, mutator);
+            const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, SENDER, mutator);
+            const incrementRunCount = () => updateActionState(name, ({ runCount }) => ({
+                runCount: runCount + 1,
+            }));
 
             return ((payload: TPayload, controller?: AbortController) => {
-                if (!parallel) {
-                    abortAction(name, 'New instance started on non-parallel action');
+                const {
+                    tasks,
+                    instances,
+                    errors,
+                } = getActionState<TPayload, TResult>(name);
+
+                if (!concurrent || (typeIsFunction(concurrent) && !concurrent(payload, Array.from(instances.values())))) {
+                    abortAction(name, 'New instance started on non-concurrent action');
                 }
 
                 if (autoClearErrors) {
-                    clearErrors(name);
+                    errors.clear();
                 }
 
                 const task = new Task<TResult>(async (resolve, reject, controller, onAbort) => {
                     const id = Symbol(name);
 
-                    const complete = () => (tasks.delete(task), removeInstance(name, id));
+                    const complete = () => (tasks.delete(task), instances.delete(id));
                     const fail = (reason?: unknown) => strategies.abort(name, id, resolve, reject, reason);
 
-                    let result: TResult | undefined;
+                    let result: TResult;
 
-                    const emit = (event: string) => _store.emit(event, SENDER, {
-                        action: name,
+                    const trigger = (event: string) => store.emit(event, SENDER, {
+                        name,
                         payload,
                         result,
-                    } as ActionEventData);
+                    } as TriggerEventData);
 
                     onAbort(reason => (complete(), fail(reason)));
-                    addInstance(name, id, payload);
+                    instances.set(id, payload);
 
-                    emit(EVENTS.action.before);
+                    trigger(EVENTS.action.before);
 
                     try {
-                        const providedPayload = _store.providers.payload(payload) ?? payload;
+                        const producedPayload = store.producers.payload(payload) ?? payload;
 
-                        result = await body(providedPayload, mutate, controller, onAbort);
+                        result = await body(producedPayload, mutate, controller, onAbort);
 
-                        emit(EVENTS.action.success);
+                        trigger(EVENTS.action.success);
 
-                        incrementRunCount(name);
+                        incrementRunCount();
                         resolve(result);
                     } catch (error) {
                         if (isActionAbortError(error)) {
@@ -185,13 +188,13 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
                             return fail('Network request cancelled'); // Fetch has been cancelled
                         }
 
-                        emit(EVENTS.action.error);
+                        trigger(EVENTS.action.error);
 
-                        incrementRunCount(name);
-                        addError(name, id, error);
+                        incrementRunCount();
+                        errors.set(id, error);
                         reject(error);
                     } finally {
-                        emit(EVENTS.action.after);
+                        trigger(EVENTS.action.after);
                         complete();
                     }
                 }, controller);
@@ -202,30 +205,13 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             }) as Action<TPayload, TResult>;
         }
 
-        function getActionTrigger(eventName: string) {
-            return <TPayload = any, TResult = any>(actionName: string | string[], handler: ActionHookHandler<TPayload, TResult>) => {
-                const actions = ([] as string[]).concat(actionName);
-
-                return _store.on(eventName, (event?: EventPayload<ActionEventData<TPayload, TResult>>) => {
-                    if (event && actions.includes(event.data.action)) {
-                        handler(event.data);
-                    }
-                });
-            };
-        }
-
         function hasActionRun(name: string) {
-            return _store.state[STATE_PROP][name].runCount > 0;
+            return getActionState(name).runCount > 0;
         }
 
         function isActionRunning<TPayload = unknown>(name: string, predicate?: ActionPredicate<TPayload>) {
-            const {
-                instances,
-            } = _store.state[STATE_PROP][name];
-
-            const payloads = Array.from(instances.values());
-
-            return instances.size > 0 && (!predicate || payloads.some(payload => predicate(payload as TPayload)));
+            const payloads = Array.from(getActionState<TPayload>(name).instances.values());
+            return !!payloads.length && (!predicate || payloads.some(predicate));
         }
 
         function isActionFirstRun(name: string) {
@@ -252,16 +238,16 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
         }
 
         function hasActionFailed(name: string) {
-            return _store.state[STATE_PROP][name]?.errors.size > 0;
+            return !!getActionState(name).errors.size;
         }
 
         function getActionErrors(name: string) {
-            return Array
-                .from(_store.state[STATE_PROP][name]?.errors.entries())
-                .map(([id, error]) => ({
-                    id,
-                    error,
-                }));
+            const errors = Array.from(getActionState(name).errors);
+
+            return errors.map(([id, error]) => ({
+                id,
+                error,
+            }));
         }
 
         function isActionAbortError(value: unknown): value is ActionAbortError {
@@ -269,22 +255,20 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
         }
 
         function resetActionState(name?: string | string[]) {
-            const names = ([] as string[]).concat(name || Object.keys(_store.state[STATE_PROP]));
-
-            _store.write(MUTATIONS.resetState, SENDER, state => names.forEach(name => {
-                if (name in state[STATE_PROP]) {
-                    setActionState(state, name);
-                }
-            }));
+            ([] as string[])
+                .concat(name || Array.from(actionState.keys()))
+                .forEach(name => setActionState(name));
         }
 
         function abortAction(name: string | string[], reason?: unknown) {
             ([] as string[])
                 .concat(name)
                 .forEach(name => {
-                    const tasks = actionTasks.get(name);
+                    const {
+                        tasks,
+                    } = getActionState(name);
 
-                    if (tasks && tasks.size > 0) {
+                    if (tasks.size) {
                         tasks.forEach(task => {
                             task.abort(reason);
                             tasks.delete(task);
@@ -310,24 +294,15 @@ export default function actionsExtension<TState extends BaseState>(options?: Par
             }) as Action<TPayload, TResult | undefined>;
         }
 
-        const onBeforeAction = getActionTrigger(EVENTS.action.before);
-        const onAfterAction = getActionTrigger(EVENTS.action.after);
-        const onActionSuccess = getActionTrigger(EVENTS.action.success);
-        const onActionError = getActionTrigger(EVENTS.action.error);
-
         return {
-            abortAction,
             action,
+            abortAction,
             getActionErrors,
             hasActionFailed,
             hasActionRun,
             isActionAbortError,
             isActionFirstRun,
             isActionRunning,
-            onActionError,
-            onActionSuccess,
-            onAfterAction,
-            onBeforeAction,
             resetActionState,
             suppressAbortError,
             whenActionIdle,

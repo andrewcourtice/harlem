@@ -15,12 +15,3 @@ export const MUTATIONS = {
     clearErrors: 'extension:action:clear-errors',
     resetState: 'extension:action:reset-state',
 } as const;
-
-export const EVENTS = {
-    action: {
-        before: 'action:before',
-        after: 'action:after',
-        success: 'action:success',
-        error: 'action:error',
-    },
-} as const;

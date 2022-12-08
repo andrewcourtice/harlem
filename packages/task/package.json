@@ -1,22 +1,29 @@
 {
     "name": "@harlem/task",
     "amdName": "harlemTask",
-    "version": "2.3.9",
+    "version": "3.0.0-beta.1",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "Harlem task package",
     "homepage": "https://harlemjs.com",
-    "source": "src/index.ts",
-    "main": "dist/index.js",
-    "module": "dist/esm/index.js",
-    "unpkg": "dist/iife/index.js",
-    "jsdelivr": "dist/iife/index.js",
+    "main": "index.js",
+    "module": "dist/index.bundler.mjs",
     "types": "dist/index.d.ts",
+    "unpkg": "dist/index.iife.js",
+    "jsdelivr": "dist/index.iife.js",
+    "sideEffects": false,
+    "files": [
+        "dist",
+        "index.js"
+    ],
     "exports": {
         ".": {
-            "import": "./dist/esm/index.js",
-            "require": "./dist/index.js"
-        }
+            "import": "./dist/index.bundler.mjs",
+            "require": "./index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
     },
     "keywords": [
         "vue",
@@ -33,8 +40,7 @@
         "url": "https://github.com/andrewcourtice/harlem/issues"
     },
     "scripts": {
-        "dev": "yarn run --top-level tsup --watch src",
-        "build": "yarn run --top-level tsup",
+        "build": "node ./build.mjs",
         "prepublishOnly": "yarn build"
     }
 }

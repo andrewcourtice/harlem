@@ -1,8 +1,6 @@
 # Harlem Trace Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-trace)
-
-This is the official trace extension for Harlem. The trace extension adds the ability to trace granular changes to state. It is useful for detailed auditing of state changes or as a building block of undo/redo functionality.
+The trace extension adds the ability to trace granular changes to state. It is useful for detailed auditing of state changes or as a building block of undo/redo functionality.
 
 ## Getting Started
 
@@ -10,7 +8,7 @@ Follow the steps below to get started using the trace extension.
 
 ### Installation
 
-Before installing this extension make sure you have installed `@harlem/core`.
+Before installing this extension make sure you have installed `harlem`.
 
 ```bash
 yarn add @harlem/extension-trace
@@ -27,7 +25,7 @@ import traceExtension from '@harlem/extension-trace';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',
@@ -67,9 +65,7 @@ Tracing can be manually started or stopped at any time using the `startTrace` an
 
 See [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy#handler_functions) for a full list of proxy gates available.
 
-::: tip Note
 The only gates currently available for tracing are `get`, `set` and `deleteProperty`.
-:::
 
 
 ### Handling trace results
