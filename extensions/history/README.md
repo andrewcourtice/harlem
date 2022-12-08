@@ -1,8 +1,6 @@
-# Harlem History Extension (Preview)
+# Harlem History Extension (preview)
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-history)
-
-This is the official history extension for Harlem. The history extension adds undo and redo capabilities to your store for easily integrating history features into your application. 
+The history extension adds undo and redo capabilities to your store for easily integrating history features into your application. 
 
 ## Getting Started
 
@@ -10,14 +8,13 @@ Follow the steps below to get started using the history extension.
 
 ### Installation
 
-Before installing this extension make sure you have installed `@harlem/core`.
+Before installing this extension make sure you have installed `harlem`.
 
 ```bash
 yarn add @harlem/extension-history
 # or
 npm install @harlem/extension-history
 ```
-
 
 ### Registration
 
@@ -28,7 +25,7 @@ import historyExtension from '@harlem/extension-history';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',

@@ -1,8 +1,6 @@
 # Harlem Transaction Extension
 
-![npm](https://img.shields.io/npm/v/@harlem/extension-transaction)
-
-This is the official transaction extension for Harlem. The transaction extension adds the ability to rollback a set of mutations in the event of an error.
+The transaction extension adds the ability to rollback a set of mutations in the event of an error.
 
 ## Getting Started
 
@@ -10,7 +8,7 @@ Follow the steps below to get started using the transaction extension.
 
 ### Installation
 
-Before installing this extension make sure you have installed `@harlem/core`.
+Before installing this extension make sure you have installed `harlem`.
 
 ```bash
 yarn add @harlem/extension-transaction
@@ -27,7 +25,7 @@ import transactionExtension from '@harlem/extension-transaction';
 
 import {
     createStore
-} from '@harlem/core';
+} from 'harlem';
 
 const STATE = {
     firstName: 'Jane',
@@ -67,6 +65,5 @@ export default transaction('my-transaction', (payload, mutate) => {
 });
 ```
 
-## Considerations
 - This extension comes with a performance cost. The entire state tree is cloned and stored before a transaction is run in order to rollback in the event of an error.
 - This extension does not protect against issues attempting to roll back state in async scenarios

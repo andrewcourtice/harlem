@@ -1,8 +1,8 @@
-# Devtools
+# Devtools Plugin
 
 The devtools plugin integrates Harlem into the Vue developer tools allowing you to see and edit your stores in real-time.
 
-<video src="/assets/videos/harlem-devtools.mp4" autoplay controls></video>
+<video src="/assets/videos/harlem-devtools.mp4" autoplay loop></video>
 
 ## Installation
 

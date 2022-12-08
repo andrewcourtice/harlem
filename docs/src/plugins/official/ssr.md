@@ -1,4 +1,4 @@
-# Server-Side Rendering
+# Server-Side Rendering Plugin
 
 The SSR plugin adds support for using Harlem in a Vue server-side rendered application.
 
