@@ -28,7 +28,7 @@ Register the Harlem plugin with your Vue app instance:
 import App from './app.vue';
 
 import {
-    createVuePLugin
+    createVuePlugin
 } from 'harlem';
 
 createApp(App)
