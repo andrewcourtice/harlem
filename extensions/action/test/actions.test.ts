@@ -202,12 +202,18 @@ describe('Actions Extension', () => {
     });
 
     test('Handles concurrency', async () => {
+        expect.assertions(3);
+
         const {
             action,
         } = instance.store;
 
+        const abortFn = vi.fn();
+
         const concurrentAction = action('concurrent-action', async () => {});
-        const nonConcurrentAction = action('non-concurrent-action', async () => {}, {
+        const nonConcurrentAction = action('non-concurrent-action', async (_, __, ___, onAbort) => {
+            onAbort(abortFn);
+        }, {
             concurrent: false,
         });
 
@@ -234,6 +240,7 @@ describe('Actions Extension', () => {
 
         expect(hasConcurrentFailed).toBe(false);
         expect(hasNonConcurrentFailed).toBe(true);
+        expect(abortFn).toHaveBeenCalled();
     });
 
     test('Handles nested cancellation', async () => {
