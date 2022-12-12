@@ -202,12 +202,19 @@ describe('Actions Extension', () => {
     });
 
     test('Handles concurrency', async () => {
+        expect.assertions(3);
+
         const {
             action,
         } = instance.store;
 
-        const concurrentAction = action('concurrent-action', async () => {});
-        const nonConcurrentAction = action('non-concurrent-action', async () => {}, {
+        const abortFn = vi.fn();
+
+        const concurrentAction = action('concurrent-action', async () => sleep(100));
+        const nonConcurrentAction = action('non-concurrent-action', async (_, __, ___, onAbort) => {
+            onAbort(abortFn);
+            return sleep(100);
+        }, {
             concurrent: false,
         });
 
@@ -234,6 +241,43 @@ describe('Actions Extension', () => {
 
         expect(hasConcurrentFailed).toBe(false);
         expect(hasNonConcurrentFailed).toBe(true);
+        expect(abortFn).toHaveBeenCalled();
+    });
+
+    test('Handles custom concurrency methods', async () => {
+        expect.assertions(2);
+
+        const {
+            action,
+        } = instance.store;
+
+        const customConcurrentAction = action('concurrent-action', async (payload: number) => sleep(100), {
+            concurrent: (payload, runningPayloads) => !runningPayloads.includes(payload),
+        });
+
+        let hasCustomConcurrentFailed = false;
+
+        try {
+            await Promise.all([
+                customConcurrentAction(1),
+                customConcurrentAction(2),
+            ]);
+        } catch {
+            hasCustomConcurrentFailed = true;
+        }
+
+        expect(hasCustomConcurrentFailed).toBe(false);
+
+        try {
+            await Promise.all([
+                customConcurrentAction(2),
+                customConcurrentAction(2),
+            ]);
+        } catch {
+            hasCustomConcurrentFailed = true;
+        }
+
+        expect(hasCustomConcurrentFailed).toBe(true);
     });
 
     test('Handles nested cancellation', async () => {
@@ -247,8 +291,8 @@ describe('Actions Extension', () => {
 
         const catchAssertion = vi.fn();
 
-        const childAction1 = action('child1', () => sleep(1000));
-        const childAction2 = action('child2', () => sleep(1000));
+        const childAction1 = action('child1', () => sleep(100));
+        const childAction2 = action('child2', () => sleep(100));
         const parentAction = action('parent', (_, __, controller) => Promise.all([
             childAction1(_, controller),
             childAction2(_, controller),

@@ -26,9 +26,8 @@ export interface ActionAbortStrategies {
     warn: ActionAbortStrategy;
 }
 
-export interface ActionState<TPayload = unknown, TResult = unknown> {
+export interface ActionState<TPayload = unknown> {
     runCount: number;
-    tasks: Set<Task<TResult>>;
     instances: Map<symbol, TPayload>;
     errors: Map<symbol, unknown>;
 }

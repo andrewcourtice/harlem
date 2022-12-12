@@ -71,49 +71,41 @@ export default function actionExtension<TState extends BaseState>(options?: Part
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'action', () => rootOptions);
 
+        const actionTasks = new Map<string, Set<Task<unknown>>>();
         const actionState = reactive(new Map<string, ActionState>());
 
-        function setActionState<TPayload = unknown, TResult = unknown>(name: string) {
+        function setActionState<TPayload = unknown>(name: string) {
             const state = {
                 runCount: 0,
-                tasks: new Set(),
                 instances: new Map(),
                 errors: new Map(),
-            } as ActionState<TPayload, TResult>;
+            } as ActionState<TPayload>;
 
             actionState.set(name, state);
 
             return state;
         }
 
-        function getActionState<TPayload = unknown, TResult = unknown>(name: string) {
-            return (actionState.get(name) || setActionState(name)) as ActionState<TPayload, TResult>;
-        }
-
-        function updateActionState(name: string, producer: (currentState: ActionState) => Partial<ActionState>) {
-            const currentState = actionState.get(name);
-
-            if (!currentState) {
-                return;
-            }
-
-            const newState = producer(currentState);
-
-            if (newState !== currentState) {
-                actionState.set(name, {
-                    ...currentState,
-                    ...newState,
-                });
-            }
+        function getActionState<TPayload = unknown>(name: string) {
+            return (actionState.get(name) || setActionState(name)) as ActionState<TPayload>;
         }
 
         function registerAction(name: string, options: Partial<ActionOptions<any>> = {}) {
             store.register('actions', name, () => options);
-            return setActionState(name);
+            setActionState(name);
+
+            const tasks = new Set<Task<unknown>>();
+            actionTasks.set(name, tasks);
+
+            return {
+                tasks,
+            };
         }
 
         function action<TPayload, TResult = void>(name: string, body: ActionBody<TState, TPayload, TResult>, options?: Partial<ActionOptions<TPayload>>): Action<TPayload, TResult> {
-            registerAction(name, options);
+            const {
+                tasks,
+            } = registerAction(name, options);
 
             const {
                 concurrent,
@@ -132,16 +124,13 @@ export default function actionExtension<TState extends BaseState>(options?: Part
             } as ActionOptions<TPayload>;
 
             const mutate = (mutator: Mutator<TState, undefined, void>) => store.write(name, SENDER, mutator);
-            const incrementRunCount = () => updateActionState(name, ({ runCount }) => ({
-                runCount: runCount + 1,
-            }));
+            const incrementRunCount = () => getActionState(name).runCount += 1;
 
             return ((payload: TPayload, controller?: AbortController) => {
                 const {
-                    tasks,
                     instances,
                     errors,
-                } = getActionState<TPayload, TResult>(name);
+                } = getActionState<TPayload>(name);
 
                 if (!concurrent || (typeIsFunction(concurrent) && !concurrent(payload, Array.from(instances.values())))) {
                     abortAction(name, 'New instance started on non-concurrent action');
@@ -264,11 +253,9 @@ export default function actionExtension<TState extends BaseState>(options?: Part
             ([] as string[])
                 .concat(name)
                 .forEach(name => {
-                    const {
-                        tasks,
-                    } = getActionState(name);
+                    const tasks = actionTasks.get(name);
 
-                    if (tasks.size) {
+                    if (tasks?.size) {
                         tasks.forEach(task => {
                             task.abort(reason);
                             tasks.delete(task);
