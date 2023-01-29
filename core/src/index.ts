@@ -239,6 +239,8 @@ export const {
 } = createInstance();
 
 // Attach instance creation to the global object
-window.$harlem = {
-    createInstance,
-};
+if (window) {
+    window.$harlem = {
+        createInstance,
+    };
+}
