@@ -1,15 +1,18 @@
 import type {
     EventBus,
     EventHandler,
-    EventListener,
     EventPayload,
 } from './types';
+
+import type {
+    Disposable,
+} from '@harlem/utilities';
 
 export default function createEventBus(): EventBus {
 
     const listeners = new Map<string, Set<EventHandler>>();
 
-    function on(event: string, handler: EventHandler): EventListener {
+    function on(event: string, handler: EventHandler): Disposable {
         const handlers = listeners.get(event) || new Set();
 
         handlers.add(handler);
@@ -34,7 +37,7 @@ export default function createEventBus(): EventBus {
         }
     }
 
-    function once(event: string, handler: EventHandler): EventListener {
+    function once(event: string, handler: EventHandler): Disposable {
         const callback = (payload?: EventPayload) => {
             handler(payload);
             off(event, callback);
