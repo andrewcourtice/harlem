@@ -1,5 +1,5 @@
 import {
-    COMMAND_MAP,
+    CHANGE_MAP,
     MUTATION_FILTER,
     SENDER,
 } from './constants';
@@ -17,11 +17,13 @@ import traceExtension, {
 } from '@harlem/extension-trace';
 
 import {
+    matchGetFilter,
     objectFromPath,
 } from '@harlem/utilities';
 
 import type {
-    CommandType,
+    ChangeType,
+    HistoryChange,
     HistoryCommand,
     Options,
 } from './types';
@@ -31,14 +33,29 @@ export * from './types';
 function getOptions(options?: Partial<Options>): Options {
     return {
         max: 50,
-        mutations: [],
+        command: [],
         ...options,
     };
 }
 
 export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
     const _options = getOptions(options);
-    const mutationLookup = new Map(_options.mutations.map(({ name, description }) => [name, description]));
+
+    const commands = ([] as HistoryCommand[])
+        .concat(_options.command)
+        .map(command => {
+            const mutationFilter = matchGetFilter(command);
+
+            return {
+                ...command,
+                mutationFilter,
+            };
+        });
+
+    function commandsMutationFilter(mutation: string): boolean {
+        return commands.some(command => command.mutationFilter(mutation));
+    }
+
     const createTraceExtension = traceExtension<TState>({
         autoStart: true,
     });
@@ -53,16 +70,16 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         } = createTraceExtension(store);
 
         let position = 0;
-        let commands = [] as HistoryCommand[];
-        let results = [] as TraceResult<any>[];
+        let changes: HistoryChange[] = [];
+        let results: TraceResult<any>[] = [];
 
-        function executeCommand(type: CommandType, command: HistoryCommand) {
+        function applyChange(type: ChangeType, change: HistoryChange) {
             store.write(`extension:history:${type}`, SENDER, state => {
-                const tasks = COMMAND_MAP[type];
+                const tasks = CHANGE_MAP[type];
 
                 let {
                     results,
-                } = command;
+                } = change;
 
                 if (type === 'undo') {
                     results = results.slice().reverse();
@@ -78,26 +95,26 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             });
         }
 
-        function processResults(name: string) {
+        function processResults(mutation: string) {
             if (results.length === 0) {
                 return;
             }
 
-            if (commands.length >= _options.max) {
-                commands.shift();
+            if (changes.length >= _options.max) {
+                changes.shift();
             }
 
-            commands.push({
-                name,
+            changes.push({
+                mutation,
                 results: Array.from(results),
             });
 
             results = [];
-            position = commands.length - 1;
+            position = changes.length - 1;
         }
 
         store.on(EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
-            if (!event || MUTATION_FILTER.test(event.data.name) || (mutationLookup.size > 0 && !mutationLookup.has(event.data.name))) {
+            if (!event || MUTATION_FILTER.test(event.data.name) || commandsMutationFilter(event.data.name)) {
                 return;
             }
 
@@ -116,16 +133,16 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             });
         });
 
-        function run(type: CommandType, offset: number) {
-            const command = commands[position];
+        function run(type: ChangeType, offset: number) {
+            const change = changes[position + Math.max(0, offset)];
 
-            if (!command) {
+            if (!change) {
                 return;
             }
 
-            executeCommand(type, command);
+            applyChange(type, change);
 
-            position = Math.max(0, Math.min(commands.length - 1, position + offset));
+            position = Math.max(0, Math.min(changes.length - 1, position + offset));
         }
 
         function undo() {
@@ -138,7 +155,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
 
         function clearHistory() {
             position = 0;
-            commands = [];
+            changes = [];
             results = [];
         }
 

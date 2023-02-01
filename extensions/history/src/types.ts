@@ -1,28 +1,30 @@
-import {
+import type {
     TraceGate,
     TraceResult,
 } from '@harlem/extension-trace';
 
-export type CommandType = 'exec' | 'undo';
+import type {
+    Matcher,
+    OneOrMore,
+} from '@harlem/utilities';
+
+export type ChangeType = 'exec' | 'undo';
 export type CommandTask = (target: any, prop: PropertyKey, newValue: unknown, oldValue: unknown) => void;
 export type CommandTasks = Record<TraceGate<any>, CommandTask>;
 
-export interface MutationPayload {
-    type: CommandType;
-    command: HistoryCommand;
-}
-
-export interface HistoryCommand {
-    name: string;
+export type HistoryChange = {
+    mutation: string;
     results: TraceResult<any>[];
+};
+
+export type HistoryCommand = {
+    batch?: boolean;
+    label: string | ((numBatched: number) => string);
+    include?: Matcher;
+    exclude?: Matcher;
 }
 
-export interface HistoryMutation {
-    name: string;
-    description?: string;
-}
-
-export interface Options {
+export type Options = {
     max: number;
-    mutations: HistoryMutation[];
+    command: OneOrMore<HistoryCommand>;
 }

@@ -52,8 +52,8 @@ describe('History Extension', () => {
         expect(state.details.firstName).toBe('John');
         undo();
         expect(state.details.firstName).toBe('');
-        // redo();
-        // expect(state.details.firstName).toBe('John');
+        redo();
+        expect(state.details.firstName).toBe('John');
     });
 
 });
