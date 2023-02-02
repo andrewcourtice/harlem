@@ -22,7 +22,7 @@ describe('History Extension', () => {
         ],
     });
 
-    let instance = getInstance();
+    let instance: ReturnType<typeof getInstance>;
 
     beforeAll(() => bootstrap());
     beforeEach(() => {
@@ -49,11 +49,31 @@ describe('History Extension', () => {
             firstName: 'John',
         });
 
+        setUserDetails({
+            firstName: 'More things',
+        });
+
+        expect(state.details.firstName).toBe('More things');
+        undo();
         expect(state.details.firstName).toBe('John');
         undo();
         expect(state.details.firstName).toBe('');
         redo();
         expect(state.details.firstName).toBe('John');
+        redo();
+        expect(state.details.firstName).toBe('More things');
+        undo();
+        expect(state.details.firstName).toBe('John');
+
+        setUserDetails({
+            firstName: 'After',
+        });
+
+        expect(state.details.firstName).toBe('After');
+        undo();
+        expect(state.details.firstName).toBe('John');
+        redo();
+        expect(state.details.firstName).toBe('After');
     });
 
 });

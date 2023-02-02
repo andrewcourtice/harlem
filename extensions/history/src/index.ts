@@ -69,21 +69,44 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             onTraceResult,
         } = createTraceExtension(store);
 
-        let position = 0;
-        let changes: HistoryChange[] = [];
-        let results: TraceResult<any>[] = [];
+        type State = {
+            position: number;
+            changes: HistoryChange[];
+            results: TraceResult<any>[];
+        };
+
+        const historyState: State = {
+            position: 0,
+            changes: [],
+            results: [],
+        };
+
+        store.on(EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
+            if (!event || MUTATION_FILTER.test(event.data.name) || commandsMutationFilter(event.data.name)) {
+                return;
+            }
+
+            startTrace([
+                'set',
+                'deleteProperty',
+            ]);
+
+            const listener = onTraceResult(result => historyState.results.push(result));
+
+            store.once(EVENTS.mutation.after, () => {
+                stopTrace();
+                processResults(event.data.name);
+
+                listener.dispose();
+            });
+        });
 
         function applyChange(type: ChangeType, change: HistoryChange) {
             store.write(`extension:history:${type}`, SENDER, state => {
                 const tasks = CHANGE_MAP[type];
-
-                let {
-                    results,
-                } = change;
-
-                if (type === 'undo') {
-                    results = results.slice().reverse();
-                }
+                const results = type === 'exec'
+                    ? change.results
+                    : change.results.slice().reverse();
 
                 results.forEach(({ gate, nodes, prop, newValue, oldValue }) => {
                     const target = objectFromPath(state, nodes);
@@ -96,53 +119,33 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         }
 
         function processResults(mutation: string) {
-            if (results.length === 0) {
+            if (historyState.results.length === 0) {
                 return;
             }
 
-            if (changes.length >= _options.max) {
-                changes.shift();
+            if (historyState.changes.length >= _options.max) {
+                historyState.changes.shift();
             }
 
-            changes.push({
+            historyState.changes.push({
                 mutation,
-                results: Array.from(results),
+                results: Array.from(historyState.results),
             });
 
-            results = [];
-            position = changes.length - 1;
+            historyState.results = [];
+            historyState.position = historyState.changes.length - 1;
         }
 
-        store.on(EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
-            if (!event || MUTATION_FILTER.test(event.data.name) || commandsMutationFilter(event.data.name)) {
-                return;
-            }
-
-            startTrace([
-                'set',
-                'deleteProperty',
-            ]);
-
-            const listener = onTraceResult(result => results.push(result));
-
-            store.once(EVENTS.mutation.after, () => {
-                stopTrace();
-                processResults(event.data.name);
-
-                listener.dispose();
-            });
-        });
-
         function run(type: ChangeType, offset: number) {
-            const change = changes[position + Math.max(0, offset)];
+            const changeIndex = historyState.position + (offset === 1 ? 1 : 0);
+            const change = historyState.changes[changeIndex];
 
             if (!change) {
                 return;
             }
 
             applyChange(type, change);
-
-            position = Math.max(0, Math.min(changes.length - 1, position + offset));
+            historyState.position = Math.max(0, Math.min(historyState.changes.length - 1, historyState.position + offset));
         }
 
         function undo() {
@@ -154,9 +157,9 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         }
 
         function clearHistory() {
-            position = 0;
-            changes = [];
-            results = [];
+            historyState.position = 0;
+            historyState.changes = [];
+            historyState.results = [];
         }
 
         return {
