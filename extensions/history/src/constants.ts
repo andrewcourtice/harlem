@@ -1,12 +1,12 @@
 import type {
+    ChangeCommands,
     ChangeType,
-    CommandTasks,
 } from './types';
 
 export const SENDER = 'extension:history';
 export const MUTATION_FILTER = /^(plugin|extension)/;
 
-export const CHANGE_MAP = {
+export const CHANGE_MAP: Record<ChangeType, Partial<ChangeCommands>> = {
     exec: {
         set: (target, prop, newValue) => target[prop] = newValue,
         deleteProperty: (target, prop) => delete target[prop],
@@ -15,4 +15,4 @@ export const CHANGE_MAP = {
         set: (target, prop, newValue, oldValue) => target[prop] = oldValue,
         deleteProperty: (target, prop, newValue, oldValue) => target[prop] = oldValue,
     },
-} as Record<ChangeType, Partial<CommandTasks>>;
+};

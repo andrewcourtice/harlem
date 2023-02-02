@@ -4,27 +4,29 @@ import type {
 } from '@harlem/extension-trace';
 
 import type {
+    Matchable,
     Matcher,
-    OneOrMore,
 } from '@harlem/utilities';
 
 export type ChangeType = 'exec' | 'undo';
-export type CommandTask = (target: any, prop: PropertyKey, newValue: unknown, oldValue: unknown) => void;
-export type CommandTasks = Record<TraceGate<any>, CommandTask>;
+export type ChangeCommand = (target: any, prop: PropertyKey, newValue: unknown, oldValue: unknown) => void;
+export type ChangeCommands = Record<TraceGate<any>, ChangeCommand>;
 
-export type HistoryChange = {
-    mutation: string;
+export type MutationTrace = {
+    name: string;
     results: TraceResult<any>[];
 };
 
-export type HistoryCommand = {
-    batch?: boolean;
-    label: string | ((numBatched: number) => string);
-    include?: Matcher;
-    exclude?: Matcher;
+export type HistoryGroup = {
+    position: number;
+    history: MutationTrace[];
 }
+
+export type MutationGroups = {
+    groups: Record<string, Matcher | Matchable>;
+};
 
 export type Options = {
     max: number;
-    command: OneOrMore<HistoryCommand>;
-}
+    mutations: Matcher | Matchable | MutationGroups | Matchable & MutationGroups;
+};

@@ -19,12 +19,14 @@ import traceExtension, {
 import {
     matchGetFilter,
     objectFromPath,
+    typeIsMatchable,
+    typeIsObject,
 } from '@harlem/utilities';
 
 import type {
     ChangeType,
-    HistoryChange,
-    HistoryCommand,
+    HistoryGroup,
+    MutationTrace,
     Options,
 } from './types';
 
@@ -33,32 +35,22 @@ export * from './types';
 function getOptions(options?: Partial<Options>): Options {
     return {
         max: 50,
-        command: [],
+        mutations: '*',
         ...options,
     };
 }
 
 export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
     const _options = getOptions(options);
-
-    const commands = ([] as HistoryCommand[])
-        .concat(_options.command)
-        .map(command => {
-            const mutationFilter = matchGetFilter(command);
-
-            return {
-                ...command,
-                mutationFilter,
-            };
-        });
-
-    function commandsMutationFilter(mutation: string): boolean {
-        return commands.some(command => command.mutationFilter(mutation));
-    }
+    const groups = getMutationGroups(_options.mutations);
 
     const createTraceExtension = traceExtension<TState>({
         autoStart: true,
     });
+
+    function mutationFilter(mutation: string) {
+        return groups.some(({ filter }) => filter(mutation));
+    }
 
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'history', () => _options);
@@ -69,20 +61,27 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             onTraceResult,
         } = createTraceExtension(store);
 
-        type State = {
-            position: number;
-            changes: HistoryChange[];
-            results: TraceResult<any>[];
+        const createHistoryState = () => {
+            const results: TraceResult<any>[] = [];
+            const historyGroups = groups.reduce((out, { key }) => {
+                out[key] = {
+                    position: 0,
+                    history: [],
+                };
+
+                return out;
+            }, {} as Record<string, HistoryGroup>);
+
+            return {
+                results,
+                groups: historyGroups,
+            };
         };
 
-        const historyState: State = {
-            position: 0,
-            changes: [],
-            results: [],
-        };
+        let historyState = createHistoryState();
 
         store.on(EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
-            if (!event || MUTATION_FILTER.test(event.data.name) || commandsMutationFilter(event.data.name)) {
+            if (!event || MUTATION_FILTER.test(event.data.name) || !mutationFilter(event.data.name)) {
                 return;
             }
 
@@ -101,7 +100,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             });
         });
 
-        function applyChange(type: ChangeType, change: HistoryChange) {
+        function applyChange(type: ChangeType, change: MutationTrace) {
             store.write(`extension:history:${type}`, SENDER, state => {
                 const tasks = CHANGE_MAP[type];
                 const results = type === 'exec'
@@ -123,43 +122,56 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                 return;
             }
 
-            if (historyState.changes.length >= _options.max) {
-                historyState.changes.shift();
+            for (const { key, filter } of groups) {
+                if (!filter(mutation)) {
+                    continue;
+                }
+
+                const historyGroup = historyState.groups[key];
+
+                if (historyGroup.history.length >= _options.max) {
+                    historyGroup.history.shift();
+                }
+
+                historyGroup.history.push({
+                    name: mutation,
+                    results: Array.from(historyState.results),
+                });
+
+                historyGroup.position = historyGroup.history.length - 1;
             }
 
-            historyState.changes.push({
-                mutation,
-                results: Array.from(historyState.results),
-            });
-
             historyState.results = [];
-            historyState.position = historyState.changes.length - 1;
         }
 
-        function run(type: ChangeType, offset: number) {
-            const changeIndex = historyState.position + (offset === 1 ? 1 : 0);
-            const change = historyState.changes[changeIndex];
+        function run(groupKey: string, type: ChangeType, offset: number) {
+            const historyGroup = historyState.groups[groupKey];
+
+            if (!historyGroup) {
+                return;
+            }
+
+            const changeIndex = historyGroup.position + (offset === 1 ? 1 : 0);
+            const change = historyGroup.history[changeIndex];
 
             if (!change) {
                 return;
             }
 
             applyChange(type, change);
-            historyState.position = Math.max(0, Math.min(historyState.changes.length - 1, historyState.position + offset));
+            historyGroup.position = Math.max(0, Math.min(historyGroup.history.length - 1, historyGroup.position + offset));
         }
 
-        function undo() {
-            run('undo', -1);
+        function undo(group: string = '') {
+            run(group, 'undo', -1);
         }
 
-        function redo() {
-            run('exec', 1);
+        function redo(group: string = '') {
+            run(group, 'exec', 1);
         }
 
         function clearHistory() {
-            historyState.position = 0;
-            historyState.changes = [];
-            historyState.results = [];
+            historyState = createHistoryState();
         }
 
         return {
@@ -168,4 +180,25 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             clearHistory,
         };
     };
+}
+
+function getMutationGroups(mutations: Options['mutations']) {
+    const hasGroups = typeIsObject(mutations) && 'groups' in mutations;
+    const groups = hasGroups ? mutations.groups : {};
+
+    if (!hasGroups || typeIsMatchable(mutations)) {
+        groups[''] = mutations;
+    }
+
+    return Object.entries(groups)
+        .map(([key, matcher]) => {
+            const matchable = typeIsMatchable(matcher) ? matcher : {
+                include: matcher,
+            };
+
+            return {
+                key,
+                filter: matchGetFilter(matchable),
+            };
+        });
 }
