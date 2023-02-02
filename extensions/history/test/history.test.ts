@@ -18,7 +18,13 @@ describe('History Extension', () => {
 
     const getInstance = () => getStore({
         extensions: [
-            historyExtension(),
+            historyExtension({
+                mutations: {
+                    groups: {
+                        userDetails: ['set-user-details'],
+                    },
+                },
+            }),
         ],
     });
 
@@ -54,15 +60,15 @@ describe('History Extension', () => {
         });
 
         expect(state.details.firstName).toBe('More things');
-        undo();
+        undo('userDetails');
         expect(state.details.firstName).toBe('John');
-        undo();
+        undo('userDetails');
         expect(state.details.firstName).toBe('');
-        redo();
+        redo('userDetails');
         expect(state.details.firstName).toBe('John');
-        redo();
+        redo('userDetails');
         expect(state.details.firstName).toBe('More things');
-        undo();
+        undo('userDetails');
         expect(state.details.firstName).toBe('John');
 
         setUserDetails({
@@ -70,9 +76,9 @@ describe('History Extension', () => {
         });
 
         expect(state.details.firstName).toBe('After');
-        undo();
+        undo('userDetails');
         expect(state.details.firstName).toBe('John');
-        redo();
+        redo('userDetails');
         expect(state.details.firstName).toBe('After');
     });
 

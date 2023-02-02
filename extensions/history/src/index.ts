@@ -65,7 +65,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             const results: TraceResult<any>[] = [];
             const historyGroups = groups.reduce((out, { key }) => {
                 out[key] = {
-                    position: 0,
+                    position: -1,
                     history: [],
                 };
 
@@ -129,6 +129,10 @@ export default function historyExtension<TState extends BaseState>(options?: Par
 
                 const historyGroup = historyState.groups[key];
 
+                if (historyGroup.history.length - 1 !== historyGroup.position) {
+                    historyGroup.history = historyGroup.history.slice(0, historyGroup.position + 1);
+                }
+
                 if (historyGroup.history.length >= _options.max) {
                     historyGroup.history.shift();
                 }
@@ -151,7 +155,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                 return;
             }
 
-            const changeIndex = historyGroup.position + (offset === 1 ? 1 : 0);
+            const changeIndex = historyGroup.position + (offset === -1 ? 0 : 1);
             const change = historyGroup.history[changeIndex];
 
             if (!change) {
@@ -159,7 +163,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             }
 
             applyChange(type, change);
-            historyGroup.position = Math.max(0, Math.min(historyGroup.history.length - 1, historyGroup.position + offset));
+            historyGroup.position = Math.max(-1, Math.min(historyGroup.history.length - 1, historyGroup.position + offset));
         }
 
         function undo(group: string = '') {
