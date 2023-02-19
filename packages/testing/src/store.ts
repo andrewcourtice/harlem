@@ -2,6 +2,7 @@ import {
     BaseState,
     createStore,
     Extension,
+    PublicStore,
     StoreOptions,
 } from '@harlem/core';
 
@@ -34,10 +35,11 @@ export function getStore<TExtensions extends Extension<typeof STATE>[]>(options?
 
     const name = 'testing';
     const store = createStore(name, jsonClone(STATE), options);
-    const reset = store.mutation('reset', state => Object.assign(state, resetState));
-    const fullName = store.getter('full-name', ({ details }) => `${details.firstName} ${details.lastName}`);
-    const setUserID = store.mutation<number>('set-user-id', (state, id = Math.random() * 1000) => state.id = id);
-    const setUserDetails = store.mutation<Partial<UserDetails>>('set-user-details', (state, details) => {
+    const localStore = store as unknown as PublicStore<typeof STATE, []>;
+    const reset = localStore.mutation('reset', state => Object.assign(state, resetState));
+    const fullName = localStore.getter('full-name', ({ details }) => `${details.firstName} ${details.lastName}`);
+    const setUserID = localStore.mutation<number>('set-user-id', (state, id = Math.random() * 1000) => state.id = id);
+    const setUserDetails = localStore.mutation<Partial<UserDetails>>('set-user-details', (state, details) => {
         Object.assign(state.details, details);
     });
 
