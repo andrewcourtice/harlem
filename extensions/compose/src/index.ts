@@ -55,7 +55,7 @@ export default function composeExtension<TState extends BaseState>() {
             accessor(value);
 
             const nodes = getNodes();
-            const name = mutationName || `extension:compose:${objectToPath(['root', ...nodes])}`;
+            const name = mutationName || `!extension:compose:${objectToPath(['root', ...nodes])}`;
             const key = nodes.pop();
             const parent = (state: object) => objectFromPath(state, nodes) as Record<PropertyKey, unknown>;
 
