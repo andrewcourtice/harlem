@@ -12,6 +12,7 @@ import {
     describe,
     expect,
     test,
+    vi,
 } from 'vitest';
 
 describe('History Extension', () => {
@@ -21,6 +22,7 @@ describe('History Extension', () => {
             historyExtension({
                 mutations: {
                     groups: {
+                        default: ['set-user-id'],
                         userDetails: ['set-user-details'],
                     },
                 },
@@ -37,7 +39,29 @@ describe('History Extension', () => {
 
     afterEach(() => instance.store.destroy());
 
-    test('Performs an undo/redo operation', () => {
+    test('Performs a basic undo/redo operation', () => {
+        const {
+            store,
+            setUserID,
+        } = instance;
+
+        const {
+            state,
+            undo,
+            redo,
+        } = store;
+
+        setUserID(5);
+        expect(state.id).toBe(5);
+        setUserID(10);
+        expect(state.id).toBe(10);
+        undo();
+        expect(state.id).toBe(5);
+        redo();
+        expect(state.id).toBe(10);
+    });
+
+    test('Performs a grouped undo/redo operation', () => {
         const {
             store,
             setUserID,
@@ -80,6 +104,63 @@ describe('History Extension', () => {
         expect(state.details.firstName).toBe('John');
         redo('userDetails');
         expect(state.details.firstName).toBe('After');
+    });
+
+    test('Indicates whether an undo/redo operation can be performed', () => {
+        const {
+            store,
+            setUserID,
+        } = instance;
+
+        const {
+            undo,
+            redo,
+            canUndo,
+            canRedo,
+        } = store;
+
+        expect(canUndo()).toBe(false);
+        expect(canRedo()).toBe(false);
+        setUserID(5);
+        expect(canUndo()).toBe(true);
+        undo();
+        expect(canUndo()).toBe(false);
+        expect(canRedo()).toBe(true);
+        redo();
+        expect(canUndo()).toBe(true);
+        expect(canRedo()).toBe(false);
+    });
+
+    test('Fires triggers on history change events', () => {
+        const {
+            store,
+            setUserID,
+        } = instance;
+
+        const {
+            state,
+            undo,
+            redo,
+            onBeforeHistoryChange,
+            onAfterHistoryChange,
+            onHistoryChangeSuccess,
+        } = store;
+
+        const spyFn = vi.fn();
+
+        onBeforeHistoryChange(spyFn);
+        onAfterHistoryChange(spyFn);
+        onHistoryChangeSuccess(spyFn);
+
+        setUserID(5);
+        expect(state.id).toBe(5);
+        setUserID(10);
+        expect(state.id).toBe(10);
+        undo();
+        expect(state.id).toBe(5);
+        redo();
+        expect(state.id).toBe(10);
+        expect(spyFn).toHaveBeenCalledTimes(6);
     });
 
 });
