@@ -1,3 +1,27 @@
 [self="size-auto"] {
     width: auto;
 }
+
+[layout~="gap-none"] {
+    gap: 0;
+}
+
+[layout~="gap-x-small"] {
+    gap: var(--spacing__x-small);
+}
+
+[layout~="gap-small"] {
+    gap: var(--spacing__small);
+}
+
+[layout~="gap-medium"] {
+    gap: var(--spacing__medium);
+}
+
+[layout~="gap-large"] {
+    gap: var(--spacing__large);
+}
+
+[layout] > [layout] {
+    width: auto;
+}

@@ -3,6 +3,8 @@ export { default as functionIdentity } from './function/identity';
 export { default as matchNormalise } from './match/normalise';
 export { default as matchGetFilter } from './match/get-filter';
 
+export { default as numberClamp } from './number/clamp';
+
 export { default as objectClone } from './object/clone';
 export { default as objectFromPath } from './object/from-path';
 export { default as objectLock } from './object/lock';

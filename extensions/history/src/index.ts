@@ -1,13 +1,21 @@
 import {
     CHANGE_MAP,
+    DEFAULT_GROUP_KEY,
+    EVENTS,
     MUTATION_FILTER,
     SENDER,
+    TYPE_OFFSET,
 } from './constants';
 
 import {
+    markRaw,
+    reactive,
+} from 'vue';
+
+import {
     BaseState,
+    EVENTS as CORE_EVENTS,
     EventPayload,
-    EVENTS,
     InternalStore,
     TriggerEventData,
 } from '@harlem/core';
@@ -18,6 +26,7 @@ import traceExtension, {
 
 import {
     matchGetFilter,
+    numberClamp,
     objectFromPath,
     typeIsMatchable,
     typeIsObject,
@@ -25,7 +34,9 @@ import {
 
 import type {
     ChangeType,
+    HistoryEventData,
     HistoryGroup,
+    HistoryTriggerHandler,
     MutationTrace,
     Options,
 } from './types';
@@ -74,13 +85,13 @@ export default function historyExtension<TState extends BaseState>(options?: Par
 
             return {
                 results,
-                groups: historyGroups,
+                groups: reactive(historyGroups),
             };
         };
 
         let historyState = createHistoryState();
 
-        store.on(EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
+        store.on(CORE_EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
             if (!event || MUTATION_FILTER.test(event.data.name) || !mutationFilter(event.data.name)) {
                 return;
             }
@@ -92,7 +103,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
 
             const listener = onTraceResult(result => historyState.results.push(result));
 
-            store.once(EVENTS.mutation.after, () => {
+            store.once(CORE_EVENTS.mutation.after, () => {
                 stopTrace();
                 processResults(event.data.name);
 
@@ -103,7 +114,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         function applyChange(type: ChangeType, change: MutationTrace) {
             store.write(`extension:history:${type}`, SENDER, state => {
                 const tasks = CHANGE_MAP[type];
-                const results = type === 'exec'
+                const results = type === 'redo'
                     ? change.results
                     : change.results.slice().reverse();
 
@@ -137,10 +148,10 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                     historyGroup.history.shift();
                 }
 
-                historyGroup.history.push({
+                historyGroup.history.push(markRaw({
                     name: mutation,
                     results: Array.from(historyState.results),
-                });
+                }));
 
                 historyGroup.position = historyGroup.history.length - 1;
             }
@@ -148,40 +159,101 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             historyState.results = [];
         }
 
-        function run(groupKey: string, type: ChangeType, offset: number) {
-            const historyGroup = historyState.groups[groupKey];
+        function getChange(group: HistoryGroup, type: ChangeType) {
+            const offset = TYPE_OFFSET[type];
+            const changeIndex = group.position + (offset === -1 ? 0 : 1);
+            const change = group.history[changeIndex];
 
-            if (!historyGroup) {
+            return {
+                offset,
+                change,
+            };
+        }
+
+        function canChange(groupKey: string, type: ChangeType) {
+            const group = historyState.groups[groupKey];
+            return !!(group && getChange(group, type).change);
+        }
+
+        function run(groupKey: string, type: ChangeType) {
+            const group = historyState.groups[groupKey];
+
+            if (!group) {
                 return;
             }
 
-            const changeIndex = historyGroup.position + (offset === -1 ? 0 : 1);
-            const change = historyGroup.history[changeIndex];
+            const {
+                offset,
+                change,
+            } = getChange(group, type);
 
             if (!change) {
                 return;
             }
 
-            applyChange(type, change);
-            historyGroup.position = Math.max(-1, Math.min(historyGroup.history.length - 1, historyGroup.position + offset));
+            const trigger = (event: string, payload?: unknown) => store.emit(event, SENDER, {
+                group: groupKey,
+                type,
+                payload,
+            });
+
+            trigger(EVENTS.change.before);
+
+            try {
+                applyChange(type, change);
+                trigger(EVENTS.change.success);
+            } catch (error) {
+                trigger(EVENTS.change.error);
+            } finally {
+                trigger(EVENTS.change.after);
+            }
+
+            group.position = numberClamp(-1, group.history.length - 1, group.position + offset);
         }
 
-        function undo(group: string = '') {
-            run(group, 'undo', -1);
+        function undo(group: string = DEFAULT_GROUP_KEY) {
+            run(group, 'undo');
         }
 
-        function redo(group: string = '') {
-            run(group, 'exec', 1);
+        function redo(group: string = DEFAULT_GROUP_KEY) {
+            run(group, 'redo');
+        }
+
+        function canUndo(group: string = DEFAULT_GROUP_KEY) {
+            return canChange(group, 'undo');
+        }
+
+        function canRedo(group: string = DEFAULT_GROUP_KEY) {
+            return canChange(group, 'redo');
         }
 
         function clearHistory() {
             historyState = createHistoryState();
         }
 
+        const getTrigger = (eventName: string) => {
+            return (handler: HistoryTriggerHandler, type?: ChangeType) => store.on(eventName, (event?: EventPayload<HistoryEventData>) => {
+                if (event && (!type || type === event.data.type)) {
+                    handler(event.data);
+                }
+            });
+        };
+
+        const onBeforeHistoryChange = getTrigger(EVENTS.change.before);
+        const onAfterHistoryChange = getTrigger(EVENTS.change.after);
+        const onHistoryChangeSuccess = getTrigger(EVENTS.change.success);
+        const onHistoryChangeError = getTrigger(EVENTS.change.error);
+
         return {
             undo,
             redo,
+            canUndo,
+            canRedo,
             clearHistory,
+            onBeforeHistoryChange,
+            onAfterHistoryChange,
+            onHistoryChangeSuccess,
+            onHistoryChangeError,
         };
     };
 }
@@ -191,7 +263,7 @@ function getMutationGroups(mutations: Options['mutations']) {
     const groups = hasGroups ? mutations.groups : {};
 
     if (!hasGroups || typeIsMatchable(mutations)) {
-        groups[''] = mutations;
+        groups[DEFAULT_GROUP_KEY] = mutations;
     }
 
     return Object.entries(groups)
@@ -206,3 +278,4 @@ function getMutationGroups(mutations: Options['mutations']) {
             };
         });
 }
+

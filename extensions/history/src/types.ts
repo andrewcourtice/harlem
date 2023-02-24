@@ -8,9 +8,11 @@ import type {
     Matcher,
 } from '@harlem/utilities';
 
-export type ChangeType = 'exec' | 'undo';
+export type ChangeType = 'redo' | 'undo';
 export type ChangeCommand = (target: any, prop: PropertyKey, newValue: unknown, oldValue: unknown) => void;
 export type ChangeCommands = Record<TraceGate<any>, ChangeCommand>;
+
+export type HistoryTriggerHandler = (data: HistoryEventData) => void;
 
 export type MutationTrace = {
     name: string;
@@ -30,3 +32,9 @@ export type Options = {
     max: number;
     mutations: Matcher | Matchable | MutationGroups | Matchable & MutationGroups;
 };
+
+export interface HistoryEventData<TPayload = unknown> {
+    group: string;
+    type: ChangeType;
+    payload: TPayload;
+}
