@@ -1,17 +1,17 @@
 {
-    "version": "3.0.2",
-    "npmClient": "yarn",
-    "useWorkspaces": true,
-    "packages": [
-        "core",
-        "harlem",
-        "packages/*",
-        "extensions/*",
-        "plugins/*"
-    ],
-    "command": {
-        "publish": {
-            "graphType": "all"
-        }
+  "version": "3.1.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "packages": [
+    "core",
+    "harlem",
+    "packages/*",
+    "extensions/*",
+    "plugins/*"
+  ],
+  "command": {
+    "publish": {
+      "graphType": "all"
     }
+  }
 }
