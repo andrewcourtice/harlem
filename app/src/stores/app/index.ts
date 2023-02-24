@@ -5,6 +5,10 @@ import {
 export {
     state,
     computeState,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
 } from './store';
 
 export * from './getters';

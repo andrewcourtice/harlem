@@ -15,17 +15,23 @@
                     <br>
                     If you have the Vue <strong>devtools</strong> installed, open them up and change the inspector to Harlem to see the store. The source code for this demo is available <a href="https://github.com/andrewcourtice/harlem/tree/main/app" target="_blank" rel="noopener noreferrer">here</a>.
                 </p>
-                <choice-group class="app__theme">
-                    <choice v-for="{ label, value } in state.themes"
-                        :key="value"
-                        v-model="theme"
-                        :id="value"
-                        :value="value">
-                        {{ label }}
-                    </choice>
-                </choice-group>
+                <div class="app__options" layout="rows center-justify gap-small">
+                    <choice-group self="sm-full">
+                        <choice v-for="{ label, value } in state.themes"
+                            :key="value"
+                            v-model="theme"
+                            :id="value"
+                            :value="value">
+                            {{ label }}
+                        </choice>
+                    </choice-group>
+                    <div layout="rows center-right gap-x-small" self="sm-full">
+                        <button class="button" self="sm-half" :disabled="!canUndo()" @click="undo()">Undo</button>
+                        <button class="button" self="sm-half" :disabled="!canRedo()" @click="redo()">Redo</button>
+                    </div>
+                </div>
             </header>
-            <div class="app__options" layout="rows center-justify">
+            <div class="app__actions" layout="rows center-justify gap-small">
                 <choice-group self="sm-full">
                     <choice v-for="{ label, value } in state.clockTypes"
                         :key="value"
@@ -81,11 +87,15 @@ import {
 } from 'date-fns-tz';
 
 import {
+    canRedo,
+    canUndo,
     clocks,
     computeState,
     loadTimezones,
+    redo,
     removeClock,
     state,
+    undo,
 } from './stores/app';
 
 loadTimezones();
@@ -95,7 +105,7 @@ watchEffect(() => document.body.setAttribute('theme', state.theme.toLowerCase())
 const addClockModal = ref();
 
 const theme = computeState(state => state.theme);
-const clockType = computeState(state => state.clockType);
+const clockType = computeState(state => state.clockType, 'change-clock-type');
 
 const clockComponent = computed(() => state.clockType === 'analogue'
     ? AnalogueClock
@@ -140,13 +150,12 @@ function openAddClockModal() {
         text-align: center;
     }
 
-    .app__theme {
+    .app__options {
         margin-top: 2rem;
     }
 
-    .app__options {
+    .app__actions {
         margin: 2rem 0;
-        gap: 1rem;
     }
 
     .app__clocks {

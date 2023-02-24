@@ -18,7 +18,7 @@
             </meta-text>
         </div>
         <template #footer="{ close }">
-            <div class="add-clock-modal__actions" layout="row center-right">
+            <div class="add-clock-modal__actions" layout="row center-right gap-small">
                 <button class="button" @click="close()">Cancel</button>
                 <button class="button button--primary" :disabled="!canComplete" @click="complete()">Add {{ model.selection.length }} Clocks</button>
             </div>
@@ -96,13 +96,6 @@ defineExpose({
 
     .add-clock-modal__tip {
         margin: 1rem 0;
-    }
-
-    .add-clock-modal__actions {
-
-        & .button {
-            margin-left: 1rem;
-        }
     }
 
 </style>
