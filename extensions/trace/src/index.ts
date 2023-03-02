@@ -19,6 +19,7 @@ import {
     objectClone,
     objectToPath,
     typeIsArray,
+    typeIsBoolean,
     typeIsObject,
 } from '@harlem/utilities';
 
@@ -155,6 +156,8 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         store.register('extensions', 'trace', () => _options);
 
         const traceCallbacks = new Set<TraceCallback<TState>>();
+        const trackMutations = _options.debug === true || (!typeIsBoolean(_options.debug) && _options.debug.mutations);
+        const trackActions = _options.debug === true || (!typeIsBoolean(_options.debug) && _options.debug.actions);
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
             store.producers.write = state => trace(state, gates, result => {
@@ -198,17 +201,7 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
 
         store.once(EVENTS.store.destroyed, () => traceCallbacks.clear());
 
-        const output = {
-            startTrace,
-            stopTrace,
-            onTraceResult,
-        };
-
-        if (!_options.debug) {
-            return output;
-        }
-
-        if (_options.debug === true || _options.debug.mutations) {
+        if (trackMutations) {
             trackEvent('Mutation', {
                 events: {
                     before: EVENTS.mutation.before,
@@ -220,7 +213,7 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
             });
         }
 
-        if (_options.debug === true || _options.debug.actions) {
+        if (trackActions) {
             trackEvent('Action', {
                 events: {
                     before: EVENTS.action.before,
@@ -232,7 +225,11 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
             });
         }
 
-        return output;
+        return {
+            startTrace,
+            stopTrace,
+            onTraceResult,
+        };
     };
 }
 
