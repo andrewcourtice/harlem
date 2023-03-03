@@ -1,29 +1,37 @@
+/* eslint-disable no-console */
+
 import {
-    GATE_COLOUR,
+    GATE_TAG_STYLE,
+    TAG_STYLE,
 } from './constants';
 
 import {
     BaseState,
+    EventPayload,
     EVENTS,
     InternalStore,
     PRODUCERS,
+    TriggerEventData,
 } from '@harlem/core';
 
 import {
+    Disposable,
     objectClone,
     objectToPath,
     typeIsArray,
+    typeIsBoolean,
     typeIsObject,
 } from '@harlem/utilities';
 
 import type {
     GateMap,
     Options,
+    TagStyleOptions,
     TraceCallback,
     TraceGate,
-    TraceListener,
     TraceOptions,
     TraceResult,
+    TrackEventOptions,
 } from './types';
 
 export * from './types';
@@ -113,39 +121,43 @@ function trace<TValue extends object>(value: TValue, gates: TraceGate<TValue> | 
     });
 }
 
-function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
+function getTagStyle(options: Partial<TagStyleOptions>) {
     const {
-        foreground,
         background,
-    } = (GATE_COLOUR[gate] || GATE_COLOUR.default);
+        foreground,
+    } = {
+        ...TAG_STYLE,
+        ...options,
+    };
 
-    const style = [
-        'padding: 3px',
+    return [
+        'padding: 0.25em 0.5em',
         'font-weight: bold',
         'border-radius: 3px',
         `color: ${foreground}`,
         `background-color: ${background}`,
     ].join(';');
+}
 
-    // eslint-disable-next-line no-console
+function logResult<TValue extends object>({ gate, path }: TraceResult<TValue>) {
+    const style = getTagStyle(GATE_TAG_STYLE[gate] || TAG_STYLE);
+
     console.log(`%c${gate}%c ${path}`, style, '');
 }
 
-function getOptions(options?: Partial<Options>): Options {
-    return {
+export default function traceExtension<TState extends BaseState>(options?: Partial<Options<TState>>) {
+    const _options = {
         autoStart: false,
         debug: false,
         ...options,
     };
-}
-
-export default function traceExtension<TState extends BaseState>(options?: Partial<Options>) {
-    const _options = getOptions(options);
 
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'trace', () => _options);
 
         const traceCallbacks = new Set<TraceCallback<TState>>();
+        const trackMutations = _options.debug === true || (!typeIsBoolean(_options.debug) && _options.debug.mutations);
+        const trackActions = _options.debug === true || (!typeIsBoolean(_options.debug) && _options.debug.actions);
 
         function startTrace(gates: TraceGate<TState> | TraceGate<TState>[] = 'set') {
             store.producers.write = state => trace(state, gates, result => {
@@ -161,12 +173,24 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
             store.producers.write = PRODUCERS.write;
         }
 
-        function onTraceResult(callback: TraceCallback<TState>): TraceListener {
+        function onTraceResult(callback: TraceCallback<TState>): Disposable {
             traceCallbacks.add(callback);
 
             return {
                 dispose: () => traceCallbacks.delete(callback),
             };
+        }
+
+        function trackEvent(name: string, options: TrackEventOptions) {
+            const style = getTagStyle(options.style);
+
+            store.on(options.events.before, (event?: EventPayload<TriggerEventData>) => {
+                if (event) {
+                    console.group(`%c${name}%c ${event.data.name}`, style, '');
+                }
+            });
+
+            store.on(options.events.after, () => console.groupEnd());
         }
 
         store.once(EVENTS.store.created, () => {
@@ -176,6 +200,30 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         });
 
         store.once(EVENTS.store.destroyed, () => traceCallbacks.clear());
+
+        if (trackMutations) {
+            trackEvent('Mutation', {
+                events: {
+                    before: EVENTS.mutation.before,
+                    after: EVENTS.mutation.after,
+                },
+                style: {
+                    background: '#EC4899',
+                },
+            });
+        }
+
+        if (trackActions) {
+            trackEvent('Action', {
+                events: {
+                    before: EVENTS.action.before,
+                    after: EVENTS.action.after,
+                },
+                style: {
+                    background: '#8B5CF6',
+                },
+            });
+        }
 
         return {
             startTrace,

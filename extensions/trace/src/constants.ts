@@ -1,25 +1,21 @@
 import type {
+    TagStyleOptions,
     TraceGate,
 } from './types';
 
-export const GATE_COLOUR = {
-    default: {
-        foreground: '#FFFFFF',
-        background: '#6B7280',
-    },
+export const TAG_STYLE = {
+    foreground: '#FFFFFF',
+    background: '#6B7280',
+};
+
+export const GATE_TAG_STYLE = {
     get: {
-        foreground: '#FFFFFF',
-        background: '#10B981',
+        background: '#22C55E',
     },
     set: {
-        foreground: '#FFFFFF',
         background: '#3B82F6',
     },
     deleteProperty: {
-        foreground: '#FFFFFF',
         background: '#EF4444',
     },
-} as Record<TraceGate<any> | 'default', {
-    foreground: string;
-    background: string;
-}>;
+} as Record<TraceGate<any>, Partial<TagStyleOptions>>;
