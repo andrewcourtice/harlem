@@ -17,17 +17,20 @@ export interface Matchable {
     exclude: Matcher;
 }
 
-export type RuntimeType = 'boolean'
-| 'number'
-| 'string'
-| 'error'
-| 'date'
-| 'regexp'
-| 'function'
-| 'symbol'
-| 'array'
-| 'object'
-| 'map'
-| 'set'
-| 'null'
-| 'undefined';
+export type RuntimeType = keyof RuntimeTypeMap;
+export interface RuntimeTypeMap {
+    boolean: boolean;
+    number: number;
+    string: string;
+    error: Error;
+    date: Date;
+    regexp: RegExp;
+    function: Function;
+    symbol: symbol;
+    array: Array<unknown>;
+    object: object;
+    map: Map<unknown, unknown>;
+    set: Set<unknown>;
+    null: null;
+    undefined: undefined;
+}

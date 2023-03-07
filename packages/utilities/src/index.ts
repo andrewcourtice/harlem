@@ -15,6 +15,7 @@ export { default as objectToPath } from './object/to-path';
 export { default as objectTrace } from './object/trace';
 
 export { default as typeGetType } from './type/get-type';
+export { default as typeIsAny } from './type/is-any';
 export { default as typeIsArray } from './type/is-array';
 export { default as typeIsBoolean } from './type/is-boolean';
 export { default as typeIsFunction } from './type/is-function';

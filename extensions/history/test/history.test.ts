@@ -17,12 +17,14 @@ import {
 
 describe('History Extension', () => {
 
+    const DUPLICATE_ROLE_MUTATION = 'duplicate-role';
+
     const getInstance = () => getStore({
         extensions: [
             historyExtension({
                 mutations: {
                     groups: {
-                        default: ['set-user-id'],
+                        default: ['set-user-id', DUPLICATE_ROLE_MUTATION],
                         userDetails: ['set-user-details'],
                     },
                 },
@@ -59,6 +61,28 @@ describe('History Extension', () => {
         expect(state.id).toBe(5);
         redo();
         expect(state.id).toBe(10);
+    });
+
+    test('Handles mutable array methods', () => {
+        const {
+            store,
+        } = instance;
+
+        const {
+            state,
+            undo,
+            mutation,
+        } = store;
+
+        const duplicateRole = mutation(DUPLICATE_ROLE_MUTATION, ({ roles }, value: string) => {
+            roles.splice(roles.indexOf(value), 0, value);
+        });
+
+        expect(state.roles.length).toBe(2);
+        duplicateRole(state.roles[0]);
+        expect(state.roles.length).toBe(3);
+        undo();
+        expect(state.roles.length).toBe(2);
     });
 
     test('Performs a grouped undo/redo operation', () => {
