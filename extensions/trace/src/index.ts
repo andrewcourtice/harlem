@@ -2,6 +2,7 @@
 
 import {
     GATE_TAG_STYLE,
+    NOTHING,
     TAG_STYLE,
 } from './constants';
 
@@ -34,6 +35,7 @@ import type {
     TrackEventOptions,
 } from './types';
 
+export { NOTHING } from './constants';
 export * from './types';
 
 const GATE_MAP = {
@@ -50,15 +52,17 @@ const GATE_MAP = {
             paths: paths.concat(prop),
         });
     },
-    set: (callback, { paths }) => (target, prop, value) => {
-        defaultCallback(callback, 'set', paths, prop, target[prop], value);
-        target[prop] = value;
-        return true;
+    set: (callback, { paths }) => (target, prop, value, receiver) => {
+        const oldValue = prop in target
+            ? target[prop]
+            : NOTHING;
+
+        defaultCallback(callback, 'set', paths, prop, oldValue, value);
+        return Reflect.set(target, prop, value, receiver);
     },
     deleteProperty: (callback, { paths }) => (target, prop) => {
         defaultCallback(callback, 'deleteProperty', paths, prop, target[prop]);
-        delete target[prop];
-        return true;
+        return Reflect.deleteProperty(target, prop);
     },
 } as GateMap;
 

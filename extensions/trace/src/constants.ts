@@ -3,6 +3,8 @@ import type {
     TraceGate,
 } from './types';
 
+export const NOTHING = Symbol('nothing');
+
 export const TAG_STYLE = {
     foreground: '#FFFFFF',
     background: '#6B7280',
