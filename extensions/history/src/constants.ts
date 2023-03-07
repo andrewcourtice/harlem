@@ -1,3 +1,12 @@
+import {
+    NOTHING,
+} from '@harlem/extension-trace';
+
+import {
+    typeIsAny,
+    typeIsArray,
+} from '@harlem/utilities';
+
 import type {
     ChangeCommands,
     ChangeType,
@@ -18,7 +27,15 @@ export const CHANGE_MAP: Record<ChangeType, Partial<ChangeCommands>> = {
         deleteProperty: (target, prop) => delete target[prop],
     },
     undo: {
-        set: (target, prop, newValue, oldValue) => target[prop] = oldValue,
+        set: (target, prop, newValue, oldValue) => {
+            if (oldValue !== NOTHING) {
+                return target[prop] = oldValue;
+            }
+
+            (typeIsArray(target) && typeIsAny(prop, ['number', 'string']))
+                ? target.splice(+prop, 1)
+                : delete target[prop];
+        },
         deleteProperty: (target, prop, newValue, oldValue) => target[prop] = oldValue,
     },
 };
