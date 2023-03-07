@@ -208,7 +208,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                 trigger(EVENTS.change.after);
             }
 
-            group.position = numberClamp(-1, group.history.length - 1, group.position + offset);
+            group.position = numberClamp(group.position + offset, -1, group.history.length - 1);
         }
 
         function undo(group: string = DEFAULT_GROUP_KEY) {
