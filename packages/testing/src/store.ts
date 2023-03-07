@@ -24,6 +24,10 @@ const STATE = {
         lastName: '',
         age: 0,
     },
+    roles: [
+        'viewer',
+        'editor',
+    ],
 };
 
 export function jsonClone<TValue>(value: TValue): TValue {
