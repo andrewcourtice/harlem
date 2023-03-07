@@ -1,7 +1,7 @@
 {
     "name": "@harlem/extension-trace",
     "amdName": "harlemTrace",
-    "version": "3.1.1",
+    "version": "3.1.2",
     "license": "MIT",
     "author": "Andrew Courtice <andrewcourtice@users.noreply.github.com>",
     "description": "The official trace extension for Harlem",
@@ -48,10 +48,10 @@
         "@harlem/core": "^3.0.0"
     },
     "dependencies": {
-        "@harlem/utilities": "^3.1.1"
+        "@harlem/utilities": "^3.1.2"
     },
     "devDependencies": {
-        "@harlem/core": "^3.1.1",
+        "@harlem/core": "^3.1.2",
         "@harlem/testing": "^3.0.0"
     }
 }
