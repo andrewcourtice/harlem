@@ -32,11 +32,18 @@ import type {
     TraceGate,
     TraceOptions,
     TraceResult,
-    TrackEventOptions,
 } from './types';
 
 export { NOTHING } from './constants';
 export * from './types';
+
+const IGNORED_PROPS: PropertyKey[] = [
+    '__v_raw',
+    '__v_skip',
+    '__v_isReactive',
+    '__v_isReadonly',
+    '__v_isShallow',
+];
 
 const GATE_MAP = {
     get: (callback, { hasGetGate, gates, paths }) => (target, prop) => {
@@ -46,23 +53,31 @@ const GATE_MAP = {
             defaultCallback(callback, 'get', paths, prop, value, value);
         }
 
+        if (IGNORED_PROPS.includes(prop)) {
+            return value;
+        }
+
         return deepTrace(value, callback, {
             gates,
             hasGetGate,
             paths: paths.concat(prop),
         });
     },
-    set: (callback, { paths }) => (target, prop, value, receiver) => {
+    set: (callback, { paths }) => (target, prop, value) => {
         const oldValue = prop in target
             ? target[prop]
             : NOTHING;
 
         defaultCallback(callback, 'set', paths, prop, oldValue, value);
-        return Reflect.set(target, prop, value, receiver);
+        target[prop] = value;
+
+        return true;
     },
     deleteProperty: (callback, { paths }) => (target, prop) => {
         defaultCallback(callback, 'deleteProperty', paths, prop, target[prop]);
-        return Reflect.deleteProperty(target, prop);
+        delete target[prop];
+
+        return true;
     },
 } as GateMap;
 
@@ -185,16 +200,14 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
             };
         }
 
-        function trackEvent(name: string, options: TrackEventOptions) {
-            const style = getTagStyle(options.style);
+        function getTrackLogHandler(name: string, styleOptions: Partial<TagStyleOptions>, type: 'log' | 'group' = 'log') {
+            const style = getTagStyle(styleOptions);
 
-            store.on(options.events.before, (event?: EventPayload<TriggerEventData>) => {
+            return (event?: EventPayload<TriggerEventData>) => {
                 if (event) {
-                    console.group(`%c${name}%c ${event.data.name}`, style, '');
+                    console[type](`%c${name}%c ${event.data.name}`, style, '');
                 }
-            });
-
-            store.on(options.events.after, () => console.groupEnd());
+            };
         }
 
         store.once(EVENTS.store.created, () => {
@@ -206,27 +219,20 @@ export default function traceExtension<TState extends BaseState>(options?: Parti
         store.once(EVENTS.store.destroyed, () => traceCallbacks.clear());
 
         if (trackMutations) {
-            trackEvent('Mutation', {
-                events: {
-                    before: EVENTS.mutation.before,
-                    after: EVENTS.mutation.after,
-                },
-                style: {
-                    background: '#EC4899',
-                },
-            });
+            store.on(EVENTS.mutation.before, getTrackLogHandler('Mutation', {
+                background: '#EC4899',
+            }, 'group'));
+
+            store.on(EVENTS.mutation.after, () => console.groupEnd());
         }
 
         if (trackActions) {
-            trackEvent('Action', {
-                events: {
-                    before: EVENTS.action.before,
-                    after: EVENTS.action.after,
-                },
-                style: {
-                    background: '#8B5CF6',
-                },
-            });
+            const style: Partial<TagStyleOptions> = {
+                background: '#8B5CF6',
+            };
+
+            store.on(EVENTS.action.before, getTrackLogHandler('Action:Start', style));
+            store.on(EVENTS.action.after, getTrackLogHandler('Action:End', style));
         }
 
         return {
