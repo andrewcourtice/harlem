@@ -56,7 +56,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
     const groups = getMutationGroups(_options.mutations);
 
     const createTraceExtension = traceExtension<TState>({
-        autoStart: true,
+        autoStart: false,
     });
 
     function mutationFilter(mutation: string) {
