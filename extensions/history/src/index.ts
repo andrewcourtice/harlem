@@ -25,6 +25,7 @@ import traceExtension, {
 } from '@harlem/extension-trace';
 
 import {
+    Disposable,
     matchGetFilter,
     numberClamp,
     objectFromPath,
@@ -43,18 +44,35 @@ import type {
 
 export * from './types';
 
-function getOptions(options?: Partial<Options>): Options {
-    return {
+function getMutationGroups(mutations: Options['mutations']) {
+    const hasGroups = typeIsObject(mutations) && 'groups' in mutations;
+    const groups = hasGroups ? mutations.groups : {};
+
+    if (!hasGroups || typeIsMatchable(mutations)) {
+        groups[DEFAULT_GROUP_KEY] = mutations;
+    }
+
+    return Object.entries(groups)
+        .map(([key, matcher]) => {
+            const matchable = typeIsMatchable(matcher) ? matcher : {
+                include: matcher,
+            };
+
+            return {
+                key,
+                filter: matchGetFilter(matchable),
+            };
+        });
+}
+
+export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
+    const _options = {
         max: 50,
         mutations: '*',
         ...options,
     };
-}
 
-export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
-    const _options = getOptions(options);
     const groups = getMutationGroups(_options.mutations);
-
     const createTraceExtension = traceExtension<TState>({
         autoStart: false,
     });
@@ -90,26 +108,43 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         };
 
         let historyState = createHistoryState();
+        let trackingListener: Disposable | undefined;
 
-        store.on(CORE_EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
-            if (!event || MUTATION_FILTER.test(event.data.name) || !mutationFilter(event.data.name)) {
-                return;
-            }
+        function startHistoryTracking() {
+            trackingListener ??= store.on(CORE_EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
+                if (!event || MUTATION_FILTER.test(event.data.name) || !mutationFilter(event.data.name)) {
+                    return;
+                }
 
-            startTrace([
-                'set',
-                'deleteProperty',
-            ]);
+                startTrace([
+                    'set',
+                    'deleteProperty',
+                ]);
 
-            const listener = onTraceResult(result => historyState.results.push(result));
+                const listener = onTraceResult(result => historyState.results.push(result));
 
-            store.once(CORE_EVENTS.mutation.after, () => {
-                stopTrace();
-                processResults(event.data.name);
+                store.once(CORE_EVENTS.mutation.after, () => {
+                    stopTrace();
+                    processResults(event.data.name);
 
-                listener.dispose();
+                    listener.dispose();
+                });
             });
-        });
+        }
+
+        function stopHistoryTracking() {
+            trackingListener = (trackingListener?.dispose(), undefined);
+        }
+
+        function skipHistoryTracking<TResult = void>(callback: () => TResult) {
+            stopHistoryTracking();
+
+            try {
+                return callback();
+            } finally {
+                startHistoryTracking();
+            }
+        }
 
         function applyChange(type: ChangeType, change: MutationTrace) {
             store.write(`extension:history:${type}`, SENDER, state => {
@@ -244,12 +279,17 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         const onHistoryChangeSuccess = getTrigger(EVENTS.change.success);
         const onHistoryChangeError = getTrigger(EVENTS.change.error);
 
+        startHistoryTracking();
+
         return {
             undo,
             redo,
             canUndo,
             canRedo,
             clearHistory,
+            startHistoryTracking,
+            stopHistoryTracking,
+            skipHistoryTracking,
             onBeforeHistoryChange,
             onAfterHistoryChange,
             onHistoryChangeSuccess,
@@ -257,25 +297,3 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         };
     };
 }
-
-function getMutationGroups(mutations: Options['mutations']) {
-    const hasGroups = typeIsObject(mutations) && 'groups' in mutations;
-    const groups = hasGroups ? mutations.groups : {};
-
-    if (!hasGroups || typeIsMatchable(mutations)) {
-        groups[DEFAULT_GROUP_KEY] = mutations;
-    }
-
-    return Object.entries(groups)
-        .map(([key, matcher]) => {
-            const matchable = typeIsMatchable(matcher) ? matcher : {
-                include: matcher,
-            };
-
-            return {
-                key,
-                filter: matchGetFilter(matchable),
-            };
-        });
-}
-

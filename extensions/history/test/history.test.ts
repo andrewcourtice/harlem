@@ -187,4 +187,41 @@ describe('History Extension', () => {
         expect(spyFn).toHaveBeenCalledTimes(6);
     });
 
+    test('Can skip history operations', () => {
+        const {
+            store,
+            setUserID,
+            setUserDetails,
+        } = instance;
+
+        const {
+            state,
+            canUndo,
+            skipHistoryTracking,
+            startHistoryTracking,
+            stopHistoryTracking,
+        } = store;
+
+        skipHistoryTracking(() => setUserID(5));
+        expect(state.id).toBe(5);
+        expect(canUndo()).toBe(false);
+
+        setUserID(10);
+        expect(state.id).toBe(10);
+        expect(canUndo()).toBe(true);
+
+        stopHistoryTracking();
+
+        setUserDetails({
+            firstName: 'Michael',
+            lastName: 'Scott',
+        });
+
+        startHistoryTracking();
+
+        expect(state.details.firstName).toBe('Michael');
+        expect(state.details.lastName).toBe('Scott');
+        expect(canUndo('userDetails')).toBe(false);
+    });
+
 });
