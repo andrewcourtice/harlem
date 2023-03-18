@@ -239,7 +239,7 @@ export const {
 } = createInstance();
 
 // Attach instance creation to the global object
-if (window) {
+if (typeof window !== 'undefined') {
     window.$harlem = {
         createInstance,
     };
