@@ -28,10 +28,10 @@
         "vue": "^3.2.47"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^4.0.0",
+        "@vitejs/plugin-vue": "^4.1.0",
         "@vue/compiler-sfc": "^3.2.47",
         "rollup-plugin-visualizer": "^5.9.0",
-        "sass": "^1.58.3",
-        "vite": "^4.1.4"
+        "sass": "^1.59.3",
+        "vite": "^4.2.0"
     }
 }
