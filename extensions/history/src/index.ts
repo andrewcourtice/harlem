@@ -83,11 +83,19 @@ export default function historyExtension<TState extends BaseState>(options?: Par
 
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'history', () => _options);
-        store.register('history', 'details', () => ({
-            canUndo: canUndo(),
-            canRedo: canRedo(),
-            groups: historyState.groups,
-        }));
+        store.register('history', 'groups', () => Object
+            .entries(historyState.groups)
+            .reduce((output, [key, { history, position }]) => {
+                output[key] = {
+                    history,
+                    position,
+                    canUndo: canUndo(key),
+                    canRedo: canRedo(key),
+                };
+
+                return output;
+            }, {} as Record<string, unknown>)
+        );
 
         const {
             startTrace,
@@ -126,7 +134,11 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                     'deleteProperty',
                 ]);
 
-                const listener = onTraceResult(result => historyState.results.push(result));
+                const listener = onTraceResult(result => {
+                    if (trackingListener) {
+                        historyState.results.push(result);
+                    }
+                });
 
                 store.once(CORE_EVENTS.mutation.after, () => {
                     stopTrace();
@@ -138,7 +150,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         }
 
         function stopHistoryTracking() {
-            trackingListener = (trackingListener?.dispose(), undefined);
+            trackingListener = trackingListener?.dispose() || undefined;
         }
 
         function skipHistoryTracking<TResult = void>(callback: () => TResult) {
