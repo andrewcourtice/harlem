@@ -22,12 +22,21 @@ describe('History Extension', () => {
     const getInstance = () => getStore({
         extensions: [
             historyExtension({
-                mutations: {
-                    groups: {
-                        default: ['set-user-id', DUPLICATE_ROLE_MUTATION],
-                        userDetails: ['set-user-details'],
+                entries: [
+                    {
+                        label: 'Set User ID',
+                        include: 'set-user-id',
                     },
-                },
+                    {
+                        label: 'Duplicate Role',
+                        include: DUPLICATE_ROLE_MUTATION,
+                    },
+                    {
+                        label: 'Set User Details',
+                        include: 'set-user-details',
+                        group: 'user-details',
+                    },
+                ],
             }),
         ],
     });
@@ -108,15 +117,15 @@ describe('History Extension', () => {
         });
 
         expect(state.details.firstName).toBe('More things');
-        undo('userDetails');
+        undo('user-details');
         expect(state.details.firstName).toBe('John');
-        undo('userDetails');
+        undo('user-details');
         expect(state.details.firstName).toBe('');
-        redo('userDetails');
+        redo('user-details');
         expect(state.details.firstName).toBe('John');
-        redo('userDetails');
+        redo('user-details');
         expect(state.details.firstName).toBe('More things');
-        undo('userDetails');
+        undo('user-details');
         expect(state.details.firstName).toBe('John');
 
         setUserDetails({
@@ -124,9 +133,9 @@ describe('History Extension', () => {
         });
 
         expect(state.details.firstName).toBe('After');
-        undo('userDetails');
+        undo('user-details');
         expect(state.details.firstName).toBe('John');
-        redo('userDetails');
+        redo('user-details');
         expect(state.details.firstName).toBe('After');
     });
 
@@ -221,7 +230,7 @@ describe('History Extension', () => {
 
         expect(state.details.firstName).toBe('Michael');
         expect(state.details.lastName).toBe('Scott');
-        expect(canUndo('userDetails')).toBe(false);
+        expect(canUndo('user-details')).toBe(false);
     });
 
 });

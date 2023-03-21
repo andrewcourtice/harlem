@@ -5,7 +5,6 @@ import type {
 
 import type {
     Matchable,
-    Matcher,
 } from '@harlem/utilities';
 
 export type ChangeType = 'redo' | 'undo';
@@ -14,27 +13,33 @@ export type ChangeCommands = Record<TraceGate<any>, ChangeCommand>;
 
 export type HistoryTriggerHandler = (data: HistoryEventData) => void;
 
-export type MutationTrace = {
-    name: string;
+export type HistoryItem = {
+    id: symbol;
+    label: string;
+    mutation: string;
+    payload?: unknown;
     results: TraceResult<any>[];
 };
 
 export type HistoryGroup = {
     position: number;
-    history: MutationTrace[];
+    history: HistoryItem[];
 }
 
-export type MutationGroups = {
-    groups: Record<string, Matcher | Matchable>;
-};
+export interface HistoryEntryOptions extends Partial<Matchable> {
+    label: string;
+    group?: string;
+    merge?: boolean | ((mutation: string, payload: unknown, prevMutation: string, prevPayload: unknown) => boolean);
+}
 
-export type Options = {
+export interface Options {
     max: number;
-    mutations: Matcher | Matchable | MutationGroups | Matchable & MutationGroups;
-};
+    entries: HistoryEntryOptions[];
+}
 
 export interface HistoryEventData<TPayload = unknown> {
-    group: string;
     type: ChangeType;
+    group: string;
+    name: string;
     payload: TPayload;
 }

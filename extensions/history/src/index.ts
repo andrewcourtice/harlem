@@ -29,62 +29,35 @@ import {
     matchGetFilter,
     numberClamp,
     objectFromPath,
-    typeIsMatchable,
-    typeIsObject,
+    typeIsFunction,
 } from '@harlem/utilities';
 
 import type {
     ChangeType,
     HistoryEventData,
     HistoryGroup,
+    HistoryItem,
     HistoryTriggerHandler,
-    MutationTrace,
     Options,
 } from './types';
 
 export * from './types';
 
-function getMutationGroups(mutations: Options['mutations']) {
-    const hasGroups = typeIsObject(mutations) && 'groups' in mutations;
-    const groups = hasGroups ? mutations.groups : {};
-
-    if (!hasGroups || typeIsMatchable(mutations)) {
-        groups[DEFAULT_GROUP_KEY] = mutations;
-    }
-
-    return Object.entries(groups)
-        .map(([key, matcher]) => {
-            const matchable = typeIsMatchable(matcher) ? matcher : {
-                include: matcher,
-            };
-
-            return {
-                key,
-                filter: matchGetFilter(matchable),
-            };
-        });
-}
-
 export default function historyExtension<TState extends BaseState>(options?: Partial<Options>) {
     const _options = {
         max: 50,
-        mutations: '*',
+        entries: [],
         ...options,
     };
 
-    const groups = getMutationGroups(_options.mutations);
     const createTraceExtension = traceExtension<TState>({
         autoStart: false,
     });
 
-    function mutationFilter(mutation: string) {
-        return groups.some(({ filter }) => filter(mutation));
-    }
-
     return (store: InternalStore<TState>) => {
         store.register('extensions', 'history', () => _options);
         store.register('history', 'groups', () => Object
-            .entries(historyState.groups)
+            .entries(groups)
             .reduce((output, [key, { history, position }]) => {
                 output[key] = {
                     history,
@@ -98,34 +71,90 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         );
 
         const {
+            max,
+            entries,
+        } = {
+            max: 50,
+            entries: [],
+            ...options,
+        };
+
+        const {
             startTrace,
             stopTrace,
             onTraceResult,
         } = createTraceExtension(store);
 
-        const createHistoryState = () => {
-            const results: TraceResult<any>[] = [];
-            const historyGroups = groups.reduce((out, { key }) => {
-                out[key] = {
-                    position: -1,
-                    history: [],
-                };
+        const items = entries.map(({ group, merge, include, exclude, ...entry }) => ({
+            ...entry,
+            group: group || DEFAULT_GROUP_KEY,
+            merge: typeIsFunction(merge) ? merge : () => !!merge,
+            matcher: matchGetFilter({
+                include,
+                exclude,
+            }),
+        }));
 
-                return out;
-            }, {} as Record<string, HistoryGroup>);
-
-            return {
-                results,
-                groups: reactive(historyGroups),
-            };
-        };
-
-        let historyState = createHistoryState();
+        const groups = reactive(getGroups());
         let trackingListener: Disposable | undefined;
+
+        function createGroupState() {
+            return {
+                position: -1,
+                history: [],
+            } as HistoryGroup;
+        }
+
+        function getGroups() {
+            return items.reduce((output, { group }) => {
+                return output.set(group, createGroupState());
+            }, new Map<string, HistoryGroup>());
+        }
+
+        function processResults(event: EventPayload<TriggerEventData>, results: TraceResult<TState>[]) {
+            const {
+                name: mutation,
+                payload,
+            } = event.data;
+
+            if (!results.length) {
+                return;
+            }
+
+            groups.forEach((group, key) => {
+                const item = getItem(mutation, key);
+
+                if (!item) {
+                    return;
+                }
+
+                if (group.history.length - 1 !== group.position) {
+                    group.history = group.history.slice(0, group.position + 1);
+                }
+
+                if (group.history.length >= max) {
+                    group.history.shift();
+                }
+
+                group.history.push(markRaw({
+                    mutation,
+                    payload,
+                    id: Symbol(),
+                    label: item.label,
+                    results: Array.from(results),
+                }));
+
+                group.position = group.history.length - 1;
+            });
+        }
+
+        function getItem(mutation: string, group?: string) {
+            return items.find(item => (!group || item.group === group) && item.matcher(mutation));
+        }
 
         function startHistoryTracking() {
             trackingListener ??= store.on(CORE_EVENTS.mutation.before, (event?: EventPayload<TriggerEventData>) => {
-                if (!event || MUTATION_FILTER.test(event.data.name) || !mutationFilter(event.data.name)) {
+                if (!event || MUTATION_FILTER.test(event.data.name) || !getItem(event.data.name)) {
                     return;
                 }
 
@@ -134,15 +163,16 @@ export default function historyExtension<TState extends BaseState>(options?: Par
                     'deleteProperty',
                 ]);
 
+                const results = [] as TraceResult<TState>[];
                 const listener = onTraceResult(result => {
                     if (trackingListener) {
-                        historyState.results.push(result);
+                        results.push(result);
                     }
                 });
 
                 store.once(CORE_EVENTS.mutation.after, () => {
                     stopTrace();
-                    processResults(event.data.name);
+                    processResults(event, results);
 
                     listener.dispose();
                 });
@@ -163,7 +193,7 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             }
         }
 
-        function applyChange(type: ChangeType, change: MutationTrace) {
+        function applyChange(type: ChangeType, change: HistoryItem) {
             store.write(`extension:history:${type}`, SENDER, state => {
                 const tasks = CHANGE_MAP[type];
                 const results = type === 'redo'
@@ -180,37 +210,6 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             });
         }
 
-        function processResults(mutation: string) {
-            if (historyState.results.length === 0) {
-                return;
-            }
-
-            for (const { key, filter } of groups) {
-                if (!filter(mutation)) {
-                    continue;
-                }
-
-                const historyGroup = historyState.groups[key];
-
-                if (historyGroup.history.length - 1 !== historyGroup.position) {
-                    historyGroup.history = historyGroup.history.slice(0, historyGroup.position + 1);
-                }
-
-                if (historyGroup.history.length >= _options.max) {
-                    historyGroup.history.shift();
-                }
-
-                historyGroup.history.push(markRaw({
-                    name: mutation,
-                    results: Array.from(historyState.results),
-                }));
-
-                historyGroup.position = historyGroup.history.length - 1;
-            }
-
-            historyState.results = [];
-        }
-
         function getChange(group: HistoryGroup, type: ChangeType) {
             const offset = TYPE_OFFSET[type];
             const changeIndex = group.position + (offset === -1 ? 0 : 1);
@@ -223,12 +222,12 @@ export default function historyExtension<TState extends BaseState>(options?: Par
         }
 
         function canChange(groupKey: string, type: ChangeType) {
-            const group = historyState.groups[groupKey];
+            const group = groups.get(groupKey);
             return !!(group && getChange(group, type).change);
         }
 
         function run(groupKey: string, type: ChangeType) {
-            const group = historyState.groups[groupKey];
+            const group = groups.get(groupKey);
 
             if (!group) {
                 return;
@@ -244,9 +243,10 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             }
 
             const trigger = (event: string, payload?: unknown) => store.emit(event, SENDER, {
-                group: groupKey,
                 type,
                 payload,
+                group: groupKey,
+                name: change.mutation,
             });
 
             trigger(EVENTS.change.before);
@@ -279,8 +279,8 @@ export default function historyExtension<TState extends BaseState>(options?: Par
             return canChange(group, 'redo');
         }
 
-        function clearHistory() {
-            historyState = createHistoryState();
+        function clearHistory(group: string = DEFAULT_GROUP_KEY) {
+            groups.set(group, createGroupState());
         }
 
         const getTrigger = (eventName: string) => {
