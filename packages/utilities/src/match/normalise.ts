@@ -18,7 +18,7 @@ export default function normalise(matcher: Matcher): Predicate<string> {
     const patterns = ([] as (string | RegExp)[])
         .concat(matcher)
         .map(pattern => isString(pattern)
-            ? new RegExp(pattern)
+            ? new RegExp(`^${pattern}$`)
             : pattern
         );
 
