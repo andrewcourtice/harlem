@@ -207,6 +207,9 @@ The official plugins include:
 ## Documentation
 Full documentation for Harlem is available at https://harlemjs.com.
 
+## Usage Trend
+[Usage Trend of Harlem Packages](https://npm-compare.com/@harlem/core,@harlem/plugin-devtools,@harlem/task,@harlem/plugin-ssr,@harlem/extension-trace,@harlem/extension-action,@harlem/extension-storage,@harlem/extension-history,@harlem/extension-lazy,@harlem/extension-transaction,@harlem/extension-compose,@harlem/utilities,@harlem/extension-snapshot,@harlem/extension-reset)
+
 ## Credits
 
 Logo design by [Ethan Roxburgh](https://github.com/ethanroxburgh)
