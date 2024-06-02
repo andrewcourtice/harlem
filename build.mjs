@@ -30,6 +30,9 @@ const baseOptions = {
     target: 'es2018',
     sourcemap: false,
     clean: false,
+    external: [
+        'vue',
+    ],
 };
 
 /**
