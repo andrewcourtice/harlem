@@ -46,11 +46,11 @@
     },
     "peerDependencies": {
         "@harlem/core": "^3.0.0",
-        "vue": "^3.2.0"
+        "vue": "^3.4.0"
     },
     "devDependencies": {
         "@harlem/core": "^3.1.8",
         "@harlem/testing": "^3.0.0",
-        "vue": "^3.2.47"
+        "vue": "^3.4.27"
     }
 }

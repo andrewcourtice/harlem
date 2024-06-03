@@ -7,7 +7,7 @@ import {
 } from './store';
 
 import {
-    utcToZonedTime,
+    toZonedTime,
 } from 'date-fns-tz';
 
 export const timezones = getter(GETTERS.timezones, ({ timezones, clocks }) => {
@@ -22,6 +22,6 @@ export const timezones = getter(GETTERS.timezones, ({ timezones, clocks }) => {
 export const clocks = getter(GETTERS.clocks, ({ clocks, time }) => {
     return clocks.map(timezone => ({
         timezone,
-        time: utcToZonedTime(time, timezone),
+        time: toZonedTime(time, timezone),
     }));
 });

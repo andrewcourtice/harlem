@@ -5,7 +5,7 @@
         "**/node_modules": true
     },
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
+        "source.fixAll.eslint": "explicit"
     },
     "[vue]": {
         "editor.semanticHighlighting.enabled": false
